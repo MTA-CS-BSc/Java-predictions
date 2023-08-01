@@ -1,0 +1,31 @@
+package engine.validators;
+
+import engine.modules.Constants;
+import org.xml.sax.SAXException;
+
+import javax.xml.XMLConstants;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.File;
+import java.io.IOException;
+
+public class XmlValidator {
+    static boolean testXml(String xmlPath) {
+        SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        try {
+            Schema schema = schemaFactory.newSchema(new File(Constants.XSD_PATH));
+            Validator validator = schema.newValidator();
+            validator.validate(new StreamSource(new File(xmlPath)));
+            return true;
+        } catch (SAXException e) {
+            // TODO: Handle exception
+            return false;
+        } catch (IOException e) {
+            // TODO: Handle exception
+            return false;
+        }
+    }
+}
