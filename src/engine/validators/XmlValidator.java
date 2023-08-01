@@ -12,7 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class XmlValidator {
-    static boolean validateXmlAgainstXsd(final String xmlPath) throws SAXException, IOException {
+    static boolean validateXmlAgainstXsd(final String xmlPath) {
         try {
             SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
             Schema schema = schemaFactory.newSchema(new File(Constants.XSD_PATH));
