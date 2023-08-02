@@ -8,6 +8,8 @@
 
 package engine.prototypes;
 
+import engine.logs.Loggers;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -78,6 +80,8 @@ public class PRDWorld {
      */
     public void setPRDEvironment(PRDEvironment value) {
         this.prdEvironment = value;
+
+        Loggers.ValueChangedLog(this.getClass().getName(), this.prdEvironment.getClass().getName());
     }
 
     /**
@@ -102,6 +106,8 @@ public class PRDWorld {
      */
     public void setPRDEntities(PRDEntities value) {
         this.prdEntities = value;
+
+        Loggers.ValueChangedLog(this.getClass().getName(), this.prdEntities.getClass().getName());
     }
 
     /**
@@ -126,6 +132,8 @@ public class PRDWorld {
      */
     public void setPRDRules(PRDRules value) {
         this.prdRules = value;
+
+        Loggers.ValueChangedLog(this.getClass().getName(), this.prdRules.getClass().getName());
     }
 
     /**
@@ -150,6 +158,8 @@ public class PRDWorld {
      */
     public void setPRDTermination(PRDTermination value) {
         this.prdTermination = value;
+
+        Loggers.ValueChangedLog(this.getClass().getName(), this.prdTermination.getClass().getName());
     }
 
 }
