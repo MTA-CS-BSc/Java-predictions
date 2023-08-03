@@ -1,4 +1,4 @@
-package engine.validators;
+package engine.validators.env;
 
 import engine.logs.Loggers;
 import engine.prototypes.jaxb.PRDEnvProperty;
@@ -25,7 +25,6 @@ public class PRDEvironmentValidators {
 
         return true;
     }
-
     private static boolean validatePropsTypes(PRDEvironment env) {
         boolean isValid = true;
 
@@ -39,7 +38,6 @@ public class PRDEvironmentValidators {
 
         return isValid;
     }
-
     private static boolean validateNoWhitespacesInNames(PRDEvironment env) {
         boolean isValid = true;
 
@@ -53,7 +51,6 @@ public class PRDEvironmentValidators {
 
         return isValid;
     }
-
     private static boolean validateRanges(PRDEvironment env) {
         boolean isValid = true;
 
