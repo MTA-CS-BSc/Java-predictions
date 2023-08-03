@@ -19,4 +19,8 @@ public class PRDEnvPropertyValidators {
     public static boolean validateTypeForRangeExistance(PRDEnvProperty property) {
         return Constants.PRD_ENV_PROPERTY_RANGE_ALLOWED_TYPES.contains(property.getType());
     }
+
+    public static boolean validateNameNoWhitespaces(PRDEnvProperty property) {
+        return !property.getPRDName().contains(" ");
+    }
 }

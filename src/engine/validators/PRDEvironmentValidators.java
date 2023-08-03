@@ -9,7 +9,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PRDEvironmentValidators {
-    public static boolean validatePropsUniqueNames(PRDEvironment env) {
+    public static boolean validateEnvironment(PRDEvironment env) {
+        return validatePropsUniqueNames(env)
+                && validatePropsTypes(env)
+                && validateRanges(env)
+                && validateNoWhitespacesInNames(env);
+    }
+    private static boolean validatePropsUniqueNames(PRDEvironment env) {
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
             if (!PRDEnvPropertyValidators.validateUniquePropertyName(env, property)) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property name [%s] already exists", property.getPRDName()));
@@ -20,7 +26,7 @@ public class PRDEvironmentValidators {
         return true;
     }
 
-    public static boolean validatePropsTypes(PRDEvironment env) {
+    private static boolean validatePropsTypes(PRDEvironment env) {
         boolean isValid = true;
 
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
@@ -34,7 +40,21 @@ public class PRDEvironmentValidators {
         return isValid;
     }
 
-    public static boolean validateRanges(PRDEvironment env) {
+    private static boolean validateNoWhitespacesInNames(PRDEvironment env) {
+        boolean isValid = true;
+
+        for (PRDEnvProperty property : env.getPRDEnvProperty()) {
+            if (!PRDEnvPropertyValidators.validateNameNoWhitespaces(property)) {
+                Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] contains whitespaces",
+                                                                property.getPRDName()));
+                isValid = false;
+            }
+        }
+
+        return isValid;
+    }
+
+    private static boolean validateRanges(PRDEvironment env) {
         boolean isValid = true;
 
         List<PRDEnvProperty> propsWithRange =
