@@ -5,8 +5,6 @@ import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDEvironment;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
 
 public class PRDEnvPropertyValidators {
     public static boolean validatePropetyType(PRDEnvProperty property) {
