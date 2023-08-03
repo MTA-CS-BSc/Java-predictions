@@ -20,13 +20,7 @@ public class PRDEnvPropertyValidators {
                 .equals(property.getPRDName()));
     }
 
-    public static boolean validateRangeExistance(PRDEnvProperty property) {
-        List<String> allowedTypes = Arrays.asList("decimal", "float");
-
-        if (Objects.isNull(property.getPRDRange()))
-            return true;
-
-        return !Objects.isNull(property.getPRDRange())
-                && allowedTypes.contains(property.getType());
+    public static boolean validateTypeForRangeExistance(PRDEnvProperty property) {
+        return Arrays.asList("decimal", "float").contains(property.getType());
     }
 }

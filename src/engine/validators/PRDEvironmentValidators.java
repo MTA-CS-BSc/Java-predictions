@@ -21,6 +21,6 @@ public class PRDEvironmentValidators {
         return env.getPRDEnvProperty()
                 .stream()
                 .filter(element -> !Objects.isNull(element.getPRDRange()))
-                .allMatch(PRDEnvPropertyValidators::validateRangeExistance);
+                .allMatch(PRDEnvPropertyValidators::validateTypeForRangeExistance);
     }
 }
