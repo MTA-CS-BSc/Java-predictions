@@ -24,7 +24,7 @@ public class PRDEvironmentValidators {
 
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
             if (!PRDPropertyValidators.validateUniqueName(names, property.getPRDName())) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Env property name [%s] already exists", property.getPRDName()));
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Env property name [%s] already exists", property.getPRDName()));
                 return false;
             }
         }
@@ -34,7 +34,7 @@ public class PRDEvironmentValidators {
     private static boolean validatePropsTypes(PRDEvironment env) {
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
             if (!PRDPropertyValidators.validatePropetyType(property.getType())) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] has invalid type [%s]",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Env property [%s] has invalid type [%s]",
                                                                 property.getPRDName(), property.getType()));
                 return false;
             }
@@ -45,7 +45,7 @@ public class PRDEvironmentValidators {
     private static boolean validateNoWhitespacesInNames(PRDEvironment env) {
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
             if (property.getPRDName().contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] contains whitespaces",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Env property [%s] contains whitespaces",
                                                                 property.getPRDName()));
                 return false;
             }
@@ -62,7 +62,7 @@ public class PRDEvironmentValidators {
 
         for (PRDEnvProperty property : propsWithRange) {
             if (!PRDPropertyValidators.validateTypeForRangeExistance(property.getType())) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] has range with incompatible type",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Env property [%s] has range with incompatible type",
                                                                   property.getPRDName()));
                 return false;
             }

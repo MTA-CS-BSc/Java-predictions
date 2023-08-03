@@ -27,7 +27,7 @@ public class PRDEntityValidators {
 
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
             if (!PRDPropertyValidators.validateUniqueName(names, property.getPRDName())) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity [%s]: name [%s] already exists",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s]: name [%s] already exists",
                         entity.getName(), property.getPRDName()));
                 return false;
             }
@@ -38,7 +38,7 @@ public class PRDEntityValidators {
     private static boolean validateNoWhitespacesInPropsNames(PRDEntity entity) {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
             if (property.getPRDName().contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity [%s]: property [%s] contains whitespaces",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s]: property [%s] contains whitespaces",
                         entity.getName(), property.getPRDName()));
                 return false;
             }
@@ -49,7 +49,7 @@ public class PRDEntityValidators {
     private static boolean validatePropsTypes(PRDEntity entity) {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
             if (!PRDPropertyValidators.validatePropetyType(property.getType())) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity [%s] : property [%s] has invalid type [%s]",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] : property [%s] has invalid type [%s]",
                         entity.getName(), property.getPRDName(), property.getType()));
                 return false;
             }
@@ -66,7 +66,7 @@ public class PRDEntityValidators {
 
         for (PRDProperty property : propsWithRange) {
             if (!PRDPropertyValidators.validateTypeForRangeExistance(property.getType())) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity [%s] : property [%s] has range with incompatible type",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] : property [%s] has range with incompatible type",
                         entity.getName(), property.getPRDName()));
                 return false;
             }
@@ -100,7 +100,7 @@ public class PRDEntityValidators {
     private static boolean validatePropertiesValues(PRDEntity entity) {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
             if (!validatePropValue(property)) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity [%s] : Property [%s] has incorrect init value",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] : Property [%s] has incorrect init value",
                         entity.getName(), property.getPRDName()));
                 return false;
             }
@@ -115,7 +115,7 @@ public class PRDEntityValidators {
 
         for (PRDProperty property: notRandomProps) {
             if (!property.getType().equals("string") && property.getPRDValue().getInit().equals("")) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity [%s] : Property [%s] has no init",
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] : Property [%s] has no init",
                                                         entity.getName(), property.getPRDName()));
                 return false;
             }

@@ -22,7 +22,7 @@ public class PRDEntitiesValidators {
 
         for (PRDEntity entity : entities.getPRDEntity()) {
             if (!PRDPropertyValidators.validateUniqueName(names, entity.getName())) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity name [%s] already exists", entity.getName()));
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity name [%s] already exists", entity.getName()));
                 return false;
             }
         }
@@ -37,7 +37,7 @@ public class PRDEntitiesValidators {
 
         for (String name : names) {
             if (name.contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.error(String.format("Entity name [%s] contains whitespaces", name));
+                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity name [%s] contains whitespaces", name));
                 return false;
             }
         }
