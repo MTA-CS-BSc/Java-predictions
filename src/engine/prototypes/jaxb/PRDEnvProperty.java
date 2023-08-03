@@ -58,6 +58,7 @@ public class PRDEnvProperty {
     protected String prdName;
     @XmlElement(name = "PRD-range")
     protected PRDRange prdRange;
+
     @XmlAttribute(name = "type", required = true)
     protected String type;
 
