@@ -9,7 +9,7 @@ import engine.parsers.XmlParser;
 import java.util.Arrays;
 import java.util.List;
 
-public class xmlParserTests {
+public class XmlParserTests {
     private final String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
 
     @Test
