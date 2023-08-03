@@ -1,0 +1,18 @@
+package engine.prototypes.jaxb;
+
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "", propOrder = {
+    "prdEnvProperty"
+})
+@XmlRootElement(name = "PRD-evironment")
+public class PRDEvironment {
+    @XmlElement(name = "PRD-env-property", required = true)
+    protected List<PRDEnvProperty> prdEnvProperty;
+}

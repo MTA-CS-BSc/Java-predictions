@@ -6,7 +6,7 @@
 //
 
 
-package engine.prototypes;
+package engine.prototypes.jaxb;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;
