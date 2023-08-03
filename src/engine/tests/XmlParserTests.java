@@ -35,10 +35,10 @@ public class XmlParserTests {
                     XmlParser.parseWorldXml(xmlPaths.get(0));
                 }),
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    PRDWorld world = XmlParser.parseWorldXml(xmlPaths.get(1));
+                    XmlParser.parseWorldXml(xmlPaths.get(1));
                 }),
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    PRDWorld world = XmlParser.parseWorldXml(xmlPaths.get(2));
+                    XmlParser.parseWorldXml(xmlPaths.get(2));
                 })
         );
     }
