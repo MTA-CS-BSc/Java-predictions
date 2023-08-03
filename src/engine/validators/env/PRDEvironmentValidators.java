@@ -1,6 +1,7 @@
 package engine.validators.env;
 
 import engine.logs.Loggers;
+import engine.modules.Helpers;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDEvironment;
 
@@ -16,8 +17,13 @@ public class PRDEvironmentValidators {
                 && validateNoWhitespacesInNames(env);
     }
     private static boolean validatePropsUniqueNames(PRDEvironment env) {
+        List<String> names = env.getPRDEnvProperty()
+                            .stream()
+                            .map(PRDEnvProperty::getPRDName)
+                            .collect(Collectors.toList());
+
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
-            if (!PRDEnvPropertyValidators.validateUniquePropertyName(env, property)) {
+            if (!Helpers.validateUniqueName(names, property.getPRDName())) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property name [%s] already exists", property.getPRDName()));
                 return false;
             }
@@ -26,34 +32,28 @@ public class PRDEvironmentValidators {
         return true;
     }
     private static boolean validatePropsTypes(PRDEvironment env) {
-        boolean isValid = true;
-
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
             if (!PRDEnvPropertyValidators.validatePropetyType(property)) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] has invalid type [%s]",
                                                                 property.getPRDName(), property.getType()));
-                isValid = false;
+                return false;
             }
         }
 
-        return isValid;
+        return true;
     }
     private static boolean validateNoWhitespacesInNames(PRDEvironment env) {
-        boolean isValid = true;
-
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
-            if (!PRDEnvPropertyValidators.validateNameNoWhitespaces(property)) {
+            if (property.getPRDName().contains(" ")) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] contains whitespaces",
                                                                 property.getPRDName()));
-                isValid = false;
+                return false;
             }
         }
 
-        return isValid;
+        return true;
     }
     private static boolean validateRanges(PRDEvironment env) {
-        boolean isValid = true;
-
         List<PRDEnvProperty> propsWithRange =
                                         env.getPRDEnvProperty()
                                         .stream()
@@ -64,10 +64,10 @@ public class PRDEvironmentValidators {
             if (!PRDEnvPropertyValidators.validateTypeForRangeExistance(property)) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] has range with incompatible type",
                                                                   property.getPRDName()));
-                isValid = false;
+                return false;
             }
         }
 
-        return isValid;
+        return true;
     }
 }
