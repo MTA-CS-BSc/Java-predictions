@@ -1,9 +1,9 @@
 package engine.validators.env;
 
 import engine.logs.Loggers;
-import engine.modules.Helpers;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDEvironment;
+import engine.validators.PRDPropertyValidators;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,7 +23,7 @@ public class PRDEvironmentValidators {
                             .collect(Collectors.toList());
 
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
-            if (!Helpers.validateUniqueName(names, property.getPRDName())) {
+            if (!PRDPropertyValidators.validateUniqueName(names, property.getPRDName())) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property name [%s] already exists", property.getPRDName()));
                 return false;
             }
@@ -33,7 +33,7 @@ public class PRDEvironmentValidators {
     }
     private static boolean validatePropsTypes(PRDEvironment env) {
         for (PRDEnvProperty property : env.getPRDEnvProperty()) {
-            if (!PRDEnvPropertyValidators.validatePropetyType(property)) {
+            if (!PRDPropertyValidators.validatePropetyType(property.getType())) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] has invalid type [%s]",
                                                                 property.getPRDName(), property.getType()));
                 return false;
@@ -61,7 +61,7 @@ public class PRDEvironmentValidators {
                                         .collect(Collectors.toList());
 
         for (PRDEnvProperty property : propsWithRange) {
-            if (!PRDEnvPropertyValidators.validateTypeForRangeExistance(property)) {
+            if (!PRDPropertyValidators.validateTypeForRangeExistance(property.getType())) {
                 Loggers.XML_ERRORS_LOGGER.error(String.format("Env property [%s] has range with incompatible type",
                                                                   property.getPRDName()));
                 return false;
