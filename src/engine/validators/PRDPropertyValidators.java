@@ -20,5 +20,4 @@ public class PRDPropertyValidators {
     public static boolean validateTypeForRangeExistance(String type) {
         return Constants.PRD_ENV_PROPERTY_RANGE_ALLOWED_TYPES.contains(type);
     }
-
 }
