@@ -7,8 +7,7 @@ import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 import static jdk.nashorn.internal.runtime.JSType.isNumber;
 
@@ -34,31 +33,8 @@ public class PRDActionValidators {
 
         return false;
     }
-    private static boolean validateIncreaseOrDecreaseAction(PRDWorld world, PRDAction action) {
-        return validateEntityExists(world, action.getEntity())
-                && validatePropExists(world, action, action.getProperty())
-                && validateExpression(world, action, action.getBy());
-    }
-    private static boolean validatePropExists(PRDWorld world, PRDAction action, String propName) {
-        List<PRDEntity> foundEntity = world.getPRDEntities().getPRDEntity()
-                .stream()
-                .filter(entity -> entity.getName().equals(action.getEntity()))
-                .collect(Collectors.toList());
 
-        List<PRDProperty> props = foundEntity.get(0).getPRDProperties().getPRDProperty()
-                .stream()
-                .filter(prop -> prop.getPRDName().equals(propName))
-                .collect(Collectors.toList());
-
-        if (props.isEmpty())
-            Loggers.XML_ERRORS_LOGGER.trace(String.format("Action requested prop name [%s] which does not exist",
-                    propName));
-
-        return !props.isEmpty();
-    }
-    private static boolean validateKillAction(PRDWorld world, PRDAction action) {
-        return validateEntityExists(world, action.getEntity());
-    }
+    //#region Helpers
     private static boolean isSystemFunction(String type) {
         return Arrays.asList("random", "environment").contains(type);
     }
@@ -70,18 +46,23 @@ public class PRDActionValidators {
                 .stream()
                 .anyMatch(property -> property.getPRDName().equals(Arrays.asList(props.split(",")).get(0)));
     }
+    public static boolean handleSystemFunction(PRDWorld world, String props, String type) {
+        switch (type) {
+            case "random":
+                return validateRandomProps(props);
+            case "environment":
+                return validateEnvProps(world, props);
+        }
+
+        return false;
+    }
     private static boolean validateExpression(PRDWorld world, PRDAction action, String expression) {
         if (expression.contains("(")) {
             String type = expression.substring(0, expression.indexOf("("));
             String props = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
             if (isSystemFunction(type)) {
-                switch (type) {
-                    case "random":
-                        return validateRandomProps(props);
-                    case "environment":
-                        return validateEnvProps(world, props);
-                }
+                return handleSystemFunction(world, props, type);
             }
 
             else {
@@ -89,6 +70,7 @@ public class PRDActionValidators {
                 if (validatePropExists(world, action, action.getProperty()))
                     return true;
 
+                // Free text. Only check for numeric or boolean types
                 else if (type.equalsIgnoreCase("condition"))
                     return props.equalsIgnoreCase("true") || props.equalsIgnoreCase("false");
 
@@ -116,11 +98,6 @@ public class PRDActionValidators {
 
         return true;
     }
-    private static boolean validateSetAction(PRDWorld world, PRDAction action) {
-        return validateEntityExists(world, action.getEntity())
-                && validatePropExists(world, action, action.getProperty())
-                && validateExpression(world, action, action.getValue());
-    }
     private static boolean validateEntityExists(PRDWorld world, String entityName) {
         boolean flag = world.getPRDEntities().getPRDEntity()
                 .stream()
@@ -131,7 +108,7 @@ public class PRDActionValidators {
 
         return flag;
     }
-    private static boolean validateCalc(PRDWorld world, PRDAction action) {
+    private static boolean validateCalculation(PRDWorld world, PRDAction action) {
         String multiply_arg1 = action.getPRDMultiply().getArg1();
         String multiply_arg2 = action.getPRDMultiply().getArg2();
 
@@ -141,13 +118,55 @@ public class PRDActionValidators {
         return validateExpression(world, action, multiply_arg1) && validateExpression(world, action, multiply_arg2)
                     && validateExpression(world, action, divide_arg1) && validateExpression(world, action, divide_arg2);
     }
+    private static boolean validatePropExists(PRDWorld world, PRDAction action, String propName) {
+        PRDEntity foundEntity = world.getPRDEntities().getPRDEntity()
+                .stream()
+                .filter(entity -> entity.getName().equals(action.getEntity()))
+                .findFirst().orElse(null);
+
+        if (Objects.isNull(foundEntity)) {
+            Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] not found", action.getEntity()));
+            return false;
+        }
+
+        PRDProperty props = foundEntity.getPRDProperties().getPRDProperty()
+                .stream()
+                .filter(prop -> prop.getPRDName().equals(propName))
+                .findFirst().orElse(null);
+
+        if (Objects.isNull(props)) {
+            Loggers.XML_ERRORS_LOGGER.trace(String.format("Action requested prop name [%s] which does not exist",
+                    propName));
+
+            return false;
+        }
+
+        return true;
+    }
+    //#endregion
+
+    //#region Actions
+    private static boolean validateIncreaseOrDecreaseAction(PRDWorld world, PRDAction action) {
+        return validateEntityExists(world, action.getEntity())
+                && validatePropExists(world, action, action.getProperty())
+                && validateExpression(world, action, action.getBy());
+    }
+    private static boolean validateKillAction(PRDWorld world, PRDAction action) {
+        return validateEntityExists(world, action.getEntity());
+    }
+    private static boolean validateSetAction(PRDWorld world, PRDAction action) {
+        return validateEntityExists(world, action.getEntity())
+                && validatePropExists(world, action, action.getProperty())
+                && validateExpression(world, action, action.getValue());
+    }
     private static boolean validateCalculationAction(PRDWorld world, PRDAction action) {
         return validateEntityExists(world, action.getEntity())
                 && validatePropExists(world, action, action.getResultProp())
-                && validateCalc(world, action);
+                && validateCalculation(world, action);
     }
     private static boolean validateConditionAction(PRDWorld world, PRDAction action) {
         return true;
         //todo: Finish
     }
+    //#endregion
 }

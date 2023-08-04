@@ -36,15 +36,12 @@ public class PRDEntityValidators {
         return true;
     }
     private static boolean validateNoWhitespacesInPropsNames(PRDEntity entity) {
-        for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
-            if (property.getPRDName().contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s]: property [%s] contains whitespaces",
-                        entity.getName(), property.getPRDName()));
-                return false;
-            }
-        }
+        List<String> names = entity.getPRDProperties().getPRDProperty()
+                .stream()
+                .map(PRDProperty::getPRDName)
+                .collect(Collectors.toList());
 
-        return true;
+        return PRDPropertyValidators.validateNoWhitespacesInNames(PRDProperty.class, names);
     }
     private static boolean validatePropsTypes(PRDEntity entity) {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {

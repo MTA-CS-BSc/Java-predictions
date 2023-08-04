@@ -38,14 +38,7 @@ public class PRDRulesValidators {
                 .map(PRDRule::getName)
                 .collect(Collectors.toList());
 
-        for (String name : names) {
-            if (name.contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.trace(String.format("Rule name [%s] contains whitespaces", name));
-                return false;
-            }
-        }
-
-        return true;
+        return PRDPropertyValidators.validateNoWhitespacesInNames(PRDRule.class, names);
     }
     private static boolean validateActions(PRDWorld world, PRDRules rules) {
         for (PRDRule rule : rules.getPRDRule()) {
@@ -55,6 +48,4 @@ public class PRDRulesValidators {
 
         return true;
     }
-
-    //TODO: Add validations for PRDActivation
 }

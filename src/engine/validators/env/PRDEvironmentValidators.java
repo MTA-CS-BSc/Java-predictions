@@ -43,15 +43,12 @@ public class PRDEvironmentValidators {
         return true;
     }
     private static boolean validateNoWhitespacesInNames(PRDEvironment env) {
-        for (PRDEnvProperty property : env.getPRDEnvProperty()) {
-            if (property.getPRDName().contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.trace(String.format("Env property [%s] contains whitespaces",
-                                                                property.getPRDName()));
-                return false;
-            }
-        }
+        List<String> names = env.getPRDEnvProperty()
+                .stream()
+                .map(PRDEnvProperty::getPRDName)
+                .collect(Collectors.toList());
 
-        return true;
+        return PRDPropertyValidators.validateNoWhitespacesInNames(PRDEnvProperty.class, names);
     }
     private static boolean validateRanges(PRDEvironment env) {
         List<PRDEnvProperty> propsWithRange =

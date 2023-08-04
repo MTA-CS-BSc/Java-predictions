@@ -35,14 +35,7 @@ public class PRDEntitiesValidators {
                             .map(PRDEntity::getName)
                             .collect(Collectors.toList());
 
-        for (String name : names) {
-            if (name.contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity name [%s] contains whitespaces", name));
-                return false;
-            }
-        }
-
-        return true;
+        return PRDPropertyValidators.validateNoWhitespacesInNames(PRDEntity.class, names);
     }
     private static boolean validateEntitiesProperties(PRDEntities entities) {
         for (PRDEntity entity : entities.getPRDEntity()) {
