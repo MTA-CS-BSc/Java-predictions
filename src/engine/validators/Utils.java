@@ -1,23 +1,46 @@
 package engine.validators;
 
+import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDWorld;
 
+import java.util.Objects;
+
 public class Utils {
-    public static PRDEntity findEntityByName(PRDWorld world, String name) {
-        return world.getPRDEntities().getPRDEntity()
-                .stream()
-                .filter(element -> element.getName().equals(name))
-                .findFirst().orElse(null);
+    public static Object findEntityByName(Object world, String name) {
+        if (world.getClass() == PRDWorld.class) {
+            return ((PRDWorld)world).getPRDEntities().getPRDEntity()
+                    .stream()
+                    .filter(element -> element.getName().equals(name))
+                    .findFirst().orElse(null);
+        }
+
+        else if (world.getClass() == World.class)
+            return ((World)world).getEntities().getEntitiesMap().get(name);
+
+        return null;
     }
 
-    public static PRDProperty findPropertyByName(PRDWorld world, String entityName, String prop) {
-        return findEntityByName(world, entityName)
-                .getPRDProperties().getPRDProperty()
-                .stream()
-                .filter(element -> element.getPRDName().equals(prop))
-                .findFirst().orElse(null);
+    public static PRDProperty findPropertyByName(Object world, String entityName, String prop) {
+        if (world.getClass() == PRDWorld.class) {
+            return ((PRDEntity) Objects.requireNonNull(findEntityByName(world, entityName)))
+                    .getPRDProperties().getPRDProperty()
+                    .stream()
+                    .filter(element -> element.getPRDName().equals(prop))
+                    .findFirst().orElse(null);
+        }
+
+        else if (world.getClass() == World.class) {
+            return (((World)world).getEntities()
+                    .getEntitiesMap()
+                    .get(entityName))
+                    .getProperties()
+                    .getPropsMap()
+                    .get(prop);
+        }
+
+        return null;
     }
 
     public static boolean isDecimal(String str) {
