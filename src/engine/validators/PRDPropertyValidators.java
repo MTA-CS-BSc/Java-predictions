@@ -21,7 +21,6 @@ public class PRDPropertyValidators {
     public static boolean validateTypeForRangeExistance(String type) {
         return Constants.PRD_ENV_PROPERTY_RANGE_ALLOWED_TYPES.contains(type);
     }
-
     public static boolean validateNoWhitespacesInNames(Class<?> context, List<String> names) {
         String type = context.getSimpleName().substring(3);
 
