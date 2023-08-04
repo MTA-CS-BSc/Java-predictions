@@ -66,7 +66,6 @@ public class PRDActionValidators {
         else if (validatePropExists(world, entityName, expression))
             return true;
 
-        Loggers.XML_ERRORS_LOGGER.info(String.format("Prop [%s] not found", expression));
         // TODO: Validate types
         return true;
     }

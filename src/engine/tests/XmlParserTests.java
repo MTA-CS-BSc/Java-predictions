@@ -16,9 +16,9 @@ import java.util.List;
 import java.util.logging.FileHandler;
 
 public class XmlParserTests {
-    private final FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/err.log");
     private final String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
     public XmlParserTests() throws IOException {
+        FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/xml_parse_error.log");
         Loggers.XML_ERRORS_LOGGER.addHandler(fh);
     }
 
