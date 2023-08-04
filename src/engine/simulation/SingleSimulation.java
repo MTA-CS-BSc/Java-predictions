@@ -1,9 +1,10 @@
 package engine.simulation;
 
 import engine.logs.Loggers;
+import engine.modules.ActionTypes;
 import engine.modules.RandomGenerator;
-import engine.prototypes.jaxb.*;
 import engine.prototypes.implemented.World;
+import engine.prototypes.jaxb.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,10 +58,41 @@ public class SingleSimulation {
 
         return returned;
     }
+    public void handleKillAction(PRDAction action) {
+        Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
+        world.getEntities().getEntitiesMap().remove(action.getEntity());
+    }
+    public void fireAction(PRDAction action) {
+        String type = action.getType();
+
+        if (type.equalsIgnoreCase(ActionTypes.INCREASE)
+                || type.equalsIgnoreCase(ActionTypes.DECREASE))
+            Loggers.ENGINE_LOGGER.warning("Not implemented");
+            //handleIncrementDecrementAction(action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
+            Loggers.ENGINE_LOGGER.warning("Not implemented");
+            //handleCalculationAction(action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.SET))
+            Loggers.ENGINE_LOGGER.warning("Not implemented");
+            //handleSetAction(action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.KILL))
+            handleKillAction(action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
+            Loggers.ENGINE_LOGGER.warning("Not implemented");
+            //handleConditionAction(action);
+    }
+
     public void handleSingleTick() {
         HashMap<String, PRDRule> rulesToApply = getRelevantRules();
 
-        //Todo apply rules
+        rulesToApply.forEach((ruleName, rule) -> {
+            List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
+            actionsToPerform.forEach(this::fireAction);
+        });
     }
 
     public void run() {
