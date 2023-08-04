@@ -85,7 +85,6 @@ public class SingleSimulation {
             Loggers.ENGINE_LOGGER.warning("Not implemented");
             //handleConditionAction(action);
     }
-
     public void handleSingleTick() {
         HashMap<String, PRDRule> rulesToApply = getRelevantRules();
 
