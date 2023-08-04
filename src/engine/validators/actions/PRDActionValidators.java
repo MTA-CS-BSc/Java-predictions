@@ -1,7 +1,9 @@
 package engine.validators.actions;
 
 import engine.logs.Loggers;
+import engine.modules.ActionTypes;
 import engine.modules.Constants;
+import engine.modules.SystemFunctions;
 import engine.prototypes.jaxb.*;
 import engine.validators.Utils;
 
@@ -12,20 +14,20 @@ public class PRDActionValidators {
     public static boolean validateAction(PRDWorld world, PRDAction action) {
         String type = action.getType();
 
-        if (type.equalsIgnoreCase("increase")
-                || type.equalsIgnoreCase("decrease"))
+        if (type.equalsIgnoreCase(ActionTypes.INCREASE)
+                || type.equalsIgnoreCase(ActionTypes.DECREASE))
             return validateIncreaseOrDecreaseAction(world, action);
 
-        else if (type.equalsIgnoreCase("calculation"))
+        else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
             return validateCalculationAction(world, action);
 
-        else if (type.equalsIgnoreCase("set"))
+        else if (type.equalsIgnoreCase(ActionTypes.SET))
             return validateSetAction(world, action);
 
-        else if (type.equalsIgnoreCase("condition"))
+        else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
             return validateConditionAction(world, action);
 
-        else if (type.equalsIgnoreCase("kill"))
+        else if (type.equalsIgnoreCase(ActionTypes.KILL))
             return validateKillAction(world, action);
 
         return false;
@@ -33,7 +35,7 @@ public class PRDActionValidators {
 
     //#region Helpers
     private static boolean isSystemFunction(String type) {
-        return Arrays.asList("random", "environment").contains(type);
+        return Arrays.asList(SystemFunctions.RANDOM, SystemFunctions.ENVIRONMENT).contains(type);
     }
     private static boolean validateRandomProps(String props) {
         return Utils.isDecimal(Arrays.asList(props.split(",")).get(0));
@@ -45,9 +47,9 @@ public class PRDActionValidators {
     }
     public static boolean handleSystemFunction(PRDWorld world, String props, String type) {
         switch (type) {
-            case "random":
+            case SystemFunctions.RANDOM:
                 return validateRandomProps(props);
-            case "environment":
+            case SystemFunctions.ENVIRONMENT:
                 return validateEnvProps(world, props);
         }
 
