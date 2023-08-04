@@ -3,9 +3,9 @@ package engine.tests;
 import engine.parsers.XmlParser;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
