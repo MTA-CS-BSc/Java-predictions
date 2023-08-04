@@ -13,6 +13,27 @@ import java.util.stream.Collectors;
 import static jdk.nashorn.internal.runtime.JSType.isNumber;
 
 public class PRDActionValidators {
+    public static boolean validateAction(PRDWorld world, PRDAction action) {
+        String type = action.getType();
+
+        if (type.equalsIgnoreCase("increase")
+                || type.equalsIgnoreCase("decrease"))
+            return validateIncreaseOrDecreaseAction(world, action);
+
+        else if (type.equalsIgnoreCase("calculation"))
+            return validateCalculationAction(world, action);
+
+        else if (type.equalsIgnoreCase("set"))
+            return validateSetAction(world, action);
+
+        else if (type.equalsIgnoreCase("condition"))
+            return validateConditionAction(world, action);
+
+        else if (type.equalsIgnoreCase("kill"))
+            return validateKillAction(world, action);
+
+        return false;
+    }
     private static boolean validateIncreaseOrDecreaseAction(PRDWorld world, PRDAction action) {
         return validateEntityExists(world, action.getEntity())
                 && validatePropExists(world, action, action.getProperty())
@@ -29,11 +50,11 @@ public class PRDActionValidators {
                 .filter(prop -> prop.getPRDName().equals(propName))
                 .collect(Collectors.toList());
 
-        if (props.size() == 0)
+        if (props.isEmpty())
             Loggers.XML_ERRORS_LOGGER.trace(String.format("Action requested prop name [%s] which does not exist",
                     propName));
 
-        return props.size() > 0;
+        return !props.isEmpty();
     }
     private static boolean validateKillAction(PRDWorld world, PRDAction action) {
         return validateEntityExists(world, action.getEntity());
@@ -128,26 +149,5 @@ public class PRDActionValidators {
     private static boolean validateConditionAction(PRDWorld world, PRDAction action) {
         return true;
         //todo: Finish
-    }
-    public static boolean validateAction(PRDWorld world, PRDAction action) {
-        String type = action.getType();
-
-        if (type.equalsIgnoreCase("increase")
-            || type.equalsIgnoreCase("decrease"))
-            return validateIncreaseOrDecreaseAction(world, action);
-
-        else if (type.equalsIgnoreCase("calculation"))
-            return validateCalculationAction(world, action);
-
-        else if (type.equalsIgnoreCase("set"))
-            return validateSetAction(world, action);
-
-        else if (type.equalsIgnoreCase("condition"))
-            return validateConditionAction(world, action);
-
-        else if (type.equalsIgnoreCase("kill"))
-            return validateKillAction(world, action);
-
-        return false;
     }
 }
