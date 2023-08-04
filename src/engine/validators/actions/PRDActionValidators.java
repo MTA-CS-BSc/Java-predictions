@@ -34,7 +34,7 @@ public class PRDActionValidators {
     }
 
     //#region Helpers
-    private static boolean isSystemFunction(String type) {
+    public static boolean isSystemFunction(String type) {
         return Arrays.asList(SystemFunctions.RANDOM, SystemFunctions.ENVIRONMENT).contains(type);
     }
     private static boolean validateRandomProps(String props) {
@@ -101,7 +101,7 @@ public class PRDActionValidators {
         }
     }
     private static boolean validatePropExists(PRDWorld world, String entityName, String propertyName) {
-        PRDEntity foundEntity = Utils.findEntityByName(world, entityName);
+        PRDEntity foundEntity = (PRDEntity)Utils.findEntityByName(world, entityName);
 
         if (Objects.isNull(foundEntity)) {
             Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] not found", entityName));
