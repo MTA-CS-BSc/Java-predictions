@@ -62,13 +62,14 @@ public class SingleSimulation {
         Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
         world.getEntities().getEntitiesMap().remove(action.getEntity());
     }
+
     public void fireAction(PRDAction action) {
         String type = action.getType();
 
         if (type.equalsIgnoreCase(ActionTypes.INCREASE)
                 || type.equalsIgnoreCase(ActionTypes.DECREASE))
             Loggers.ENGINE_LOGGER.warning("Not implemented");
-            //handleIncrementDecrementAction(action);
+           // handleIncrementDecrementAction(action);
 
         else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
             Loggers.ENGINE_LOGGER.warning("Not implemented");

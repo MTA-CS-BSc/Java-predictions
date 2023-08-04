@@ -8,6 +8,25 @@ import engine.validators.actions.PRDActionValidators;
 import java.util.Objects;
 
 public class ExpressionParser {
+    public static Class<?> sameType(String obj1, String obj2) {
+        try {
+            Integer.parseInt(obj1);
+            Integer.parseInt(obj2);
+            return Integer.class;
+        }
+
+        catch (Exception e) {
+            try {
+                Float.parseFloat(obj1);
+                Float.parseFloat(obj2);
+                return Float.class;
+            }
+
+            catch (Exception er) {
+                return String.class;
+            }
+        }
+    }
     public static Object parseSystemFunctionExpression(World world, String expression) {
         String functionName = expression.substring(0, expression.indexOf("("));
         String value = expression.substring(expression.indexOf("("), expression.lastIndexOf(")"));
