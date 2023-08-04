@@ -22,7 +22,7 @@ public class PRDEntitiesValidators {
 
         for (PRDEntity entity : entities.getPRDEntity()) {
             if (!PRDPropertyValidators.validateUniqueName(names, entity.getName())) {
-                Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity name [%s] already exists", entity.getName()));
+                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity name [%s] already exists", entity.getName()));
                 return false;
             }
         }

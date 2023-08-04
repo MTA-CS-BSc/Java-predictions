@@ -66,6 +66,8 @@ public class PRDActionValidators {
         else if (validatePropExists(world, entityName, expression))
             return true;
 
+        Loggers.XML_ERRORS_LOGGER.info(String.format("Prop [%s] not found", expression));
+        // TODO: Validate types
         return true;
     }
     private static boolean validateEntityExists(PRDWorld world, String entityName) {
@@ -74,7 +76,7 @@ public class PRDActionValidators {
                 .anyMatch(element -> element.getName().equals(entityName));
 
         if (!flag)
-            Loggers.XML_ERRORS_LOGGER.trace(String.format("Action requested entity name [%s] which doesn't exist", entityName));
+            Loggers.XML_ERRORS_LOGGER.info(String.format("Action requested entity name [%s] which doesn't exist", entityName));
 
         return flag;
     }
@@ -101,14 +103,14 @@ public class PRDActionValidators {
         PRDEntity foundEntity = Utils.findEntityByName(world, entityName);
 
         if (Objects.isNull(foundEntity)) {
-            Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] not found", entityName));
+            Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] not found", entityName));
             return false;
         }
 
         PRDProperty props = Utils.findPropertyByName(world, entityName, propertyName);
 
         if (Objects.isNull(props)) {
-            Loggers.XML_ERRORS_LOGGER.trace(String.format("Action requested prop name [%s] which does not exist",
+            Loggers.XML_ERRORS_LOGGER.info(String.format("Action requested prop name [%s] which does not exist",
                     propertyName));
 
             return false;
@@ -142,30 +144,6 @@ public class PRDActionValidators {
     }
     public static boolean validateValidOperator(String operator) {
         return Constants.CONDITION_ALLOWED_OPERATORS.contains(operator);
-    }
-    public static boolean validateTypes(PRDWorld world, String entityName, String propertyName, String value) {
-        PRDProperty property = Utils.findPropertyByName(world, entityName, propertyName);
-
-        if (Objects.isNull(property))
-            return false;
-
-        if (property.getType().equals("decimal")
-            || property.getType().equals("float")) {
-            try {
-                Float.parseFloat(value);
-                return true;
-            } catch (Exception er) {
-                Loggers.XML_ERRORS_LOGGER.debug(String.format("Action mismatch on [%s]:[%s]",
-                        entityName, propertyName));
-                return false;
-            }
-        }
-
-        else if (property.getType().equals("boolean")) {
-            return value.equals("true") || value.equals("false");
-        }
-
-        return true;
     }
     private static boolean validateSingleCondition(PRDWorld world, String entityName, PRDCondition condition) {
         return validatePropExists(world, entityName, condition.getProperty())

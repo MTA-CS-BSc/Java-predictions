@@ -1,5 +1,6 @@
 package engine.tests;
 
+import engine.logs.Loggers;
 import engine.parsers.XmlParser;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;
@@ -9,11 +10,17 @@ import org.junit.jupiter.api.DisplayName;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.FileHandler;
 
 public class XmlParserTests {
+    private final FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/err.log");
     private final String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
+    public XmlParserTests() throws IOException {
+        Loggers.XML_ERRORS_LOGGER.addHandler(fh);
+    }
 
     @Test
     @DisplayName("Parse valid XML")

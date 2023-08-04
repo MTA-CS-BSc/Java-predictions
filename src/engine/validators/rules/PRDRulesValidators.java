@@ -24,7 +24,7 @@ public class PRDRulesValidators {
 
         for (PRDRule rule : rules.getPRDRule()) {
             if (!PRDPropertyValidators.validateUniqueName(names, rule.getName())) {
-                Loggers.XML_ERRORS_LOGGER.trace(String.format("Rule name [%s] already exists",
+                Loggers.XML_ERRORS_LOGGER.info(String.format("Rule name [%s] already exists",
                                                             rule.getName()));
                 return false;
             }

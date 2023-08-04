@@ -26,7 +26,7 @@ public class PRDPropertyValidators {
 
         for (String name : names) {
             if (name.contains(" ")) {
-                Loggers.XML_ERRORS_LOGGER.trace(String.format("[%s] name [%s] contains whitespaces", type, name));
+                Loggers.XML_ERRORS_LOGGER.info(String.format("[%s] name [%s] contains whitespaces", type, name));
                 return false;
             }
         }
