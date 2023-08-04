@@ -12,4 +12,8 @@ public class Entity {
         population = entity.getPRDPopulation();
         properties = new Properties(entity.getPRDProperties().getPRDProperty());
     }
+
+    public Properties getProperties() { return properties; }
+    public String getName() { return name; }
+    public int getPopulation() { return population; }
 }
