@@ -14,4 +14,10 @@ public class World {
         entities = new Entities(world.getPRDEntities().getPRDEntity());
         environment = new Environment(world.getPRDEvironment().getPRDEnvProperty());
     }
+
+    public Environment getEnvironment() { return environment; }
+    public Entities getEntities() { return entities; }
+    public PRDTermination getTermination() { return termination; }
+
+    public Rules getRules() { return rules; }
 }
