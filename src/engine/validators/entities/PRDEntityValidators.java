@@ -114,7 +114,7 @@ public class PRDEntityValidators {
                                         .collect(Collectors.toList());
 
         for (PRDProperty property: notRandomProps) {
-            if (!property.getType().equals("string") && property.getPRDValue().getInit().equals("")) {
+            if (!property.getType().equals("string") && property.getPRDValue().getInit().isEmpty()) {
                 Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] : Property [%s] has no init",
                                                         entity.getName(), property.getPRDName()));
                 return false;
