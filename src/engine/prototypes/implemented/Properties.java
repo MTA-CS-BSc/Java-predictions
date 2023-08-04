@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Properties {
-    protected HashMap<String, PRDProperty> properties = new HashMap<>();
+    protected HashMap<String, PRDProperty> propertiesMap = new HashMap<>();
 
     public Properties(List<PRDProperty> list) {
         for (PRDProperty property : list)
-            properties.put(property.getPRDName(), property);
+            propertiesMap.put(property.getPRDName(), property);
     }
 
-    public HashMap<String, PRDProperty> getProps() { return properties; }
+    public HashMap<String, PRDProperty> getPropsMap() { return propertiesMap; }
 
-    public void setProps(HashMap<String, PRDProperty> value) { properties = value; }
+    public void setPropsMap(HashMap<String, PRDProperty> value) { propertiesMap = value; }
 }

@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Environment {
-    protected HashMap<String, PRDEnvProperty> environmentVariables = new HashMap<>();
+    protected HashMap<String, PRDEnvProperty> envMap = new HashMap<>();
 
     public Environment(List<PRDEnvProperty> list) {
         for (PRDEnvProperty property : list)
-            environmentVariables.put(property.getPRDName(), property);
+            envMap.put(property.getPRDName(), property);
     }
 
-    public HashMap<String, PRDEnvProperty> getEnvVars() { return environmentVariables; }
+    public HashMap<String, PRDEnvProperty> getEnvVars() { return envMap; }
 
-    public void setEnvVars(HashMap<String, PRDEnvProperty> value) { environmentVariables = value; }
+    public void setEnvVars(HashMap<String, PRDEnvProperty> value) { envMap = value; }
 }

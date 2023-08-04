@@ -6,12 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Entities {
-    protected HashMap<String, Entity> entities = new HashMap<>();
+    protected HashMap<String, Entity> entitiesMap = new HashMap<>();
 
     public Entities(List<PRDEntity> list) {
         for (PRDEntity entity : list)
-            entities.put(entity.getName(), new Entity(entity));
+            entitiesMap.put(entity.getName(), new Entity(entity));
     }
-    public HashMap<String, Entity> getEntities() { return entities; }
-    public void setEntities(HashMap<String, Entity> value) { entities = value; }
+    public HashMap<String, Entity> getEntitiesMap() { return entitiesMap; }
+    public void setEntitiesMap(HashMap<String, Entity> value) { entitiesMap = value; }
 }
