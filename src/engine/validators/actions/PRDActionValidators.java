@@ -1,15 +1,12 @@
 package engine.validators.actions;
 
 import engine.logs.Loggers;
-import engine.prototypes.jaxb.PRDAction;
-import engine.prototypes.jaxb.PRDEntity;
-import engine.prototypes.jaxb.PRDProperty;
-import engine.prototypes.jaxb.PRDWorld;
+import engine.modules.Constants;
+import engine.prototypes.jaxb.*;
+import engine.validators.Utils;
 
 import java.util.Arrays;
 import java.util.Objects;
-
-import static jdk.nashorn.internal.runtime.JSType.isNumber;
 
 public class PRDActionValidators {
     public static boolean validateAction(PRDWorld world, PRDAction action) {
@@ -39,7 +36,7 @@ public class PRDActionValidators {
         return Arrays.asList("random", "environment").contains(type);
     }
     private static boolean validateRandomProps(String props) {
-        return isNumber(Arrays.asList(props.split(",")).get(0));
+        return Utils.isDecimal(Arrays.asList(props.split(",")).get(0));
     }
     private static boolean validateEnvProps(PRDWorld world, String props) {
         return world.getPRDEvironment().getPRDEnvProperty()
@@ -56,7 +53,7 @@ public class PRDActionValidators {
 
         return false;
     }
-    private static boolean validateExpression(PRDWorld world, PRDAction action, String expression) {
+    private static boolean validateExpression(PRDWorld world, String entityName, String expression) {
         if (expression.contains("(")) {
             String type = expression.substring(0, expression.indexOf("("));
             String props = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
@@ -64,37 +61,10 @@ public class PRDActionValidators {
             if (isSystemFunction(type)) {
                 return handleSystemFunction(world, props, type);
             }
-
-            else {
-                // Check if name is property of main entity
-                if (validatePropExists(world, action, action.getProperty()))
-                    return true;
-
-                // Free text. Only check for numeric or boolean types
-                else if (type.equalsIgnoreCase("condition"))
-                    return props.equalsIgnoreCase("true") || props.equalsIgnoreCase("false");
-
-                else if (type.equalsIgnoreCase("calculation")
-                            || type.equalsIgnoreCase("increase")
-                                || type.equalsIgnoreCase("decrease")) {
-                    String[] splitted = props.split(",");
-
-                    for (String prop: splitted) {
-                        try {
-                            Float.parseFloat(prop);
-                        }
-
-                        catch (Exception e) {
-                            Loggers.XML_ERRORS_LOGGER.trace(String.format("Wrong props [%s] passed to action",
-                                    prop));
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
-            }
         }
+
+        else if (validatePropExists(world, entityName, expression))
+            return true;
 
         return true;
     }
@@ -109,34 +79,37 @@ public class PRDActionValidators {
         return flag;
     }
     private static boolean validateCalculation(PRDWorld world, PRDAction action) {
-        String multiply_arg1 = action.getPRDMultiply().getArg1();
-        String multiply_arg2 = action.getPRDMultiply().getArg2();
+        PRDMultiply multiply = action.getPRDMultiply();
 
-        String divide_arg1 = action.getPRDDivide().getArg1();
-        String divide_arg2 = action.getPRDDivide().getArg2();
+        if (Objects.isNull(multiply)) {
+            String divide_arg1 = action.getPRDDivide().getArg1();
+            String divide_arg2 = action.getPRDDivide().getArg2();
 
-        return validateExpression(world, action, multiply_arg1) && validateExpression(world, action, multiply_arg2)
-                    && validateExpression(world, action, divide_arg1) && validateExpression(world, action, divide_arg2);
+            return validateExpression(world, action.getEntity(), divide_arg1)
+                    && validateExpression(world, action.getEntity(), divide_arg2);
+        }
+
+        else {
+            String multiply_arg1 = action.getPRDMultiply().getArg1();
+            String multiply_arg2 = action.getPRDMultiply().getArg2();
+
+            return validateExpression(world, action.getEntity(), multiply_arg1)
+                    && validateExpression(world, action.getEntity(), multiply_arg2);
+        }
     }
-    private static boolean validatePropExists(PRDWorld world, PRDAction action, String propName) {
-        PRDEntity foundEntity = world.getPRDEntities().getPRDEntity()
-                .stream()
-                .filter(entity -> entity.getName().equals(action.getEntity()))
-                .findFirst().orElse(null);
+    private static boolean validatePropExists(PRDWorld world, String entityName, String propertyName) {
+        PRDEntity foundEntity = Utils.findEntityByName(world, entityName);
 
         if (Objects.isNull(foundEntity)) {
-            Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] not found", action.getEntity()));
+            Loggers.XML_ERRORS_LOGGER.trace(String.format("Entity [%s] not found", entityName));
             return false;
         }
 
-        PRDProperty props = foundEntity.getPRDProperties().getPRDProperty()
-                .stream()
-                .filter(prop -> prop.getPRDName().equals(propName))
-                .findFirst().orElse(null);
+        PRDProperty props = Utils.findPropertyByName(world, entityName, propertyName);
 
         if (Objects.isNull(props)) {
             Loggers.XML_ERRORS_LOGGER.trace(String.format("Action requested prop name [%s] which does not exist",
-                    propName));
+                    propertyName));
 
             return false;
         }
@@ -148,25 +121,76 @@ public class PRDActionValidators {
     //#region Actions
     private static boolean validateIncreaseOrDecreaseAction(PRDWorld world, PRDAction action) {
         return validateEntityExists(world, action.getEntity())
-                && validatePropExists(world, action, action.getProperty())
-                && validateExpression(world, action, action.getBy());
+                && validatePropExists(world, action.getEntity(), action.getProperty())
+                && validateExpression(world, action.getEntity(), action.getBy());
     }
     private static boolean validateKillAction(PRDWorld world, PRDAction action) {
         return validateEntityExists(world, action.getEntity());
     }
     private static boolean validateSetAction(PRDWorld world, PRDAction action) {
         return validateEntityExists(world, action.getEntity())
-                && validatePropExists(world, action, action.getProperty())
-                && validateExpression(world, action, action.getValue());
+                && validatePropExists(world, action.getEntity(), action.getProperty())
+                && validateExpression(world, action.getEntity(), action.getValue());
     }
     private static boolean validateCalculationAction(PRDWorld world, PRDAction action) {
         return validateEntityExists(world, action.getEntity())
-                && validatePropExists(world, action, action.getResultProp())
+                && validatePropExists(world, action.getEntity(), action.getResultProp())
                 && validateCalculation(world, action);
     }
     private static boolean validateConditionAction(PRDWorld world, PRDAction action) {
+        return validateCondition(world, action.getEntity(), action.getPRDCondition());
+    }
+    public static boolean validateValidOperator(String operator) {
+        return Constants.CONDITION_ALLOWED_OPERATORS.contains(operator);
+    }
+    public static boolean validateTypes(PRDWorld world, String entityName, String propertyName, String value) {
+        PRDProperty property = Utils.findPropertyByName(world, entityName, propertyName);
+
+        if (Objects.isNull(property))
+            return false;
+
+        if (property.getType().equals("decimal")
+            || property.getType().equals("float")) {
+            try {
+                Float.parseFloat(value);
+                return true;
+            } catch (Exception er) {
+                Loggers.XML_ERRORS_LOGGER.debug(String.format("Action mismatch on [%s]:[%s]",
+                        entityName, propertyName));
+                return false;
+            }
+        }
+
+        else if (property.getType().equals("boolean")) {
+            return value.equals("true") || value.equals("false");
+        }
+
         return true;
-        //todo: Finish
+    }
+    private static boolean validateSingleCondition(PRDWorld world, String entityName, PRDCondition condition) {
+        return validatePropExists(world, entityName, condition.getProperty())
+                && validateValidOperator(condition.getOperator())
+                && validateExpression(world, entityName, condition.getValue());
+    }
+    private static boolean validateMultipleCondition(PRDWorld world, String entityName, PRDCondition condition) {
+        for (PRDCondition current : condition.getPRDCondition()) {
+            if (current.getSingularity().equals("single") &&
+                !validateSingleCondition(world, entityName, current))
+                return false;
+
+            else {
+                if (!validateMultipleCondition(world, entityName, current))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+    private static boolean validateCondition(PRDWorld world, String entityName, PRDCondition condition) {
+        if (condition.getSingularity().equals("single"))
+            return validateSingleCondition(world, entityName, condition);
+
+        return validateMultipleCondition(world, entityName, condition);
     }
     //#endregion
 }

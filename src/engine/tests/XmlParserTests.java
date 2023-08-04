@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class XmlParserTests {
-    private final String testFilesPath = "C:\\Users\\mayar\\OneDrive - The Academic College of Tel-Aviv Jaffa - MTA\\Desktop\\predictions\\src\\engine\\tests\\files";
+    private final String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
 
     @Test
     @DisplayName("Parse valid XML")
