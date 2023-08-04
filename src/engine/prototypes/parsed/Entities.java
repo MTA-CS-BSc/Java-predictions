@@ -12,8 +12,6 @@ public class Entities {
         for (PRDEntity entity : list)
             entities.put(entity.getName(), new Entity(entity));
     }
-
     public HashMap<String, Entity> getEntities() { return entities; }
-
     public void setEntities(HashMap<String, Entity> value) { entities = value; }
 }
