@@ -35,7 +35,7 @@ public class ExpressionParser {
     }
     public static Object parseSystemFunctionExpression(Object world, String expression) {
         String functionName = expression.substring(0, expression.indexOf("("));
-        String value = expression.substring(expression.indexOf("("), expression.lastIndexOf(")"));
+        String value = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
         if (functionName.equalsIgnoreCase(SystemFunctions.RANDOM))
             return parseRandomSystemFunctionExpression(value);
