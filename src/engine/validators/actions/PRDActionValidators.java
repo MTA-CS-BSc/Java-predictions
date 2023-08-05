@@ -1,5 +1,6 @@
 package engine.validators.actions;
 
+import engine.logs.Loggers;
 import engine.modules.ActionTypes;
 import engine.modules.ConditionSingularities;
 import engine.modules.ExpressionParser;
@@ -14,9 +15,14 @@ import java.util.Objects;
 
 public class PRDActionValidators {
     public static boolean validateAction(PRDWorld world, PRDAction action) {
+        if (!PRDWorldValidators.validateEntityExists(world, action.getEntity())) {
+            Loggers.XML_ERRORS_LOGGER.info(String.format("On [%s] action: Entity [%s] does not exist",
+                    action.getType(), action.getEntity()));
+
+            return false;
+        }
+
         switch (action.getType()) {
-            case ActionTypes.KILL:
-                return validateKillAction(world, action);
             case ActionTypes.SET:
                 return validateSetAction(world, action);
             case ActionTypes.INCREASE:
@@ -26,6 +32,8 @@ public class PRDActionValidators {
                 return validateCalculationAction(world, action);
             case ActionTypes.CONDITION:
                 return validateConditionAction(world, action, action.getPRDCondition());
+            case ActionTypes.KILL:
+                return true;
         }
 
         return false;
@@ -87,28 +95,45 @@ public class PRDActionValidators {
             return false;
         }
     }
-    public static boolean validateKillAction(PRDWorld world, PRDAction action) {
-        return PRDWorldValidators.validateEntityExists(world, action.getEntity());
-    }
     public static boolean validateIncreaseDecreaseAction(PRDWorld world, PRDAction action) {
-        return validateExpressionIsNumeric(ExpressionParser.parseExpression(world, action.getEntity(), action.getBy()));
+        if (!validateExpressionIsNumeric(ExpressionParser.parseExpression(world, action.getEntity(), action.getBy()))) {
+            Loggers.XML_ERRORS_LOGGER.info(String.format("On [%s] action, by value [%s] is not numeric",
+                                                        action.getType(), action.getBy()));
+            return false;
+        }
+
+        return true;
     }
     public static boolean validateSetAction(PRDWorld world, PRDAction action) {
         PRDProperty property = (PRDProperty) Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
 
-        if (!PRDWorldValidators.validateEntityExists(world, action.getEntity()) || Objects.isNull(property))
+        if (Objects.isNull(property))
             return false;
 
         String propertyType = property.getType();
         Object expression = ExpressionParser.parseExpression(world, action.getEntity(), action.getValue());
 
-        if (PropTypes.NUMERIC_PROPS.contains(propertyType))
-            return validateExpressionIsNumeric(expression);
+        if (PropTypes.NUMERIC_PROPS.contains(propertyType)) {
+            if (!validateExpressionIsNumeric(expression)) {
+                Loggers.XML_ERRORS_LOGGER.info(String.format("On action [%s], value [%s] is not numeric",
+                        action.getType(), action.getValue()));
+                return false;
+            }
 
-        else if (PropTypes.BOOLEAN_PROPS.contains(propertyType))
-            return validateExpressionIsBoolean(expression);
+            return true;
 
-        //else if (propertyType.equals(PropTypes.STRING))
+        }
+
+        else if (PropTypes.BOOLEAN_PROPS.contains(propertyType)) {
+            if (!validateExpressionIsBoolean(expression)) {
+                Loggers.XML_ERRORS_LOGGER.info(String.format("On action [%s], value [%s] is not boolean",
+                        action.getType(), action.getValue()));
+                return false;
+            }
+
+            return true;
+        }
+
         return true;
     }
     public static boolean validateCalculationAction(PRDWorld world, PRDAction action) {
@@ -125,27 +150,49 @@ public class PRDActionValidators {
         Object arg1 = ExpressionParser.parseExpression(world, action.getEntity(), multiply.getArg1());
         Object arg2 = ExpressionParser.parseExpression(world, action.getEntity(), multiply.getArg2());
 
-        return validateExpressionIsNumeric(arg1) && validateExpressionIsNumeric(arg2);
+        if (!validateExpressionIsNumeric(arg1) || !validateExpressionIsNumeric(arg2)) {
+            Loggers.XML_ERRORS_LOGGER.info(String.format("On action [%s], one or more of the properties" +
+                    "has incorrect type", action.getType()));
+
+            return false;
+        }
+
+        return true;
     }
     public static boolean validateSingleCondition(PRDWorld world, PRDAction action,
                                                   PRDCondition condition) {
         PRDProperty property = (PRDProperty) Utils.findPropertyByName(world, condition.getEntity(),
                 condition.getProperty());
 
-        if (!PRDWorldValidators.validateEntityExists(world, condition.getEntity())
-            || Objects.isNull(property) || Objects.isNull(action.getPRDThen()))
+        if (Objects.isNull(property) || Objects.isNull(action.getPRDThen()))
             return false;
 
         String propertyType = property.getType();
         Object parsedValue = ExpressionParser.parseExpression(world, condition.getEntity(), condition.getValue());
 
-        if (PropTypes.NUMERIC_PROPS.contains(propertyType))
-            return validateExpressionIsNumeric(parsedValue);
+        if (PropTypes.NUMERIC_PROPS.contains(propertyType)) {
+            if (!validateExpressionIsNumeric(parsedValue)) {
+                Loggers.XML_ERRORS_LOGGER.info(String.format("On action [%s], condition " +
+                        "value has incorrect type", action.getType()));
 
-        else if (PropTypes.BOOLEAN_PROPS.contains(propertyType))
-            return validateExpressionIsBoolean(parsedValue);
+                return false;
+            }
 
-        //else if (propertyType.equals(PropTypes.STRING))
+            return true;
+        }
+
+
+        else if (PropTypes.BOOLEAN_PROPS.contains(propertyType)) {
+            if (!validateExpressionIsBoolean(parsedValue)) {
+                Loggers.XML_ERRORS_LOGGER.info(String.format("On action [%s], condition " +
+                        "value has incorrect type", action.getType()));
+
+                return false;
+            }
+
+            return true;
+        }
+
         return true;
     }
     public static boolean validateMultipleCondition(PRDWorld world, PRDAction action,
@@ -160,9 +207,6 @@ public class PRDActionValidators {
     }
     public static boolean validateConditionAction(PRDWorld world, PRDAction action,
                                                   PRDCondition condition) {
-        if (!PRDWorldValidators.validateEntityExists(world, action.getEntity()))
-            return false;
-
         if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
             return validateSingleCondition(world, action, condition);
 
