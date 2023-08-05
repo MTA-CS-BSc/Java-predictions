@@ -1,9 +1,11 @@
 package engine.tests;
 
 import engine.logs.Loggers;
+import engine.parsers.XmlParser;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
+import engine.validators.PRDWorldValidators;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -23,9 +25,13 @@ public class SimulationTests {
     @Test
     @DisplayName("Termination reason")
     public void testTerminationReasonOccurs() throws JAXBException, FileNotFoundException {
-        PRDWorld prdWorld = parserTests.validationsForValidXml();
-        World world = new World(prdWorld);
-        SingleSimulation simulation = new SingleSimulation(world);
-        simulation.run();
+        String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
+        PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
+
+        if (PRDWorldValidators.validateWorld(prdWorld)) {
+            World world = new World(prdWorld);
+            SingleSimulation simulation = new SingleSimulation(world);
+            simulation.run();
+        }
     }
 }
