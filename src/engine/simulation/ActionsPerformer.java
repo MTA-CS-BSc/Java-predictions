@@ -7,6 +7,8 @@ import engine.modules.Utils;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDAction;
+import engine.prototypes.jaxb.PRDDivide;
+import engine.prototypes.jaxb.PRDMultiply;
 
 import java.util.Objects;
 
@@ -83,7 +85,57 @@ public class ActionsPerformer {
 
         property.getValue().setCurrentValue(newValue);
     }
+    public String getCalculationResult(World world, PRDAction action) {
+        PRDMultiply multiply = action.getPRDMultiply();
+        PRDDivide divide = action.getPRDDivide();
+
+        String arg1 = Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1();
+        String arg2 = Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2();
+
+        Object parsedArg1 = ExpressionParser.parseExpression(world, action, arg1);
+        Object parsedArg2 = ExpressionParser.parseExpression(world, action, arg1);
+
+        if (Objects.isNull(parsedArg1) || Objects.isNull(parsedArg2))
+            return "";
+
+        float arg1_float = 0.0f;
+        float arg2_float = 1.0f;
+
+        if (parsedArg1.getClass() == Property.class)
+            arg1_float = Float.parseFloat(((Property) parsedArg1).getValue().getCurrentValue());
+
+        else if (parsedArg1.getClass() == Integer.class ||
+                    parsedArg1.getClass() == Float.class)
+            arg1_float = (float)parsedArg1;
+
+        if (parsedArg2.getClass() == Property.class)
+            arg2_float = Float.parseFloat(((Property) parsedArg2).getValue().getCurrentValue());
+
+        else if (parsedArg2.getClass() == Integer.class ||
+                parsedArg2.getClass() == Float.class)
+            arg2_float = (float)parsedArg2;
+
+        return Objects.isNull(multiply) ? String.valueOf(arg1_float / arg2_float)
+                : String.valueOf(arg1_float * arg2_float);
+    }
     public void handleCalculationAction(World world, PRDAction action) {
-        System.out.println("Not impleneted");
+        Property resultProp = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());
+
+        if (Objects.isNull(resultProp))
+            return;
+
+        resultProp.setStableTime(0);
+        String calculationResult = "";
+
+        calculationResult = getCalculationResult(world, action);
+
+
+        Loggers.SIMULATION_LOGGER.info(String.format("Changing prop [%s] on entity [%s], [%s]->[%s]",
+                action.getResultProp(), action.getEntity(),
+                resultProp.getValue().getCurrentValue(),
+                calculationResult));
+
+        resultProp.getValue().setCurrentValue(calculationResult);
+
     }
 }
