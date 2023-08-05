@@ -17,6 +17,7 @@ public class SingleSimulation {
     World world;
     long ticks = 0;
     UUID uuid;
+    ActionsPerformer performer;
 
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
@@ -44,7 +45,7 @@ public class SingleSimulation {
         return rule.getPRDActivation().getProbability() >= randomProbability
                 && rule.getPRDActivation().getTicks() % ticks == 0;
     }
-    public HashMap<String, PRDRule> getRelevantRules() {
+    public HashMap<String, PRDRule> getRulesToApply() {
         HashMap<String, PRDRule> allRules = world.getRules().getRulesMap();
         List<String> relevantKeys = allRules.keySet()
                                     .stream()
@@ -59,18 +60,12 @@ public class SingleSimulation {
 
         return returned;
     }
-    public void handleKillAction(PRDAction action) {
-        Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
-        world.getEntities().getEntitiesMap().remove(action.getEntity());
-    }
-
     public void fireAction(PRDAction action) {
         String type = action.getType();
 
         if (type.equalsIgnoreCase(ActionTypes.INCREASE)
                 || type.equalsIgnoreCase(ActionTypes.DECREASE))
-            Loggers.ENGINE_LOGGER.warning("Not implemented");
-           // handleIncrementDecrementAction(action);
+           performer.handleIncrementDecrementAction(world, action);
 
         else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
             Loggers.ENGINE_LOGGER.warning("Not implemented");
@@ -81,21 +76,20 @@ public class SingleSimulation {
             //handleSetAction(action);
 
         else if (type.equalsIgnoreCase(ActionTypes.KILL))
-            handleKillAction(action);
+            performer.handleKillAction(world, action);
 
         else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
             Loggers.ENGINE_LOGGER.warning("Not implemented");
             //handleConditionAction(action);
     }
     public void handleSingleTick() {
-        HashMap<String, PRDRule> rulesToApply = getRelevantRules();
+        HashMap<String, PRDRule> rulesToApply = getRulesToApply();
 
         rulesToApply.forEach((ruleName, rule) -> {
             List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
             actionsToPerform.forEach(this::fireAction);
         });
     }
-
     public void run() {
         if (Objects.isNull(world)) {
             Loggers.ENGINE_LOGGER.info("No XML loaded");
