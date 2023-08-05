@@ -25,29 +25,7 @@ public class World {
     public Entities getEntities() { return entities; }
     public PRDTermination getTermination() { return termination; }
     public Rules getRules() { return rules; }
-    public void initAllRandomVars() {
-        entities.getEntitiesMap().values().forEach(entity -> {
-            entity.getProperties().getPropsMap().values().forEach(property -> {
-                PRDRange range = property.getRange();
-
-                if (property.getValue().isRandomInitialize())
-                    setPropsInit(property, range);
-
-                property.getValue().setCurrentValue(property.getValue().getInit());
-            });
-        });
-
-        environment.getEnvVars().values().forEach(property -> {
-            if (!property.getValue().isRandomInitialize()
-            && Objects.isNull(property.getValue().getInit()))
-                property.getValue().setRandomInitialize(true);
-
-            PRDRange range = property.getRange();
-            setPropsInit(property, range);
-            property.getValue().setCurrentValue(property.getValue().getInit());
-        });
-    }
-    private void setPropsInit(Property property, PRDRange range) {
+    private void setPropRandomInit(Property property, PRDRange range) {
         if (property.getType().equals(PropTypes.BOOLEAN))
             property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomBoolean()));
 
@@ -59,5 +37,27 @@ public class World {
 
         else if (property.getType().equals(PropTypes.STRING))
             property.getValue().setInit(RandomGenerator.randomizeRandomString(Constants.MAX_RANDOM_STRING_LENGTH));
+    }
+    public void initAllRandomVars() {
+        entities.getEntitiesMap().values().forEach(entity -> {
+            entity.getProperties().getPropsMap().values().forEach(property -> {
+                PRDRange range = property.getRange();
+
+                if (property.getValue().isRandomInitialize())
+                    setPropRandomInit(property, range);
+
+                property.getValue().setCurrentValue(property.getValue().getInit());
+            });
+        });
+
+        environment.getEnvVars().values().forEach(property -> {
+            if (!property.getValue().isRandomInitialize()
+                    && Objects.isNull(property.getValue().getInit()))
+                property.getValue().setRandomInitialize(true);
+
+            PRDRange range = property.getRange();
+            setPropRandomInit(property, range);
+            property.getValue().setCurrentValue(property.getValue().getInit());
+        });
     }
 }
