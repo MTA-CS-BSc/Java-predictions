@@ -18,6 +18,7 @@ public class Property {
             type = ((PRDProperty) property).getType();
             value = ((PRDProperty) property).getPRDValue();
             range = ((PRDProperty) property).getPRDRange();
+            value.setCurrentValue(value.getInit());
         }
 
         else if (property.getClass() == PRDEnvProperty.class) {
