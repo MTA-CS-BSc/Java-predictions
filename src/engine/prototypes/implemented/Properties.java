@@ -12,5 +12,4 @@ public class Properties {
             propertiesMap.put(property.getPRDName(), new Property(property));
     }
     public HashMap<String, Property> getPropsMap() { return propertiesMap; }
-    public void setPropsMap(HashMap<String, Property> value) { propertiesMap = value; }
 }

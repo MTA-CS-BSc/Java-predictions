@@ -12,5 +12,4 @@ public class Entities {
             entitiesMap.put(entity.getName(), new Entity(entity));
     }
     public HashMap<String, Entity> getEntitiesMap() { return entitiesMap; }
-    public void setEntitiesMap(HashMap<String, Entity> value) { entitiesMap = value; }
 }

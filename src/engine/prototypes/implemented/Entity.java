@@ -14,5 +14,4 @@ public class Entity {
     }
     public Properties getProperties() { return properties; }
     public String getName() { return name; }
-    public int getPopulation() { return population; }
 }

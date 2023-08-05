@@ -12,5 +12,4 @@ public class Rules {
             rulesMap.put(rule.getName(), rule);
     }
     public HashMap<String, PRDRule> getRulesMap() { return rulesMap; }
-    public void setRulesMap(HashMap<String, PRDRule> value) { rulesMap = value; }
 }

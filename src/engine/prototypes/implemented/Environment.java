@@ -12,5 +12,4 @@ public class Environment {
             envMap.put(property.getPRDName(), new Property(property));
     }
     public HashMap<String, Property> getEnvVars() { return envMap; }
-    public void setEnvVars(HashMap<String, Property> value) { envMap = value; }
 }
