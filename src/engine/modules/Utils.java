@@ -4,6 +4,8 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDWorld;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 public class Utils {
@@ -49,5 +51,9 @@ public class Utils {
         catch (Exception e) {
             return false;
         }
+    }
+
+    public static String formatDate(Date date) {
+        return new SimpleDateFormat("dd-MM-yyyy | hh.mm.ss").format(date);
     }
 }
