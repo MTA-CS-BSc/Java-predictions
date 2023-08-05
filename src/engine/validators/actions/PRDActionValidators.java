@@ -87,7 +87,6 @@ public class PRDActionValidators {
             return false;
         }
     }
-
     public static boolean validateKillAction(PRDWorld world, PRDAction action) {
         return PRDWorldValidators.validateEntityExists(world, action.getEntity());
     }
