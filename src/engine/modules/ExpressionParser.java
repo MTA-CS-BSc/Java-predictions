@@ -3,8 +3,8 @@ package engine.modules;
 import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.World;
 import engine.validators.Utils;
-import engine.validators.actions.PRDActionValidators;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class ExpressionParser {
@@ -44,13 +44,17 @@ public class ExpressionParser {
 
         return null;
     }
+    public static boolean isSystemFunction(String type) {
+        return Arrays.asList(SystemFunctions.ENVIRONMENT, SystemFunctions.RANDOM).contains(type);
+    }
     public static Object parseExpression(World world, String entityName, String expression) {
         Entity entity = (Entity)Utils.findEntityByName(world, entityName);
 
         if (Objects.isNull(entity))
             return null;
 
-        if (PRDActionValidators.isSystemFunction(expression.substring(0, expression.indexOf("("))))
+        if (expression.contains("(")
+                && isSystemFunction(expression.substring(0, expression.indexOf("("))))
             return parseSystemFunctionExpression(world, expression);
 
         else if (entity.getProperties().getPropsMap().containsKey(expression))
