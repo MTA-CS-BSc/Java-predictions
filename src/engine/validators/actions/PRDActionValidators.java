@@ -33,6 +33,8 @@ public class PRDActionValidators {
             case ActionTypes.CONDITION:
                 return validateConditionAction(world, action, action.getPRDCondition());
             case ActionTypes.KILL:
+            case ActionTypes.REPLACE:
+            case ActionTypes.PROXIMITY:
                 return true;
         }
 
