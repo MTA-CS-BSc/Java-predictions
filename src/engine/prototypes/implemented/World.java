@@ -13,6 +13,7 @@ public class World {
         rules = new Rules(world.getPRDRules().getPRDRule());
         entities = new Entities(world.getPRDEntities().getPRDEntity());
         environment = new Environment(world.getPRDEvironment().getPRDEnvProperty());
+        termination = world.getPRDTermination();
     }
 
     public Environment getEnvironment() { return environment; }
