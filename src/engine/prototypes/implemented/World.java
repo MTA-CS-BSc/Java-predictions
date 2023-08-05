@@ -30,19 +30,8 @@ public class World {
             entity.getProperties().getPropsMap().values().forEach(property -> {
                 PRDRange range = property.getRange();
 
-                if (property.getValue().isRandomInitialize()) {
-                    if (property.getType().equals(PropTypes.BOOLEAN))
-                        property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomBoolean()));
-
-                    else if (property.getType().equals(PropTypes.DECIMAL))
-                        property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomNumber((int)range.getFrom(), (int)range.getTo())));
-
-                    else if (property.getType().equals(PropTypes.FLOAT))
-                        property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat((float)range.getFrom(), (float)range.getTo())));
-
-                    else if (property.getType().equals(PropTypes.STRING))
-                        property.getValue().setInit(RandomGenerator.randomizeRandomString(Constants.MAX_RANDOM_STRING_LENGTH));
-                }
+                if (property.getValue().isRandomInitialize())
+                    setPropsInit(property, range);
 
                 property.getValue().setCurrentValue(property.getValue().getInit());
             });
@@ -55,19 +44,21 @@ public class World {
 
             PRDRange range = property.getRange();
 
-            if (property.getType().equals(PropTypes.BOOLEAN))
-                property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomBoolean()));
-
-            else if (property.getType().equals(PropTypes.DECIMAL))
-                property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomNumber((int)range.getFrom(), (int)range.getTo())));
-
-            else if (property.getType().equals(PropTypes.FLOAT))
-                property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat((float)range.getFrom(), (float)range.getTo())));
-
-            else if (property.getType().equals(PropTypes.STRING))
-                property.getValue().setInit(RandomGenerator.randomizeRandomString(Constants.MAX_RANDOM_STRING_LENGTH));
-
+            setPropsInit(property, range);
             property.getValue().setCurrentValue(property.getValue().getInit());
         });
+    }
+    private void setPropsInit(Property property, PRDRange range) {
+        if (property.getType().equals(PropTypes.BOOLEAN))
+            property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomBoolean()));
+
+        else if (property.getType().equals(PropTypes.DECIMAL))
+            property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomNumber((int)range.getFrom(), (int)range.getTo())));
+
+        else if (property.getType().equals(PropTypes.FLOAT))
+            property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat((float)range.getFrom(), (float)range.getTo())));
+
+        else if (property.getType().equals(PropTypes.STRING))
+            property.getValue().setInit(RandomGenerator.randomizeRandomString(Constants.MAX_RANDOM_STRING_LENGTH));
     }
 }
