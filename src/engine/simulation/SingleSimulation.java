@@ -24,6 +24,13 @@ public class SingleSimulation {
         performer = new ActionsPerformer();
         world = _world;
     }
+    public void updateStableTimeToAllProps() {
+        world.getEntities().getEntitiesMap().values().forEach(entity -> {
+            entity.getProperties().getPropsMap().values().forEach(property -> {
+                property.setStableTime(property.getStableTime() + 1);
+            });
+        });
+    }
     public String isSimulationFinished(long startTimeMillis) {
         PRDTermination termination = world.getTermination();
 
@@ -88,13 +95,6 @@ public class SingleSimulation {
             actionsToPerform.forEach(this::fireAction);
         });
     }
-    public void updateStableTimeToAllProps() {
-        world.getEntities().getEntitiesMap().values().forEach(entity -> {
-            entity.getProperties().getPropsMap().values().forEach(property -> {
-                property.setStableTime(property.getStableTime() + 1);
-            });
-        });
-    }
     public String run() {
         if (Objects.isNull(world)) {
             Loggers.ENGINE_LOGGER.info("No XML loaded");
@@ -102,7 +102,6 @@ public class SingleSimulation {
         }
 
         world.initAllRandomVars();
-
         long startTimeMillis = System.currentTimeMillis();
 
         while (Objects.isNull(isSimulationFinished(startTimeMillis))) {
