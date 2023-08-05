@@ -18,7 +18,6 @@ import java.util.Objects;
 public class ExpressionParser {
     public static Object parseRandomSystemFunctionExpression(String value) {
         try {
-            //TODO: Add range check
             return RandomGenerator.randomizeRandomNumber(0, Integer.parseInt(value));
         } catch (Exception e) {
             return null;
