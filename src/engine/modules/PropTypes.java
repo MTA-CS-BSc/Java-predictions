@@ -12,4 +12,5 @@ public class PropTypes {
 
     public static final List<String> NUMERIC_PROPS = Arrays.asList(DECIMAL, FLOAT);
     public static final List<String> BOOLEAN_PROPS = Collections.singletonList(BOOLEAN);
+    public static final List<String> STRING_PROPS = Collections.singletonList(STRING);
 }
