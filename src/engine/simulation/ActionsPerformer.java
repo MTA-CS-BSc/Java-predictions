@@ -18,7 +18,7 @@ public class ActionsPerformer {
         String newValue = "";
         boolean isDecimal = Utils.isDecimal(by.toString());
 
-        if (by.getClass().isPrimitive() || isDecimal) {
+        if (isDecimal) {
             if (action.getType().equals(ActionTypes.INCREASE))
                 newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) + Float.parseFloat(by.toString()));
 
@@ -38,19 +38,9 @@ public class ActionsPerformer {
 
         return newValue;
     }
-    public String getNewValueForSet(PRDAction action, Object value) {
-        String newValue = "";
-
-        if (value.getClass().isPrimitive())
-            newValue = value.toString();
-
-        else if (value.getClass() == Property.class)
-            newValue = ((Property)value).getValue().getCurrentValue();
-
-        else
-            newValue = ((String)value);
-
-        return newValue;
+    public String getNewValueForSet(Object value) {
+        return value.getClass() == Property.class ? ((Property)value).getValue().getCurrentValue() :
+                value.toString();
     }
     public void handleIncrementDecrementAction(World world, PRDAction action) {
         Property property = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
@@ -63,7 +53,7 @@ public class ActionsPerformer {
         String newValue = getNewValueForIncrementDecrement(action, property, by);
 
         Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
-                "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
+                " value from [%s] to [%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
 
         property.getValue().setCurrentValue(newValue);
     }
@@ -79,7 +69,7 @@ public class ActionsPerformer {
             return;
 
         property.setStableTime(0);
-        String newValue = getNewValueForSet(action, value);
+        String newValue = getNewValueForSet(value);
 
         Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
                 "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
@@ -94,7 +84,7 @@ public class ActionsPerformer {
         String arg2 = Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2();
 
         Object parsedArg1 = ExpressionParser.parseExpression(world, action, arg1);
-        Object parsedArg2 = ExpressionParser.parseExpression(world, action, arg1);
+        Object parsedArg2 = ExpressionParser.parseExpression(world, action, arg2);
 
         if (Objects.isNull(parsedArg1) || Objects.isNull(parsedArg2))
             return "";
@@ -135,5 +125,8 @@ public class ActionsPerformer {
 
         resultProp.getValue().setCurrentValue(calculationResult);
 
+    }
+    public void handleConditionAction(World world, PRDAction action) {
+        // Not implemented
     }
 }
