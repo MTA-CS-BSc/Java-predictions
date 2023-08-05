@@ -1,6 +1,7 @@
 package engine.validators.entities;
 
 import engine.logs.Loggers;
+import engine.modules.BoolPropValues;
 import engine.modules.PropTypes;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
@@ -101,9 +102,8 @@ public class PRDEntityValidators {
             }
         }
 
-        else if (property.getType().equals(PropTypes.BOOLEAN)) {
-            return init.equals("true") || init.equals("false");
-        }
+        else if (property.getType().equals(PropTypes.BOOLEAN))
+            return init.equals(BoolPropValues.TRUE) || init.equals(BoolPropValues.FALSE);
 
         return true;
     }
