@@ -1,15 +1,13 @@
 package engine.simulation;
 
 import engine.logs.Loggers;
+import engine.logs.SingleSimulationLog;
 import engine.modules.RandomGenerator;
 import engine.consts.TerminationReasons;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SingleSimulation {
@@ -17,12 +15,14 @@ public class SingleSimulation {
     long ticks = 0;
     UUID uuid;
     ActionsPerformer performer;
+    SingleSimulationLog log;
 
     //TODO: Add simulation history
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
         performer = new ActionsPerformer();
         world = _world;
+        log = new SingleSimulationLog(uuid, world);
     }
     public void updateStableTimeToAllProps() {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
@@ -83,6 +83,8 @@ public class SingleSimulation {
         }
 
         world.initAllRandomVars();
+        log.setStart(new Date());
+
         long startTimeMillis = System.currentTimeMillis();
 
         while (Objects.isNull(isSimulationFinished(startTimeMillis))) {
@@ -94,6 +96,8 @@ public class SingleSimulation {
         Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
                                             uuid.toString(), isSimulationFinished(startTimeMillis)));
 
+        log.setFinished(new Date());
+        log.setFinishWorldState(world);
         return uuid.toString();
     }
 }
