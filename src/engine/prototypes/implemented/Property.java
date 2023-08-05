@@ -26,4 +26,9 @@ public class Property {
             value = new PRDValue();
         }
     }
+    public String getName() { return name; }
+    public String getType() { return type; }
+    public PRDRange getRange() { return range; }
+    public PRDValue getValue() { return value; }
+
 }
