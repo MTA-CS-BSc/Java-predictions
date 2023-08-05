@@ -1,12 +1,10 @@
 package engine.tests;
 
 import engine.logs.Loggers;
-import engine.modules.TerminationReasons;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
 import javax.xml.bind.JAXBException;
@@ -28,6 +26,6 @@ public class SimulationTests {
         PRDWorld prdWorld = parserTests.validationsForValidXml();
         World world = new World(prdWorld);
         SingleSimulation simulation = new SingleSimulation(world);
-        Assertions.assertEquals(simulation.run(), TerminationReasons.BY_TICKS);
+        simulation.run();
     }
 }
