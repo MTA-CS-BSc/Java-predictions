@@ -78,8 +78,7 @@ public class SingleSimulation {
             performer.handleKillAction(world, action);
 
         else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
-            Loggers.ENGINE_LOGGER.warning("Not implemented");
-            //handleConditionAction(action);
+            performer.handleConditionAction(world, action);
     }
     public void handleSingleTick() {
         HashMap<String, PRDRule> rulesToApply = getRulesToApply();
@@ -89,15 +88,13 @@ public class SingleSimulation {
             actionsToPerform.forEach(this::fireAction);
         });
     }
-
-    public void updateStabletTimeToAllProps() {
+    public void updateStableTimeToAllProps() {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
             entity.getProperties().getPropsMap().values().forEach(property -> {
                 property.setStableTime(property.getStableTime() + 1);
             });
         });
     }
-
     public String run() {
         if (Objects.isNull(world)) {
             Loggers.ENGINE_LOGGER.info("No XML loaded");
@@ -111,7 +108,7 @@ public class SingleSimulation {
         while (Objects.isNull(isSimulationFinished(startTimeMillis))) {
             handleSingleTick();
             ticks += 1;
-            updateStabletTimeToAllProps();
+            updateStableTimeToAllProps();
         }
 
         Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
