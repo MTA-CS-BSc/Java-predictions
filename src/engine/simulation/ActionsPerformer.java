@@ -1,20 +1,36 @@
 package engine.simulation;
 
 import engine.logs.Loggers;
-import engine.modules.ActionTypes;
-import engine.modules.PropTypes;
+import engine.modules.*;
 import engine.parsers.ExpressionParser;
-import engine.modules.Utils;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
-import engine.prototypes.jaxb.PRDAction;
-import engine.prototypes.jaxb.PRDDivide;
-import engine.prototypes.jaxb.PRDMultiply;
+import engine.prototypes.jaxb.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ActionsPerformer {
+    public void fireAction(World world, PRDAction action) {
+        String type = action.getType();
 
+        if (type.equalsIgnoreCase(ActionTypes.INCREASE)
+                || type.equalsIgnoreCase(ActionTypes.DECREASE))
+            handleIncrementDecrementAction(world, action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
+            handleCalculationAction(world, action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.SET))
+            handleSetAction(world, action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.KILL))
+            handleKillAction(world, action);
+
+        else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
+            handleConditionAction(world, action);
+    }
     public boolean validateNewValueInRange(Property property, String newValue) {
         if (!Objects.isNull(property.getRange())) {
             if (Float.parseFloat(newValue) > property.getRange().getTo()
@@ -53,6 +69,47 @@ public class ActionsPerformer {
         return String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(parsedArg1) / Float.parseFloat(parsedArg2)
                 : Float.parseFloat(parsedArg1) * Float.parseFloat(parsedArg2));
     }
+    private boolean evaluateSingleCondition(World world, PRDAction action, PRDCondition condition) {
+        Property property = (Property)Utils.findPropertyByName(world, condition.getEntity(), condition.getProperty());
+        String value = ExpressionParser.evaluateExpression(world, action, condition.getValue());
+        String operator = condition.getOperator();
+        boolean isNumeric = Utils.isDecimal(value);
+
+        switch (operator) {
+            case Operators.BT:
+                if (isNumeric)
+                    return Float.parseFloat(property.getValue().getCurrentValue()) > Float.parseFloat(value);
+                break;
+            case Operators.LT:
+                if (isNumeric)
+                    return Float.parseFloat(property.getValue().getCurrentValue()) < Float.parseFloat(value);
+                break;
+            case Operators.EQUALS:
+                return value.equals(property.getValue().getCurrentValue());
+            case Operators.NOT_EQUALS:
+                return !value.equals(property.getValue().getCurrentValue());
+        }
+
+        return true;
+    }
+    private boolean evaluateMultipleCondition(World world, PRDAction action, PRDCondition condition) {
+        List<PRDCondition> allConditions = condition.getPRDCondition();
+        List<Boolean> allConditionsResults = new ArrayList<>();
+        String logicalOperator = condition.getLogical();
+
+        allConditions.forEach(current -> allConditionsResults.add(evaluateCondition(world, action, current)));
+
+        return allConditionsResults
+                .stream()
+                .reduce(allConditionsResults.get(0), (item1, item2) ->
+                        logicalOperator.equals(ConditionLogicalOperators.OR) ? item1 || item2 : item1 && item2);
+    }
+    private boolean evaluateCondition(World world, PRDAction action, PRDCondition condition) {
+        if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
+            return evaluateSingleCondition(world, action, condition);
+
+        return evaluateMultipleCondition(world, action, condition);
+    }
     public void handleCalculationAction(World world, PRDAction action) {
         Property resultProp = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());
 
@@ -73,7 +130,17 @@ public class ActionsPerformer {
 
     }
     public void handleConditionAction(World world, PRDAction action) {
-        // TODO: Implement
+        PRDCondition condition = action.getPRDCondition();
+        List<PRDAction> thenActions = action.getPRDThen().getPRDAction();
+        PRDElse prdElse = action.getPRDElse();
+
+        boolean conditionResult = evaluateCondition(world, action, condition);
+
+        if (conditionResult)
+            thenActions.forEach(actToPerform -> fireAction(world, actToPerform));
+
+        else if (!Objects.isNull(prdElse))
+            prdElse.getPRDAction().forEach(actToPerform -> fireAction(world, actToPerform));
     }
     public void handleIncrementDecrementAction(World world, PRDAction action) {
         Property property = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getProperty());

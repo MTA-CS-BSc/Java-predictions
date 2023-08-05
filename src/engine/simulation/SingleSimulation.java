@@ -1,7 +1,6 @@
 package engine.simulation;
 
 import engine.logs.Loggers;
-import engine.modules.ActionTypes;
 import engine.modules.RandomGenerator;
 import engine.modules.TerminationReasons;
 import engine.prototypes.implemented.World;
@@ -69,31 +68,12 @@ public class SingleSimulation {
 
         return returned;
     }
-    public void fireAction(PRDAction action) {
-        String type = action.getType();
-
-        if (type.equalsIgnoreCase(ActionTypes.INCREASE)
-                || type.equalsIgnoreCase(ActionTypes.DECREASE))
-           performer.handleIncrementDecrementAction(world, action);
-
-        else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
-            performer.handleCalculationAction(world, action);
-
-        else if (type.equalsIgnoreCase(ActionTypes.SET))
-            performer.handleSetAction(world, action);
-
-        else if (type.equalsIgnoreCase(ActionTypes.KILL))
-            performer.handleKillAction(world, action);
-
-        else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
-            performer.handleConditionAction(world, action);
-    }
     public void handleSingleTick() {
         HashMap<String, PRDRule> rulesToApply = getRulesToApply();
 
         rulesToApply.forEach((ruleName, rule) -> {
             List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
-            actionsToPerform.forEach(this::fireAction);
+            actionsToPerform.forEach(action -> performer.fireAction(world, action));
         });
     }
     public String run() {
