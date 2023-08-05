@@ -3,7 +3,7 @@ package engine.modules;
 import java.util.Random;
 
 public class RandomGenerator {
-    public static int randomizeRandomNumber(int max) {
+    public static Integer randomizeRandomNumber(int max) {
         return new Random().nextInt(max);
     }
 
