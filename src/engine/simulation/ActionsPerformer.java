@@ -1,5 +1,6 @@
 package engine.simulation;
 
+import engine.consts.*;
 import engine.logs.Loggers;
 import engine.modules.*;
 import engine.parsers.ExpressionParser;

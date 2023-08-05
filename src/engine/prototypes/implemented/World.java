@@ -1,7 +1,7 @@
 package engine.prototypes.implemented;
 
-import engine.modules.Constants;
-import engine.modules.PropTypes;
+import engine.consts.Constants;
+import engine.consts.PropTypes;
 import engine.modules.RandomGenerator;
 import engine.prototypes.jaxb.PRDRange;
 import engine.prototypes.jaxb.PRDTermination;

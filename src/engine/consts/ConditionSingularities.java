@@ -1,4 +1,4 @@
-package engine.modules;
+package engine.consts;
 
 public class ConditionSingularities {
     public static final String SINGLE = "single";

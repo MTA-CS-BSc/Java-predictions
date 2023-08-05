@@ -1,7 +1,7 @@
 package engine.prototypes.implemented;
 
-import engine.modules.Constants;
-import engine.modules.PropTypes;
+import engine.consts.Constants;
+import engine.consts.PropTypes;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;

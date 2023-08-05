@@ -1,9 +1,9 @@
 package engine.parsers;
 
 import engine.logs.Loggers;
-import engine.modules.PropTypes;
+import engine.consts.PropTypes;
 import engine.modules.RandomGenerator;
-import engine.modules.SystemFunctions;
+import engine.consts.SystemFunctions;
 import engine.modules.Utils;
 import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;

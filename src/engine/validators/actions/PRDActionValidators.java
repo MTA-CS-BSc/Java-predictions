@@ -1,5 +1,9 @@
 package engine.validators.actions;
 
+import engine.consts.ActionTypes;
+import engine.consts.BoolPropValues;
+import engine.consts.ConditionSingularities;
+import engine.consts.PropTypes;
 import engine.logs.Loggers;
 import engine.modules.*;
 import engine.parsers.ExpressionParser;

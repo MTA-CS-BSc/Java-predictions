@@ -1,8 +1,8 @@
 package engine.validators.entities;
 
 import engine.logs.Loggers;
-import engine.modules.BoolPropValues;
-import engine.modules.PropTypes;
+import engine.consts.BoolPropValues;
+import engine.consts.PropTypes;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;

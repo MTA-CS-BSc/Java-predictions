@@ -1,7 +1,7 @@
 package engine.validators;
 
 import engine.logs.Loggers;
-import engine.modules.Constants;
+import engine.consts.Constants;
 
 import java.util.List;
 

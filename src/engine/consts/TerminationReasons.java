@@ -1,4 +1,4 @@
-package engine.modules;
+package engine.consts;
 
 public class TerminationReasons {
     public static final String BY_TICKS = "ByTicks";

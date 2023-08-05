@@ -2,7 +2,7 @@ package engine.simulation;
 
 import engine.logs.Loggers;
 import engine.modules.RandomGenerator;
-import engine.modules.TerminationReasons;
+import engine.consts.TerminationReasons;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.*;
 
