@@ -129,7 +129,6 @@ public class ActionsPerformer {
 
         calculationResult = getCalculationResult(world, action);
 
-
         Loggers.SIMULATION_LOGGER.info(String.format("Changing prop [%s] on entity [%s], [%s]->[%s]",
                 action.getResultProp(), action.getEntity(),
                 resultProp.getValue().getCurrentValue(),
