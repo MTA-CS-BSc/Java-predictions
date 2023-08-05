@@ -90,10 +90,10 @@ public class SingleSimulation {
             actionsToPerform.forEach(this::fireAction);
         });
     }
-    public void run() {
+    public String run() {
         if (Objects.isNull(world)) {
             Loggers.ENGINE_LOGGER.info("No XML loaded");
-            return;
+            return "";
         }
 
         long startTimeMillis = System.currentTimeMillis();
@@ -105,5 +105,7 @@ public class SingleSimulation {
 
         Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
                                             uuid.toString(), isSimulationFinished(startTimeMillis)));
+
+        return isSimulationFinished(startTimeMillis);
     }
 }
