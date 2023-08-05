@@ -80,7 +80,8 @@ public class PRDActionValidators {
         else if (parsedExpression.getClass() == Property.class)
             type = ((Property)parsedExpression).getType();
 
-        else if (parsedExpression.getClass() == Integer.class)
+        else if (parsedExpression.getClass() == Integer.class
+                    || parsedExpression.getClass() == Float.class)
             return true;
 
         if (!type.isEmpty())
@@ -96,7 +97,7 @@ public class PRDActionValidators {
         }
     }
     public static boolean validateIncreaseDecreaseAction(PRDWorld world, PRDAction action) {
-        if (!validateExpressionIsNumeric(ExpressionParser.parseExpression(world, action.getEntity(), action.getBy()))) {
+        if (!validateExpressionIsNumeric(ExpressionParser.parseExpression(world, action, action.getBy()))) {
             Loggers.XML_ERRORS_LOGGER.info(String.format("On [%s] action, by value [%s] is not numeric",
                                                         action.getType(), action.getBy()));
             return false;
@@ -111,7 +112,7 @@ public class PRDActionValidators {
             return false;
 
         String propertyType = property.getType();
-        Object expression = ExpressionParser.parseExpression(world, action.getEntity(), action.getValue());
+        Object expression = ExpressionParser.parseExpression(world, action, action.getValue());
 
         if (PropTypes.NUMERIC_PROPS.contains(propertyType)) {
             if (!validateExpressionIsNumeric(expression)) {
@@ -141,14 +142,14 @@ public class PRDActionValidators {
         PRDDivide divide = action.getPRDDivide();
 
         if (Objects.isNull(multiply)) {
-            Object arg1 = ExpressionParser.parseExpression(world, action.getEntity(), divide.getArg1());
-            Object arg2 = ExpressionParser.parseExpression(world, action.getEntity(), divide.getArg2());
+            Object arg1 = ExpressionParser.parseExpression(world, action, divide.getArg1());
+            Object arg2 = ExpressionParser.parseExpression(world, action, divide.getArg2());
 
             return validateExpressionIsNumeric(arg1) && validateExpressionIsNumeric(arg2);
         }
 
-        Object arg1 = ExpressionParser.parseExpression(world, action.getEntity(), multiply.getArg1());
-        Object arg2 = ExpressionParser.parseExpression(world, action.getEntity(), multiply.getArg2());
+        Object arg1 = ExpressionParser.parseExpression(world, action, multiply.getArg1());
+        Object arg2 = ExpressionParser.parseExpression(world, action, multiply.getArg2());
 
         if (!validateExpressionIsNumeric(arg1) || !validateExpressionIsNumeric(arg2)) {
             Loggers.XML_ERRORS_LOGGER.info(String.format("On action [%s], one or more of the properties" +
@@ -168,7 +169,7 @@ public class PRDActionValidators {
             return false;
 
         String propertyType = property.getType();
-        Object parsedValue = ExpressionParser.parseExpression(world, condition.getEntity(), condition.getValue());
+        Object parsedValue = ExpressionParser.parseExpression(world, action, condition.getValue());
 
         if (PropTypes.NUMERIC_PROPS.contains(propertyType)) {
             if (!validateExpressionIsNumeric(parsedValue)) {
