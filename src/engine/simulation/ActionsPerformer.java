@@ -2,7 +2,7 @@ package engine.simulation;
 
 import engine.logs.Loggers;
 import engine.modules.ActionTypes;
-import engine.modules.ExpressionParser;
+import engine.parsers.ExpressionParser;
 import engine.modules.Utils;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;

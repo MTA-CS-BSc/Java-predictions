@@ -3,7 +3,7 @@ package engine.validators.actions;
 import engine.logs.Loggers;
 import engine.modules.ActionTypes;
 import engine.modules.ConditionSingularities;
-import engine.modules.ExpressionParser;
+import engine.parsers.ExpressionParser;
 import engine.modules.PropTypes;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.jaxb.*;
