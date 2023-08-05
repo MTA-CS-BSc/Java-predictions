@@ -15,8 +15,6 @@ import java.io.IOException;
 import java.util.logging.FileHandler;
 
 public class SimulationTests {
-    XmlParserTests parserTests = new XmlParserTests();
-
     public SimulationTests() throws IOException {
         FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/simulation.log");
         Loggers.SIMULATION_LOGGER.addHandler(fh);
