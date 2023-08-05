@@ -14,39 +14,20 @@ import java.util.Objects;
 
 public class ActionsPerformer {
     public String getNewValueForIncrementDecrement(PRDAction action,
-                                                   Property property, Object by) {
-        String newValue = "";
-        boolean isDecimal = Utils.isDecimal(by.toString());
+                                                   Property property, String by) {
+        if (action.getType().equals(ActionTypes.INCREASE))
+            return String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) + Float.parseFloat(by));
 
-        if (isDecimal) {
-            if (action.getType().equals(ActionTypes.INCREASE))
-                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) + Float.parseFloat(by.toString()));
+        else if (action.getType().equals(ActionTypes.DECREASE))
+            return String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) - Float.parseFloat(by));
 
-            else
-                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) - Float.parseFloat(by.toString()));
-        }
-
-        else if (by.getClass() == Property.class) {
-            if (action.getType().equals(ActionTypes.INCREASE))
-                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue())
-                        + Float.parseFloat(((Property) by).getValue().getCurrentValue()));
-
-            else
-                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue())
-                        - Float.parseFloat(((Property) by).getValue().getCurrentValue()));
-        }
-
-        return newValue;
-    }
-    public String getNewValueForSet(Object value) {
-        return value.getClass() == Property.class ? ((Property)value).getValue().getCurrentValue() :
-                value.toString();
+        return "";
     }
     public void handleIncrementDecrementAction(World world, PRDAction action) {
         Property property = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
-        Object by = ExpressionParser.parseExpression(world, action, action.getBy());
+        String by = ExpressionParser.evaluateExpression(world, action, action.getBy());
 
-        if (Objects.isNull(by) || Objects.isNull(property))
+        if (by.isEmpty() || Objects.isNull(property))
             return;
 
         property.setStableTime(0);
@@ -63,18 +44,17 @@ public class ActionsPerformer {
     }
     public void handleSetAction(World world, PRDAction action) {
         Property property = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
-        Object value = ExpressionParser.parseExpression(world, action, action.getValue());
+        String value = ExpressionParser.evaluateExpression(world, action, action.getValue());
 
         if (Objects.isNull(value) || Objects.isNull(property))
             return;
 
         property.setStableTime(0);
-        String newValue = getNewValueForSet(value);
 
         Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
-                "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
+                "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), value));
 
-        property.getValue().setCurrentValue(newValue);
+        property.getValue().setCurrentValue(value);
     }
     public String getCalculationResult(World world, PRDAction action) {
         PRDMultiply multiply = action.getPRDMultiply();
@@ -83,29 +63,14 @@ public class ActionsPerformer {
         String arg1 = Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1();
         String arg2 = Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2();
 
-        Object parsedArg1 = ExpressionParser.parseExpression(world, action, arg1);
-        Object parsedArg2 = ExpressionParser.parseExpression(world, action, arg2);
+        String parsedArg1 = ExpressionParser.evaluateExpression(world, action, arg1);
+        String parsedArg2 = ExpressionParser.evaluateExpression(world, action, arg2);
 
-        if (Objects.isNull(parsedArg1) || Objects.isNull(parsedArg2))
+        if (parsedArg1.isEmpty() || parsedArg2.isEmpty())
             return "";
 
-        float arg1_float = 0.0f;
-        float arg2_float = 1.0f;
-
-        if (parsedArg1.getClass() == Property.class)
-            arg1_float = Float.parseFloat(((Property) parsedArg1).getValue().getCurrentValue());
-
-        else if (parsedArg1.getClass().isPrimitive())
-            arg1_float = (float)parsedArg1;
-
-        if (parsedArg2.getClass() == Property.class)
-            arg2_float = Float.parseFloat(((Property) parsedArg2).getValue().getCurrentValue());
-
-        else if (parsedArg2.getClass().isPrimitive())
-            arg2_float = (float)parsedArg2;
-
-        return Objects.isNull(multiply) ? String.valueOf(arg1_float / arg2_float)
-                : String.valueOf(arg1_float * arg2_float);
+        return String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(parsedArg1) / Float.parseFloat(parsedArg2)
+                : Float.parseFloat(parsedArg1) * Float.parseFloat(parsedArg2));
     }
     public void handleCalculationAction(World world, PRDAction action) {
         Property resultProp = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());

@@ -1,29 +1,27 @@
 package engine.parsers;
 
 import engine.logs.Loggers;
+import engine.modules.PropTypes;
 import engine.modules.RandomGenerator;
 import engine.modules.SystemFunctions;
 import engine.modules.Utils;
 import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
-import engine.prototypes.jaxb.PRDAction;
-import engine.prototypes.jaxb.PRDEntity;
-import engine.prototypes.jaxb.PRDProperty;
-import engine.prototypes.jaxb.PRDWorld;
+import engine.prototypes.jaxb.*;
 import engine.validators.actions.PRDActionValidators;
 
 import java.util.Objects;
 
 public class ExpressionParser {
-    public static Object parseRandomSystemFunctionExpression(String value) {
+    private static Object parseRandomSystemFunctionExpression(String value) {
         try {
             return RandomGenerator.randomizeRandomNumber(0, Integer.parseInt(value));
         } catch (Exception e) {
             return null;
         }
     }
-    public static Object parseEnvSystemFunctionExpression(Object world, String value) {
+    private static Object parseEnvSystemFunctionExpression(Object world, String value) {
         if (world.getClass() == World.class)
             return ((World)world).getEnvironment().getEnvVars().get(value);
 
@@ -34,7 +32,7 @@ public class ExpressionParser {
 
         return null;
     }
-    public static Object parseEvaluateSystemFunctionExpression(Object world,
+    private static Object parseEvaluateSystemFunctionExpression(Object world,
                                                               String value) {
         String entityName = value.split("\\.")[0];
         String propertyName = value.split("\\.")[1];
@@ -46,33 +44,18 @@ public class ExpressionParser {
 
         return property;
     }
-    public static float getPercentResult(Object arg1, Object arg2) {
-        float arg1_double = 0;
-        float arg2_double = 1;
-
-        if (arg1.getClass() == Property.class)
-            arg1_double = Float.parseFloat(((Property)arg1).getValue().getInit());
-
-        else if (arg1.getClass().isPrimitive())
-            arg1_double = (float)arg1;
-
-        if (arg2.getClass() == Property.class)
-            arg2_double = Float.parseFloat(((Property)arg2).getValue().getInit());
-
-        else if (arg2.getClass().isPrimitive())
-            arg2_double = (float)arg2;
-
-        return arg1_double / arg2_double;
+    private static float getPercentResult(String arg1, String arg2) {
+        return Float.parseFloat(arg1) / Float.parseFloat(arg2);
     }
-    public static float parsePercentSystemFunctionExpression(Object world,
+    private static float parsePercentSystemFunctionExpression(Object world,
                                                               PRDAction action,
                                                               String value) {
         String[] args = value.split(",");
 
-        Object arg1 = parseExpression(world, action, args[0]);
-        Object arg2 = parseExpression(world, action, args[1]);
+        String arg1 = evaluateExpression(world, action, args[0]);
+        String arg2 = evaluateExpression(world, action, args[1]);
 
-        if (Objects.isNull(arg1) || Objects.isNull(arg2)
+        if (arg1.isEmpty() || arg2.isEmpty()
             || PRDActionValidators.validateExpressionIsNumeric(arg1)
                 || PRDActionValidators.validateExpressionIsNumeric(arg2)) {
             Loggers.XML_ERRORS_LOGGER.info("Precent arguments are invalid");
@@ -81,7 +64,7 @@ public class ExpressionParser {
 
         return getPercentResult(arg1, arg2);
     }
-    public static int parseTicksSystemFunctionExpression(Object world, String value) {
+    private static int parseTicksSystemFunctionExpression(Object world, String value) {
         Object property = parseEvaluateSystemFunctionExpression(world, value);
 
         if (Objects.isNull(property) || property.getClass() == PRDProperty.class) {
@@ -94,7 +77,7 @@ public class ExpressionParser {
 
         return 0;
     }
-    public static Object parseSystemFunctionExpression(Object world, PRDAction action,
+    private static Object parseSystemFunctionExpression(Object world, PRDAction action,
                                                        String expression) {
         String functionName = expression.substring(0, expression.indexOf("("));
         String value = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
@@ -116,12 +99,11 @@ public class ExpressionParser {
 
         return null;
     }
-    public static boolean isSystemFunction(String type) {
+    private static boolean isSystemFunction(String type) {
         return SystemFunctions.ALL_SYSTEM_FUNCS.contains(type);
     }
 
-    /* Returns PRDEnvProperty/PRDProperty/Property/int/float (if random)/String (default) */
-    public static Object parseExpression(Object world, PRDAction action, String expression) {
+    private static Object parseExpression(Object world, PRDAction action, String expression) {
         if (expression.contains("(")
                 && isSystemFunction(expression.substring(0, expression.indexOf("("))))
             return parseSystemFunctionExpression(world, action, expression);
@@ -148,5 +130,51 @@ public class ExpressionParser {
         }
 
         return expression;
+    }
+
+    public static String evaluateExpression(Object world, PRDAction action, String expression) {
+        Object parsedExpression = parseExpression(world, action, expression);
+
+        if (Objects.isNull(parsedExpression))
+            return "";
+
+        if (parsedExpression.getClass() == Property.class) {
+            String propValue = ((Property) parsedExpression).getValue().getCurrentValue();
+
+            if (propValue.isEmpty()) {
+                if (PropTypes.NUMERIC_PROPS.contains(((Property)parsedExpression).getType()))
+                    return "0";
+
+                else if (PropTypes.BOOLEAN_PROPS.contains(((Property)parsedExpression).getType()))
+                    return "false";
+            }
+
+            return propValue;
+        }
+
+        else if (parsedExpression.getClass() == PRDProperty.class) {
+            if (((PRDProperty) parsedExpression).getPRDValue().isRandomInitialize()) {
+                if (PropTypes.NUMERIC_PROPS.contains(((PRDProperty)parsedExpression).getType()))
+                    return "0";
+
+                else if (PropTypes.BOOLEAN_PROPS.contains(((PRDProperty)parsedExpression).getType()))
+                    return "false";
+            }
+
+            return ((PRDProperty) parsedExpression).getPRDValue().getInit();
+        }
+
+        else if (parsedExpression.getClass() == PRDEnvProperty.class) {
+                if (PropTypes.NUMERIC_PROPS.contains(((PRDEnvProperty)parsedExpression).getType()))
+                    return "0";
+
+                else if (PropTypes.BOOLEAN_PROPS.contains(((PRDEnvProperty)parsedExpression).getType()))
+                    return "false";
+        }
+
+        else if (Utils.isDecimal(parsedExpression.toString()))
+            return parsedExpression.toString();
+
+        return "";
     }
 }
