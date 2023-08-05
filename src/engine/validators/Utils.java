@@ -2,7 +2,6 @@ package engine.validators;
 
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDEntity;
-import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.Objects;
@@ -22,7 +21,7 @@ public class Utils {
         return null;
     }
 
-    public static PRDProperty findPropertyByName(Object world, String entityName, String prop) {
+    public static Object findPropertyByName(Object world, String entityName, String prop) {
         if (world.getClass() == PRDWorld.class) {
             return ((PRDEntity) Objects.requireNonNull(findEntityByName(world, entityName)))
                     .getPRDProperties().getPRDProperty()
