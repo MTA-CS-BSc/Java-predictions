@@ -21,6 +21,7 @@ public class SingleSimulation {
 
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
+        performer = new ActionsPerformer();
         world = _world;
     }
     public String isSimulationFinished(long startTimeMillis) {
@@ -43,7 +44,7 @@ public class SingleSimulation {
         PRDRule rule = allRules.get(ruleName);
 
         return rule.getPRDActivation().getProbability() >= randomProbability
-                && rule.getPRDActivation().getTicks() % ticks == 0;
+                && ticks % rule.getPRDActivation().getTicks() == 0;
     }
     public HashMap<String, PRDRule> getRulesToApply() {
         HashMap<String, PRDRule> allRules = world.getRules().getRulesMap();
@@ -94,6 +95,8 @@ public class SingleSimulation {
             Loggers.ENGINE_LOGGER.info("No XML loaded");
             return "";
         }
+
+        world.initAllRandomVars();
 
         long startTimeMillis = System.currentTimeMillis();
 

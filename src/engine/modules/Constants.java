@@ -11,4 +11,6 @@ public class Constants {
     public final static List<String> CONDITION_ALLOWED_OPERATORS = Arrays.asList(Operators.EQUALS, Operators.NOT_EQUALS,
             Operators.BT, Operators.LT);
 
+    public final static int MAX_RANDOM_STRING_LENGTH = 50;
+
 }

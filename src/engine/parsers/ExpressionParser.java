@@ -18,7 +18,8 @@ import java.util.Objects;
 public class ExpressionParser {
     public static Object parseRandomSystemFunctionExpression(String value) {
         try {
-            return RandomGenerator.randomizeRandomNumber(Integer.parseInt(value));
+            //TODO: Add range check
+            return RandomGenerator.randomizeRandomNumber(0, Integer.parseInt(value));
         } catch (Exception e) {
             return null;
         }
@@ -53,18 +54,18 @@ public class ExpressionParser {
         if (arg1.getClass() == Property.class)
             arg1_double = Float.parseFloat(((Property)arg1).getValue().getInit());
 
-        else if (arg1.getClass() == Integer.class || arg1.getClass() == Float.class)
+        else if (arg1.getClass().isPrimitive())
             arg1_double = (float)arg1;
 
         if (arg2.getClass() == Property.class)
             arg2_double = Float.parseFloat(((Property)arg2).getValue().getInit());
 
-        else if (arg2.getClass() == Integer.class || arg1.getClass() == Float.class)
+        else if (arg2.getClass().isPrimitive())
             arg2_double = (float)arg2;
 
         return arg1_double / arg2_double;
     }
-    public static Float parsePercentSystemFunctionExpression(Object world,
+    public static float parsePercentSystemFunctionExpression(Object world,
                                                               PRDAction action,
                                                               String value) {
         String[] args = value.split(",");
@@ -76,7 +77,7 @@ public class ExpressionParser {
             || PRDActionValidators.validateExpressionIsNumeric(arg1)
                 || PRDActionValidators.validateExpressionIsNumeric(arg2)) {
             Loggers.XML_ERRORS_LOGGER.info("Precent arguments are invalid");
-            return null;
+            return 0;
         }
 
         return getPercentResult(arg1, arg2);

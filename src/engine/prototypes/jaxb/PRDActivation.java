@@ -43,6 +43,10 @@ public class PRDActivation {
     @XmlAttribute(name = "probability")
     protected Double probability;
 
+    public PRDActivation() {
+        ticks = 1;
+        probability = 1.0;
+    }
     /**
      * Gets the value of the ticks property.
      * 

@@ -47,6 +47,13 @@ public class PRDRange {
      * Gets the value of the to property.
      * 
      */
+
+    public PRDRange() { }
+
+    public PRDRange(double _from, double _to) {
+        this.to = _to;
+        this.from = _from;
+    }
     public double getTo() {
         return to;
     }

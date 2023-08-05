@@ -3,8 +3,8 @@ package engine.modules;
 import java.util.Random;
 
 public class RandomGenerator {
-    public static Integer randomizeRandomNumber(int max) {
-        return new Random().nextInt(max);
+    public static Integer randomizeRandomNumber(int min, int max) {
+        return new Random().nextInt(max - min) + min;
     }
     public static boolean randomizeRandomBoolean() {
         return new Random().nextBoolean();

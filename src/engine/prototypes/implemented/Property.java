@@ -5,6 +5,8 @@ import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;
 import engine.prototypes.jaxb.PRDValue;
 
+import java.util.Objects;
+
 public class Property {
     protected String name;
     protected PRDRange range;
@@ -27,6 +29,9 @@ public class Property {
             range = ((PRDEnvProperty) property).getPRDRange();
             value = new PRDValue();
         }
+
+        if (Objects.isNull(range))
+            range = new PRDRange(0.0, 100.0);
 
         stableTime = 0;
     }

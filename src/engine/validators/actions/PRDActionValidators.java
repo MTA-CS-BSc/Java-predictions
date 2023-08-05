@@ -82,8 +82,7 @@ public class PRDActionValidators {
         else if (parsedExpression.getClass() == Property.class)
             type = ((Property)parsedExpression).getType();
 
-        else if (parsedExpression.getClass() == Integer.class
-                    || parsedExpression.getClass() == Float.class)
+        else if (parsedExpression.getClass().isPrimitive())
             return true;
 
         if (!type.isEmpty())

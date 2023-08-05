@@ -16,13 +16,14 @@ public class ActionsPerformer {
     public String getNewValueForIncrementDecrement(PRDAction action,
                                                    Property property, Object by) {
         String newValue = "";
+        boolean isDecimal = Utils.isDecimal(by.toString());
 
-        if (by.getClass() == Float.class || by.getClass() == Integer.class) {
+        if (by.getClass().isPrimitive() || isDecimal) {
             if (action.getType().equals(ActionTypes.INCREASE))
-                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) + (float)by);
+                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) + Float.parseFloat(by.toString()));
 
             else
-                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) - (float)by);
+                newValue = String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) - Float.parseFloat(by.toString()));
         }
 
         else if (by.getClass() == Property.class) {
@@ -40,7 +41,7 @@ public class ActionsPerformer {
     public String getNewValueForSet(PRDAction action, Object value) {
         String newValue = "";
 
-        if (value.getClass() == Float.class || value.getClass() == Integer.class)
+        if (value.getClass().isPrimitive())
             newValue = value.toString();
 
         else if (value.getClass() == Property.class)
@@ -104,15 +105,13 @@ public class ActionsPerformer {
         if (parsedArg1.getClass() == Property.class)
             arg1_float = Float.parseFloat(((Property) parsedArg1).getValue().getCurrentValue());
 
-        else if (parsedArg1.getClass() == Integer.class ||
-                    parsedArg1.getClass() == Float.class)
+        else if (parsedArg1.getClass().isPrimitive())
             arg1_float = (float)parsedArg1;
 
         if (parsedArg2.getClass() == Property.class)
             arg2_float = Float.parseFloat(((Property) parsedArg2).getValue().getCurrentValue());
 
-        else if (parsedArg2.getClass() == Integer.class ||
-                parsedArg2.getClass() == Float.class)
+        else if (parsedArg2.getClass().isPrimitive())
             arg2_float = (float)parsedArg2;
 
         return Objects.isNull(multiply) ? String.valueOf(arg1_float / arg2_float)
