@@ -4,6 +4,7 @@ import engine.logs.Loggers;
 import engine.modules.PropTypes;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
+import engine.prototypes.jaxb.PRDRange;
 import engine.prototypes.jaxb.PRDValue;
 import engine.validators.PRDPropertyValidators;
 
@@ -72,6 +73,17 @@ public class PRDEntityValidators {
 
         return true;
     }
+    private static boolean validatePropValueAgainstRange(PRDProperty property) {
+        PRDRange range = property.getPRDRange();
+
+        if (PropTypes.NUMERIC_PROPS.contains(property.getType()) && !Objects.isNull(range)
+                && !property.getPRDValue().isRandomInitialize())
+            return Float.parseFloat(property.getPRDValue().getInit()) - range.getFrom() >= 0 &&
+                    range.getTo() - Float.parseFloat(property.getPRDValue().getInit()) >= 0;
+
+        return true;
+
+    }
     private static boolean validatePropValue(PRDProperty property) {
         PRDValue value = property.getPRDValue();
         if (value.isRandomInitialize())
@@ -96,12 +108,19 @@ public class PRDEntityValidators {
         return true;
     }
     private static boolean validatePropertiesValues(PRDEntity entity) {
-        for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
+        for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
             if (!validatePropValue(property)) {
                 Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : Property [%s] has incorrect init value",
                         entity.getName(), property.getPRDName()));
                 return false;
             }
+
+            else if (!validatePropValueAgainstRange(property)) {
+                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : Property [%s] has incorrect init value according to range",
+                        entity.getName(), property.getPRDName()));
+                return false;
+            }
+        }
 
         return true;
     }
