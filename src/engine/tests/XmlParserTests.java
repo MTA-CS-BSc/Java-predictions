@@ -17,6 +17,7 @@ import java.util.logging.FileHandler;
 
 public class XmlParserTests {
     private final String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
+
     public XmlParserTests() throws IOException {
         FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/xml_parse_error.log");
         Loggers.XML_ERRORS_LOGGER.addHandler(fh);
@@ -55,10 +56,12 @@ public class XmlParserTests {
 
     @Test
     @DisplayName("Validations check for valid XML")
-    public void validationsForValidXml() throws JAXBException, FileNotFoundException {
+    public PRDWorld validationsForValidXml() throws JAXBException, FileNotFoundException {
         String xmlPath = String.format("%s/master-ex1.xml", testFilesPath);
         PRDWorld world = XmlParser.parseWorldXml(xmlPath);
         Assertions.assertTrue(PRDWorldValidators.validateWorld(world));
+
+        return world;
     }
 
     @Test
