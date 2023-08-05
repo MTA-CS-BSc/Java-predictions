@@ -11,7 +11,6 @@ import engine.prototypes.jaxb.PRDAction;
 import java.util.Objects;
 
 public class ActionsPerformer {
-
     public String getNewValueForIncrementDecrement(PRDAction action,
                                                    Property property, Object by) {
         String newValue = "";
