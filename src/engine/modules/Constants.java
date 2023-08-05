@@ -13,4 +13,7 @@ public class Constants {
 
     public final static int MAX_RANDOM_STRING_LENGTH = 50;
 
+    public final static int MIN_RANGE = -999999999;
+    public final static int MAX_RANGE = 999999999;
+
 }

@@ -1,5 +1,6 @@
 package engine.prototypes.implemented;
 
+import engine.modules.Constants;
 import engine.modules.PropTypes;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
@@ -32,7 +33,7 @@ public class Property {
         }
 
         if (Objects.isNull(range) && PropTypes.NUMERIC_PROPS.contains(type))
-            range = new PRDRange(0.0, 100.0);
+            range = new PRDRange(Constants.MIN_RANGE, Constants.MAX_RANGE);
 
         stableTime = 0;
     }
