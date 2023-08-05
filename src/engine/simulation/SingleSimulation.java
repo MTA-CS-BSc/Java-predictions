@@ -19,6 +19,7 @@ public class SingleSimulation {
     UUID uuid;
     ActionsPerformer performer;
 
+    //TODO: Add simulation history
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
         performer = new ActionsPerformer();
@@ -97,7 +98,7 @@ public class SingleSimulation {
     }
     public String run() {
         if (Objects.isNull(world)) {
-            Loggers.ENGINE_LOGGER.info("No XML loaded");
+            Loggers.SIMULATION_LOGGER.info("No XML loaded");
             return "";
         }
 
