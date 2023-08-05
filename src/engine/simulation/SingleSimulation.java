@@ -3,6 +3,7 @@ package engine.simulation;
 import engine.logs.Loggers;
 import engine.modules.ActionTypes;
 import engine.modules.RandomGenerator;
+import engine.modules.TerminationReasons;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.*;
 
@@ -27,11 +28,11 @@ public class SingleSimulation {
         for (Object stopCondition : termination.getPRDByTicksOrPRDBySecond()) {
             if (stopCondition.getClass() == PRDBySecond.class
                     && startTimeMillis >= ((PRDBySecond)stopCondition).getCount())
-                return "BySecond";
+                return TerminationReasons.BY_SECOND;
 
             else if (stopCondition.getClass() == PRDByTicks.class
                     && ticks >= ((PRDByTicks)stopCondition).getCount())
-                return "ByTicks";
+                return TerminationReasons.BY_TICKS;
         }
 
         return null;
@@ -96,6 +97,11 @@ public class SingleSimulation {
     }
 
     public void run() {
+        if (Objects.isNull(world)) {
+            Loggers.ENGINE_LOGGER.info("No XML loaded");
+            return;
+        }
+
         long startTimeMillis = System.currentTimeMillis();
 
         while (Objects.isNull(isSimulationFinished(startTimeMillis))) {
