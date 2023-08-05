@@ -172,9 +172,6 @@ public class ExpressionParser {
                     return "false";
         }
 
-        else if (Utils.isDecimal(parsedExpression.toString()))
-            return parsedExpression.toString();
-
-        return "";
+        return parsedExpression.toString();
     }
 }

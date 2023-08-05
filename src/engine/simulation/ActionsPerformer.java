@@ -80,6 +80,7 @@ public class ActionsPerformer {
                 || Objects.isNull(property) || Objects.isNull(property.getValue())) {
             Loggers.SIMULATION_LOGGER.info(String.format("Entity [%s] or property [%s] do not exist",
                     condition.getEntity(), condition.getProperty()));
+            return true;
         }
 
         String value = ExpressionParser.evaluateExpression(world, action, condition.getValue());
@@ -125,7 +126,8 @@ public class ActionsPerformer {
         Property resultProp = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());
 
         if (Objects.isNull(resultProp)) {
-            Loggers.SIMULATION_LOGGER.info(String.format("result prop [%s] not found", action.getResultProp()));
+            Loggers.SIMULATION_LOGGER.info(String.format("In calculation action," +
+                    " result prop [%s] not found", action.getResultProp()));
             return;
         }
 

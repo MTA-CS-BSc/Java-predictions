@@ -23,6 +23,9 @@ public class Utils {
         return null;
     }
     public static Object findPropertyByName(Object world, String entityName, String prop) {
+        if (Objects.isNull(findEntityByName(world, entityName)))
+            return null;
+
         if (world.getClass() == PRDWorld.class) {
             return ((PRDEntity) Objects.requireNonNull(findEntityByName(world, entityName)))
                     .getPRDProperties().getPRDProperty()
