@@ -1,5 +1,6 @@
 package engine.prototypes.implemented;
 
+import engine.modules.PropTypes;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;
@@ -30,7 +31,7 @@ public class Property {
             value = new PRDValue();
         }
 
-        if (Objects.isNull(range))
+        if (Objects.isNull(range) && PropTypes.NUMERIC_PROPS.contains(type))
             range = new PRDRange(0.0, 100.0);
 
         stableTime = 0;
@@ -41,5 +42,4 @@ public class Property {
     public PRDValue getValue() { return value; }
     public int getStableTime() { return stableTime; }
     public void setStableTime(int value) { stableTime = value; }
-
 }
