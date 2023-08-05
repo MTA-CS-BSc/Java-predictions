@@ -72,8 +72,7 @@ public class SingleSimulation {
             //handleCalculationAction(action);
 
         else if (type.equalsIgnoreCase(ActionTypes.SET))
-            Loggers.ENGINE_LOGGER.warning("Not implemented");
-            //handleSetAction(action);
+            performer.handleSetAction(world, action);
 
         else if (type.equalsIgnoreCase(ActionTypes.KILL))
             performer.handleKillAction(world, action);
@@ -88,6 +87,7 @@ public class SingleSimulation {
         rulesToApply.forEach((ruleName, rule) -> {
             List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
             actionsToPerform.forEach(this::fireAction);
+            //TODO: Update stable time for all props
         });
     }
     public String run() {
