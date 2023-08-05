@@ -27,7 +27,7 @@ public class ActionsPerformer {
 
         return true;
     }
-    public String getNewValueForIncrementDecrement(PRDAction action,
+    private String getNewValueForIncrementDecrement(PRDAction action,
                                                    Property property, String by) {
         if (action.getType().equals(ActionTypes.INCREASE))
             return String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) + Float.parseFloat(by));
@@ -36,6 +36,44 @@ public class ActionsPerformer {
             return String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) - Float.parseFloat(by));
 
         return "";
+    }
+    private String getCalculationResult(World world, PRDAction action) {
+        PRDMultiply multiply = action.getPRDMultiply();
+        PRDDivide divide = action.getPRDDivide();
+
+        String arg1 = Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1();
+        String arg2 = Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2();
+
+        String parsedArg1 = ExpressionParser.evaluateExpression(world, action, arg1);
+        String parsedArg2 = ExpressionParser.evaluateExpression(world, action, arg2);
+
+        if (parsedArg1.isEmpty() || parsedArg2.isEmpty())
+            return "";
+
+        return String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(parsedArg1) / Float.parseFloat(parsedArg2)
+                : Float.parseFloat(parsedArg1) * Float.parseFloat(parsedArg2));
+    }
+    public void handleCalculationAction(World world, PRDAction action) {
+        Property resultProp = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());
+
+        if (Objects.isNull(resultProp))
+            return;
+
+        resultProp.setStableTime(0);
+        String calculationResult = "";
+
+        calculationResult = getCalculationResult(world, action);
+
+        if (validateNewValueInRange(resultProp, calculationResult)) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Setting [%s] on entity [%s] = [%s]",
+                    resultProp.getName(), action.getEntity(), calculationResult));
+
+            resultProp.getValue().setCurrentValue(calculationResult);
+        }
+
+    }
+    public void handleConditionAction(World world, PRDAction action) {
+        // TODO: Implement
     }
     public void handleIncrementDecrementAction(World world, PRDAction action) {
         Property property = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
@@ -75,43 +113,5 @@ public class ActionsPerformer {
                 "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), value));
 
         property.getValue().setCurrentValue(value);
-    }
-    public String getCalculationResult(World world, PRDAction action) {
-        PRDMultiply multiply = action.getPRDMultiply();
-        PRDDivide divide = action.getPRDDivide();
-
-        String arg1 = Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1();
-        String arg2 = Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2();
-
-        String parsedArg1 = ExpressionParser.evaluateExpression(world, action, arg1);
-        String parsedArg2 = ExpressionParser.evaluateExpression(world, action, arg2);
-
-        if (parsedArg1.isEmpty() || parsedArg2.isEmpty())
-            return "";
-
-        return String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(parsedArg1) / Float.parseFloat(parsedArg2)
-                : Float.parseFloat(parsedArg1) * Float.parseFloat(parsedArg2));
-    }
-    public void handleCalculationAction(World world, PRDAction action) {
-        Property resultProp = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());
-
-        if (Objects.isNull(resultProp))
-            return;
-
-        resultProp.setStableTime(0);
-        String calculationResult = "";
-
-        calculationResult = getCalculationResult(world, action);
-
-        if (validateNewValueInRange(resultProp, calculationResult)) {
-            Loggers.SIMULATION_LOGGER.info(String.format("Setting [%s] on entity [%s] = [%s]",
-                    resultProp.getName(), action.getEntity(), calculationResult));
-
-            resultProp.getValue().setCurrentValue(calculationResult);
-        }
-
-    }
-    public void handleConditionAction(World world, PRDAction action) {
-        // TODO: Implement
     }
 }
