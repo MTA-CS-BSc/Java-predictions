@@ -1,6 +1,7 @@
 package engine.validators.entities;
 
 import engine.logs.Loggers;
+import engine.modules.PropTypes;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDValue;
@@ -78,7 +79,7 @@ public class PRDEntityValidators {
 
         String init = value.getInit();
 
-        if (property.getType().equals("decimal") || property.getType().equals("float")) {
+        if (property.getType().equals(PropTypes.DECIMAL) || property.getType().equals(PropTypes.FLOAT)) {
             try {
                 Float.parseFloat(init);
             }
@@ -88,7 +89,7 @@ public class PRDEntityValidators {
             }
         }
 
-        else if (property.getType().equals("boolean")) {
+        else if (property.getType().equals(PropTypes.BOOLEAN)) {
             return init.equals("true") || init.equals("false");
         }
 
@@ -111,7 +112,7 @@ public class PRDEntityValidators {
                                         .collect(Collectors.toList());
 
         for (PRDProperty property: notRandomProps) {
-            if (!property.getType().equals("string") && property.getPRDValue().getInit().isEmpty()) {
+            if (!property.getType().equals(PropTypes.STRING) && property.getPRDValue().getInit().isEmpty()) {
                 Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : Property [%s] has no init",
                                                         entity.getName(), property.getPRDName()));
                 return false;
