@@ -5,7 +5,6 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDWorld;
-import engine.validators.Utils;
 
 import java.util.Arrays;
 import java.util.Objects;

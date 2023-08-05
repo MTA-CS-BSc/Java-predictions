@@ -8,7 +8,7 @@ import engine.modules.PropTypes;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.jaxb.*;
 import engine.validators.PRDWorldValidators;
-import engine.validators.Utils;
+import engine.modules.Utils;
 
 import java.util.List;
 import java.util.Objects;

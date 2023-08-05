@@ -1,4 +1,4 @@
-package engine.validators;
+package engine.modules;
 
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDEntity;
