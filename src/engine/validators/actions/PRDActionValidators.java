@@ -158,7 +158,8 @@ public class PRDActionValidators {
 
         return true;
     }
-    public static boolean validateConditionAction(PRDWorld world, PRDAction action, PRDCondition condition) {
+    public static boolean validateConditionAction(PRDWorld world, PRDAction action,
+                                                  PRDCondition condition) {
         if (!PRDWorldValidators.validateEntityExists(world, action.getEntity()))
             return false;
 
