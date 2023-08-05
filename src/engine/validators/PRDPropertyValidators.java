@@ -1,13 +1,13 @@
 package engine.validators;
 
 import engine.logs.Loggers;
-import engine.consts.Constants;
+import engine.consts.Restrictions;
 
 import java.util.List;
 
 public class PRDPropertyValidators {
     public static boolean validatePropetyType(String type) {
-        return Constants.PRD_ENV_PROPERTY_ALLOWED_TYPES.contains(type);
+        return Restrictions.PRD_ENV_PROPERTY_ALLOWED_TYPES.contains(type);
     }
     public static boolean validateUniqueName(List<String> names, String name) {
         int counter = 0;
@@ -19,7 +19,7 @@ public class PRDPropertyValidators {
         return counter == 1;
     }
     public static boolean validateTypeForRangeExistance(String type) {
-        return Constants.PRD_ENV_PROPERTY_RANGE_ALLOWED_TYPES.contains(type);
+        return Restrictions.PRD_ENV_PROPERTY_RANGE_ALLOWED_TYPES.contains(type);
     }
     public static boolean validateNoWhitespacesInNames(Class<?> context, List<String> names) {
         String type = context.getSimpleName().substring(3);

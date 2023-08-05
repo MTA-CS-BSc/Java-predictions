@@ -1,6 +1,6 @@
 package engine.prototypes.implemented;
 
-import engine.consts.Constants;
+import engine.consts.Restrictions;
 import engine.consts.PropTypes;
 import engine.modules.RandomGenerator;
 import engine.prototypes.jaxb.PRDRange;
@@ -36,7 +36,7 @@ public class World {
             property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat((float)range.getFrom(), (float)range.getTo())));
 
         else if (property.getType().equals(PropTypes.STRING))
-            property.getValue().setInit(RandomGenerator.randomizeRandomString(Constants.MAX_RANDOM_STRING_LENGTH));
+            property.getValue().setInit(RandomGenerator.randomizeRandomString(Restrictions.MAX_RANDOM_STRING_LENGTH));
     }
     public void initAllRandomVars() {
         entities.getEntitiesMap().values().forEach(entity -> {

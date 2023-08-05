@@ -3,7 +3,7 @@ package engine.consts;
 import java.util.Arrays;
 import java.util.List;
 
-public class Constants {
+public class Restrictions {
     public final static String XSD_PATH = "../schemas/predictions-v1.xsd";
     public final static List<String> PRD_ENV_PROPERTY_ALLOWED_TYPES = Arrays.asList(PropTypes.DECIMAL,
             PropTypes.FLOAT, PropTypes.BOOLEAN, PropTypes.STRING);
