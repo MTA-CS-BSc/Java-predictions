@@ -10,6 +10,7 @@ public class Property {
     protected PRDRange range;
     protected PRDValue value;
     protected String type;
+    protected int stableTime;
 
     public Property(Object property) {
         if (property.getClass() == PRDProperty.class) {
@@ -25,10 +26,15 @@ public class Property {
             range = ((PRDEnvProperty) property).getPRDRange();
             value = new PRDValue();
         }
+
+        stableTime = 0;
     }
     public String getName() { return name; }
     public String getType() { return type; }
     public PRDRange getRange() { return range; }
     public PRDValue getValue() { return value; }
+
+    public int getStableTime() { return stableTime; }
+    public void setStableTime(int value) { stableTime = value; }
 
 }

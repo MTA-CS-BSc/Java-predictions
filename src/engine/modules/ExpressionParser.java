@@ -10,7 +10,6 @@ import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.actions.PRDActionValidators;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 public class ExpressionParser {
@@ -81,6 +80,19 @@ public class ExpressionParser {
 
         return getPercentResult(arg1, arg2);
     }
+    public static int parseTicksSystemFunctionExpression(Object world, String value) {
+        Object property = parseEvaluateSystemFunctionExpression(world, value);
+
+        if (Objects.isNull(property) || property.getClass() == PRDProperty.class) {
+            Loggers.SIMULATION_LOGGER.info("Entity or property invalid in ticks system function");
+            return 0;
+        }
+
+        if (property.getClass() == Property.class)
+            return ((Property)property).getStableTime();
+
+        return 0;
+    }
     public static Object parseSystemFunctionExpression(Object world, PRDAction action,
                                                        String expression) {
         String functionName = expression.substring(0, expression.indexOf("("));
@@ -98,10 +110,13 @@ public class ExpressionParser {
         else if (functionName.equalsIgnoreCase(SystemFunctions.PRECENT))
             return parsePercentSystemFunctionExpression(world, action, value);
 
+        else if (functionName.equalsIgnoreCase(SystemFunctions.TICKS))
+            return parseTicksSystemFunctionExpression(world, value);
+
         return null;
     }
     public static boolean isSystemFunction(String type) {
-        return Arrays.asList(SystemFunctions.ENVIRONMENT, SystemFunctions.RANDOM).contains(type);
+        return SystemFunctions.ALL_SYSTEM_FUNCS.contains(type);
     }
 
     /* Returns PRDEnvProperty/PRDProperty/Property/int/float (if random)/String (default) */
