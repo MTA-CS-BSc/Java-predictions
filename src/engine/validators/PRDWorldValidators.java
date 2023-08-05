@@ -6,6 +6,8 @@ import engine.validators.env.PRDEvironmentValidators;
 import engine.validators.rules.PRDRulesValidators;
 import engine.validators.termination.PRDTerminationValidators;
 
+import java.util.Objects;
+
 public class PRDWorldValidators {
     public static boolean validateWorld(PRDWorld world) {
         return validateEntities(world)
@@ -24,5 +26,8 @@ public class PRDWorldValidators {
     }
     private static boolean validateRules(PRDWorld world) {
         return PRDRulesValidators.validateRules(world, world.getPRDRules());
+    }
+    public static boolean validateEntityExists(PRDWorld world, String entityName) {
+        return !Objects.isNull(Utils.findEntityByName(world, entityName));
     }
 }
