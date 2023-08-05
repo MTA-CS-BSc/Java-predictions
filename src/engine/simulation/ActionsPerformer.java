@@ -49,7 +49,6 @@ public class ActionsPerformer {
 
         return newValue;
     }
-
     public void handleIncrementDecrementAction(World world, PRDAction action) {
         Property property = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
         Object by = ExpressionParser.parseExpression(world, action, action.getBy());
