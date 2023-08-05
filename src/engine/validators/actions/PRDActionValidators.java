@@ -20,11 +20,9 @@ public class PRDActionValidators {
             case ActionTypes.DECREASE:
                 return validateIncreaseDecreaseAction(world, action);
             case ActionTypes.CALCULATION:
-                System.out.println("Not implemented");
-                break;
+                return validateCalculationAction(world, action);
             case ActionTypes.CONDITION:
-                System.out.println("Not implemented");
-                break;
+                return true;
         }
 
         return false;
@@ -116,5 +114,21 @@ public class PRDActionValidators {
 
         //else if (propertyType.equals(PropTypes.STRING))
         return true;
+    }
+    public static boolean validateCalculationAction(PRDWorld world, PRDAction action) {
+        PRDMultiply multiply = action.getPRDMultiply();
+        PRDDivide divide = action.getPRDDivide();
+
+        if (Objects.isNull(multiply)) {
+            Object arg1 = ExpressionParser.parseExpression(world, action.getEntity(), divide.getArg1());
+            Object arg2 = ExpressionParser.parseExpression(world, action.getEntity(), divide.getArg2());
+
+            return validateExpressionIsNumeric(arg1) && validateExpressionIsNumeric(arg2);
+        }
+
+        Object arg1 = ExpressionParser.parseExpression(world, action.getEntity(), multiply.getArg1());
+        Object arg2 = ExpressionParser.parseExpression(world, action.getEntity(), multiply.getArg2());
+
+        return validateExpressionIsNumeric(arg1) && validateExpressionIsNumeric(arg2);
     }
 }
