@@ -15,6 +15,7 @@ public class SingleSimulation {
     long ticks = 0;
     UUID uuid;
     ActionsPerformer performer;
+
     SingleSimulationLog log;
 
     //TODO: Add simulation history
@@ -23,6 +24,9 @@ public class SingleSimulation {
         performer = new ActionsPerformer();
         world = _world;
         log = new SingleSimulationLog(uuid, world);
+    }
+    public SingleSimulationLog getLog() {
+        return log;
     }
     public void updateStableTimeToAllProps() {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
