@@ -22,6 +22,7 @@ public class Property {
             type = ((PRDProperty) property).getType();
             value = ((PRDProperty) property).getPRDValue();
             range = ((PRDProperty) property).getPRDRange();
+
             value.setCurrentValue(value.getInit());
         }
 
@@ -30,6 +31,7 @@ public class Property {
             type = ((PRDEnvProperty) property).getType();
             range = ((PRDEnvProperty) property).getPRDRange();
             value = new PRDValue();
+            value.setRandomInitialize(true);
         }
 
         if (Objects.isNull(range) && PropTypes.NUMERIC_PROPS.contains(type))
