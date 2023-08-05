@@ -114,6 +114,6 @@ public class SingleSimulation {
         Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
                                             uuid.toString(), isSimulationFinished(startTimeMillis)));
 
-        return isSimulationFinished(startTimeMillis);
+        return uuid.toString();
     }
 }
