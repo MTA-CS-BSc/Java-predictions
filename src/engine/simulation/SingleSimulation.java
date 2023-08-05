@@ -68,8 +68,7 @@ public class SingleSimulation {
            performer.handleIncrementDecrementAction(world, action);
 
         else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
-            Loggers.ENGINE_LOGGER.warning("Not implemented");
-            //handleCalculationAction(action);
+            performer.handleCalculationAction(world, action);
 
         else if (type.equalsIgnoreCase(ActionTypes.SET))
             performer.handleSetAction(world, action);
