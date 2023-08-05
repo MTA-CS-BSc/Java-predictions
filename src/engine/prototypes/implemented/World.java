@@ -43,7 +43,6 @@ public class World {
                 property.getValue().setRandomInitialize(true);
 
             PRDRange range = property.getRange();
-
             setPropsInit(property, range);
             property.getValue().setCurrentValue(property.getValue().getInit());
         });
