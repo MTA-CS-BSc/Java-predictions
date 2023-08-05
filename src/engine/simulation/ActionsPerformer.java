@@ -14,6 +14,19 @@ import engine.prototypes.jaxb.PRDMultiply;
 import java.util.Objects;
 
 public class ActionsPerformer {
+
+    public boolean validateNewValueInRange(Property property, String newValue) {
+        if (!Objects.isNull(property.getRange())) {
+            if (Float.parseFloat(newValue) > property.getRange().getTo()
+                    || Float.parseFloat(newValue) < property.getRange().getFrom()) {
+                Loggers.SIMULATION_LOGGER.info("Can't perform increment/decrement due to range issue");
+                return false;
+            }
+
+        }
+
+        return true;
+    }
     public String getNewValueForIncrementDecrement(PRDAction action,
                                                    Property property, String by) {
         if (action.getType().equals(ActionTypes.INCREASE))
@@ -34,19 +47,12 @@ public class ActionsPerformer {
         property.setStableTime(0);
         String newValue = getNewValueForIncrementDecrement(action, property, by);
 
-        if (!Objects.isNull(property.getRange())) {
-            if (Float.parseFloat(newValue) > property.getRange().getTo()
-                    || Float.parseFloat(newValue) < property.getRange().getFrom()) {
-                Loggers.SIMULATION_LOGGER.info("Can't perform increment/decrement due to range issue");
-                return;
-            }
+        if (validateNewValueInRange(property, newValue)) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
+                    " value from [%s] to [%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
 
+            property.getValue().setCurrentValue(newValue);
         }
-
-        Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
-                " value from [%s] to [%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
-
-        property.getValue().setCurrentValue(newValue);
     }
     public void handleKillAction(World world, PRDAction action) {
         Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
@@ -61,13 +67,9 @@ public class ActionsPerformer {
 
         property.setStableTime(0);
 
-        if (PropTypes.NUMERIC_PROPS.contains(property.getType())) {
-            if (Float.parseFloat(value) < property.getRange().getFrom()
-                || Float.parseFloat(value) > property.getRange().getTo()) {
-                Loggers.SIMULATION_LOGGER.info("Can't change value on set action due to range issues");
+        if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
+            if (!validateNewValueInRange(property, value))
                 return;
-            }
-        }
 
         Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
                 "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), value));
@@ -101,16 +103,13 @@ public class ActionsPerformer {
 
         calculationResult = getCalculationResult(world, action);
 
-        if (Float.parseFloat(calculationResult) < resultProp.getRange().getFrom()
-                || Float.parseFloat(calculationResult) > resultProp.getRange().getTo()) {
-            Loggers.SIMULATION_LOGGER.info("Can't perform increment/decrement due to range issue");
-            return;
+        if (validateNewValueInRange(resultProp, calculationResult)) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Setting [%s] on entity [%s] = [%s]",
+                    resultProp.getName(), action.getEntity(), calculationResult));
+
+            resultProp.getValue().setCurrentValue(calculationResult);
         }
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Setting [%s] on entity [%s] = [%s]",
-                resultProp.getName(), action.getEntity(), calculationResult));
-
-        resultProp.getValue().setCurrentValue(calculationResult);
     }
     public void handleConditionAction(World world, PRDAction action) {
         // TODO: Implement
