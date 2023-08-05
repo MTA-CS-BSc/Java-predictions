@@ -2,6 +2,7 @@ package engine.simulation;
 
 import engine.logs.Loggers;
 import engine.modules.ActionTypes;
+import engine.modules.PropTypes;
 import engine.parsers.ExpressionParser;
 import engine.modules.Utils;
 import engine.prototypes.implemented.Property;
@@ -33,6 +34,15 @@ public class ActionsPerformer {
         property.setStableTime(0);
         String newValue = getNewValueForIncrementDecrement(action, property, by);
 
+        if (!Objects.isNull(property.getRange())) {
+            if (Float.parseFloat(newValue) > property.getRange().getTo()
+                    || Float.parseFloat(newValue) < property.getRange().getFrom()) {
+                Loggers.SIMULATION_LOGGER.info("Can't perform increment/decrement due to range issue");
+                return;
+            }
+
+        }
+
         Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
                 " value from [%s] to [%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
 
@@ -50,6 +60,14 @@ public class ActionsPerformer {
             return;
 
         property.setStableTime(0);
+
+        if (PropTypes.NUMERIC_PROPS.contains(property.getType())) {
+            if (Float.parseFloat(value) < property.getRange().getFrom()
+                || Float.parseFloat(value) > property.getRange().getTo()) {
+                Loggers.SIMULATION_LOGGER.info("Can't change value on set action due to range issues");
+                return;
+            }
+        }
 
         Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
                 "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), value));
@@ -83,13 +101,16 @@ public class ActionsPerformer {
 
         calculationResult = getCalculationResult(world, action);
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Changing prop [%s] on entity [%s], [%s]->[%s]",
-                action.getResultProp(), action.getEntity(),
-                resultProp.getValue().getCurrentValue(),
-                calculationResult));
+        if (Float.parseFloat(calculationResult) < resultProp.getRange().getFrom()
+                || Float.parseFloat(calculationResult) > resultProp.getRange().getTo()) {
+            Loggers.SIMULATION_LOGGER.info("Can't perform increment/decrement due to range issue");
+            return;
+        }
+
+        Loggers.SIMULATION_LOGGER.info(String.format("Setting [%s] on entity [%s] = [%s]",
+                resultProp.getName(), action.getEntity(), calculationResult));
 
         resultProp.getValue().setCurrentValue(calculationResult);
-
     }
     public void handleConditionAction(World world, PRDAction action) {
         // TODO: Implement
