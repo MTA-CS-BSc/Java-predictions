@@ -13,7 +13,6 @@ import engine.validators.actions.PRDActionValidators;
 import java.util.Objects;
 
 public class ExpressionParser {
-
     public static Object parseRandomSystemFunctionExpression(String value) {
         try {
             return RandomGenerator.randomizeRandomNumber(Integer.parseInt(value));
@@ -21,8 +20,7 @@ public class ExpressionParser {
             return null;
         }
     }
-    public static Object parseEnvSystemFunctionExpression(Object world,
-                                                          String value) {
+    public static Object parseEnvSystemFunctionExpression(Object world, String value) {
         if (world.getClass() == World.class)
             return ((World)world).getEnvironment().getEnvVars().get(value);
 

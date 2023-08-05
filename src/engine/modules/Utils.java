@@ -20,7 +20,6 @@ public class Utils {
 
         return null;
     }
-
     public static Object findPropertyByName(Object world, String entityName, String prop) {
         if (world.getClass() == PRDWorld.class) {
             return ((PRDEntity) Objects.requireNonNull(findEntityByName(world, entityName)))
@@ -41,7 +40,6 @@ public class Utils {
 
         return null;
     }
-
     public static boolean isDecimal(String str) {
         try {
             Float.parseFloat(str);

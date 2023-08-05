@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Entities {
     protected HashMap<String, Entity> entitiesMap = new HashMap<>();
-
     public Entities(List<PRDEntity> list) {
         for (PRDEntity entity : list)
             entitiesMap.put(entity.getName(), new Entity(entity));

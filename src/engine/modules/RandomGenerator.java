@@ -6,19 +6,15 @@ public class RandomGenerator {
     public static Integer randomizeRandomNumber(int max) {
         return new Random().nextInt(max);
     }
-
     public static boolean randomizeRandomBoolean() {
         return new Random().nextBoolean();
     }
-
     public static float randomizeProbability() {
         return new Random().nextFloat();
     }
-
     public static float randomizeFloat(float min, float max) {
         return min + new Random().nextFloat() * (max - min);
     }
-
     public static String randomizeRandomString(int length) {
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"

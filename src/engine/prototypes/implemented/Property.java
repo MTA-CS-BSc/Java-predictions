@@ -34,7 +34,6 @@ public class Property {
     public String getType() { return type; }
     public PRDRange getRange() { return range; }
     public PRDValue getValue() { return value; }
-
     public int getStableTime() { return stableTime; }
     public void setStableTime(int value) { stableTime = value; }
 

@@ -46,7 +46,6 @@ public class ActionsPerformer {
         property.setStableTime(0);
         property.getValue().setCurrentValue(getNewValueForIncrementDecrement(action, property, by));
     }
-
     public void handleKillAction(World world, PRDAction action) {
         Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
         world.getEntities().getEntitiesMap().remove(action.getEntity());
