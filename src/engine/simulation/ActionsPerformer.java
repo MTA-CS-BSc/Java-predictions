@@ -57,7 +57,12 @@ public class ActionsPerformer {
             return;
 
         property.setStableTime(0);
-        property.getValue().setCurrentValue(getNewValueForIncrementDecrement(action, property, by));
+        String newValue = getNewValueForIncrementDecrement(action, property, by);
+
+        Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
+                "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
+
+        property.getValue().setCurrentValue(newValue);
     }
     public void handleKillAction(World world, PRDAction action) {
         Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
@@ -71,6 +76,14 @@ public class ActionsPerformer {
             return;
 
         property.setStableTime(0);
-        property.getValue().setCurrentValue(getNewValueForSet(action, value));
+        String newValue = getNewValueForSet(action, value);
+
+        Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
+                "value [%s]->[%s]", property.getName(), property.getValue().getCurrentValue(), newValue));
+
+        property.getValue().setCurrentValue(newValue);
+    }
+    public void handleCalculationAction(World world, PRDAction action) {
+        System.out.println("Not impleneted");
     }
 }
