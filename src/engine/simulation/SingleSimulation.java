@@ -15,15 +15,13 @@ public class SingleSimulation {
     long ticks = 0;
     UUID uuid;
     ActionsPerformer performer;
-
     SingleSimulationLog log;
 
-    //TODO: Add simulation history
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
         performer = new ActionsPerformer();
         world = _world;
-        log = new SingleSimulationLog(uuid, world);
+        log = new SingleSimulationLog(uuid, new World(world));
     }
     public SingleSimulationLog getLog() {
         return log;
@@ -101,7 +99,7 @@ public class SingleSimulation {
                                             uuid.toString(), isSimulationFinished(startTimeMillis)));
 
         log.setFinished(new Date());
-        log.setFinishWorldState(world);
+        log.setFinishWorldState(new World(world));
         return uuid.toString();
     }
 }

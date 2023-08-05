@@ -2,7 +2,7 @@ package engine.simulation;
 
 import engine.consts.*;
 import engine.logs.Loggers;
-import engine.modules.*;
+import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
@@ -75,6 +75,13 @@ public class ActionsPerformer {
     }
     private boolean evaluateSingleCondition(World world, PRDAction action, PRDCondition condition) {
         Property property = (Property)Utils.findPropertyByName(world, condition.getEntity(), condition.getProperty());
+
+        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntity()))
+                || Objects.isNull(property) || Objects.isNull(property.getValue())) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Entity [%s] or property [%s] do not exist",
+                    condition.getEntity(), condition.getProperty()));
+        }
+
         String value = ExpressionParser.evaluateExpression(world, action, condition.getValue());
         String operator = condition.getOperator();
         boolean isNumeric = Utils.isDecimal(value);
@@ -117,8 +124,10 @@ public class ActionsPerformer {
     public void handleCalculationAction(World world, PRDAction action) {
         Property resultProp = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());
 
-        if (Objects.isNull(resultProp))
+        if (Objects.isNull(resultProp)) {
+            Loggers.SIMULATION_LOGGER.info(String.format("result prop [%s] not found", action.getResultProp()));
             return;
+        }
 
         resultProp.setStableTime(0);
         String calculationResult = "";
@@ -171,7 +180,7 @@ public class ActionsPerformer {
         Property property = (Property)Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
         String value = ExpressionParser.evaluateExpression(world, action, action.getValue());
 
-        if (Objects.isNull(value) || Objects.isNull(property))
+        if (Objects.isNull(property) || Objects.isNull(value))
             return;
 
         property.setStableTime(0);
