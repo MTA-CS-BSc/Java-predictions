@@ -35,7 +35,10 @@ public class ActionsPerformer {
         if (!Objects.isNull(property.getRange())) {
             if (Float.parseFloat(newValue) > property.getRange().getTo()
                     || Float.parseFloat(newValue) < property.getRange().getFrom()) {
-                Loggers.SIMULATION_LOGGER.info("Can't perform increment/decrement due to range issue");
+                Loggers.SIMULATION_LOGGER.info(String.format("Can't change property [%s]" +
+                        " value from [%s] to [%s] due to range restriction",
+                        property.getName(), property.getValue().getCurrentValue(), newValue));
+
                 return false;
             }
 
