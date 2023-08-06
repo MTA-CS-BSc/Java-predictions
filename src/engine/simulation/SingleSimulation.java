@@ -21,7 +21,7 @@ public class SingleSimulation {
         uuid = UUID.randomUUID();
         performer = new ActionsPerformer();
         world = _world;
-//        log = new SingleSimulationLog(uuid, new World(world));
+        log = new SingleSimulationLog(uuid, world);
     }
     public void updateStableTimeToAllProps() {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
@@ -84,7 +84,7 @@ public class SingleSimulation {
         }
 
         world.initAllRandomVars();
-//        log.setStart(new Date());
+        log.setStart(new Date());
 
         long startTimeMillis = System.currentTimeMillis();
 
@@ -97,8 +97,8 @@ public class SingleSimulation {
         Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
                                             uuid.toString(), isSimulationFinished(startTimeMillis)));
 
-//        log.setFinished(new Date());
-//        log.setFinishWorldState(new World(world));
+        log.setFinished(new Date());
+        log.setFinishWorldState(world);
         return uuid.toString();
     }
 }
