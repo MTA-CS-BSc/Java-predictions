@@ -72,36 +72,37 @@ public class SingleSimulation {
 
         return returned;
     }
-//    public void handleSingleTick() {
-//        HashMap<String, PRDRule> rulesToApply = getRulesToApply();
-//
-//        rulesToApply.forEach((ruleName, rule) -> {
-//            List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
-//            actionsToPerform.forEach(action -> performer.fireAction(world, action));
-//        });
-//    }
-//    public String run() {
-//        if (Objects.isNull(world)) {
-//            Loggers.SIMULATION_LOGGER.info("No XML loaded");
-//            return "";
-//        }
-//
+
+    public void handleSingleTick() {
+        HashMap<String, PRDRule> rulesToApply = getRulesToApply();
+
+        rulesToApply.forEach((ruleName, rule) -> {
+            List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
+            actionsToPerform.forEach(action -> performer.fireAction(world, action));
+        });
+    }
+    public String run() {
+        if (Objects.isNull(world)) {
+            Loggers.SIMULATION_LOGGER.info("No XML loaded");
+            return "";
+        }
+
 //        world.initAllRandomVars();
-////        log.setStart(new Date());
-//
-//        long startTimeMillis = System.currentTimeMillis();
-//
-//        while (Objects.isNull(isSimulationFinished(startTimeMillis))) {
-//            handleSingleTick();
-//            ticks += 1;
-//            updateStableTimeToAllProps();
-//        }
-//
-//        Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
-//                                            uuid.toString(), isSimulationFinished(startTimeMillis)));
-//
-////        log.setFinished(new Date());
-////        log.setFinishWorldState(new World(world));
-//        return uuid.toString();
-//    }
+//        log.setStart(new Date());
+
+        long startTimeMillis = System.currentTimeMillis();
+
+        while (Objects.isNull(isSimulationFinished(startTimeMillis))) {
+            handleSingleTick();
+            ticks += 1;
+            updateStableTimeToAllProps();
+        }
+
+        Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
+                                            uuid.toString(), isSimulationFinished(startTimeMillis)));
+
+//        log.setFinished(new Date());
+//        log.setFinishWorldState(new World(world));
+        return uuid.toString();
+    }
 }

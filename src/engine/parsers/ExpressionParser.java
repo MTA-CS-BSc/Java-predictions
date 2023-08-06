@@ -82,7 +82,6 @@ public class ExpressionParser {
 
         return expression;
     }
-
     public static String parseExpression(PRDWorld world, PRDAction action, String expression) {
         if (expression.contains("(")
                 && isSystemFunction(expression.substring(0, expression.indexOf("("))))
@@ -93,7 +92,6 @@ public class ExpressionParser {
 
         return expression;
     }
-
     public static String getExpressionType(PRDWorld world, PRDAction action, String parsedExpression) {
         if (parsedExpression.contains("property")) {
             PRDProperty property = Utils.findPRDPropertyByName(world, action.getEntity(), parsedExpression.split("-")[1]);
@@ -112,7 +110,6 @@ public class ExpressionParser {
 
         return PropTypes.STRING;
     }
-
     public static String getExpressionType(World world, PRDAction action, String parsedExpression) {
         if (parsedExpression.contains("property")) {
             Property prop =  Utils.findPropertyByName(world, action.getEntity(), parsedExpression.split("-")[1]);
@@ -130,5 +127,9 @@ public class ExpressionParser {
             return PropTypes.BOOLEAN;
 
         return PropTypes.STRING;
+    }
+    public static String evaluateExpression(String parsedValue, SingleEntity entity) {
+        return parsedValue.contains("property") ?
+                Utils.getPropertyValueForEntity(entity, parsedValue.split("-")[1]) : parsedValue;
     }
 }

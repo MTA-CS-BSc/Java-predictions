@@ -33,13 +33,6 @@ public class Utils {
                 .filter(element -> element.getName().equals(entityName))
                 .findFirst().orElse(null);
     }
-    public static String getPropertyValueForEntity(SingleEntity singleEntity, String propertyName) {
-        return singleEntity.getProperties().getPropsMap().get(propertyName).getValue().getCurrentValue();
-    }
-    public static String evaluateExpression(String parsedValue, SingleEntity entity) {
-        return parsedValue.contains("property") ?
-                Utils.getPropertyValueForEntity(entity, parsedValue.split("-")[1]) : parsedValue;
-    }
     public static PRDProperty findPRDPropertyByName(PRDWorld world, String entityName, String propertyName) {
         PRDEntity entity = findPRDEntityByName(world, entityName);
 
@@ -50,6 +43,9 @@ public class Utils {
                 .stream()
                 .filter(element -> element.getPRDName().equals(propertyName))
                 .findFirst().orElse(null);
+    }
+    public static String getPropertyValueForEntity(SingleEntity singleEntity, String propertyName) {
+        return singleEntity.getProperties().getPropsMap().get(propertyName).getValue().getCurrentValue();
     }
     public static boolean isDecimal(String str) {
         try {
