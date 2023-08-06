@@ -121,7 +121,7 @@ public class PRDActionValidators {
 
         String propertyType = property.getType();
         String parsedValue = ExpressionParser.parseExpression(world, action, condition.getValue());
-        String parsedValueType = ExpressionParser.parseExpression(world, action, parsedValue);
+        String parsedValueType = ExpressionParser.getExpressionType(world, action, parsedValue);
 
         if (PropTypes.NUMERIC_PROPS.contains(propertyType)) {
             if (!PropTypes.NUMERIC_PROPS.contains(parsedValueType)) {
