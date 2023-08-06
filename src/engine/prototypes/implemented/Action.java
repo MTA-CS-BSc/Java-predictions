@@ -1,0 +1,84 @@
+package engine.prototypes.implemented;
+
+import engine.prototypes.jaxb.PRDAction;
+
+import java.util.Objects;
+
+public class Action {
+    protected Divide divide;
+    protected Multiply multiply;
+    protected Condition condition;
+    protected Then _then;
+    protected Else _else;
+    protected String value;
+    protected String type;
+    protected String resultPropertyName;
+    protected String propertyName;
+    protected String entityName;
+    protected String by;
+
+    public Action(PRDAction action) {
+        if (!Objects.isNull(action)) {
+            value = action.getValue();
+            type = action.getType();
+            resultPropertyName = action.getResultProp();
+            propertyName = action.getProperty();
+            entityName = action.getEntity();
+            by = action.getBy();
+
+            if (!Objects.isNull(action.getPRDDivide()))
+                divide = new Divide(action.getPRDDivide());
+
+            if (!Objects.isNull(action.getPRDMultiply()))
+                multiply = new Multiply(action.getPRDMultiply());
+
+            _then = new Then(action.getPRDThen());
+            _else = new Else(action.getPRDElse());
+            condition = new Condition(action.getPRDCondition());
+        }
+    }
+
+    public Divide getDivide() {
+        return divide;
+    }
+
+    public Multiply getMultiply() {
+        return multiply;
+    }
+
+    public Condition getCondition() {
+        return condition;
+    }
+
+    public Then getThen() {
+        return _then;
+    }
+
+    public Else getElse() {
+        return _else;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getResultPropertyName() {
+        return resultPropertyName;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public String getBy() {
+        return by;
+    }
+}

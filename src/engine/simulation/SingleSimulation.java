@@ -4,7 +4,7 @@ import engine.logs.Loggers;
 import engine.logs.SingleSimulationLog;
 import engine.modules.RandomGenerator;
 import engine.consts.TerminationReasons;
-import engine.prototypes.implemented.World;
+import engine.prototypes.implemented.*;
 import engine.prototypes.jaxb.*;
 
 import java.util.*;
@@ -33,9 +33,9 @@ public class SingleSimulation {
         });
     }
     public String isSimulationFinished(long startTimeMillis) {
-        PRDTermination termination = world.getTermination();
+        Termination termination = world.getTermination();
 
-        for (Object stopCondition : termination.getPRDByTicksOrPRDBySecond()) {
+        for (Object stopCondition : termination.getStopConditions()) {
             if (stopCondition.getClass() == PRDBySecond.class
                     && startTimeMillis >= ((PRDBySecond)stopCondition).getCount())
                 return TerminationReasons.BY_SECOND;
@@ -47,21 +47,22 @@ public class SingleSimulation {
 
         return null;
     }
-    public boolean isPossibleToPerformRule(HashMap<String, PRDRule> allRules, String ruleName) {
+    public boolean isPossibleToPerformRule(HashMap<String, Rule> allRules, String ruleName) {
         float randomProbability = RandomGenerator.randomizeProbability();
-        PRDRule rule = allRules.get(ruleName);
+        Rule rule = allRules.get(ruleName);
 
-        return rule.getPRDActivation().getProbability() >= randomProbability
-                && ticks % rule.getPRDActivation().getTicks() == 0;
+        return rule.getActivation().getProbability() >= randomProbability
+                && ticks % rule.getActivation().getTicks() == 0;
     }
-    public HashMap<String, PRDRule> getRulesToApply() {
-        HashMap<String, PRDRule> allRules = world.getRules().getRulesMap();
+    public HashMap<String, Rule> getRulesToApply() {
+        HashMap<String, Rule> allRules = world.getRules().getRulesMap();
+
         List<String> relevantKeys = allRules.keySet()
                                     .stream()
                                     .filter(element -> isPossibleToPerformRule(allRules, element))
                                     .collect(Collectors.toList());
 
-        HashMap<String, PRDRule> returned = new HashMap<>();
+        HashMap<String, Rule> returned = new HashMap<>();
 
         relevantKeys.forEach(key -> {
            returned.put(key, allRules.get(key));
@@ -70,11 +71,11 @@ public class SingleSimulation {
         return returned;
     }
     public void handleSingleTick() {
-        HashMap<String, PRDRule> rulesToApply = getRulesToApply();
+        HashMap<String, Rule> rulesToApply = getRulesToApply();
 
         rulesToApply.forEach((ruleName, rule) -> {
-            List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
-            actionsToPerform.forEach(action -> performer.fireAction(world, action, null));
+            Actions actionsToPerform = rule.getActions();
+            actionsToPerform.getActions().forEach(action -> performer.fireAction(world, action, null));
         });
     }
     public String run() {

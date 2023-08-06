@@ -1,0 +1,30 @@
+package engine.prototypes.implemented;
+
+import engine.prototypes.jaxb.PRDActivation;
+
+import java.util.Objects;
+
+public class Activation {
+    protected int ticks;
+    protected double probability;
+
+    public Activation() {
+        ticks = 1;
+        probability = 1;
+    }
+    public Activation(PRDActivation activation) {
+        if (!Objects.isNull(activation)) {
+            ticks = !Objects.isNull(activation.getTicks()) ? activation.getTicks() : 1;
+            probability = !Objects.isNull(activation.getProbability()) ? activation.getProbability() : 1;
+        }
+    }
+    public int getTicks() {
+        return ticks;
+    }
+    public void setTicks(int ticks) {
+        this.ticks = ticks;
+    }
+    public double getProbability() {
+        return probability;
+    }
+}

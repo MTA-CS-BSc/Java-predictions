@@ -14,7 +14,7 @@ public class SingleSimulationLog {
 
     public SingleSimulationLog(UUID _uuid, World _startWorldState) {
         uuid = _uuid;
-        startWorldState = new World(_startWorldState);
+//        startWorldState = new World(_startWorldState);
     }
     public UUID getUuid() {
         return uuid;
@@ -36,7 +36,7 @@ public class SingleSimulationLog {
     }
 
     public void setFinishWorldState(World finishWorldState) {
-        this.finishWorldState = new World(finishWorldState);
+//        this.finishWorldState = new World(finishWorldState);
     }
 
     public Date getStart() {

@@ -13,25 +13,18 @@ import java.util.Objects;
 public class World {
     protected Environment environment;
     protected Entities entities;
-    protected PRDTermination termination;
+    protected Termination termination;
     protected Rules rules;
 
     public World(PRDWorld world) {
         rules = new Rules(world.getPRDRules().getPRDRule());
         entities = new Entities(world.getPRDEntities().getPRDEntity());
         environment = new Environment(world.getPRDEvironment().getPRDEnvProperty());
-        termination = world.getPRDTermination();
+        termination = new Termination(world.getPRDTermination());
     }
-    public World(World _other) {
-        environment = new Environment(_other.getEnvironment());
-        entities = new Entities(_other.getEntities());
-        termination = new PRDTermination(_other.getTermination());
-        rules = new Rules(_other.getRules());
-    }
-
     public Environment getEnvironment() { return environment; }
     public Entities getEntities() { return entities; }
-    public PRDTermination getTermination() { return termination; }
+    public Termination getTermination() { return termination; }
     public Rules getRules() { return rules; }
     public void initAllRandomVars() {
         entities.getEntitiesMap().values().forEach(entity -> {

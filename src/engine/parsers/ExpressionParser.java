@@ -6,10 +6,7 @@ import engine.consts.PropTypes;
 import engine.modules.RandomGenerator;
 import engine.consts.SystemFunctions;
 import engine.modules.Utils;
-import engine.prototypes.implemented.Entity;
-import engine.prototypes.implemented.Property;
-import engine.prototypes.implemented.SingleEntity;
-import engine.prototypes.implemented.World;
+import engine.prototypes.implemented.*;
 import engine.prototypes.jaxb.*;
 import engine.validators.actions.PRDActionValidators;
 
@@ -45,7 +42,29 @@ public class ExpressionParser {
 
         return "";
     }
-    private static String parseSystemFunctionExpression(Object world, PRDAction action,
+    private static String parseSystemFunctionExpression(PRDWorld world, PRDAction action,
+                                                        String expression) {
+        String functionName = expression.substring(0, expression.indexOf("("));
+        String value = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
+
+        if (functionName.equalsIgnoreCase(SystemFunctions.RANDOM))
+            return parseRandomSystemFunctionExpression(value);
+
+        if (functionName.equalsIgnoreCase(SystemFunctions.ENVIRONMENT))
+            return parseEnvSystemFunctionExpression(world, value);
+
+//        else if (functionName.equalsIgnoreCase(SystemFunctions.EVALUATE))
+//            return parseEvaluateSystemFunctionExpression(world, value);
+//
+//        else if (functionName.equalsIgnoreCase(SystemFunctions.PRECENT))
+//            return parsePercentSystemFunctionExpression(world, action, value);
+//
+//        else if (functionName.equalsIgnoreCase(SystemFunctions.TICKS))
+//            return parseTicksSystemFunctionExpression(world, value);
+
+        return null;
+    }
+    private static String parseSystemFunctionExpression(World world, Action action,
                                                         String expression) {
         String functionName = expression.substring(0, expression.indexOf("("));
         String value = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
@@ -70,12 +89,12 @@ public class ExpressionParser {
     private static boolean isSystemFunction(String type) {
         return SystemFunctions.ALL_SYSTEM_FUNCS.contains(type);
     }
-    public static String parseExpression(World world, PRDAction action, String expression) {
+    public static String parseExpression(World world, Action action, String expression) {
         if (expression.contains("(")
             && isSystemFunction(expression.substring(0, expression.indexOf("("))))
                 return parseSystemFunctionExpression(world, action, expression);
 
-        Property prop = Utils.findPropertyByName(world, action.getEntity(), expression);
+        Property prop = Utils.findPropertyByName(world, action.getEntityName(), expression);
 
         if (!Objects.isNull(prop))
             return "property-" + expression;

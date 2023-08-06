@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Rules {
-    protected HashMap<String, PRDRule> rulesMap = new HashMap<>();
+    protected HashMap<String, Rule> rulesMap = new HashMap<>();
     public Rules(List<PRDRule> list) {
         for (PRDRule rule : list)
-            rulesMap.put(rule.getName(), rule);
+            rulesMap.put(rule.getName(), new Rule(rule));
     }
-    public HashMap<String, PRDRule> getRulesMap() { return rulesMap; }
+    public HashMap<String, Rule> getRulesMap() { return rulesMap; }
 }

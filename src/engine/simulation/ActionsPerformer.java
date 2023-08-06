@@ -4,16 +4,12 @@ import engine.consts.*;
 import engine.logs.Loggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
-import engine.prototypes.implemented.Entity;
-import engine.prototypes.implemented.Property;
-import engine.prototypes.implemented.SingleEntity;
-import engine.prototypes.implemented.World;
-import engine.prototypes.jaxb.*;
+import engine.prototypes.implemented.*;
 
 import java.util.*;
 
 public class ActionsPerformer {
-    public void fireAction(World world, PRDAction action, SingleEntity on) {
+    public void fireAction(World world, Action action, SingleEntity on) {
         String type = action.getType();
 
         if (type.equalsIgnoreCase(ActionTypes.INCREASE)
@@ -46,10 +42,10 @@ public class ActionsPerformer {
 
         return true;
     }
-    public void handleSetAction(World world, PRDAction action) {
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntity());
+    public void handleSetAction(World world, Action action) {
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
         String parsedValue = ExpressionParser.parseExpression(world, action, action.getValue());
-        Property property = Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
+        Property property = Utils.findPropertyByName(world, action.getEntityName(), action.getPropertyName());
 
         if (Objects.isNull(mainEntity) || Objects.isNull(property))
             return;
@@ -71,7 +67,7 @@ public class ActionsPerformer {
 
         });
     }
-    private String getNewValueForIncrementDecrement(PRDAction action,
+    private String getNewValueForIncrementDecrement(Action action,
                                                     Property property, String by) {
         if (action.getType().equals(ActionTypes.INCREASE))
             return String.valueOf(Float.parseFloat(property.getValue().getCurrentValue()) + Float.parseFloat(by));
@@ -81,10 +77,10 @@ public class ActionsPerformer {
 
         return "";
     }
-    public void handleIncrementDecrementAction(World world, PRDAction action) {
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntity());
+    public void handleIncrementDecrementAction(World world, Action action) {
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
         String parsedValue = ExpressionParser.parseExpression(world, action, action.getBy());
-        Property property = Utils.findPropertyByName(world, action.getEntity(), action.getProperty());
+        Property property = Utils.findPropertyByName(world, action.getEntityName(), action.getPropertyName());
 
         if (Objects.isNull(mainEntity) || Objects.isNull(property))
             return;
@@ -102,9 +98,9 @@ public class ActionsPerformer {
             }
         });
     }
-    private String getCalculationResult(World world, PRDAction action, SingleEntity singleEntity) {
-        PRDMultiply multiply = action.getPRDMultiply();
-        PRDDivide divide = action.getPRDDivide();
+    private String getCalculationResult(World world, Action action, SingleEntity singleEntity) {
+        Multiply multiply = action.getMultiply();
+        Divide divide = action.getDivide();
 
         String arg1 = ExpressionParser.parseExpression(world, action, Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1());
         String arg2 = ExpressionParser.parseExpression(world, action, Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2());
@@ -118,23 +114,23 @@ public class ActionsPerformer {
         return String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(eval_arg1) / Float.parseFloat(eval_arg2)
                 : Float.parseFloat(eval_arg1) * Float.parseFloat(eval_arg2));
     }
-    public void handleCalculationAction(World world, PRDAction action) {
-        Property someResultProp = Utils.findPropertyByName(world, action.getEntity(), action.getResultProp());
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntity());
+    public void handleCalculationAction(World world, Action action) {
+        Property someResultProp = Utils.findPropertyByName(world, action.getEntityName(), action.getResultPropertyName());
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
         if (Objects.isNull(mainEntity) || Objects.isNull(someResultProp)) {
             Loggers.SIMULATION_LOGGER.info(String.format("In calculation action," +
-                    " entity [%s] or result prop [%s] not found", action.getEntity(), action.getResultProp()));
+                    " entity [%s] or result prop [%s] not found", action.getEntityName(), action.getResultPropertyName()));
             return;
         }
 
         mainEntity.getSingleEntities().forEach(entity -> {
             String calculationResult = getCalculationResult(world, action, entity);
-            Property resultProp = Utils.findPropertyByName(entity, action.getResultProp());
+            Property resultProp = Utils.findPropertyByName(entity, action.getResultPropertyName());
 
             if (validateNewValueInRange(resultProp, calculationResult)) {
                 Loggers.SIMULATION_LOGGER.info(String.format("Setting [%s] on entity [%s] = [%s]",
-                                resultProp.getName(), action.getEntity(), calculationResult));
+                                resultProp.getName(), action.getEntityName(), calculationResult));
 
                 resultProp.getValue().setCurrentValue(calculationResult);
                 resultProp.setStableTime(0);
@@ -142,10 +138,10 @@ public class ActionsPerformer {
         });
 
     }
-    private boolean evaluateMultipleCondition(World world, PRDAction action, PRDCondition condition, SingleEntity singleEntity) {
-        List<PRDCondition> allConditions = condition.getPRDCondition();
+    private boolean evaluateMultipleCondition(World world, Action action, Condition condition, SingleEntity singleEntity) {
+        List<Condition> allConditions = condition.getConditions();
         List<Boolean> allConditionsResults = new ArrayList<>();
-        String logicalOperator = condition.getLogical();
+        String logicalOperator = condition.getLogicalOperator();
 
         allConditions.forEach(current -> allConditionsResults.add(evaluateCondition(world, action, current, singleEntity)));
 
@@ -154,13 +150,13 @@ public class ActionsPerformer {
                 .reduce(allConditionsResults.get(0), (item1, item2) ->
                         logicalOperator.equals(ConditionLogicalOperators.OR) ? item1 || item2 : item1 && item2);
     }
-    private boolean evaluateSingleCondition(World world, PRDAction action, PRDCondition condition, SingleEntity singleEntity) {
+    private boolean evaluateSingleCondition(World world, Action action, Condition condition, SingleEntity singleEntity) {
         Property property = singleEntity.getProperties().getPropsMap().get(condition.getProperty());
 
-        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntity()))
+        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntityName()))
                 || Objects.isNull(property) || Objects.isNull(property.getValue())) {
             Loggers.SIMULATION_LOGGER.info(String.format("Entity [%s] or property [%s] do not exist",
-                    condition.getEntity(), condition.getProperty()));
+                    condition.getEntityName(), condition.getProperty()));
             return true;
         }
 
@@ -186,18 +182,18 @@ public class ActionsPerformer {
 
         return true;
     }
-    private boolean evaluateCondition(World world, PRDAction action, PRDCondition condition, SingleEntity singleEntity) {
+    private boolean evaluateCondition(World world, Action action, Condition condition, SingleEntity singleEntity) {
         if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
             return evaluateSingleCondition(world, action, condition, singleEntity);
 
         return evaluateMultipleCondition(world, action, condition, singleEntity);
     }
-    public void handleConditionAction(World world, PRDAction action) {
-        PRDCondition condition = action.getPRDCondition();
-        List<PRDAction> thenActions = action.getPRDThen().getPRDAction();
-        PRDElse prdElse = action.getPRDElse();
+    public void handleConditionAction(World world, Action action) {
+        Condition condition = action.getCondition();
+        List<Action> thenActions = action.getThen().getActions();
+        Else prdElse = action.getElse();
 
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntity());
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
         if (Objects.isNull(mainEntity))
             return;
@@ -208,21 +204,21 @@ public class ActionsPerformer {
            if (conditionResult)
                thenActions.forEach(actToPerform -> fireAction(world, actToPerform, singleEntity));
 
-           else if (!Objects.isNull(prdElse))
-               prdElse.getPRDAction().forEach(actToPerform -> fireAction(world, actToPerform, singleEntity));
+           else
+               prdElse.getActions().forEach(actToPerform -> fireAction(world, actToPerform, singleEntity));
         });
     }
-    public void handleKillAllSingleEntities(World world, PRDAction action) {
-        Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
-        world.getEntities().getEntitiesMap().remove(action.getEntity());
+    public void handleKillAllSingleEntities(World world, Action action) {
+        Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntityName()));
+        world.getEntities().getEntitiesMap().remove(action.getEntityName());
     }
-    public void handleKillAction(World world, PRDAction action, SingleEntity entityToKill) {
+    public void handleKillAction(World world, Action action, SingleEntity entityToKill) {
         if (Objects.isNull(entityToKill))
             handleKillAllSingleEntities(world, action);
 
         else {
-            Loggers.SIMULATION_LOGGER.info(String.format("Killing 1 entity of entity [%s]", action.getEntity()));
-            Entity mainEntity = Utils.findEntityByName(world, action.getEntity());
+            Loggers.SIMULATION_LOGGER.info(String.format("Killing 1 entity of entity [%s]", action.getEntityName()));
+            Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
             mainEntity.setPopulation(mainEntity.getPopulation() - 1);
             List<SingleEntity> updatedList = new ArrayList<>();
