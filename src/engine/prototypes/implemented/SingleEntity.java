@@ -10,6 +10,10 @@ public class SingleEntity {
     public SingleEntity(List<PRDProperty> props) {
         properties = new Properties(props);
     }
+
+    public SingleEntity(SingleEntity other) {
+        properties = new Properties(other.getProperties());
+    }
     public Properties getProperties() {
         return properties;
     }

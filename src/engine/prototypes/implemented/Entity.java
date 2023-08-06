@@ -31,5 +31,15 @@ public class Entity {
             singleEntities.add(new SingleEntity(entity.getPRDProperties().getPRDProperty()));
     }
 
+    public Entity(Entity other) {
+        name = other.getName();
+        population = other.getPopulation();
+        singleEntities = new ArrayList<>();
+
+        other.getSingleEntities().forEach(singleEntity -> {
+           singleEntities.add(new SingleEntity(singleEntity));
+        });
+    }
+
     public void setSingleEntities(List<SingleEntity> list) { singleEntities = list; }
 }

@@ -6,6 +6,8 @@ import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;
 import engine.prototypes.jaxb.PRDValue;
 
+import java.util.Objects;
+
 public class Property {
     protected int stableTime;
     protected String name;
@@ -76,6 +78,20 @@ public class Property {
         value = new PRDValue();
 
         value.setRandomInitialize(true);
+    }
+
+    public Property(Property other) {
+        name = other.getName();
+        type = other.getType();
+        value = new PRDValue();
+
+        value.setRandomInitialize(true);
+
+        if (!Objects.isNull(other.getValue())) {
+            value.setRandomInitialize(other.getValue().isRandomInitialize());
+            value.setInit(other.getValue().getInit());
+            value.setCurrentValue(other.getValue().getCurrentValue());
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package engine.logs;
 
 import engine.prototypes.implemented.World;
+import engine.prototypes.implemented.WorldState;
 
 import java.util.Date;
 import java.util.UUID;
@@ -8,13 +9,13 @@ import java.util.UUID;
 public class SingleSimulationLog {
     Date start;
     Date finished;
-    World startWorldState;
-    World finishWorldState;
+    WorldState startWorldState;
+    WorldState finishWorldState;
     UUID uuid;
 
     public SingleSimulationLog(UUID _uuid, World _startWorldState) {
         uuid = _uuid;
-//        startWorldState = new World(_startWorldState);
+        startWorldState = new WorldState(_startWorldState);
     }
     public UUID getUuid() {
         return uuid;
@@ -31,12 +32,8 @@ public class SingleSimulationLog {
         this.finished = finished;
     }
 
-    public void setStartWorldState(World startWorldState) {
-        this.startWorldState = startWorldState;
-    }
-
     public void setFinishWorldState(World finishWorldState) {
-//        this.finishWorldState = new World(finishWorldState);
+        this.finishWorldState = new WorldState(finishWorldState);
     }
 
     public Date getStart() {
@@ -47,11 +44,11 @@ public class SingleSimulationLog {
         return finished;
     }
 
-    public World getStartWorldState() {
+    public WorldState getStartWorldState() {
         return startWorldState;
     }
 
-    public World getFinishWorldState() {
+    public WorldState getFinishWorldState() {
         return finishWorldState;
     }
 }
