@@ -37,7 +37,7 @@ public class SingleSimulation {
 
         for (Object stopCondition : termination.getStopConditions()) {
             if (stopCondition.getClass() == BySecond.class
-                    && startTimeMillis >= ((BySecond)stopCondition).getCount())
+                    && System.currentTimeMillis() - startTimeMillis >= (long)((BySecond)stopCondition).getCount() * 1000)
                 return TerminationReasons.BY_SECOND;
 
             else if (stopCondition.getClass() == ByTicks.class

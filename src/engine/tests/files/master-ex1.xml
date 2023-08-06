@@ -78,6 +78,6 @@
 		</PRD-rule>
 	</PRD-rules>
 	<PRD-termination>
-		<PRD-by-second count="5"/>
+		<PRD-by-second count="15"/>
 	</PRD-termination>
 </PRD-world>
