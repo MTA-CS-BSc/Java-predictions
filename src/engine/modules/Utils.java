@@ -1,49 +1,38 @@
 package engine.modules;
 
+import engine.consts.PropTypes;
+import engine.consts.Restrictions;
+import engine.prototypes.implemented.Entity;
+import engine.prototypes.implemented.Property;
+import engine.prototypes.implemented.SingleEntity;
 import engine.prototypes.implemented.World;
-import engine.prototypes.jaxb.PRDEntity;
-import engine.prototypes.jaxb.PRDWorld;
+import engine.prototypes.jaxb.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
 public class Utils {
-    public static Object findEntityByName(Object world, String name) {
-        if (world.getClass() == PRDWorld.class) {
-            return ((PRDWorld)world).getPRDEntities().getPRDEntity()
-                    .stream()
-                    .filter(element -> element.getName().equals(name))
-                    .findFirst().orElse(null);
-        }
-
-        else if (world.getClass() == World.class)
-            return ((World)world).getEntities().getEntitiesMap().get(name);
-
-        return null;
+    public static Entity findEntityByName(World world, String entityName) {
+        return world.getEntities().getEntitiesMap().get(entityName);
     }
-    public static Object findPropertyByName(Object world, String entityName, String prop) {
-        if (Objects.isNull(findEntityByName(world, entityName)))
+    public static PRDEntity findPRDEntityByName(PRDWorld world, String entityName) {
+        return world.getPRDEntities().getPRDEntity()
+                .stream()
+                .filter(element -> element.getName().equals(entityName))
+                .findFirst().orElse(null);
+    }
+
+    public static PRDProperty findPRDPropertyByName(PRDWorld world, String entityName, String propertyName) {
+        PRDEntity entity = findPRDEntityByName(world, entityName);
+
+        if (Objects.isNull(entity))
             return null;
 
-        if (world.getClass() == PRDWorld.class) {
-            return ((PRDEntity) Objects.requireNonNull(findEntityByName(world, entityName)))
-                    .getPRDProperties().getPRDProperty()
-                    .stream()
-                    .filter(element -> element.getPRDName().equals(prop))
-                    .findFirst().orElse(null);
-        }
-
-        else if (world.getClass() == World.class) {
-            return (((World)world).getEntities()
-                    .getEntitiesMap()
-                    .get(entityName))
-                    .getProperties()
-                    .getPropsMap()
-                    .get(prop);
-        }
-
-        return null;
+        return entity.getPRDProperties().getPRDProperty()
+                .stream()
+                .filter(element -> element.getPRDName().equals(propertyName))
+                .findFirst().orElse(null);
     }
     public static boolean isDecimal(String str) {
         try {
@@ -55,8 +44,20 @@ public class Utils {
             return false;
         }
     }
-
     public static String formatDate(Date date) {
         return new SimpleDateFormat("dd-MM-yyyy | hh.mm.ss").format(date);
+    }
+    public static void setPropRandomInit(Property property, PRDRange range) {
+        if (property.getType().equals(PropTypes.BOOLEAN))
+            property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomBoolean()));
+
+        else if (property.getType().equals(PropTypes.DECIMAL))
+            property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomNumber((int)range.getFrom(), (int)range.getTo())));
+
+        else if (property.getType().equals(PropTypes.FLOAT))
+            property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat((float)range.getFrom(), (float)range.getTo())));
+
+        else if (property.getType().equals(PropTypes.STRING))
+            property.getValue().setInit(RandomGenerator.randomizeRandomString(Restrictions.MAX_RANDOM_STRING_LENGTH));
     }
 }

@@ -1,6 +1,5 @@
 package engine.validators;
 
-import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.entities.PRDEntitiesValidators;
 import engine.validators.env.PRDEvironmentValidators;
@@ -27,8 +26,5 @@ public class PRDWorldValidators {
     }
     private static boolean validateRules(PRDWorld world) {
         return PRDRulesValidators.validateRules(world, world.getPRDRules());
-    }
-    public static boolean validateEntityExists(PRDWorld world, String entityName) {
-        return !Objects.isNull(Utils.findEntityByName(world, entityName));
     }
 }

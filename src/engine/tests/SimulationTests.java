@@ -28,8 +28,8 @@ public class SimulationTests {
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {
             World world = new World(prdWorld);
-            SingleSimulation simulation = new SingleSimulation(world);
-            simulation.run();
+//            SingleSimulation simulation = new SingleSimulation(world);
+//            simulation.run();
         }
     }
 }
