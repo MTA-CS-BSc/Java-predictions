@@ -3,16 +3,15 @@ package engine.modules;
 import engine.consts.PropTypes;
 import engine.consts.Restrictions;
 import engine.logs.Loggers;
-import engine.prototypes.implemented.Entity;
-import engine.prototypes.implemented.Property;
-import engine.prototypes.implemented.SingleEntity;
-import engine.prototypes.implemented.World;
+import engine.prototypes.implemented.*;
 import engine.prototypes.jaxb.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Utils {
     public static Entity findEntityByName(World world, String entityName) {
@@ -59,6 +58,29 @@ public class Utils {
         }
 
         return true;
+    }
+    public static boolean isPossibleToPerformRule(HashMap<String, Rule> allRules, String ruleName, long ticks) {
+        float randomProbability = RandomGenerator.randomizeProbability();
+        Rule rule = allRules.get(ruleName);
+
+        return rule.getActivation().getProbability() >= randomProbability
+                && ticks % rule.getActivation().getTicks() == 0;
+    }
+    public static HashMap<String, Rule> getRulesToApply(World world, long ticks) {
+        HashMap<String, Rule> allRules = world.getRules().getRulesMap();
+
+        List<String> relevantKeys = allRules.keySet()
+                .stream()
+                .filter(element -> Utils.isPossibleToPerformRule(allRules, element, ticks))
+                .collect(Collectors.toList());
+
+        HashMap<String, Rule> returned = new HashMap<>();
+
+        relevantKeys.forEach(key -> {
+            returned.put(key, allRules.get(key));
+        });
+
+        return returned;
     }
     public static boolean isDecimal(String str) {
         try {

@@ -30,4 +30,14 @@ public class ActionsPerformer {
         else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
             ConditionPerformer.handle(world, action, on);
     }
+
+    public static void updateStableTimeToAllProps(World world) {
+        world.getEntities().getEntitiesMap().values().forEach(entity -> {
+            entity.getSingleEntities().forEach(singleEntity -> {
+                singleEntity.getProperties().getPropsMap().forEach((key, prop) -> {
+                    prop.setStableTime(prop.getStableTime() + 1);
+                });
+            });
+        });
+    }
 }
