@@ -14,12 +14,12 @@ public class SingleSimulation {
     World world;
     long ticks = 0;
     UUID uuid;
-    //ActionsPerformer performer;
+    ActionsPerformer performer;
     SingleSimulationLog log;
 
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
-//        performer = new ActionsPerformer();
+        performer = new ActionsPerformer();
         world = _world;
 //        log = new SingleSimulationLog(uuid, new World(world));
     }
@@ -27,11 +27,13 @@ public class SingleSimulation {
         return log;
     }
     public void updateStableTimeToAllProps() {
-//        world.getEntities().getEntitiesMap().values().forEach(entity -> {
-//            entity.getProperties().getPropsMap().values().forEach(property -> {
-//                property.setStableTime(property.getStableTime() + 1);
-//            });
-//        });
+        world.getEntities().getEntitiesMap().values().forEach(entity -> {
+            entity.getSingleEntities().forEach(singleEntity -> {
+                singleEntity.getProperties().getPropsMap().forEach((key, prop) -> {
+                    prop.setStableTime(prop.getStableTime() + 1);
+                });
+            });
+        });
     }
     public String isSimulationFinished(long startTimeMillis) {
         PRDTermination termination = world.getTermination();

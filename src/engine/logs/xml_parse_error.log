@@ -1,15 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE log SYSTEM "logger.dtd">
 <log>
-<record>
-  <date>2023-08-06T14:18:27</date>
-  <millis>1691320707267</millis>
-  <sequence>0</sequence>
-  <logger>XmlParser</logger>
-  <level>INFO</level>
-  <class>engine.validators.actions.PRDActionValidators</class>
-  <method>validateCalculationArgs</method>
-  <thread>1</thread>
-  <message>On action [calculation], one or more of the propertieshas incorrect type</message>
-</record>
 </log>

@@ -75,12 +75,9 @@ public class ExpressionParser {
             && isSystemFunction(expression.substring(0, expression.indexOf("("))))
                 return parseSystemFunctionExpression(world, action, expression);
 
-        SingleEntity someEntity = world.getEntities()
-                .getEntitiesMap()
-                .get(action.getEntity())
-                .getSingleEntities().get(0);
+        Property prop = Utils.findPropertyByName(world, action.getEntity(), expression);
 
-        if (someEntity.getProperties().getPropsMap().containsKey(expression))
+        if (!Objects.isNull(prop))
             return "property-" + expression;
 
         return expression;
@@ -105,6 +102,25 @@ public class ExpressionParser {
                 return "";
 
             return property.getType();
+        }
+
+        if (Utils.isDecimal(parsedExpression))
+            return PropTypes.DECIMAL;
+
+        else if (parsedExpression.equals(BoolPropValues.TRUE) || parsedExpression.equals(BoolPropValues.FALSE))
+            return PropTypes.BOOLEAN;
+
+        return PropTypes.STRING;
+    }
+
+    public static String getExpressionType(World world, PRDAction action, String parsedExpression) {
+        if (parsedExpression.contains("property")) {
+            Property prop =  Utils.findPropertyByName(world, action.getEntity(), parsedExpression.split("-")[1]);
+
+            if (Objects.isNull(prop))
+                return "";
+
+            return prop.getType();
         }
 
         if (Utils.isDecimal(parsedExpression))

@@ -16,13 +16,30 @@ public class Utils {
     public static Entity findEntityByName(World world, String entityName) {
         return world.getEntities().getEntitiesMap().get(entityName);
     }
+    public static Property findPropertyByName(World world, String entityName, String propertyName) {
+        SingleEntity someEntity = Utils.findEntityByName(world, entityName).getSingleEntities().get(0);
+
+        if (Objects.isNull(someEntity))
+            return null;
+
+        return someEntity.getProperties().getPropsMap().get(propertyName);
+    }
+    public static Property findPropertyByName(SingleEntity entity, String propertyName) {
+        return entity.getProperties().getPropsMap().get(propertyName);
+    }
     public static PRDEntity findPRDEntityByName(PRDWorld world, String entityName) {
         return world.getPRDEntities().getPRDEntity()
                 .stream()
                 .filter(element -> element.getName().equals(entityName))
                 .findFirst().orElse(null);
     }
-
+    public static String getPropertyValueForEntity(SingleEntity singleEntity, String propertyName) {
+        return singleEntity.getProperties().getPropsMap().get(propertyName).getValue().getCurrentValue();
+    }
+    public static String evaluateExpression(String parsedValue, SingleEntity entity) {
+        return parsedValue.contains("property") ?
+                Utils.getPropertyValueForEntity(entity, parsedValue.split("-")[1]) : parsedValue;
+    }
     public static PRDProperty findPRDPropertyByName(PRDWorld world, String entityName, String propertyName) {
         PRDEntity entity = findPRDEntityByName(world, entityName);
 
