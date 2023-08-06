@@ -22,11 +22,17 @@ public class World {
         environment = new Environment(world.getPRDEvironment().getPRDEnvProperty());
         termination = world.getPRDTermination();
     }
+    public World(World _other) {
+        environment = new Environment(_other.getEnvironment());
+        entities = new Entities(_other.getEntities());
+        termination = new PRDTermination(_other.getTermination());
+        rules = new Rules(_other.getRules());
+    }
+
     public Environment getEnvironment() { return environment; }
     public Entities getEntities() { return entities; }
     public PRDTermination getTermination() { return termination; }
     public Rules getRules() { return rules; }
-
     public void initAllRandomVars() {
         entities.getEntitiesMap().values().forEach(entity -> {
             entity.getSingleEntities().forEach(singleEntity -> {
