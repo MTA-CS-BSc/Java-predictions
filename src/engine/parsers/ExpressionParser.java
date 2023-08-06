@@ -8,11 +8,32 @@ import engine.consts.SystemFunctions;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.jaxb.*;
-import engine.validators.actions.PRDActionValidators;
 
 import java.util.Objects;
 
 public class ExpressionParser {
+    public static String parseSystemFunctionExpression(PRDWorld world, PRDAction action,
+                                                        String expression) {
+        String functionName = expression.substring(0, expression.indexOf("("));
+        String value = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
+
+        if (functionName.equalsIgnoreCase(SystemFunctions.RANDOM))
+            return parseRandomSystemFunctionExpression(value);
+
+        if (functionName.equalsIgnoreCase(SystemFunctions.ENVIRONMENT))
+            return parseEnvSystemFunctionExpression(world, value);
+
+//        else if (functionName.equalsIgnoreCase(SystemFunctions.EVALUATE))
+//            return parseEvaluateSystemFunctionExpression(world, value);
+//
+//        else if (functionName.equalsIgnoreCase(SystemFunctions.PRECENT))
+//            return parsePercentSystemFunctionExpression(world, action, value);
+//
+//        else if (functionName.equalsIgnoreCase(SystemFunctions.TICKS))
+//            return parseTicksSystemFunctionExpression(world, value);
+
+        return null;
+    }
     private static String parseRandomSystemFunctionExpression(String value) {
         if (value.isEmpty())
             return "";
@@ -42,28 +63,6 @@ public class ExpressionParser {
 
         return "";
     }
-    private static String parseSystemFunctionExpression(PRDWorld world, PRDAction action,
-                                                        String expression) {
-        String functionName = expression.substring(0, expression.indexOf("("));
-        String value = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
-
-        if (functionName.equalsIgnoreCase(SystemFunctions.RANDOM))
-            return parseRandomSystemFunctionExpression(value);
-
-        if (functionName.equalsIgnoreCase(SystemFunctions.ENVIRONMENT))
-            return parseEnvSystemFunctionExpression(world, value);
-
-//        else if (functionName.equalsIgnoreCase(SystemFunctions.EVALUATE))
-//            return parseEvaluateSystemFunctionExpression(world, value);
-//
-//        else if (functionName.equalsIgnoreCase(SystemFunctions.PRECENT))
-//            return parsePercentSystemFunctionExpression(world, action, value);
-//
-//        else if (functionName.equalsIgnoreCase(SystemFunctions.TICKS))
-//            return parseTicksSystemFunctionExpression(world, value);
-
-        return null;
-    }
     private static String parseSystemFunctionExpression(World world, Action action,
                                                         String expression) {
         String functionName = expression.substring(0, expression.indexOf("("));
@@ -86,7 +85,7 @@ public class ExpressionParser {
 
         return null;
     }
-    private static boolean isSystemFunction(String type) {
+    public static boolean isSystemFunction(String type) {
         return SystemFunctions.ALL_SYSTEM_FUNCS.contains(type);
     }
     public static String parseExpression(World world, Action action, String expression) {
@@ -94,44 +93,16 @@ public class ExpressionParser {
             && isSystemFunction(expression.substring(0, expression.indexOf("("))))
                 return parseSystemFunctionExpression(world, action, expression);
 
-        Property prop = Utils.findPropertyByName(world, action.getEntityName(), expression);
+        Property prop = Utils.findAnyPropertyByName(world, action.getEntityName(), expression);
 
         if (!Objects.isNull(prop))
             return "property-" + expression;
 
         return expression;
     }
-    public static String parseExpression(PRDWorld world, PRDAction action, String expression) {
-        if (expression.contains("(")
-                && isSystemFunction(expression.substring(0, expression.indexOf("("))))
-            return parseSystemFunctionExpression(world, action, expression);
-
-        if (!Objects.isNull(Utils.findPRDPropertyByName(world, action.getEntity(), expression)))
-            return "property-" + expression;
-
-        return expression;
-    }
-    public static String getExpressionType(PRDWorld world, PRDAction action, String parsedExpression) {
-        if (parsedExpression.contains("property")) {
-            PRDProperty property = Utils.findPRDPropertyByName(world, action.getEntity(), parsedExpression.split("-")[1]);
-
-            if (Objects.isNull(property))
-                return "";
-
-            return property.getType();
-        }
-
-        if (Utils.isDecimal(parsedExpression))
-            return PropTypes.DECIMAL;
-
-        else if (parsedExpression.equals(BoolPropValues.TRUE) || parsedExpression.equals(BoolPropValues.FALSE))
-            return PropTypes.BOOLEAN;
-
-        return PropTypes.STRING;
-    }
     public static String getExpressionType(World world, PRDAction action, String parsedExpression) {
         if (parsedExpression.contains("property")) {
-            Property prop =  Utils.findPropertyByName(world, action.getEntity(), parsedExpression.split("-")[1]);
+            Property prop =  Utils.findAnyPropertyByName(world, action.getEntity(), parsedExpression.split("-")[1]);
 
             if (Objects.isNull(prop))
                 return "";

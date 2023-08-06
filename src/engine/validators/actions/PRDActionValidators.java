@@ -1,21 +1,20 @@
 package engine.validators.actions;
 
 import engine.consts.ActionTypes;
-import engine.consts.BoolPropValues;
 import engine.consts.ConditionSingularities;
 import engine.consts.PropTypes;
 import engine.logs.Loggers;
 import engine.modules.*;
 import engine.parsers.ExpressionParser;
+import engine.parsers.ValidationExpressionParser;
 import engine.prototypes.jaxb.*;
-import engine.validators.PRDWorldValidators;
 
 import java.util.List;
 import java.util.Objects;
 
 public class PRDActionValidators {
     public static boolean validateAction(PRDWorld world, PRDAction action) {
-        if (Objects.isNull(Utils.findPRDEntityByName(world, action.getEntity()))) {
+        if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getEntity()))) {
             Loggers.XML_ERRORS_LOGGER.info(String.format("On [%s] action: Entity [%s] does not exist",
                     action.getType(), action.getEntity()));
 
@@ -41,8 +40,8 @@ public class PRDActionValidators {
         return false;
     }
     public static boolean validateIncreaseDecreaseAction(PRDWorld world, PRDAction action) {
-        String val = ExpressionParser.parseExpression(world, action, action.getBy());
-        String parsedValType = ExpressionParser.getExpressionType(world, action, val);
+        String val = ValidationExpressionParser.parseExpression(world, action, action.getBy());
+        String parsedValType = ValidationExpressionParser.getExpressionType(world, action, val);
 
         if (!PropTypes.NUMERIC_PROPS.contains(parsedValType)) {
             Loggers.XML_ERRORS_LOGGER.info(String.format("On [%s] action, by value [%s] is not numeric",
@@ -53,14 +52,14 @@ public class PRDActionValidators {
         return true;
     }
     public static boolean validateSetAction(PRDWorld world, PRDAction action) {
-        PRDProperty property = Utils.findPRDPropertyByName(world, action.getEntity(), action.getProperty());
+        PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), action.getProperty());
 
         if (Objects.isNull(property))
             return false;
 
         String propertyType = property.getType();
-        String parsedExpression = ExpressionParser.parseExpression(world, action, action.getValue());
-        String parsedExpressionType = ExpressionParser.getExpressionType(world, action, parsedExpression);
+        String parsedExpression = ValidationExpressionParser.parseExpression(world, action, action.getValue());
+        String parsedExpressionType = ValidationExpressionParser.getExpressionType(world, action, parsedExpression);
 
         if (PropTypes.NUMERIC_PROPS.contains(propertyType)) {
             if (!PropTypes.NUMERIC_PROPS.contains(parsedExpressionType)) {
@@ -87,8 +86,8 @@ public class PRDActionValidators {
     }
     private static boolean validateCalculationArgs(PRDWorld world, PRDAction action,
                                                    String arg1, String arg2) {
-        String arg1Type = ExpressionParser.getExpressionType(world, action, arg1);
-        String arg2Type = ExpressionParser.getExpressionType(world, action, arg2);
+        String arg1Type = ValidationExpressionParser.getExpressionType(world, action, arg1);
+        String arg2Type = ValidationExpressionParser.getExpressionType(world, action, arg2);
 
         if (!PropTypes.NUMERIC_PROPS.contains(arg1Type)
                 || !PropTypes.NUMERIC_PROPS.contains(arg2Type)) {
@@ -103,25 +102,25 @@ public class PRDActionValidators {
     public static boolean validateCalculationAction(PRDWorld world, PRDAction action) {
         PRDMultiply multiply = action.getPRDMultiply();
         PRDDivide divide = action.getPRDDivide();
-        String arg1 = ExpressionParser.parseExpression(world, action,
+        String arg1 = ValidationExpressionParser.parseExpression(world, action,
                 Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1());
 
-        String arg2 = ExpressionParser.parseExpression(world, action,
+        String arg2 = ValidationExpressionParser.parseExpression(world, action,
                 Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2());
 
         return validateCalculationArgs(world, action, arg1, arg2);
     }
     public static boolean validateSingleCondition(PRDWorld world, PRDAction action,
                                                   PRDCondition condition) {
-        PRDProperty property = Utils.findPRDPropertyByName(world, condition.getEntity(),
+        PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, condition.getEntity(),
                 condition.getProperty());
 
         if (Objects.isNull(property) || Objects.isNull(action.getPRDThen()))
             return false;
 
         String propertyType = property.getType();
-        String parsedValue = ExpressionParser.parseExpression(world, action, condition.getValue());
-        String parsedValueType = ExpressionParser.getExpressionType(world, action, parsedValue);
+        String parsedValue = ValidationExpressionParser.parseExpression(world, action, condition.getValue());
+        String parsedValueType = ValidationExpressionParser.getExpressionType(world, action, parsedValue);
 
         if (PropTypes.NUMERIC_PROPS.contains(propertyType)) {
             if (!PropTypes.NUMERIC_PROPS.contains(parsedValueType)) {
