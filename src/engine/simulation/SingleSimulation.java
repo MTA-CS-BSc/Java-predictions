@@ -36,12 +36,12 @@ public class SingleSimulation {
         Termination termination = world.getTermination();
 
         for (Object stopCondition : termination.getStopConditions()) {
-            if (stopCondition.getClass() == PRDBySecond.class
-                    && startTimeMillis >= ((PRDBySecond)stopCondition).getCount())
+            if (stopCondition.getClass() == BySecond.class
+                    && startTimeMillis >= ((BySecond)stopCondition).getCount())
                 return TerminationReasons.BY_SECOND;
 
-            else if (stopCondition.getClass() == PRDByTicks.class
-                    && ticks >= ((PRDByTicks)stopCondition).getCount())
+            else if (stopCondition.getClass() == ByTicks.class
+                    && ticks >= ((ByTicks)stopCondition).getCount())
                 return TerminationReasons.BY_TICKS;
         }
 
