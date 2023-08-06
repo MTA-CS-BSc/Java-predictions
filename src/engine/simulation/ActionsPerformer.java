@@ -9,10 +9,11 @@ import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.SingleEntity;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.*;
-import java.util.Objects;
+
+import java.util.*;
 
 public class ActionsPerformer {
-    public void fireAction(World world, PRDAction action) {
+    public void fireAction(World world, PRDAction action, SingleEntity on) {
         String type = action.getType();
 
         if (type.equalsIgnoreCase(ActionTypes.INCREASE)
@@ -26,7 +27,7 @@ public class ActionsPerformer {
             handleSetAction(world, action);
 
         else if (type.equalsIgnoreCase(ActionTypes.KILL))
-            handleKillAction(world, action);
+            handleKillAction(world, action, on);
 
         else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
             handleConditionAction(world, action);
@@ -63,7 +64,7 @@ public class ActionsPerformer {
             Property propToChange = entity.getProperties().getPropsMap().get(property.getName());
 
             Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
-                    "value [%s]->[%s]", property.getName(), propToChange.getValue().getCurrentValue(), newValue));
+                    " value [%s]->[%s]", property.getName(), propToChange.getValue().getCurrentValue(), newValue));
 
             propToChange.getValue().setCurrentValue(newValue);
             propToChange.setStableTime(0);
@@ -94,7 +95,7 @@ public class ActionsPerformer {
 
             if (validateNewValueInRange(property, newValue)) {
                 Loggers.SIMULATION_LOGGER.info(String.format("Changing property [%s]" +
-                        "value [%s]->[%s]", property.getName(), propToChange.getValue().getCurrentValue(), newValue));
+                        " value [%s]->[%s]", property.getName(), propToChange.getValue().getCurrentValue(), newValue));
 
                 propToChange.getValue().setCurrentValue(newValue);
                 propToChange.setStableTime(0);
@@ -141,5 +142,97 @@ public class ActionsPerformer {
         });
 
     }
+    private boolean evaluateMultipleCondition(World world, PRDAction action, PRDCondition condition, SingleEntity singleEntity) {
+        List<PRDCondition> allConditions = condition.getPRDCondition();
+        List<Boolean> allConditionsResults = new ArrayList<>();
+        String logicalOperator = condition.getLogical();
 
+        allConditions.forEach(current -> allConditionsResults.add(evaluateCondition(world, action, current, singleEntity)));
+
+        return allConditionsResults
+                .stream()
+                .reduce(allConditionsResults.get(0), (item1, item2) ->
+                        logicalOperator.equals(ConditionLogicalOperators.OR) ? item1 || item2 : item1 && item2);
+    }
+    private boolean evaluateSingleCondition(World world, PRDAction action, PRDCondition condition, SingleEntity singleEntity) {
+        Property property = singleEntity.getProperties().getPropsMap().get(condition.getProperty());
+
+        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntity()))
+                || Objects.isNull(property) || Objects.isNull(property.getValue())) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Entity [%s] or property [%s] do not exist",
+                    condition.getEntity(), condition.getProperty()));
+            return true;
+        }
+
+        String parsedValue = ExpressionParser.parseExpression(world, action, condition.getValue());
+        String value = ExpressionParser.evaluateExpression(parsedValue, singleEntity);
+        String operator = condition.getOperator();
+        boolean isNumeric = Utils.isDecimal(value);
+
+        switch (operator) {
+            case Operators.BT:
+                if (isNumeric)
+                    return Float.parseFloat(property.getValue().getCurrentValue()) > Float.parseFloat(value);
+                break;
+            case Operators.LT:
+                if (isNumeric)
+                    return Float.parseFloat(property.getValue().getCurrentValue()) < Float.parseFloat(value);
+                break;
+            case Operators.EQUALS:
+                return value.equals(property.getValue().getCurrentValue());
+            case Operators.NOT_EQUALS:
+                return !value.equals(property.getValue().getCurrentValue());
+        }
+
+        return true;
+    }
+    private boolean evaluateCondition(World world, PRDAction action, PRDCondition condition, SingleEntity singleEntity) {
+        if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
+            return evaluateSingleCondition(world, action, condition, singleEntity);
+
+        return evaluateMultipleCondition(world, action, condition, singleEntity);
+    }
+    public void handleConditionAction(World world, PRDAction action) {
+        PRDCondition condition = action.getPRDCondition();
+        List<PRDAction> thenActions = action.getPRDThen().getPRDAction();
+        PRDElse prdElse = action.getPRDElse();
+
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntity());
+
+        if (Objects.isNull(mainEntity))
+            return;
+
+        mainEntity.getSingleEntities().forEach(singleEntity -> {
+           boolean conditionResult = evaluateCondition(world, action, condition, singleEntity);
+
+           if (conditionResult)
+               thenActions.forEach(actToPerform -> fireAction(world, actToPerform, singleEntity));
+
+           else if (!Objects.isNull(prdElse))
+               prdElse.getPRDAction().forEach(actToPerform -> fireAction(world, actToPerform, singleEntity));
+        });
+    }
+    public void handleKillAllSingleEntities(World world, PRDAction action) {
+        Loggers.SIMULATION_LOGGER.info(String.format("Killing entity [%s]", action.getEntity()));
+        world.getEntities().getEntitiesMap().remove(action.getEntity());
+    }
+    public void handleKillAction(World world, PRDAction action, SingleEntity entityToKill) {
+        if (Objects.isNull(entityToKill))
+            handleKillAllSingleEntities(world, action);
+
+        else {
+            Loggers.SIMULATION_LOGGER.info(String.format("Killing 1 entity of entity [%s]", action.getEntity()));
+            Entity mainEntity = Utils.findEntityByName(world, action.getEntity());
+
+            mainEntity.setPopulation(mainEntity.getPopulation() - 1);
+            List<SingleEntity> updatedList = new ArrayList<>();
+
+            mainEntity.getSingleEntities().forEach(singleEntity -> {
+               if (!singleEntity.equals(entityToKill))
+                   updatedList.add(singleEntity);
+            });
+
+            mainEntity.setSingleEntities(updatedList);
+        }
+    }
 }

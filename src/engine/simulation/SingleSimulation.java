@@ -23,9 +23,6 @@ public class SingleSimulation {
         world = _world;
 //        log = new SingleSimulationLog(uuid, new World(world));
     }
-    public SingleSimulationLog getLog() {
-        return log;
-    }
     public void updateStableTimeToAllProps() {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
             entity.getSingleEntities().forEach(singleEntity -> {
@@ -72,13 +69,12 @@ public class SingleSimulation {
 
         return returned;
     }
-
     public void handleSingleTick() {
         HashMap<String, PRDRule> rulesToApply = getRulesToApply();
 
         rulesToApply.forEach((ruleName, rule) -> {
             List<PRDAction> actionsToPerform = rule.getPRDActions().getPRDAction();
-            actionsToPerform.forEach(action -> performer.fireAction(world, action));
+            actionsToPerform.forEach(action -> performer.fireAction(world, action, null));
         });
     }
     public String run() {
@@ -87,7 +83,7 @@ public class SingleSimulation {
             return "";
         }
 
-//        world.initAllRandomVars();
+        world.initAllRandomVars();
 //        log.setStart(new Date());
 
         long startTimeMillis = System.currentTimeMillis();

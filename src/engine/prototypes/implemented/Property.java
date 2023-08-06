@@ -63,7 +63,10 @@ public class Property {
         if (value.isRandomInitialize())
             Utils.setPropRandomInit(this, range);
 
-        value.setCurrentValue(property.getPRDValue().getInit());
+        else
+            value.setInit(property.getPRDValue().getInit());
+
+        value.setCurrentValue(value.getInit());
     }
 
     public Property(PRDEnvProperty envProperty) {
@@ -72,7 +75,7 @@ public class Property {
         type = envProperty.getType();
         value = new PRDValue();
 
-        value.setRandomInitialize(false);
+        value.setRandomInitialize(true);
     }
 
 }

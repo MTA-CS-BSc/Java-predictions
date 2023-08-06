@@ -16,6 +16,9 @@ public class Entity {
     public int getPopulation() {
         return population;
     }
+    public void setPopulation(int population) {
+        this.population = population;
+    }
     public List<SingleEntity> getSingleEntities() {
         return singleEntities;
     }
@@ -27,4 +30,6 @@ public class Entity {
         for (int i = 0; i < population; i++)
             singleEntities.add(new SingleEntity(entity.getPRDProperties().getPRDProperty()));
     }
+
+    public void setSingleEntities(List<SingleEntity> list) { singleEntities = list; }
 }

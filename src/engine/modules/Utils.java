@@ -72,5 +72,7 @@ public class Utils {
 
         else if (property.getType().equals(PropTypes.STRING))
             property.getValue().setInit(RandomGenerator.randomizeRandomString(Restrictions.MAX_RANDOM_STRING_LENGTH));
+
+        property.getValue().setCurrentValue(property.getValue().getInit());
     }
 }
