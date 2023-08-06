@@ -5,7 +5,7 @@ import engine.logs.SingleSimulationLog;
 import engine.modules.RandomGenerator;
 import engine.consts.TerminationReasons;
 import engine.prototypes.implemented.*;
-import engine.prototypes.jaxb.*;
+import engine.simulation.performers.ActionsPerformer;
 
 import java.util.*;
 import java.util.stream.Collectors;
