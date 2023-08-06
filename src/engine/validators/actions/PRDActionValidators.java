@@ -134,7 +134,6 @@ public class PRDActionValidators {
             return true;
         }
 
-
         else if (PropTypes.BOOLEAN_PROPS.contains(propertyType)) {
             if (!PropTypes.BOOLEAN_PROPS.contains(parsedValueType)) {
                 Loggers.XML_ERRORS_LOGGER.info(String.format("On action [%s], condition " +
