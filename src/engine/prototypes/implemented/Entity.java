@@ -9,7 +9,11 @@ public class Entity {
     protected String name;
     protected int population;
     List<SingleEntity> singleEntities;
+    Properties initialProperties;
 
+    public Properties getInitialProperties() {
+        return initialProperties;
+    }
     public String getName() {
         return name;
     }
@@ -26,6 +30,7 @@ public class Entity {
         name = entity.getName();
         population = entity.getPRDPopulation();
         singleEntities = new ArrayList<>();
+        initialProperties = new Properties(entity.getPRDProperties().getPRDProperty());
 
         for (int i = 0; i < population; i++)
             singleEntities.add(new SingleEntity(entity.getPRDProperties().getPRDProperty()));
