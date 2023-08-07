@@ -2,6 +2,7 @@ package engine.modules;
 
 import engine.consts.PropTypes;
 import engine.consts.Restrictions;
+import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
 import engine.prototypes.implemented.*;
 import engine.prototypes.jaxb.*;
@@ -43,16 +44,9 @@ public class Utils {
         property.getValue().setCurrentValue(property.getValue().getInit());
     }
     public static boolean validateValueInRange(Property property, String newValue) {
-        if (!Objects.isNull(property.getRange())) {
-            if (Float.parseFloat(newValue) > property.getRange().getTo()
-                    || Float.parseFloat(newValue) < property.getRange().getFrom()) {
-                Loggers.SIMULATION_LOGGER.info(String.format("Can't change property [%s]" +
-                                " value from [%s] to [%s] due to range restriction",
-                        property.getName(), property.getValue().getCurrentValue(), newValue));
-
-                return false;
-            }
-        }
+        if (!Objects.isNull(property.getRange()))
+            return !(Float.parseFloat(newValue) > property.getRange().getTo())
+                    && !(Float.parseFloat(newValue) < property.getRange().getFrom());
 
         return true;
     }
