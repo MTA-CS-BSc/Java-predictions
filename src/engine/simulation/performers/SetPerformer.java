@@ -49,7 +49,7 @@ public class SetPerformer {
             }
         }
     }
-    public static void handle(World world, Action action, SingleEntity on) throws EntityNotFoundException, PropertyNotFoundException {
+    public static void handle(World world, Action action, SingleEntity on) throws PropertyNotFoundException {
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getPropertyName())))
             throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));
 

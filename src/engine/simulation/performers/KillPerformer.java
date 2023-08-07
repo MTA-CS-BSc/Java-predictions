@@ -36,7 +36,7 @@ public class KillPerformer {
 
         Loggers.SIMULATION_LOGGER.info(String.format("Killed 1 entity named [%s]. Population is [%d]", action.getEntityName(), mainEntity.getPopulation()));
     }
-    public static void handle(World world, Action action, SingleEntity kill) throws EntityNotFoundException {
+    public static void handle(World world, Action action, SingleEntity kill) {
         if (Objects.isNull(kill))
             handleAll(world, action);
 
