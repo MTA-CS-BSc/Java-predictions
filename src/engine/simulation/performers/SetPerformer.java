@@ -2,6 +2,7 @@ package engine.simulation.performers;
 
 import engine.consts.PropTypes;
 import engine.exceptions.EntityNotFoundException;
+import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.PropertyNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
@@ -27,9 +28,8 @@ public class SetPerformer {
 
         if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
             if (!Utils.validateValueInRange(property, newValue))
-                throw new ValueNotInRangeException(String.format("Action [%s]: Entity [%s]: Property [%s]:" +
-                                " value [%s] not in range and therefore is not set",
-                        "Set", entityName, propertyName, newValue));
+                throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
+                        "Set", entityName, propertyName, String.format("value [%s] not in range and therefore is not set", newValue)));
 
         ActionsPerformer.setPropertyValue("Set", entityName, property, newValue);
     }
@@ -52,12 +52,10 @@ public class SetPerformer {
     }
     public static void handle(World world, Action action, SingleEntity on) throws EntityNotFoundException, PropertyNotFoundException {
         if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
-            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] not found",
-                    action.getType(), action.getEntityName()));
+            throw new EntityNotFoundException(ErrorMessageFormatter.formatEntityNotFoundMessage(action.getType(), action.getEntityName()));
 
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getPropertyName())))
-            throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] not found",
-                    action.getType(), action.getEntityName(), action.getPropertyName()));
+            throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));
 
         performAction(world, action, on);
     }
