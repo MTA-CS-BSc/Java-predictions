@@ -49,7 +49,7 @@ public class SingleSimulation {
         }
 
         world.initAllRandomVars();
-        log.setStart(new Date());
+        log.setStartTime(new Date());
 
         long startTimeMillis = System.currentTimeMillis();
 
@@ -62,7 +62,7 @@ public class SingleSimulation {
         Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
                                             uuid.toString(), isSimulationFinished(startTimeMillis)));
 
-        log.setFinished(new Date());
+        log.setEndTime(new Date());
         log.setFinishWorldState(world);
         return uuid.toString();
     }

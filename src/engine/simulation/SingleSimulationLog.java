@@ -21,11 +21,11 @@ public class SingleSimulationLog {
         return uuid;
     }
 
-    public void setStart(Date start) {
+    public void setStartTime(Date start) {
         this.start = start;
     }
 
-    public void setFinished(Date finished) {
+    public void setEndTime(Date finished) {
         this.finished = finished;
     }
 
@@ -33,11 +33,11 @@ public class SingleSimulationLog {
         this.finishWorldState = new WorldState(finishWorldState);
     }
 
-    public Date getStart() {
+    public Date getStartTime() {
         return start;
     }
 
-    public Date getFinished() {
+    public Date getFinishedTime() {
         return finished;
     }
 
