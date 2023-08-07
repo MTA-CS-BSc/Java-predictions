@@ -7,10 +7,7 @@ import engine.prototypes.implemented.*;
 import engine.prototypes.jaxb.*;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -66,21 +63,17 @@ public class Utils {
         return rule.getActivation().getProbability() >= randomProbability
                 && ticks % rule.getActivation().getTicks() == 0;
     }
-    public static HashMap<String, Rule> getRulesToApply(World world, long ticks) {
+    public static Map<String, Rule> getRulesToApply(World world, long ticks) {
         HashMap<String, Rule> allRules = world.getRules().getRulesMap();
 
-        List<String> relevantKeys = allRules.keySet()
+        return allRules.values()
                 .stream()
-                .filter(element -> Utils.isPossibleToPerformRule(allRules, element, ticks))
-                .collect(Collectors.toList());
+                .filter(element -> Utils.isPossibleToPerformRule(allRules, element.getName(), ticks))
+                .collect(Collectors.toMap(
+                        Rule::getName,
+                        rule -> rule
+                ));
 
-        HashMap<String, Rule> returned = new HashMap<>();
-
-        relevantKeys.forEach(key -> {
-            returned.put(key, allRules.get(key));
-        });
-
-        return returned;
     }
     public static boolean isDecimal(String str) {
         try {

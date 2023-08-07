@@ -39,7 +39,7 @@ public class SingleSimulation {
         return null;
     }
     public void handleSingleTick() {
-        HashMap<String, Rule> rulesToApply = Utils.getRulesToApply(world, ticks);
+        Map<String, Rule> rulesToApply = Utils.getRulesToApply(world, ticks);
 
         rulesToApply.forEach((ruleName, rule) -> {
             Actions actionsToPerform = rule.getActions();
