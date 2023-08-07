@@ -1,5 +1,6 @@
 package engine.simulation;
 
+import engine.exceptions.NoXMLException;
 import engine.logs.Loggers;
 import engine.consts.TerminationReasons;
 import engine.modules.Utils;
@@ -46,11 +47,9 @@ public class SingleSimulation {
             actionsToPerform.getActions().forEach(action -> ActionsPerformer.fireAction(world, action, null));
         });
     }
-    public String run() {
-        if (Objects.isNull(world)) {
-            Loggers.SIMULATION_LOGGER.info("No XML loaded");
-            return "";
-        }
+    public String run() throws NoXMLException {
+        if (Objects.isNull(world))
+            throw new NoXMLException();
 
         world.initAllRandomVars();
         log.setStartTime(new Date());
