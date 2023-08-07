@@ -95,10 +95,7 @@ public class ConditionPerformer {
         else
             prdElse.getActions().forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
     }
-    public static void handle(World world, Action action, SingleEntity on) throws EntityNotFoundException {
-        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
-            throw new EntityNotFoundException(ErrorMessageFormatter.formatEntityNotFoundMessage(action.getType(), action.getEntityName()));
-
+    public static void handle(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))
             handleAll(world, action);
 

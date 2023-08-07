@@ -51,10 +51,7 @@ public class DecrementPerformer {
             }
         }
     }
-    public static void handle(World world, Action action, SingleEntity on) throws EntityNotFoundException, PropertyNotFoundException {
-        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
-            throw new EntityNotFoundException(ErrorMessageFormatter.formatEntityNotFoundMessage(action.getType(), action.getEntityName()));
-
+    public static void handle(World world, Action action, SingleEntity on) throws PropertyNotFoundException {
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getPropertyName())))
             throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));
 
