@@ -1,5 +1,6 @@
 package engine.history;
 
+import engine.exceptions.UUIDNotFoundException;
 import engine.logs.Loggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
@@ -22,11 +23,9 @@ public class HistoryManager {
         return pastSimulations.get(uuid);
     }
 
-    public void getSimulationDetails(String uuid, SingleSimulationLog simulationLog) {
-        if (Objects.isNull(simulationLog)) {
-            Loggers.HISTORY_LOGGER.info(String.format("No simulation found with uuid [%s]", uuid));
-            return;
-        }
+    public void getSimulationDetails(String uuid, SingleSimulationLog simulationLog) throws UUIDNotFoundException {
+        if (Objects.isNull(simulationLog))
+            throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
 
         System.out.printf("Simulation uuid: [%s]%n", uuid);
         System.out.printf("Simulation start time:  [%s]%n", Utils.formatDate(simulationLog.getStartTime()));
@@ -49,7 +48,7 @@ public class HistoryManager {
     }
 
     public HashMap<String, Integer> getEntitiesCountForProp(String uuid, String entityName,
-                                                            String propertyName) {
+                                                            String propertyName) throws UUIDNotFoundException {
         HashMap<String, Integer> histogram = new HashMap<>();
 
         SingleSimulationLog simulationLog = getPastSimulation(uuid);
@@ -66,7 +65,7 @@ public class HistoryManager {
 
         return histogram;
     }
-    public HashMap<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) {
+    public HashMap<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
         HashMap<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
 
         SingleSimulationLog simulationLog = getPastSimulation(uuid);
