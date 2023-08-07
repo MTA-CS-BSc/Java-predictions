@@ -19,9 +19,10 @@ public class PRDEntityValidators {
         return validatePropsUniqueNames(entity)
                 && validateNoWhitespacesInPropsNames(entity)
                 && validatePropsTypes(entity)
-                && validatePropsWithRangeTypes(entity)
+                && validateRanges(entity)
                 && validatePropertiesValues(entity)
-                && validateInitExistsOnNonRandomProps(entity);
+                && validateInitExistsOnNonRandomProps(entity)
+                && validatePopulation(entity);
     }
     private static boolean validatePropsUniqueNames(PRDEntity entity) throws UniqueNameException {
         List<String> names = entity.getPRDProperties().getPRDProperty()
@@ -52,17 +53,22 @@ public class PRDEntityValidators {
 
         return true;
     }
-    private static boolean validatePropsWithRangeTypes(PRDEntity entity) throws InvalidTypeException {
+    private static boolean validateRanges(PRDEntity entity) throws Exception {
         List<PRDProperty> propsWithRange =
                         entity.getPRDProperties().getPRDProperty()
                         .stream()
                         .filter(element -> !Objects.isNull(element.getPRDRange()))
                         .collect(Collectors.toList());
 
-        for (PRDProperty property : propsWithRange)
+        for (PRDProperty property : propsWithRange) {
             if (!PRDPropertyValidators.validateTypeForRangeExistance(property.getType()))
                 throw new InvalidTypeException(String.format("Entity [%s]: Property [%s] has range with incompatible type",
                         entity.getName(), property.getPRDName()));
+
+            else if (property.getPRDRange().getTo() - property.getPRDRange().getFrom() <= 0)
+                throw new Exception(String.format("Environment property [%s] has invalid range",
+                        property.getPRDName()));
+        }
 
         return true;
     }
@@ -127,6 +133,12 @@ public class PRDEntityValidators {
             if (!property.getType().equals(PropTypes.STRING) && property.getPRDValue().getInit().isEmpty())
                 throw new EmptyExpressionException(String.format("Entity [%s]: Property [%s] has no init value but is not random",
                                                         entity.getName(), property.getPRDName()));
+
+        return true;
+    }
+    private static boolean validatePopulation(PRDEntity entity) throws ValueNotInRangeException {
+        if (entity.getPRDPopulation() <= 0)
+            throw new ValueNotInRangeException("Entity [%s]: Population must be positive");
 
         return true;
     }
