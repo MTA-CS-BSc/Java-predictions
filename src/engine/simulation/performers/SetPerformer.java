@@ -13,38 +13,37 @@ import engine.prototypes.implemented.*;
 import java.util.Objects;
 
 public class SetPerformer {
-    private static void handleAll(Entity mainEntity, String propertyName, String newValue) {
+    private static void handleAll(World world, Action action) {
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
+
         mainEntity.getSingleEntities().forEach(entity -> {
             try {
-                handleSingle(entity, mainEntity.getName(), propertyName, newValue);
+                handleSingle(world, action, entity);
             } catch (ValueNotInRangeException e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
-    private static void handleSingle(SingleEntity on, String entityName,
-                                     String propertyName, String newValue) throws ValueNotInRangeException {
-        Property property = Utils.findPropertyByName(on, propertyName);
+    private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException {
+        Property property = Utils.findPropertyByName(on, action.getPropertyName());
+        String parsedValue = ExpressionParser.parseExpression(world, action, action.getValue());
+        String newValue = ExpressionParser.evaluateExpression(parsedValue, on);
 
         if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
             if (!Utils.validateValueInRange(property, newValue))
                 throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                        "Set", entityName, propertyName,
+                        "Set", action.getEntityName(), action.getPropertyName(),
                         String.format("value [%s] not in range and therefore is not set", newValue)));
 
-        ActionsPerformer.setPropertyValue("Set", entityName, property, newValue);
+        ActionsPerformer.setPropertyValue("Set", action.getEntityName(), property, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
-        String parsedValue = ExpressionParser.parseExpression(world, action, action.getValue());
-        String newValue = ExpressionParser.evaluateExpression(parsedValue, on);
-
         if (Objects.isNull(on))
-            handleAll(mainEntity, action.getPropertyName(), newValue);
+            handleAll(world, action);
 
         else {
             try {
-                handleSingle(on, mainEntity.getName(), action.getPropertyName(), newValue);
+                handleSingle(world, action, on);
             } catch (ValueNotInRangeException e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }

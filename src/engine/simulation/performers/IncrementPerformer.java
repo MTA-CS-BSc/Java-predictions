@@ -15,38 +15,37 @@ public class IncrementPerformer {
     private static String getIncrementResult(String propValue, String by) {
         return String.valueOf(Float.parseFloat(propValue) - Float.parseFloat(by));
     }
-    private static void handleAll(Entity mainEntity, String propertyName, String by) {
+    private static void handleAll(World world, Action action) {
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
+
         mainEntity.getSingleEntities().forEach(entity -> {
             try {
-                handleSingle(mainEntity, entity, propertyName, by);
+                handleSingle(world, action, entity);
             } catch (ValueNotInRangeException e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
-    private static void handleSingle(Entity mainEntity, SingleEntity on, String propertyName, String by) throws ValueNotInRangeException {
-        Property propToChange = Utils.findPropertyByName(on, propertyName);
+    private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException {
+        Property propToChange = Utils.findPropertyByName(on, action.getPropertyName());
+        String parsedValue = ExpressionParser.parseExpression(world, action, action.getBy());
+        String by = ExpressionParser.evaluateExpression(parsedValue, on);
         String newValue = getIncrementResult(propToChange.getValue().getCurrentValue(), by);
 
         if (!Utils.validateValueInRange(propToChange, newValue))
             throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                    "Increase", mainEntity.getName(), propertyName,
+                    "Decrease", action.getEntityName(), action.getPropertyName(),
                     String.format("value [%s] not in range and therefore is not set", newValue)));
 
-        propToChange.getValue().setCurrentValue(newValue);
-        propToChange.setStableTime(0);
+        ActionsPerformer.setPropertyValue("Decrease", action.getEntityName(), propToChange, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
-        String parsedValue = ExpressionParser.parseExpression(world, action, action.getBy());
-        String by = ExpressionParser.evaluateExpression(parsedValue, on);
-
         if (Objects.isNull(on))
-            handleAll(mainEntity, action.getPropertyName(), by);
+            handleAll(world, action);
 
         else {
             try {
-                handleSingle(mainEntity, on, action.getPropertyName(), by);
+                handleSingle(world, action, on);
             } catch (ValueNotInRangeException e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
