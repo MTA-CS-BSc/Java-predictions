@@ -29,7 +29,8 @@ public class SetPerformer {
         if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
             if (!Utils.validateValueInRange(property, newValue))
                 throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                        "Set", entityName, propertyName, String.format("value [%s] not in range and therefore is not set", newValue)));
+                        "Set", entityName, propertyName,
+                        String.format("value [%s] not in range and therefore is not set", newValue)));
 
         ActionsPerformer.setPropertyValue("Set", entityName, property, newValue);
     }
