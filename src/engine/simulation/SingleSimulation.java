@@ -58,7 +58,7 @@ public class SingleSimulation {
         long startTimeMillis = System.currentTimeMillis();
 
         while (Objects.isNull(isSimulationFinished(startTimeMillis))) {
-            ticks += 1;
+            ticks++;
             handleSingleTick();
             ActionsPerformer.updateStableTimeToAllProps(world);
         }
