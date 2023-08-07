@@ -1,5 +1,7 @@
 package engine.validators;
 
+import engine.exceptions.TerminationNotFoundException;
+import engine.logs.Loggers;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.entities.PRDEntitiesValidators;
 import engine.validators.env.PRDEvironmentValidators;
@@ -19,7 +21,15 @@ public class PRDWorldValidators {
         return PRDEntitiesValidators.validateEntities(world.getPRDEntities());
     }
     private static boolean validateTermination(PRDWorld world) {
-        return PRDTerminationValidators.validateStopConditionExists(world.getPRDTermination());
+        try {
+            PRDTerminationValidators.validateStopConditionExists(world.getPRDTermination());
+            return true;
+        }
+
+        catch (TerminationNotFoundException e) {
+            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            return false;
+        }
     }
     private static boolean validateEnvironment(PRDWorld world) {
         return PRDEvironmentValidators.validateEnvironment(world.getPRDEvironment());
