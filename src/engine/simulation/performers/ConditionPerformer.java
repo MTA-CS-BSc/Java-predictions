@@ -4,6 +4,8 @@ import engine.consts.BoolPropValues;
 import engine.consts.ConditionLogicalOperators;
 import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
+import engine.exceptions.EntityNotFoundException;
+import engine.exceptions.ErrorMessageFormatter;
 import engine.logs.Loggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
@@ -72,39 +74,35 @@ public class ConditionPerformer {
         return evaluateMultipleCondition(world, action, condition, on);
     }
     private static void handleAll(World world, Action action) {
-        Condition condition = action.getCondition();
-        List<Action> thenActions = action.getThen().getActions();
-        Else prdElse = action.getElse();
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
         mainEntity.getSingleEntities().forEach(on -> {
-            boolean conditionResult = evaluateCondition(world, action, condition, on);
-
-            if (conditionResult)
-                thenActions.forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
-
-            else
-                prdElse.getActions().forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
+            handleSingle(world, action, on);
         });
     }
     private static void handleSingle(World world, Action action, SingleEntity on) {
         Condition condition = action.getCondition();
         List<Action> thenActions = action.getThen().getActions();
         Else prdElse = action.getElse();
-        
-        if (evaluateCondition(world, action, condition, on))
+        boolean conditionResult = evaluateCondition(world, action, condition, on);
+
+        Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Condition result is [%s]," +
+                " evaluating relevant actions...", action.getType(), action.getEntityName(), conditionResult));
+
+        if (conditionResult)
             thenActions.forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
 
         else
             prdElse.getActions().forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
     }
-    public static void handle(World world, Action action, SingleEntity on) {
+    public static void handle(World world, Action action, SingleEntity on) throws EntityNotFoundException {
+        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
+            throw new EntityNotFoundException(ErrorMessageFormatter.formatEntityNotFoundMessage(action.getType(), action.getEntityName()));
+
         if (Objects.isNull(on))
             handleAll(world, action);
 
         else
             handleSingle(world, action, on);
-
-        Loggers.SIMULATION_LOGGER.info("Condition evaluate");
     }
 }
