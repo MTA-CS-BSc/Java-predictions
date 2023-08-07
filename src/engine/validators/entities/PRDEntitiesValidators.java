@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PRDEntitiesValidators {
-    public static boolean validateEntities(PRDEntities entities) throws UniqueNameException, WhitespacesFoundException, EmptyExpressionException, ValueNotInRangeException, InvalidTypeException {
+    public static boolean validateEntities(PRDEntities entities) throws Exception {
         return validateEntitiesProperties(entities)
                 && validateEntitiesUniqueNames(entities)
                 && validateNoWhitespacesInNames(entities);
@@ -34,7 +34,7 @@ public class PRDEntitiesValidators {
 
         return true;
     }
-    private static boolean validateEntitiesProperties(PRDEntities entities) throws UniqueNameException, WhitespacesFoundException, EmptyExpressionException, ValueNotInRangeException, InvalidTypeException {
+    private static boolean validateEntitiesProperties(PRDEntities entities) throws Exception {
         for (PRDEntity entity : entities.getPRDEntity())
             PRDEntityValidators.validateProperties(entity);
 

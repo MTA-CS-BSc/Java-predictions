@@ -1,13 +1,11 @@
 package engine.validators.termination;
 
-import engine.exceptions.TerminationNotFoundException;
-import engine.logs.Loggers;
 import engine.prototypes.jaxb.PRDTermination;
 
 public class PRDTerminationValidators {
-    public static boolean validateStopConditionExists(PRDTermination termination) throws TerminationNotFoundException {
+    public static boolean validateStopConditionExists(PRDTermination termination) throws Exception {
         if (termination.getPRDByTicksOrPRDBySecond().isEmpty())
-            throw new TerminationNotFoundException("No termination found");
+            throw new Exception("No termination found");
 
         return true;
     }

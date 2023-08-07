@@ -5,7 +5,6 @@ import engine.consts.ConditionSingularities;
 import engine.consts.PropTypes;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.InvalidTypeException;
-import engine.exceptions.PRDThenNotFoundException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.logs.Loggers;
 import engine.modules.*;
@@ -18,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PRDActionValidators {
-    public static boolean validateAction(PRDWorld world, PRDAction action) throws EntityNotFoundException, PropertyNotFoundException, InvalidTypeException, PRDThenNotFoundException {
+    public static boolean validateAction(PRDWorld world, PRDAction action) throws Exception {
         if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getEntity())))
             throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist",
                     action.getType(), action.getEntity()));

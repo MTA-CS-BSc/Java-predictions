@@ -15,8 +15,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PRDEntityValidators {
-    public static boolean validateProperties(PRDEntity entity) throws UniqueNameException, WhitespacesFoundException,
-            InvalidTypeException, ValueNotInRangeException, EmptyExpressionException {
+    public static boolean validateProperties(PRDEntity entity) throws Exception {
         return validatePropsUniqueNames(entity)
                 && validateNoWhitespacesInPropsNames(entity)
                 && validatePropsTypes(entity)
@@ -100,15 +99,20 @@ public class PRDEntityValidators {
 
         return true;
     }
-    private static boolean validatePropertiesValues(PRDEntity entity) throws InvalidTypeException, ValueNotInRangeException {
+    private static boolean validatePropertiesValues(PRDEntity entity) throws Exception {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
             if (!validatePropValue(property))
                 throw new InvalidTypeException(String.format("Entity [%s]: Property [%s] has incorrect init value for it's type",
                         entity.getName(), property.getPRDName()));
 
+            else if (property.getPRDRange().getTo() - property.getPRDRange().getFrom() <= 0)
+                throw new Exception(String.format("Environment property [%s] has invalid range",
+                        property.getPRDName()));
+
             if (!validatePropValueAgainstRange(property))
                 throw new ValueNotInRangeException(String.format("Entity [%s]: Property [%s] has incorrect init value according to range",
                         entity.getName(), property.getPRDName()));
+
         }
 
         return true;

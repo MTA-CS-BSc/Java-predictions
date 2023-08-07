@@ -14,7 +14,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PRDEvironmentValidators {
-    public static boolean validateEnvironment(PRDEvironment env) throws WhitespacesFoundException, InvalidTypeException, UniqueNameException {
+    public static boolean validateEnvironment(PRDEvironment env) throws Exception {
         return validatePropsUniqueNames(env) && validatePropsTypes(env)
                     && validateRanges(env) && validateNoWhitespacesInNames(env);
     }
@@ -46,17 +46,22 @@ public class PRDEvironmentValidators {
 
         return true;
     }
-    private static boolean validateRanges(PRDEvironment env) throws InvalidTypeException {
+    private static boolean validateRanges(PRDEvironment env) throws Exception {
         List<PRDEnvProperty> propsWithRange =
                                         env.getPRDEnvProperty()
                                         .stream()
                                         .filter(element -> !Objects.isNull(element.getPRDRange()))
                                         .collect(Collectors.toList());
 
-        for (PRDEnvProperty property : propsWithRange)
+        for (PRDEnvProperty property : propsWithRange) {
             if (!PRDPropertyValidators.validateTypeForRangeExistance(property.getType()))
                 throw new InvalidTypeException(String.format("Environment property [%s] has range with incompatible type",
-                                                                  property.getPRDName()));
+                        property.getPRDName()));
+
+            else if (property.getPRDRange().getTo() - property.getPRDRange().getFrom() <= 0)
+                throw new Exception(String.format("Environment property [%s] has invalid range",
+                        property.getPRDName()));
+        }
 
         return true;
     }

@@ -30,7 +30,7 @@ public class PRDWorldValidators {
             return PRDTerminationValidators.validateStopConditionExists(world.getPRDTermination());
         }
 
-        catch (TerminationNotFoundException e) {
+        catch (Exception e) {
             Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
             return false;
         }

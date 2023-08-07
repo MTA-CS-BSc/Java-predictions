@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PRDRulesValidators {
-    public static boolean validateRules(PRDWorld world, PRDRules rules) throws PropertyNotFoundException, PRDThenNotFoundException, EntityNotFoundException, InvalidTypeException, UniqueNameException, WhitespacesFoundException {
+    public static boolean validateRules(PRDWorld world, PRDRules rules) throws Exception {
         return validateRulesUniqueNames(rules)
                 && validateNoWhitespacesInNames(rules)
                 && validateActions(world, rules);
@@ -37,7 +37,7 @@ public class PRDRulesValidators {
 
         return true;
     }
-    private static boolean validateActions(PRDWorld world, PRDRules rules) throws PropertyNotFoundException, PRDThenNotFoundException, EntityNotFoundException, InvalidTypeException {
+    private static boolean validateActions(PRDWorld world, PRDRules rules) throws Exception {
         for (PRDRule rule : rules.getPRDRule())
             PRDActionsValidators.validateActions(world, rule.getPRDActions().getPRDAction());
 

@@ -1,6 +1,5 @@
 package engine.tests;
 
-import engine.exceptions.NoXMLException;
 import engine.history.HistoryManager;
 import engine.logs.Loggers;
 import engine.parsers.XmlParser;
@@ -24,7 +23,7 @@ public class SimulationTests {
 
     @Test
     @DisplayName("Termination reason")
-    public void testTerminationReasonOccurs() throws JAXBException, FileNotFoundException, NoXMLException {
+    public void testTerminationReasonOccurs() throws JAXBException, FileNotFoundException, Exception {
         String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
@@ -37,8 +36,8 @@ public class SimulationTests {
 
     @Test
     @DisplayName("Simulation log world states")
-    public void testSimulationLog() throws JAXBException, FileNotFoundException, NoXMLException {
-        String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
+    public void testSimulationLog() throws Exception {
+        String xmlPath = String.format("%s/ex1-error-6.xml", XmlParserTests.testFilesPath);
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {

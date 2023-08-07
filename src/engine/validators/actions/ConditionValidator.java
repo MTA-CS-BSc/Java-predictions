@@ -3,7 +3,6 @@ package engine.validators.actions;
 import engine.consts.ConditionSingularities;
 import engine.consts.PropTypes;
 import engine.exceptions.InvalidTypeException;
-import engine.exceptions.PRDThenNotFoundException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.modules.ValidatorsUtils;
 import engine.parsers.ValidationExpressionParser;
@@ -18,7 +17,7 @@ import java.util.Objects;
 public class ConditionValidator {
 
     public static boolean validateSingleCondition(PRDWorld world, PRDAction action,
-                                                  PRDCondition condition) throws PRDThenNotFoundException, PropertyNotFoundException, InvalidTypeException {
+                                                  PRDCondition condition) throws Exception {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, condition.getEntity(),
                 condition.getProperty());
 
@@ -27,7 +26,7 @@ public class ConditionValidator {
                     action.getType(), action.getEntity(), action.getProperty()));
 
         if (Objects.isNull(action.getPRDThen()))
-            throw new PRDThenNotFoundException(String.format("Action [%s]: Entity [%s]: No PRDThen tag found",
+            throw new Exception(String.format("Action [%s]: Entity [%s]: No PRDThen tag found",
                     action.getType(), action.getEntity()));
 
         String propertyType = property.getType();
@@ -53,7 +52,7 @@ public class ConditionValidator {
         return true;
     }
     public static boolean validateMultipleCondition(PRDWorld world, PRDAction action,
-                                                    PRDCondition condition) throws PropertyNotFoundException, PRDThenNotFoundException, InvalidTypeException {
+                                                    PRDCondition condition) throws Exception{
         List<PRDCondition> allConditions = condition.getPRDCondition();
 
         for (PRDCondition current : allConditions)
@@ -63,7 +62,7 @@ public class ConditionValidator {
         return true;
     }
     public static boolean validate(PRDWorld world, PRDAction action,
-                                                  PRDCondition condition) throws PropertyNotFoundException, PRDThenNotFoundException, InvalidTypeException {
+                                                  PRDCondition condition) throws Exception {
         if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
             return validateSingleCondition(world, action, condition);
 

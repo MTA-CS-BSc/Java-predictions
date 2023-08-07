@@ -1,6 +1,5 @@
 package engine.simulation;
 
-import engine.exceptions.NoXMLException;
 import engine.logs.Loggers;
 import engine.consts.TerminationReasons;
 import engine.modules.Utils;
@@ -47,9 +46,9 @@ public class SingleSimulation {
             actionsToPerform.getActions().forEach(action -> ActionsPerformer.fireAction(world, action, null));
         });
     }
-    public String run() throws NoXMLException {
+    public String run() throws Exception {
         if (Objects.isNull(world))
-            throw new NoXMLException();
+            throw new Exception();
 
         world.initAllRandomVars();
         log.setStartTime(new Date());
