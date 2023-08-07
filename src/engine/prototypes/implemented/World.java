@@ -35,6 +35,9 @@ public class World {
                     if (property.getValue().isRandomInitialize())
                         Utils.setPropRandomInit(property, range);
 
+                    else if (property.getValue().getInit().isEmpty())
+                        Utils.setPropRandomInit(property, range);
+
                     property.getValue().setCurrentValue(property.getValue().getInit());
                 });
             });
