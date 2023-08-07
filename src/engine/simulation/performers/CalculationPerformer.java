@@ -31,7 +31,9 @@ public class CalculationPerformer {
         return String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(eval_arg1) / Float.parseFloat(eval_arg2)
                 : Float.parseFloat(eval_arg1) * Float.parseFloat(eval_arg2));
     }
-    private static void handleAll(World world, Entity mainEntity, Action action) {
+    private static void handleAll(World world, Action action) {
+        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
+
         mainEntity.getSingleEntities().forEach(entity -> {
             try {
                 handleSingle(world, action, entity);
@@ -48,12 +50,11 @@ public class CalculationPerformer {
                 throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(action.getType(), action.getEntityName(),
                         action.getResultPropertyName(), "Value is not in property's range and therefore is not set"));
 
-        resultProperty.getValue().setCurrentValue(newValue);
-        resultProperty.setStableTime(0);
+        ActionsPerformer.setPropertyValue(action.getType(), action.getEntityName(), resultProperty, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))
-            handleAll(world, Utils.findEntityByName(world, action.getEntityName()), action);
+            handleAll(world, action);
 
         else {
             try {
