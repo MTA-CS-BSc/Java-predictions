@@ -30,7 +30,7 @@ public class World {
         entities.getEntitiesMap().values().forEach(entity -> {
             entity.getSingleEntities().forEach(singleEntity -> {
                 singleEntity.getProperties().getPropsMap().values().forEach(property -> {
-                    PRDRange range = property.getRange();
+                    Range range = property.getRange();
 
                     if (property.getValue().isRandomInitialize())
                         Utils.setPropRandomInit(property, range);
@@ -45,7 +45,7 @@ public class World {
                     && Objects.isNull(property.getValue().getInit()))
                 property.getValue().setRandomInitialize(true);
 
-            PRDRange range = property.getRange();
+            Range range = property.getRange();
             Utils.setPropRandomInit(property, range);
             property.getValue().setCurrentValue(property.getValue().getInit());
         });

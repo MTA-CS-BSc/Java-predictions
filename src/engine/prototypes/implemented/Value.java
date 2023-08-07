@@ -18,6 +18,14 @@ public class Value {
         }
     }
 
+    public Value(Value other) {
+        if (!Objects.isNull(other)) {
+            isRandomInitialize = other.isRandomInitialize();
+            init = other.getInit();
+            currentValue = other.getCurrentValue();
+        }
+    }
+
     public boolean isRandomInitialize() {
         return isRandomInitialize;
     }
@@ -30,5 +38,9 @@ public class Value {
         return currentValue;
     }
 
+    public void setRandomInitialize(boolean value) { isRandomInitialize = value; }
 
+    public void setInit(String value) { init = value; }
+
+    public void setCurrentValue(String value) { currentValue = value; }
 }

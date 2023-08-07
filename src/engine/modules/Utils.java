@@ -27,7 +27,7 @@ public class Utils {
     public static String getPropertyValueForEntity(SingleEntity singleEntity, String propertyName) {
         return findPropertyByName(singleEntity, propertyName).getValue().getCurrentValue();
     }
-    public static void setPropRandomInit(Property property, PRDRange range) {
+    public static void setPropRandomInit(Property property, Range range) {
         switch (property.getType()) {
             case PropTypes.BOOLEAN:
                 property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomBoolean()));

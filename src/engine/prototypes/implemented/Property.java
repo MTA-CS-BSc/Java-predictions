@@ -11,8 +11,8 @@ import java.util.Objects;
 public class Property {
     protected int stableTime;
     protected String name;
-    protected PRDRange range;
-    protected PRDValue value;
+    protected Range range;
+    protected Value value;
     protected String type;
 
     public String getName() {
@@ -23,19 +23,19 @@ public class Property {
         this.name = name;
     }
 
-    public PRDRange getRange() {
+    public Range getRange() {
         return range;
     }
 
-    public void setRange(PRDRange range) {
+    public void setRange(Range range) {
         this.range = range;
     }
 
-    public PRDValue getValue() {
+    public Value getValue() {
         return value;
     }
 
-    public void setValue(PRDValue value) {
+    public void setValue(Value value) {
         this.value = value;
     }
 
@@ -57,9 +57,10 @@ public class Property {
 
     public Property(PRDProperty property) {
         name = property.getPRDName();
-        range = property.getPRDRange();
         type = property.getType();
-        value = new PRDValue();
+        value = new Value(property.getPRDValue());
+        range = new Range(property.getPRDRange());
+
         value.setRandomInitialize(property.getPRDValue().isRandomInitialize());
 
         if (value.isRandomInitialize())
@@ -73,17 +74,16 @@ public class Property {
 
     public Property(PRDEnvProperty envProperty) {
         name = envProperty.getPRDName();
-        range = envProperty.getPRDRange();
+        range = new Range(envProperty.getPRDRange());
         type = envProperty.getType();
-        value = new PRDValue();
-
+        value = new Value(new PRDValue());
         value.setRandomInitialize(true);
     }
 
     public Property(Property other) {
         name = other.getName();
         type = other.getType();
-        value = new PRDValue();
+        value = new Value(other.getValue());
 
         value.setRandomInitialize(true);
 
