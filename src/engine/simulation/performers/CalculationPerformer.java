@@ -1,9 +1,6 @@
 package engine.simulation.performers;
 
-import engine.exceptions.EmptyExpressionException;
-import engine.exceptions.EntityNotFoundException;
-import engine.exceptions.PropertyNotFoundException;
-import engine.exceptions.ValueNotInRangeException;
+import engine.exceptions.*;
 import engine.logs.Loggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
@@ -48,8 +45,8 @@ public class CalculationPerformer {
         String newValue = getCalculationResult(world, action, on);
 
         if (!Utils.validateValueInRange(resultProperty, newValue))
-            throw new ValueNotInRangeException(String.format("Action [%s]: Entity [%s]: Property [%s]: Value is not in property's range",
-                    action.getType(), action.getEntityName(), action.getResultPropertyName()));
+                throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(action.getType(), action.getEntityName(),
+                        action.getResultPropertyName(), "Value is not in property's range and therefore is not set"));
 
         resultProperty.getValue().setCurrentValue(newValue);
         resultProperty.setStableTime(0);
@@ -68,12 +65,10 @@ public class CalculationPerformer {
     }
     public static void handle(World world, Action action, SingleEntity on) throws PropertyNotFoundException, EntityNotFoundException {
         if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
-            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] not found",
-                    action.getType(), action.getEntityName()));
+            throw new EntityNotFoundException(ErrorMessageFormatter.formatEntityNotFoundMessage(action.getType(), action.getEntityName()));
 
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getResultPropertyName())))
-            throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] not found",
-                    action.getType(), action.getEntityName(), action.getPropertyName()));
+            throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));
 
         performAction(world, action, on);
     }
