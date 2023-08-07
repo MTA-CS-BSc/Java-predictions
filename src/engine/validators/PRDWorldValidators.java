@@ -1,6 +1,6 @@
 package engine.validators;
 
-import engine.exceptions.TerminationNotFoundException;
+import engine.exceptions.*;
 import engine.logs.Loggers;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.entities.PRDEntitiesValidators;
@@ -12,18 +12,22 @@ import java.util.Objects;
 
 public class PRDWorldValidators {
     public static boolean validateWorld(PRDWorld world) {
-        return validateEntities(world)
-                && validateTermination(world)
-                && validateEnvironment(world)
-                && validateRules(world);
+        return validateEntities(world) && validateTermination(world)
+                    && validateEnvironment(world) && validateRules(world);
     }
     private static boolean validateEntities(PRDWorld world) {
-        return PRDEntitiesValidators.validateEntities(world.getPRDEntities());
+        try {
+            return PRDEntitiesValidators.validateEntities(world.getPRDEntities());
+        }
+
+        catch (Exception e) {
+            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            return false;
+        }
     }
     private static boolean validateTermination(PRDWorld world) {
         try {
-            PRDTerminationValidators.validateStopConditionExists(world.getPRDTermination());
-            return true;
+            return PRDTerminationValidators.validateStopConditionExists(world.getPRDTermination());
         }
 
         catch (TerminationNotFoundException e) {
@@ -32,9 +36,22 @@ public class PRDWorldValidators {
         }
     }
     private static boolean validateEnvironment(PRDWorld world) {
-        return PRDEvironmentValidators.validateEnvironment(world.getPRDEvironment());
+        try {
+            return PRDEvironmentValidators.validateEnvironment(world.getPRDEvironment());
+        }
+        catch (Exception e) {
+            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            return false;
+        }
     }
     private static boolean validateRules(PRDWorld world) {
-        return PRDRulesValidators.validateRules(world, world.getPRDRules());
+        try {
+            return PRDRulesValidators.validateRules(world, world.getPRDRules());
+        }
+
+        catch (Exception e) {
+            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            return false;
+        }
     }
 }

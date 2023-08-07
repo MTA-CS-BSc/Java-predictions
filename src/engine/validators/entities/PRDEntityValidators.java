@@ -1,5 +1,6 @@
 package engine.validators.entities;
 
+import engine.exceptions.*;
 import engine.logs.Loggers;
 import engine.consts.BoolPropValues;
 import engine.consts.PropTypes;
@@ -14,7 +15,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class PRDEntityValidators {
-    public static boolean validateProperties(PRDEntity entity) {
+    public static boolean validateProperties(PRDEntity entity) throws UniqueNameException, WhitespacesFoundException,
+            InvalidTypeException, ValueNotInRangeException, EmptyExpressionException {
         return validatePropsUniqueNames(entity)
                 && validateNoWhitespacesInPropsNames(entity)
                 && validatePropsTypes(entity)
@@ -22,55 +24,46 @@ public class PRDEntityValidators {
                 && validatePropertiesValues(entity)
                 && validateInitExistsOnNonRandomProps(entity);
     }
-    private static boolean validatePropsUniqueNames(PRDEntity entity) {
+    private static boolean validatePropsUniqueNames(PRDEntity entity) throws UniqueNameException {
         List<String> names = entity.getPRDProperties().getPRDProperty()
                             .stream()
                             .map(PRDProperty::getPRDName)
                             .collect(Collectors.toList());
 
-        for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
-            if (!PRDPropertyValidators.validateUniqueName(names, property.getPRDName())) {
-                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s]: name [%s] already exists",
+        for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
+            if (!PRDPropertyValidators.validateUniqueName(names, property.getPRDName()))
+                throw new UniqueNameException(String.format("Entity [%s]: Property [%s] already exists",
                         entity.getName(), property.getPRDName()));
-                return false;
-            }
-        }
 
         return true;
     }
-    private static boolean validateNoWhitespacesInPropsNames(PRDEntity entity) {
-        List<String> names = entity.getPRDProperties().getPRDProperty()
-                .stream()
-                .map(PRDProperty::getPRDName)
-                .collect(Collectors.toList());
+    private static boolean validateNoWhitespacesInPropsNames(PRDEntity entity) throws WhitespacesFoundException {
+        for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
+            if (property.getPRDName().contains(" "))
+                throw new WhitespacesFoundException(String.format("Entity [%s]: Property name [%s] contains whitespaces",
+                        entity.getName(), property.getPRDName()));
 
-        return PRDPropertyValidators.validateNoWhitespacesInNames(PRDProperty.class, names);
+        return true;
     }
-    private static boolean validatePropsTypes(PRDEntity entity) {
-        for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
-            if (!PRDPropertyValidators.validatePropetyType(property.getType())) {
-                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : property [%s] has invalid type [%s]",
+    private static boolean validatePropsTypes(PRDEntity entity) throws InvalidTypeException {
+        for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
+            if (!PRDPropertyValidators.validatePropetyType(property.getType()))
+                throw new InvalidTypeException(String.format("Entity [%s]: Property [%s] has invalid type [%s]",
                         entity.getName(), property.getPRDName(), property.getType()));
-                return false;
-            }
-        }
 
         return true;
     }
-    private static boolean validatePropsWithRangeTypes(PRDEntity entity) {
+    private static boolean validatePropsWithRangeTypes(PRDEntity entity) throws InvalidTypeException {
         List<PRDProperty> propsWithRange =
                         entity.getPRDProperties().getPRDProperty()
                         .stream()
                         .filter(element -> !Objects.isNull(element.getPRDRange()))
                         .collect(Collectors.toList());
 
-        for (PRDProperty property : propsWithRange) {
-            if (!PRDPropertyValidators.validateTypeForRangeExistance(property.getType())) {
-                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : property [%s] has range with incompatible type",
+        for (PRDProperty property : propsWithRange)
+            if (!PRDPropertyValidators.validateTypeForRangeExistance(property.getType()))
+                throw new InvalidTypeException(String.format("Entity [%s]: Property [%s] has range with incompatible type",
                         entity.getName(), property.getPRDName()));
-                return false;
-            }
-        }
 
         return true;
     }
@@ -107,36 +100,29 @@ public class PRDEntityValidators {
 
         return true;
     }
-    private static boolean validatePropertiesValues(PRDEntity entity) {
+    private static boolean validatePropertiesValues(PRDEntity entity) throws InvalidTypeException, ValueNotInRangeException {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty()) {
-            if (!validatePropValue(property)) {
-                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : Property [%s] has incorrect init value",
+            if (!validatePropValue(property))
+                throw new InvalidTypeException(String.format("Entity [%s]: Property [%s] has incorrect init value for it's type",
                         entity.getName(), property.getPRDName()));
-                return false;
-            }
 
-            else if (!validatePropValueAgainstRange(property)) {
-                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : Property [%s] has incorrect init value according to range",
+            if (!validatePropValueAgainstRange(property))
+                throw new ValueNotInRangeException(String.format("Entity [%s]: Property [%s] has incorrect init value according to range",
                         entity.getName(), property.getPRDName()));
-                return false;
-            }
         }
 
         return true;
     }
-    private static boolean validateInitExistsOnNonRandomProps(PRDEntity entity) {
+    private static boolean validateInitExistsOnNonRandomProps(PRDEntity entity) throws EmptyExpressionException {
         List<PRDProperty> notRandomProps = entity.getPRDProperties().getPRDProperty()
                                         .stream()
                                         .filter(element -> !element.getPRDValue().isRandomInitialize())
                                         .collect(Collectors.toList());
 
-        for (PRDProperty property: notRandomProps) {
-            if (!property.getType().equals(PropTypes.STRING) && property.getPRDValue().getInit().isEmpty()) {
-                Loggers.XML_ERRORS_LOGGER.info(String.format("Entity [%s] : Property [%s] has no init",
+        for (PRDProperty property: notRandomProps)
+            if (!property.getType().equals(PropTypes.STRING) && property.getPRDValue().getInit().isEmpty())
+                throw new EmptyExpressionException(String.format("Entity [%s]: Property [%s] has no init value but is not random",
                                                         entity.getName(), property.getPRDName()));
-                return false;
-            }
-        }
 
         return true;
     }
