@@ -1,15 +1,12 @@
 package engine.simulation;
 
 import engine.logs.Loggers;
-import engine.logs.SingleSimulationLog;
-import engine.modules.RandomGenerator;
 import engine.consts.TerminationReasons;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.simulation.performers.ActionsPerformer;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SingleSimulation {
     World world;

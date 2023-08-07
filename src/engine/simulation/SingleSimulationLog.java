@@ -1,4 +1,4 @@
-package engine.logs;
+package engine.simulation;
 
 import engine.prototypes.implemented.World;
 import engine.prototypes.implemented.WorldState;
@@ -21,9 +21,6 @@ public class SingleSimulationLog {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
-    }
     public void setStart(Date start) {
         this.start = start;
     }
