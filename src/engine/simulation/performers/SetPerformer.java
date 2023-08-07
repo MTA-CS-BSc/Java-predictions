@@ -48,7 +48,6 @@ public class SetPerformer {
             } catch (ValueNotInRangeException e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
-
         }
     }
     public static void handle(World world, Action action, SingleEntity on) throws EntityNotFoundException, PropertyNotFoundException {
