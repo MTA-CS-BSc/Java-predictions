@@ -2,11 +2,12 @@ package engine.history;
 
 import engine.logs.Loggers;
 import engine.modules.Utils;
-import engine.prototypes.implemented.Entity;
+import engine.prototypes.implemented.*;
+import engine.prototypes.implemented.Properties;
 import engine.simulation.SingleSimulationLog;
 
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HistoryManager {
     protected HashMap<String, SingleSimulationLog> pastSimulations;
@@ -29,6 +30,41 @@ public class HistoryManager {
 
         System.out.printf("Simulation uuid: [%s]%n", uuid);
         System.out.printf("Simulation start time:  [%s]%n", Utils.formatDate(simulationLog.getStartTime()));
+    }
+    private List<String> getValuesListForProperty(SingleSimulationLog log,
+                                                  String entityName, String propertyName) {
+        Entity mainEntity = log.getFinishWorldState().getEntitiesMap().get(entityName);
+
+        if (Objects.isNull(mainEntity))
+            return null;
+
+        return mainEntity.getSingleEntities()
+                .stream()
+                .map(SingleEntity::getProperties)
+                .map(Properties::getPropsMap)
+                .map(propsMap -> propsMap.get(propertyName))
+                .map(Property::getValue)
+                .map(Value::getCurrentValue)
+                .collect(Collectors.toList());
+    }
+
+    public HashMap<String, Integer> getEntitiesCountForProp(String uuid, String entityName,
+                                                            String propertyName) {
+        HashMap<String, Integer> histogram = new HashMap<>();
+
+        SingleSimulationLog simulationLog = getPastSimulation(uuid);
+        getSimulationDetails(uuid, simulationLog);
+
+        List<String> propertyValues = getValuesListForProperty(simulationLog, entityName, propertyName);
+
+        if (Objects.isNull(propertyValues))
+            return null;
+
+        for (String value : propertyValues)
+            if (!histogram.containsKey(value))
+                histogram.put(value, Collections.frequency(propertyValues, value));
+
+        return histogram;
     }
     public HashMap<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) {
         HashMap<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
