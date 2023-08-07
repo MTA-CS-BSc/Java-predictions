@@ -77,5 +77,4 @@ public class CalculationPerformer {
 
         performAction(world, action, on);
     }
-
 }
