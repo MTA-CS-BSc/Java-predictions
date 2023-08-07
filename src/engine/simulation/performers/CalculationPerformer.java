@@ -1,5 +1,9 @@
 package engine.simulation.performers;
 
+import engine.exceptions.EmptyExpressionException;
+import engine.exceptions.EntityNotFoundException;
+import engine.exceptions.PropertyNotFoundException;
+import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
@@ -13,7 +17,7 @@ import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 public class CalculationPerformer {
-    private static String getCalculationResult(World world, Action action, SingleEntity on) {
+    private static String getCalculationResult(World world, Action action, SingleEntity on) throws EmptyExpressionException {
         Multiply multiply = action.getMultiply();
         Divide divide = action.getDivide();
 
@@ -21,7 +25,8 @@ public class CalculationPerformer {
         String arg2 = ExpressionParser.parseExpression(world, action, Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2());
 
         if (arg1.isEmpty() || arg2.isEmpty())
-            return "";
+            throw new EmptyExpressionException(String.format("Action [%s]: Type [%s]: Arg1 or Arg2 are not valid expressions",
+                    action.getType(), Objects.isNull(multiply) ? "Divide" : "Multiply"));
 
         String eval_arg1 = ExpressionParser.evaluateExpression(arg1, on);
         String eval_arg2 = ExpressionParser.evaluateExpression(arg2, on);
@@ -31,35 +36,46 @@ public class CalculationPerformer {
     }
     private static void handleAll(World world, Entity mainEntity, Action action) {
         mainEntity.getSingleEntities().forEach(entity -> {
-            Property resultProperty = Utils.findPropertyByName(entity, action.getResultPropertyName());
-            String newValue = getCalculationResult(world, action, entity);
-            resultProperty.getValue().setCurrentValue(newValue);
-            resultProperty.setStableTime(0);
+            try {
+                handleSingle(world, action, entity);
+            } catch (ValueNotInRangeException | EmptyExpressionException e) {
+                Loggers.SIMULATION_LOGGER.info(e.getMessage());
+            }
         });
     }
-    private static void handleSingle(World world, Action action, SingleEntity on) {
+    private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException, EmptyExpressionException {
         Property resultProperty = Utils.findPropertyByName(on, action.getResultPropertyName());
         String newValue = getCalculationResult(world, action, on);
+
+        if (!Utils.validateValueInRange(resultProperty, newValue))
+            throw new ValueNotInRangeException(String.format("Action [%s]: Entity [%s]: Property [%s]: Value is not in property's range",
+                    action.getType(), action.getEntityName(), action.getResultPropertyName()));
+
         resultProperty.getValue().setCurrentValue(newValue);
         resultProperty.setStableTime(0);
     }
-    public static void handle(World world, Action action, SingleEntity on) {
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
-        Property someResultProp = Utils.findAnyPropertyByName(world, action.getEntityName(), action.getResultPropertyName());
-
-        if (Objects.isNull(mainEntity) || Objects.isNull(someResultProp)) {
-            Loggers.SIMULATION_LOGGER.info(String.format("In calculation action," +
-                    " entity [%s] or result prop [%s] not found", action.getEntityName(), action.getResultPropertyName()));
-            return;
-        }
-
+    private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))
-            handleAll(world, mainEntity, action);
+            handleAll(world, Utils.findEntityByName(world, action.getEntityName()), action);
 
-        else
-            handleSingle(world, action, on);
+        else {
+            try {
+                handleSingle(world, action, on);
+            } catch (ValueNotInRangeException | EmptyExpressionException e) {
+                Loggers.SIMULATION_LOGGER.info(e.getMessage());
+            }
+        }
+    }
+    public static void handle(World world, Action action, SingleEntity on) throws PropertyNotFoundException, EntityNotFoundException {
+        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
+            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] not found",
+                    action.getType(), action.getEntityName()));
 
-        Loggers.SIMULATION_LOGGER.info("Calculation evaluate");
+        if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getResultPropertyName())))
+            throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] not found",
+                    action.getType(), action.getEntityName(), action.getPropertyName()));
+
+        performAction(world, action, on);
     }
 
 }
