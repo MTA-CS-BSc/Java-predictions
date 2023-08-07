@@ -56,12 +56,12 @@ public class ConditionPerformer {
         List<Condition> allConditions = condition.getConditions();
         String logicalOperator = condition.getLogicalOperator();
 
-        if (logicalOperator.equalsIgnoreCase(ConditionLogicalOperators.OR))
+        if (logicalOperator.equalsIgnoreCase(ConditionLogicalOperators.AND))
             return allConditions.stream()
                      .allMatch(current -> evaluateCondition(world, action, current, on));
 
 
-        else if (logicalOperator.equalsIgnoreCase(ConditionLogicalOperators.AND))
+        else if (logicalOperator.equalsIgnoreCase(ConditionLogicalOperators.OR))
             return allConditions.stream()
                     .anyMatch(current -> evaluateCondition(world, action, current, on));
 
