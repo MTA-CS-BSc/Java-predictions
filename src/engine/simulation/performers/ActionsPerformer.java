@@ -50,7 +50,7 @@ public class ActionsPerformer {
     }
     public static void setPropertyValue(String actionType, String entityName,
                                          Property property, String newValue) {
-        if (newValue.matches("^\\d+\\.0+$"))
+        if (newValue.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
             newValue = newValue.split("\\.")[0];
 
         property.getValue().setCurrentValue(newValue);

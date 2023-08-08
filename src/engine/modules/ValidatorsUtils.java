@@ -67,8 +67,12 @@ public class ValidatorsUtils {
             if (Utils.isDecimal(value))
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());
 
-            else if (Utils.isFloat(value))
-                return property.getType().equals(PropTypes.FLOAT);
+            else if (Utils.isFloat(value)) {
+                if (!value.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+                    return property.getType().equals(PropTypes.FLOAT);
+
+                return PropTypes.NUMERIC_PROPS.contains(property.getType());
+            }
 
             else if (Utils.isBoolean(value))
                 return property.getType().equals(PropTypes.BOOLEAN);

@@ -20,8 +20,11 @@ public class CalculationPerformer {
             throw new EmptyExpressionException(String.format("Action [%s]: Type [%s]: Arg1 or Arg2 are not valid expressions",
                     action.getType(), Objects.isNull(multiply) ? "Divide" : "Multiply"));
 
-        return String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(arg1) / Float.parseFloat(arg2)
+        String result = String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(arg1) / Float.parseFloat(arg2)
                 : Float.parseFloat(arg1) * Float.parseFloat(arg2));
+
+        return result.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
+
     }
     private static void handleAll(World world, Action action) {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
