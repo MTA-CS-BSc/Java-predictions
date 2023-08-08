@@ -3,6 +3,7 @@ package engine.validators.actions;
 import engine.consts.ConditionSingularities;
 import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
+import engine.logs.Loggers;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDCondition;
@@ -29,6 +30,14 @@ public class ConditionValidators {
         if (!ValidatorsUtils.validateExpressionType(world, action, property, condition.getValue()))
             throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
                     action.getType(), action.getEntity()));
+
+        if (!Objects.isNull(action.getPRDElse()))
+            for (PRDAction elseAct : action.getPRDElse().getPRDAction())
+                PRDActionValidators.validateAction(world, elseAct);
+
+        if (!Objects.isNull(action.getPRDThen()))
+            for (PRDAction thenAct : action.getPRDThen().getPRDAction())
+                PRDActionValidators.validateAction(world, thenAct);
 
         return true;
     }
