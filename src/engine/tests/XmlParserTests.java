@@ -66,12 +66,12 @@ public class XmlParserTests {
     @DisplayName("Validations check for invalid XML")
     public void validationsForInvalidXml() throws JAXBException, FileNotFoundException {
         List<String> xmlPaths = Arrays.asList(
-                //String.format("%s/err-calculation-args.xml", testFilesPath),
-                //String.format("%s/err-entity-not-found.xml", testFilesPath),
-                //String.format("%s/err-increase-args.xml", testFilesPath),
-                //String.format("%s/err-property-not-found.xml", testFilesPath),
-                String.format("%s/err-set-args.xml", testFilesPath));
-                //String.format("%s/err-unique-name.xml", testFilesPath));
+                String.format("%s/err-calculation-args.xml", testFilesPath),
+                String.format("%s/err-entity-not-found.xml", testFilesPath),
+                String.format("%s/err-increase-args.xml", testFilesPath),
+                String.format("%s/err-property-not-found.xml", testFilesPath),
+                String.format("%s/err-set-args.xml", testFilesPath),
+                String.format("%s/err-unique-name.xml", testFilesPath));
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> () -> Assertions.assertFalse(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element))))
