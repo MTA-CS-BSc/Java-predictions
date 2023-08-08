@@ -1,42 +1,36 @@
 package engine.validators.entities;
 
 import engine.exceptions.*;
-import engine.logs.Loggers;
-import engine.prototypes.jaxb.PRDEntities;
 import engine.prototypes.jaxb.PRDEntity;
+import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDPropertyValidators;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class PRDEntitiesValidators {
-    public static boolean validateEntities(PRDEntities entities) throws Exception {
-        return validateEntitiesProperties(entities)
-                && validateEntitiesUniqueNames(entities)
-                && validateNoWhitespacesInNames(entities);
+    public static boolean validateEntities(PRDWorld world) throws Exception {
+        return validateEntitiesProperties(world)
+                && validateEntitiesUniqueNames(world)
+                && validateNoWhitespacesInNames(world);
     }
-    private static boolean validateEntitiesUniqueNames(PRDEntities entities) throws UniqueNameException {
-        List<String> names = entities.getPRDEntity()
-                .stream()
-                .map(PRDEntity::getName)
-                .collect(Collectors.toList());
-
-        for (PRDEntity entity : entities.getPRDEntity())
-            if (!PRDPropertyValidators.validateUniqueName(names, entity.getName()))
+    private static boolean validateEntitiesUniqueNames(PRDWorld world) throws UniqueNameException {
+        for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
+            if (world.getPRDEntities().getPRDEntity()
+                    .stream()
+                    .filter(element -> element.getName().equals(entity.getName()))
+                    .count() > 1)
                 throw new UniqueNameException(String.format("Entity name [%s] already exists", entity.getName()));
 
         return true;
     }
-    private static boolean validateNoWhitespacesInNames(PRDEntities entities) throws WhitespacesFoundException {
-        for (PRDEntity entity : entities.getPRDEntity())
+    private static boolean validateNoWhitespacesInNames(PRDWorld world) throws WhitespacesFoundException {
+        for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
             if (entity.getName().contains(" "))
                 throw new WhitespacesFoundException(String.format("Entity [%s] has whitespaces in it's name", entity.getName()));
 
         return true;
     }
-    private static boolean validateEntitiesProperties(PRDEntities entities) throws Exception {
-        for (PRDEntity entity : entities.getPRDEntity())
-            PRDEntityValidators.validateProperties(entity);
+    private static boolean validateEntitiesProperties(PRDWorld world) throws Exception {
+        for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
+            PRDPropertyValidators.validateProperties(world, entity);
 
         return true;
     }

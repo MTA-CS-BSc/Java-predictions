@@ -1,12 +1,10 @@
 package engine.simulation.performers;
 
-import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.PropertyNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
 import engine.modules.Utils;
-import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
 
 import java.util.Objects;
@@ -28,7 +26,7 @@ public class IncrementPerformer {
     }
     private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException {
         Property propToChange = Utils.findPropertyByName(on, action.getPropertyName());
-        String parsedValue = ExpressionParser.parseExpression(world, action, action.getBy());
+        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), action.getBy(), on);
         String by = ExpressionParser.evaluateExpression(parsedValue, on);
         String newValue = getIncrementResult(propToChange.getValue().getCurrentValue(), by);
 

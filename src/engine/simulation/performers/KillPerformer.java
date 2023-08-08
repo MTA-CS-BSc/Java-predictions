@@ -1,13 +1,8 @@
 package engine.simulation.performers;
 
-import engine.exceptions.EntityNotFoundException;
-import engine.exceptions.ErrorMessageFormatter;
 import engine.logs.Loggers;
 import engine.modules.Utils;
-import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +17,6 @@ public class KillPerformer {
 
         Loggers.SIMULATION_LOGGER.info(String.format("Killed entity [%s]", action.getEntityName()));
     }
-
     public static void handleSingle(World world, Action action, SingleEntity kill) {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 

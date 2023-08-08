@@ -3,23 +3,17 @@ package engine.simulation.performers;
 import engine.exceptions.*;
 import engine.logs.Loggers;
 import engine.modules.Utils;
-import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
-import engine.modules.Utils;
-import engine.parsers.ExpressionParser;
-import engine.prototypes.implemented.*;
-
-import java.util.Objects;
 public class CalculationPerformer {
     private static String getCalculationResult(World world, Action action, SingleEntity on) throws EmptyExpressionException {
         Multiply multiply = action.getMultiply();
         Divide divide = action.getDivide();
 
-        String arg1 = ExpressionParser.parseExpression(world, action, Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1());
-        String arg2 = ExpressionParser.parseExpression(world, action, Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2());
+        String arg1 = ExpressionParser.parseExpression(world, action.getEntityName(), Objects.isNull(multiply) ? divide.getArg1() : multiply.getArg1(), on);
+        String arg2 = ExpressionParser.parseExpression(world, action.getEntityName(), Objects.isNull(multiply) ? divide.getArg2() : multiply.getArg2(), on);
 
         if (arg1.isEmpty() || arg2.isEmpty())
             throw new EmptyExpressionException(String.format("Action [%s]: Type [%s]: Arg1 or Arg2 are not valid expressions",

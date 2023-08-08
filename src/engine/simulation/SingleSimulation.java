@@ -12,7 +12,6 @@ public class SingleSimulation {
     World world;
     long ticks = 0;
     UUID uuid;
-
     SingleSimulationLog log;
 
     public SingleSimulation(World _world) {

@@ -1,13 +1,11 @@
 package engine.simulation.performers;
 
 import engine.consts.PropTypes;
-import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.PropertyNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
 import engine.modules.Utils;
-import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
 
 import java.util.Objects;
@@ -26,7 +24,7 @@ public class SetPerformer {
     }
     private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException {
         Property property = Utils.findPropertyByName(on, action.getPropertyName());
-        String parsedValue = ExpressionParser.parseExpression(world, action, action.getValue());
+        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), action.getValue(), on);
         String newValue = ExpressionParser.evaluateExpression(parsedValue, on);
 
         if (PropTypes.NUMERIC_PROPS.contains(property.getType()))

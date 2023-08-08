@@ -1,17 +1,11 @@
 package engine.simulation.performers;
 
-import engine.consts.BoolPropValues;
 import engine.consts.ConditionLogicalOperators;
 import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
-import engine.exceptions.EntityNotFoundException;
-import engine.exceptions.ErrorMessageFormatter;
 import engine.logs.Loggers;
 import engine.modules.Utils;
-import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +21,7 @@ public class ConditionPerformer {
             return true;
         }
 
-        String parsedValue = ExpressionParser.parseExpression(world, action, condition.getValue());
+        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), condition.getValue(), on);
         String value = ExpressionParser.evaluateExpression(parsedValue, on);
         String operator = condition.getOperator();
         boolean isNumeric = Utils.isDecimal(value);

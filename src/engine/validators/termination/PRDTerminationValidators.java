@@ -1,10 +1,11 @@
 package engine.validators.termination;
 
 import engine.prototypes.jaxb.PRDTermination;
+import engine.prototypes.jaxb.PRDWorld;
 
 public class PRDTerminationValidators {
-    public static boolean validateStopConditionExists(PRDTermination termination) throws Exception {
-        if (termination.getPRDByTicksOrPRDBySecond().isEmpty())
+    public static boolean validateStopConditionExists(PRDWorld world) throws Exception {
+        if (world.getPRDTermination().getPRDByTicksOrPRDBySecond().isEmpty())
             throw new Exception("No termination found");
 
         return true;
