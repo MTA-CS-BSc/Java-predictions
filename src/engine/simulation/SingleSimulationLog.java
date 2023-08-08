@@ -20,31 +20,24 @@ public class SingleSimulationLog {
     public UUID getUuid() {
         return uuid;
     }
-
     public void setStartTime(Date start) {
         this.start = start;
     }
-
     public void setEndTime(Date finished) {
         this.finished = finished;
     }
-
     public void setFinishWorldState(World finishWorldState) {
         this.finishWorldState = new WorldState(finishWorldState);
     }
-
     public Date getStartTime() {
         return start;
     }
-
     public Date getFinishedTime() {
         return finished;
     }
-
     public WorldState getStartWorldState() {
         return startWorldState;
     }
-
     public WorldState getFinishWorldState() {
         return finishWorldState;
     }
