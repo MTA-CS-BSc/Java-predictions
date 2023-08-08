@@ -1,7 +1,7 @@
 package engine.validators;
 
 import engine.logs.Loggers;
-import engine.prototypes.jaxb.PRDWorld;
+import engine.prototypes.jaxb.*;
 import engine.validators.entities.PRDEntitiesValidators;
 import engine.validators.env.PRDEnvironmentValidators;
 import engine.validators.rules.PRDRulesValidators;
@@ -9,6 +9,8 @@ import engine.validators.termination.PRDTerminationValidators;
 
 public class PRDWorldValidators {
     public static boolean validateWorld(PRDWorld world) {
+        StringTrimmer.trimAllStrings(world);
+
         return validateEntities(world) && validateTermination(world)
                 && validateEnvironment(world) && validateRules(world);
     }
@@ -51,4 +53,5 @@ public class PRDWorldValidators {
             return false;
         }
     }
+
 }
