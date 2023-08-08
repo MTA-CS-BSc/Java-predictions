@@ -15,22 +15,22 @@ public class ActionsPerformer {
         String type = action.getType();
 
         try {
-            if (type.equalsIgnoreCase(ActionTypes.INCREASE))
+            if (type.equals(ActionTypes.INCREASE))
                 IncrementPerformer.handle(world, action, on);
 
-            else if (type.equalsIgnoreCase(ActionTypes.DECREASE))
+            else if (type.equals(ActionTypes.DECREASE))
                 DecrementPerformer.handle(world, action, on);
 
-            else if (type.equalsIgnoreCase(ActionTypes.CALCULATION))
+            else if (type.equals(ActionTypes.CALCULATION))
                 CalculationPerformer.handle(world, action, on);
 
-            else if (type.equalsIgnoreCase(ActionTypes.SET))
+            else if (type.equals(ActionTypes.SET))
                 SetPerformer.handle(world, action, on);
 
-            else if (type.equalsIgnoreCase(ActionTypes.KILL))
+            else if (type.equals(ActionTypes.KILL))
                 KillPerformer.handle(world, action, on);
 
-            else if (type.equalsIgnoreCase(ActionTypes.CONDITION))
+            else if (type.equals(ActionTypes.CONDITION))
                 ConditionPerformer.handle(world, action, on);
         }
 
