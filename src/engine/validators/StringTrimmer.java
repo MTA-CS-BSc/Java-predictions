@@ -2,6 +2,8 @@ package engine.validators;
 
 import engine.prototypes.jaxb.*;
 
+import java.util.Objects;
+
 public class StringTrimmer {
     public static void trimAllStrings(PRDWorld world) {
         trimEntities(world);
@@ -9,50 +11,98 @@ public class StringTrimmer {
         trimRules(world);
     }
     private static void trimEntities(PRDWorld world) {
+        if (Objects.isNull(world.getPRDEntities()))
+            return;
+
         world.getPRDEntities().getPRDEntity().forEach(entity -> {
-            entity.setName(entity.getName().trim());
+            if (!Objects.isNull(entity.getName()))
+                entity.setName(entity.getName().trim());
+
             entity.getPRDProperties().getPRDProperty().forEach(property -> {
-                property.setPRDName(property.getPRDName().trim());
-                property.setType(property.getType().trim());
-                property.getPRDValue().setInit(property.getPRDValue().getInit().trim());
+                if (!Objects.isNull(property.getPRDName()))
+                    property.setPRDName(property.getPRDName().trim());
+
+                if (!Objects.isNull(property.getType()))
+                    property.setType(property.getType().trim());
+
+                if (!property.getPRDValue().isRandomInitialize())
+                    property.getPRDValue().setInit(property.getPRDValue().getInit().trim());
             });
         });
     }
     private static void trimEnvironment(PRDWorld world) {
-        world.getPRDEvironment().getPRDEnvProperty().forEach(property -> {
-            property.setPRDName(property.getPRDName().trim());
-            property.setType(property.getType().trim());
-        });
+        if (!Objects.isNull(world.getPRDEvironment()))
+            world.getPRDEvironment().getPRDEnvProperty().forEach(property -> {
+                if (!Objects.isNull(property.getPRDName()))
+                    property.setPRDName(property.getPRDName().trim());
+
+                if (!Objects.isNull(property.getType()))
+                    property.setType(property.getType().trim());
+            });
     }
     private static void trimRules(PRDWorld world) {
-        world.getPRDRules().getPRDRule().forEach(rule -> {
-            rule.setName(rule.getName().trim());
-            rule.getPRDActions().getPRDAction().forEach(StringTrimmer::trimAction);
-        });
+        if (!Objects.isNull(world.getPRDRules()))
+            world.getPRDRules().getPRDRule().forEach(rule -> {
+                if (!Objects.isNull(rule.getName()))
+                    rule.setName(rule.getName().trim());
+
+                rule.getPRDActions().getPRDAction().forEach(StringTrimmer::trimAction);
+            });
     }
     private static void trimAction(PRDAction action) {
-        action.setEntity(action.getEntity().trim());
-        action.setType(action.getType().trim());
-        action.setBy(action.getBy().trim());
-        action.setProperty(action.getProperty().trim());
-        action.setResultProp(action.getResultProp().trim());
-        action.setValue(action.getValue().trim());
+        if (Objects.isNull(action))
+            return;
+
+        if (!Objects.isNull(action.getEntity()))
+            action.setEntity(action.getEntity().trim());
+
+        if (!Objects.isNull(action.getType()))
+            action.setType(action.getType().trim());
+
+        if (!Objects.isNull(action.getBy()))
+            action.setBy(action.getBy().trim());
+
+        if (!Objects.isNull(action.getProperty()))
+            action.setProperty(action.getProperty().trim());
+
+        if (!Objects.isNull(action.getResultProp()))
+            action.setResultProp(action.getResultProp().trim());
+
+        if (!Objects.isNull(action.getValue()))
+            action.setValue(action.getValue().trim());
+
         trimCondition(action.getPRDCondition());
         trimThen(action.getPRDThen());
         trimElse(action.getPRDElse());
     }
     private static void trimCondition(PRDCondition condition) {
-        condition.setEntity(condition.getEntity().trim());
-        condition.setProperty(condition.getProperty().trim());
-        condition.setValue(condition.getValue().trim());
-        condition.setLogical(condition.getLogical().trim());
-        condition.setSingularity(condition.getSingularity().trim());
-        condition.setOperator(condition.getOperator().trim());
+        if (Objects.isNull(condition))
+            return;
+
+        if (!Objects.isNull(condition.getEntity()))
+            condition.setEntity(condition.getEntity().trim());
+
+        if (!Objects.isNull(condition.getProperty()))
+            condition.setProperty(condition.getProperty().trim());
+
+        if (!Objects.isNull(condition.getValue()))
+            condition.setValue(condition.getValue().trim());
+
+        if (!Objects.isNull(condition.getLogical()))
+            condition.setLogical(condition.getLogical().trim());
+
+        if (!Objects.isNull(condition.getSingularity()))
+            condition.setSingularity(condition.getSingularity().trim());
+
+        if (!Objects.isNull(condition.getOperator()))
+            condition.setOperator(condition.getOperator().trim());
     }
     private static void trimThen(PRDThen prdThen) {
-        prdThen.getPRDAction().forEach(StringTrimmer::trimAction);
+        if (!Objects.isNull(prdThen))
+            prdThen.getPRDAction().forEach(StringTrimmer::trimAction);
     }
     private static void trimElse(PRDElse prdElse) {
-        prdElse.getPRDAction().forEach(StringTrimmer::trimAction);
+        if (!Objects.isNull(prdElse))
+            prdElse.getPRDAction().forEach(StringTrimmer::trimAction);
     }
 }
