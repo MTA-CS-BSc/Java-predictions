@@ -1,5 +1,6 @@
 package engine.modules;
 
+import engine.consts.BoolPropValues;
 import engine.consts.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.ValueNotInRangeException;
@@ -81,5 +82,9 @@ public class Utils {
     }
     public static String formatDate(Date date) {
         return new SimpleDateFormat("dd-MM-yyyy | hh.mm.ss").format(date);
+    }
+
+    public static boolean isBoolean(String str) {
+        return str.equalsIgnoreCase(BoolPropValues.TRUE) || str.equalsIgnoreCase(BoolPropValues.FALSE);
     }
 }

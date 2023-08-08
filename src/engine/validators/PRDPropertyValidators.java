@@ -4,6 +4,7 @@ import engine.consts.BoolPropValues;
 import engine.consts.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.*;
+import engine.modules.Utils;
 import engine.prototypes.jaxb.*;
 
 import java.util.List;
@@ -38,7 +39,7 @@ public class PRDPropertyValidators {
         }
 
         else if (property.getType().equals(PropTypes.BOOLEAN))
-            return init.equals(BoolPropValues.TRUE) || init.equals(BoolPropValues.FALSE);
+            return Utils.isBoolean(init);
 
         return true;
     }
