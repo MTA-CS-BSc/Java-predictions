@@ -1,5 +1,7 @@
 package engine.modules;
 
+import engine.consts.Restrictions;
+
 import java.util.Random;
 
 public class RandomGenerator {
@@ -15,25 +17,15 @@ public class RandomGenerator {
     public static float randomizeFloat(float min, float max) {
         return min + new Random().nextFloat() * (max - min);
     }
-    public static String randomizeRandomString(int length) {
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
+    public static String randomizeRandomString() {
+        String symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?,-.()";
+        int randomLength = randomizeRandomNumber(1, Restrictions.MAX_RANDOM_STRING_LENGTH);
+        StringBuilder sb = new StringBuilder(randomLength);
 
-        // create StringBuffer size of AlphaNumericString
-        StringBuilder sb = new StringBuilder(length);
-
-        for (int i = 0; i < length; i++) {
-
-            // generate a random number between
-            // 0 to AlphaNumericString variable length
-            int index
-                    = (int)(AlphaNumericString.length()
-                    * Math.random());
-
-            // add Character one by one in end of sb
-            sb.append(AlphaNumericString
-                    .charAt(index));
+        for (int i = 0; i < randomLength; i++) {
+            int randomIndex = new Random().nextInt(symbols.length());
+            char randomSymbol = symbols.charAt(randomIndex);
+            sb.append(randomSymbol);
         }
 
         return sb.toString();

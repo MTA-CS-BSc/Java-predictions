@@ -37,7 +37,7 @@ public class Utils {
                 property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat((float) range.getFrom(), (float) range.getTo())));
                 break;
             case PropTypes.STRING:
-                property.getValue().setInit(RandomGenerator.randomizeRandomString(Restrictions.MAX_RANDOM_STRING_LENGTH));
+                property.getValue().setInit(RandomGenerator.randomizeRandomString());
                 break;
         }
 
