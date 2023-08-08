@@ -17,7 +17,7 @@ public class SetValidator {
             throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] does not exist",
                     action.getType(), action.getEntity(), action.getProperty()));
 
-        if (!ValidatorsUtils.validateExpressionType(world, action, property, action.getValue().trim()))
+        if (!ValidatorsUtils.validateExpressionType(world, action, property, action.getValue()))
             throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
                     action.getType(), action.getEntity()));
 

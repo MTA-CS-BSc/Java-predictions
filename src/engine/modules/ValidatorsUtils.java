@@ -26,13 +26,12 @@ public class ValidatorsUtils {
                 .findFirst().orElse(null);
     }
     public static boolean isSystemFunction(String expression) {
-        String trimmed = expression.trim();
         String pattern = "^[A-Za-z]{1,}\\([A-Za-z0-9]{1,}\\)$";
 
-        if (!Pattern.matches(pattern, trimmed))
+        if (!Pattern.matches(pattern, expression))
             return false;
 
-        return SystemFunctions.ALL_SYSTEM_FUNCS.contains(trimmed.substring(0, trimmed.indexOf("(")));
+        return SystemFunctions.ALL_SYSTEM_FUNCS.contains(expression.substring(0, expression.indexOf("(")));
     }
     public static String getSystemFunctionType(String expression) {
         return expression.substring(0, expression.indexOf("("));
