@@ -16,7 +16,7 @@ public class PRDActionValidators {
 
         switch (action.getType()) {
             case ActionTypes.SET:
-                return SetActionValidator.validate(world, action);
+                return SetValidator.validate(world, action);
             case ActionTypes.INCREASE:
             case ActionTypes.DECREASE:
                 return IncreaseDecreaseValidator.validate(world, action);

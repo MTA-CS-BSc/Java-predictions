@@ -37,8 +37,7 @@ public class ValidatorsUtils {
     public static String getSystemFunctionType(String expression) {
         return expression.substring(0, expression.indexOf("("));
     }
-    public static boolean validateExpressionType(PRDWorld world, PRDAction action, PRDProperty property) {
-        String value = action.getValue().trim();
+    public static boolean validateExpressionType(PRDWorld world, PRDAction action, PRDProperty property, String value) {
         PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), value);
 
         if (ValidatorsUtils.isSystemFunction(value)) {
