@@ -3,6 +3,7 @@ package engine.simulation.performers;
 import engine.consts.ConditionLogicalOperators;
 import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
+import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.logs.Loggers;
 import engine.modules.Utils;
@@ -13,15 +14,16 @@ import java.util.Objects;
 
 public class ConditionPerformer {
     private static boolean evaluateSingleCondition(World world, Action action,
-                                                   Condition condition, SingleEntity on) throws PropertyNotFoundException {
+                                                   Condition condition, SingleEntity on) throws Exception {
         Property property = Utils.findPropertyByName(on, condition.getProperty());
 
-        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntityName()))
-                || Objects.isNull(property) || Objects.isNull(property.getValue())) {
-            Loggers.SIMULATION_LOGGER.info(String.format("Entity [%s] or property [%s] do not exist",
+        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntityName())))
+            throw new EntityNotFoundException(String.format("Action: [%s]: Entity [%s] not found",
+                    action.getType(), action.getEntityName()));
+
+        else if (Objects.isNull(property) || Objects.isNull(property.getValue().getCurrentValue()))
+            throw new PropertyNotFoundException(String.format("Entity [%s] or property [%s] do not exist",
                     condition.getEntityName(), condition.getProperty()));
-            return true;
-        }
 
         String value = ExpressionParser.evaluateExpression(world, action, condition.getValue(), on);
         String operator = condition.getOperator();
@@ -56,7 +58,7 @@ public class ConditionPerformer {
                      .allMatch(current -> {
                          try {
                              return evaluateCondition(world, action, current, on);
-                         } catch (PropertyNotFoundException e) {
+                         } catch (Exception e) {
                              Loggers.SIMULATION_LOGGER.info(e.getMessage());
                              return false;
                          }
@@ -68,7 +70,7 @@ public class ConditionPerformer {
                     .anyMatch(current -> {
                         try {
                             return evaluateCondition(world, action, current, on);
-                        } catch (PropertyNotFoundException e) {
+                        } catch (Exception e) {
                             Loggers.SIMULATION_LOGGER.info(e.getMessage());
                             return false;
                         }
@@ -76,7 +78,7 @@ public class ConditionPerformer {
 
         return true;
     }
-    private static boolean evaluateCondition(World world, Action action, Condition condition, SingleEntity on) throws PropertyNotFoundException {
+    private static boolean evaluateCondition(World world, Action action, Condition condition, SingleEntity on) throws Exception {
         if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
             return evaluateSingleCondition(world, action, condition, on);
 
@@ -88,12 +90,12 @@ public class ConditionPerformer {
         mainEntity.getSingleEntities().forEach(on -> {
             try {
                 handleSingle(world, action, on);
-            } catch (PropertyNotFoundException e) {
-
+            } catch (Exception e) {
+                Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
-    private static void handleSingle(World world, Action action, SingleEntity on) throws PropertyNotFoundException {
+    private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
         Condition condition = action.getCondition();
         List<Action> thenActions = action.getThen().getActions();
         Else prdElse = action.getElse();
@@ -108,7 +110,7 @@ public class ConditionPerformer {
         else
             prdElse.getActions().forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
     }
-    public static void handle(World world, Action action, SingleEntity on) throws PropertyNotFoundException {
+    public static void handle(World world, Action action, SingleEntity on) throws Exception {
         if (Objects.isNull(on))
             handleAll(world, action);
 

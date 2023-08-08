@@ -34,7 +34,7 @@ public class ActionsPerformer {
                 ConditionPerformer.handle(world, action, on);
         }
 
-        catch (PropertyNotFoundException e) {
+        catch (Exception e) {
             Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Property not found. Skipping action...",
                     type, action.getEntityName()));
         }
