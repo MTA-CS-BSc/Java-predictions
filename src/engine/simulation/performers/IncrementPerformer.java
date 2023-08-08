@@ -32,10 +32,10 @@ public class IncrementPerformer {
 
         if (!Utils.validateValueInRange(propToChange, newValue))
             throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                    "Decrease", action.getEntityName(), action.getPropertyName(),
+                    "Increase", action.getEntityName(), action.getPropertyName(),
                     String.format("value [%s] not in range and therefore is not set", newValue)));
 
-        ActionsPerformer.setPropertyValue("Decrease", action.getEntityName(), propToChange, newValue);
+        ActionsPerformer.setPropertyValue("Increase", action.getEntityName(), propToChange, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))

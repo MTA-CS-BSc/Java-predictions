@@ -44,8 +44,7 @@ public class ValidatorsUtils {
 
             if (systemFunctionType.equals(SystemFunctions.RANDOM))
                 return property.getType().equals(PropTypes.DECIMAL) &&
-                        Utils.isDecimal(value.substring(value.lastIndexOf("(") + 1, value.lastIndexOf(")")))
-                        && !value.contains(".");
+                        Utils.isDecimal(value.substring(value.lastIndexOf("(") + 1, value.lastIndexOf(")")));
 
             else if (systemFunctionType.equals(SystemFunctions.ENVIRONMENT)) {
                 PRDEnvProperty envProp = world.getPRDEvironment().getPRDEnvProperty()
@@ -65,12 +64,11 @@ public class ValidatorsUtils {
             return expressionEntityProp.getType().equals(property.getType());
 
         else {
-            if (Utils.isDecimal(value)) {
-                if (value.contains("."))
-                    return property.getType().equals(PropTypes.FLOAT);
-
+            if (Utils.isDecimal(value))
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());
-            }
+
+            else if (Utils.isFloat(value))
+                return property.getType().equals(PropTypes.FLOAT);
 
             else if (Utils.isBoolean(value))
                 return property.getType().equals(PropTypes.BOOLEAN);
