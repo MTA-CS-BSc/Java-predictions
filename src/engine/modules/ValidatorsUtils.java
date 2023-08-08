@@ -44,7 +44,9 @@ public class ValidatorsUtils {
             String systemFunctionType = ValidatorsUtils.getSystemFunctionType(value);
 
             if (systemFunctionType.equals(SystemFunctions.RANDOM))
-                return property.getType().equals(PropTypes.DECIMAL);
+                return property.getType().equals(PropTypes.DECIMAL) &&
+                        Utils.isDecimal(value.substring(value.lastIndexOf("(") + 1, value.lastIndexOf(")")))
+                        && !value.contains(".");
 
             else if (systemFunctionType.equals(SystemFunctions.ENVIRONMENT)) {
                 PRDEnvProperty envProp = world.getPRDEvironment().getPRDEnvProperty()

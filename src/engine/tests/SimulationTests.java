@@ -37,7 +37,7 @@ public class SimulationTests {
     @Test
     @DisplayName("Simulation log world states")
     public void testSimulationLog() throws Exception {
-        String xmlPath = String.format("%s/ex1-error-6.xml", XmlParserTests.testFilesPath);
+        String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {

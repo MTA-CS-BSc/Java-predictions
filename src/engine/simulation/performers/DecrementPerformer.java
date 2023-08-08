@@ -5,6 +5,7 @@ import engine.exceptions.PropertyNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
 import engine.modules.Utils;
+import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
 
 import java.util.Objects;
@@ -19,23 +20,22 @@ public class DecrementPerformer {
         mainEntity.getSingleEntities().forEach(entity -> {
             try {
                 handleSingle(world, action, entity);
-            } catch (ValueNotInRangeException e) {
+            } catch (ValueNotInRangeException | PropertyNotFoundException e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
-    private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException {
-//        Property propToChange = Utils.findPropertyByName(on, action.getPropertyName());
-//        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), action.getBy(), on);
-//        String by = ExpressionParser.evaluateExpression(parsedValue, on);
-//        String newValue = getDecrementResult(propToChange.getValue().getCurrentValue(), by);
-//
-//        if (!Utils.validateValueInRange(propToChange, newValue))
-//            throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-//                    "Decrease", action.getEntityName(), action.getPropertyName(),
-//                    String.format("value [%s] not in range and therefore is not set", newValue)));
-//
-//        ActionsPerformer.setPropertyValue("Decrease", action.getEntityName(), propToChange, newValue);
+    private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException, PropertyNotFoundException {
+        Property propToChange = Utils.findPropertyByName(on, action.getPropertyName());
+        String by = ExpressionParser.evaluateExpression(world, action, action.getBy(), on);
+        String newValue = getDecrementResult(propToChange.getValue().getCurrentValue(), by);
+
+        if (!Utils.validateValueInRange(propToChange, newValue))
+            throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
+                    "Decrease", action.getEntityName(), action.getPropertyName(),
+                    String.format("value [%s] not in range and therefore is not set", newValue)));
+
+        ActionsPerformer.setPropertyValue("Decrease", action.getEntityName(), propToChange, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))
@@ -44,7 +44,7 @@ public class DecrementPerformer {
         else {
             try {
                 handleSingle(world, action, on);
-            } catch (ValueNotInRangeException e) {
+            } catch (ValueNotInRangeException | PropertyNotFoundException e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         }
