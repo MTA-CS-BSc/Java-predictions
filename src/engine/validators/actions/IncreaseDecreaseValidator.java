@@ -22,6 +22,10 @@ public class IncreaseDecreaseValidator {
             throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation on non-numeric type",
                     action.getType(), action.getEntity(), action.getBy()));
 
-        return ValidatorsUtils.validateExpressionType(world, action, property, action.getBy().trim());
+        if (!ValidatorsUtils.validateExpressionType(world, action, property, action.getBy().trim()))
+            throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
+                    action.getType(), action.getEntity()));
+
+        return true;
     }
 }

@@ -12,37 +12,38 @@ import java.util.Objects;
 public class ConditionPerformer {
     private static boolean evaluateSingleCondition(World world, Action action,
                                                    Condition condition, SingleEntity on) {
-        Property property = Utils.findPropertyByName(on, condition.getProperty());
-
-        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntityName()))
-                || Objects.isNull(property) || Objects.isNull(property.getValue())) {
-            Loggers.SIMULATION_LOGGER.info(String.format("Entity [%s] or property [%s] do not exist",
-                    condition.getEntityName(), condition.getProperty()));
-            return true;
-        }
-
-        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), condition.getValue(), on);
-        String value = ExpressionParser.evaluateExpression(parsedValue, on);
-        String operator = condition.getOperator();
-        boolean isNumeric = Utils.isDecimal(value);
-
-        switch (operator) {
-            case Operators.BT:
-                if (isNumeric)
-                    return Float.parseFloat(property.getValue().getCurrentValue())
-                            > Float.parseFloat(value);
-                break;
-            case Operators.LT:
-                if (isNumeric)
-                    return Float.parseFloat(property.getValue().getCurrentValue())
-                            < Float.parseFloat(value);
-                break;
-            case Operators.EQUALS:
-                return value.equals(property.getValue().getCurrentValue());
-            case Operators.NOT_EQUALS:
-                return !value.equals(property.getValue().getCurrentValue());
-        }
-
+//        Property property = Utils.findPropertyByName(on, condition.getProperty());
+//
+//        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntityName()))
+//                || Objects.isNull(property) || Objects.isNull(property.getValue())) {
+//            Loggers.SIMULATION_LOGGER.info(String.format("Entity [%s] or property [%s] do not exist",
+//                    condition.getEntityName(), condition.getProperty()));
+//            return true;
+//        }
+//
+//        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), condition.getValue(), on);
+//        String value = ExpressionParser.evaluateExpression(parsedValue, on);
+//        String operator = condition.getOperator();
+//        boolean isNumeric = Utils.isDecimal(value);
+//
+//        switch (operator) {
+//            case Operators.BT:
+//                if (isNumeric)
+//                    return Float.parseFloat(property.getValue().getCurrentValue())
+//                            > Float.parseFloat(value);
+//                break;
+//            case Operators.LT:
+//                if (isNumeric)
+//                    return Float.parseFloat(property.getValue().getCurrentValue())
+//                            < Float.parseFloat(value);
+//                break;
+//            case Operators.EQUALS:
+//                return value.equals(property.getValue().getCurrentValue());
+//            case Operators.NOT_EQUALS:
+//                return !value.equals(property.getValue().getCurrentValue());
+//        }
+//
+//        return true;
         return true;
     }
     private static boolean evaluateMultipleCondition(World world, Action action,

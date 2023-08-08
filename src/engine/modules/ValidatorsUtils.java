@@ -27,7 +27,7 @@ public class ValidatorsUtils {
     }
     public static boolean isSystemFunction(String expression) {
         String trimmed = expression.trim();
-        String pattern = "^[A-Za-z]+\\([A-Za-z]+\\)$";
+        String pattern = "^[A-Za-z]{1,}\\([A-Za-z0-9]{1,}\\)$";
 
         if (!Pattern.matches(pattern, trimmed))
             return false;
@@ -49,7 +49,7 @@ public class ValidatorsUtils {
             else if (systemFunctionType.equals(SystemFunctions.ENVIRONMENT)) {
                 PRDEnvProperty envProp = world.getPRDEvironment().getPRDEnvProperty()
                         .stream()
-                        .filter(element -> element.getPRDName().equals(value.substring(value.lastIndexOf("("),
+                        .filter(element -> element.getPRDName().equals(value.substring(value.lastIndexOf("(") + 1,
                                 value.lastIndexOf(")"))))
                         .findFirst().orElse(null);
 

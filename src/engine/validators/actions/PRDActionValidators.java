@@ -23,7 +23,7 @@ public class PRDActionValidators {
             case ActionTypes.CALCULATION:
                 return CalculationValidator.validate(world, action);
             case ActionTypes.CONDITION:
-                return ConditionValidator.validate(world, action, action.getPRDCondition());
+                return ConditionValidators.validate(world, action, action.getPRDCondition());
             case ActionTypes.KILL:
             case ActionTypes.REPLACE:
             case ActionTypes.PROXIMITY:

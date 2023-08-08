@@ -23,17 +23,17 @@ public class SetPerformer {
         });
     }
     private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException {
-        Property property = Utils.findPropertyByName(on, action.getPropertyName());
-        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), action.getValue(), on);
-        String newValue = ExpressionParser.evaluateExpression(parsedValue, on);
-
-        if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
-            if (!Utils.validateValueInRange(property, newValue))
-                throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                        "Set", action.getEntityName(), action.getPropertyName(),
-                        String.format("value [%s] not in range and therefore is not set", newValue)));
-
-        ActionsPerformer.setPropertyValue("Set", action.getEntityName(), property, newValue);
+//        Property property = Utils.findPropertyByName(on, action.getPropertyName());
+//        String parsedValue = ExpressionParser.parseExpression(world, action.getEntityName(), action.getValue(), on);
+//        String newValue = ExpressionParser.evaluateExpression(parsedValue, on);
+//
+//        if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
+//            if (!Utils.validateValueInRange(property, newValue))
+//                throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
+//                        "Set", action.getEntityName(), action.getPropertyName(),
+//                        String.format("value [%s] not in range and therefore is not set", newValue)));
+//
+//        ActionsPerformer.setPropertyValue("Set", action.getEntityName(), property, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))

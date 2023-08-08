@@ -119,14 +119,14 @@ public class PRDPropertyValidators {
                 .collect(Collectors.toList());
 
         for (PRDProperty property : propsWithRange) {
-            if (!validatePropValueInRange(entity, property))
+            if (!validatePropValueInRange(property))
                 throw new InvalidTypeException(String.format("Entity [%s]: Property [%s]: has range but type is not decimal/float",
                         entity.getName(), property.getPRDName()));
         }
 
         return true;
     }
-    private static boolean validatePropValueInRange(PRDEntity entity, PRDProperty property) {
+    private static boolean validatePropValueInRange(PRDProperty property) {
         PRDRange range = property.getPRDRange();
 
         if (PropTypes.NUMERIC_PROPS.contains(property.getType()) && !Objects.isNull(range)
@@ -134,6 +134,7 @@ public class PRDPropertyValidators {
             return Float.parseFloat(property.getPRDValue().getInit()) - range.getFrom() >= 0 &&
                     range.getTo() - Float.parseFloat(property.getPRDValue().getInit()) >= 0;
 
-        return false;
+        return !PropTypes.NUMERIC_PROPS.contains(property.getType())
+                || (PropTypes.NUMERIC_PROPS.contains(property.getType()) && property.getPRDValue().isRandomInitialize());
     }
 }
