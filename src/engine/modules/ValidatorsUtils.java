@@ -76,5 +76,4 @@ public class ValidatorsUtils {
 
         return property.getType().equals(PropTypes.STRING);
     }
-
 }
