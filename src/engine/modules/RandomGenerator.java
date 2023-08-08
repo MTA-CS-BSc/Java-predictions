@@ -18,7 +18,7 @@ public class RandomGenerator {
         return min + new Random().nextFloat() * (max - min);
     }
     public static String randomizeRandomString() {
-        String symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?,-.()";
+        String symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?,-.()0123456789 ";
         int randomLength = randomizeRandomNumber(1, Restrictions.MAX_RANDOM_STRING_LENGTH);
         StringBuilder sb = new StringBuilder(randomLength);
 
