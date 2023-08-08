@@ -1,5 +1,6 @@
 package engine.validators;
 
+import engine.consts.BoolPropValues;
 import engine.consts.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.*;
@@ -17,11 +18,39 @@ public class PRDPropertyValidators {
                 && validateRanges(entity)
                 && validatePropsValueAgainstType(entity)
                 && validatePropsValuesInRanges(entity)
-                && validateInitExistsOnNonRandomProps(entity)
-                && validatePopulation(entity);
+                && validateInitExistsOnNonRandomProps(entity);
     }
+    private static boolean validatePropValue(PRDProperty property) throws Exception {
+        PRDValue value = property.getPRDValue();
+        if (value.isRandomInitialize())
+            return true;
 
-    public static boolean validatePropsTypes(PRDEntity entity) throws InvalidTypeException {
+        String init = value.getInit();
+
+        if (property.getType().equals(PropTypes.DECIMAL) || property.getType().equals(PropTypes.FLOAT)) {
+            try {
+                Float.parseFloat(init);
+            }
+
+            catch (Exception e) {
+                return false;
+            }
+        }
+
+        else if (property.getType().equals(PropTypes.BOOLEAN))
+            return init.equals(BoolPropValues.TRUE) || init.equals(BoolPropValues.FALSE);
+
+        return true;
+    }
+    private static boolean validatePropsValueAgainstType(PRDEntity entity) throws Exception {
+        for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
+            if (!validatePropValue(property))
+                throw new ValueNotInRangeException(String.format("Entity [%s]: Property [%s] type & value do not match",
+                        entity.getName(), property.getPRDName()));
+
+        return true;
+    }
+    private static boolean validatePropsTypes(PRDEntity entity) throws InvalidTypeException {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
             if (!Restrictions.PRD_PROPERTY_ALLOWED_TYPES.contains(property.getType()))
                 throw new InvalidTypeException(String.format("Entity [%s]: Property [%s] has invalid type",
@@ -47,12 +76,6 @@ public class PRDPropertyValidators {
                 throw new WhitespacesFoundException(String.format("Entity [%s]: Property [%s] has whitespaces in it's name",
                         entity.getName(),
                         property.getPRDName()));
-
-        return true;
-    }
-    private static boolean validatePopulation(PRDEntity entity) throws ValueNotInRangeException {
-        if (entity.getPRDPopulation() <= 0)
-            throw new ValueNotInRangeException("Entity [%s]: Population must be positive");
 
         return true;
     }
