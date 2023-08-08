@@ -4,6 +4,7 @@ import engine.logs.Loggers;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.entities.PRDEntitiesValidators;
 import engine.validators.env.PRDEnvironmentValidators;
+import engine.validators.rules.PRDRulesValidators;
 import engine.validators.termination.PRDTerminationValidators;
 
 public class PRDWorldValidators {
@@ -42,8 +43,7 @@ public class PRDWorldValidators {
     }
     private static boolean validateRules(PRDWorld world) {
         try {
-//            return PRDRulesValidators.validateRules(world);
-            return true;
+            return PRDRulesValidators.validateRules(world);
         }
 
         catch (Exception e) {
