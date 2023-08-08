@@ -56,12 +56,14 @@ public class ValidatorsUtils {
                 if (Objects.isNull(envProp))
                     return false;
 
-                return envProp.getType().equals(property.getType());
+                return envProp.getType().equals(property.getType())
+                        || (envProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
             }
         }
 
         else if (!Objects.isNull(expressionEntityProp))
-            return expressionEntityProp.getType().equals(property.getType());
+            return expressionEntityProp.getType().equals(property.getType())
+                    || (expressionEntityProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
 
         else {
             if (Utils.isDecimal(value))
