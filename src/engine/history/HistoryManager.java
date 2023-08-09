@@ -5,21 +5,22 @@ import engine.logs.Loggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
+import engine.simulation.SingleSimulation;
 import engine.simulation.SingleSimulationLog;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class HistoryManager {
-    protected HashMap<String, SingleSimulationLog> pastSimulations;
+    protected HashMap<String, SingleSimulation> pastSimulations;
 
     public HistoryManager() {
         pastSimulations = new HashMap<>();
     }
-    public void addPastSimulation(SingleSimulationLog pastSimulation) {
+    public void addPastSimulation(SingleSimulation pastSimulation) {
         pastSimulations.put(pastSimulation.getUuid().toString(), pastSimulation);
     }
-    public SingleSimulationLog getPastSimulation(String uuid) {
+    public SingleSimulation getPastSimulation(String uuid) {
         return pastSimulations.get(uuid);
     }
 
@@ -46,12 +47,11 @@ public class HistoryManager {
                 .map(Value::getCurrentValue)
                 .collect(Collectors.toList());
     }
-
     public HashMap<String, Integer> getEntitiesCountForProp(String uuid, String entityName,
                                                             String propertyName) throws UUIDNotFoundException {
         HashMap<String, Integer> histogram = new HashMap<>();
 
-        SingleSimulationLog simulationLog = getPastSimulation(uuid);
+        SingleSimulationLog simulationLog = getPastSimulation(uuid).getLog();
         getSimulationDetails(uuid, simulationLog);
 
         List<String> propertyValues = getValuesListForProperty(simulationLog, entityName, propertyName);
@@ -68,7 +68,7 @@ public class HistoryManager {
     public HashMap<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
         HashMap<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
 
-        SingleSimulationLog simulationLog = getPastSimulation(uuid);
+        SingleSimulationLog simulationLog = getPastSimulation(uuid).getLog();
         getSimulationDetails(uuid, simulationLog);
 
         simulationLog.getStartWorldState().getEntitiesMap().forEach((key, entity) -> {

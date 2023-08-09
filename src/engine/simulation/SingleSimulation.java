@@ -22,6 +22,7 @@ public class SingleSimulation {
     public SingleSimulationLog getLog() {
         return log;
     }
+    public UUID getUuid() { return uuid; }
     public String isSimulationFinished(long startTimeMillis) {
         Termination termination = world.getTermination();
 

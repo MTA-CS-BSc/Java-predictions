@@ -45,7 +45,7 @@ public class SimulationTests {
             World world = new World(prdWorld);
             SingleSimulation simulation = new SingleSimulation(world);
             simulation.run();
-            historyManager.addPastSimulation(simulation.getLog());
+            historyManager.addPastSimulation(simulation);
         }
     }
 }
