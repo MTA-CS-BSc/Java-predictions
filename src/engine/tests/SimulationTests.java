@@ -23,7 +23,7 @@ public class SimulationTests {
 
     @Test
     @DisplayName("Termination reason")
-    public void testTerminationReasonOccurs() throws JAXBException, FileNotFoundException, Exception {
+    public void testTerminationReasonOccurs() throws Exception {
         String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
