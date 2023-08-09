@@ -6,28 +6,22 @@ import engine.prototypes.implemented.WorldState;
 import java.util.Date;
 import java.util.UUID;
 
-public class SingleSimulationLog {
+abstract class SingleSimulationLog {
     protected Date start;
     protected Date finished;
     protected WorldState startWorldState;
     protected WorldState finishWorldState;
-    protected UUID uuid;
-
-    public SingleSimulationLog(UUID _uuid, World _startWorldState) {
-        uuid = _uuid;
-        startWorldState = new WorldState(_startWorldState);
-    }
-    public UUID getUuid() {
-        return uuid;
-    }
     public void setStartTime(Date start) {
         this.start = start;
     }
     public void setEndTime(Date finished) {
         this.finished = finished;
     }
-    public void setFinishWorldState(World finishWorldState) {
-        this.finishWorldState = new WorldState(finishWorldState);
+    public void setStartWorldState(World startWorld) {
+        this.startWorldState = new WorldState(startWorld);
+    }
+    public void setFinishWorldState(World finishWorld) {
+        this.finishWorldState = new WorldState(finishWorld);
     }
     public Date getStartTime() {
         return start;

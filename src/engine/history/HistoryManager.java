@@ -6,7 +6,6 @@ import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
 import engine.simulation.SingleSimulation;
-import engine.simulation.SingleSimulationLog;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,22 +17,22 @@ public class HistoryManager {
         pastSimulations = new HashMap<>();
     }
     public void addPastSimulation(SingleSimulation pastSimulation) {
-        pastSimulations.put(pastSimulation.getUuid().toString(), pastSimulation);
+        pastSimulations.put(pastSimulation.getUUID().toString(), pastSimulation);
     }
     public SingleSimulation getPastSimulation(String uuid) {
         return pastSimulations.get(uuid);
     }
 
-    public void getSimulationDetails(String uuid, SingleSimulationLog simulationLog) throws UUIDNotFoundException {
-        if (Objects.isNull(simulationLog))
+    public void getSimulationDetails(String uuid, SingleSimulation simulation) throws UUIDNotFoundException {
+        if (Objects.isNull(simulation))
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
 
         Loggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
-        Loggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", Utils.formatDate(simulationLog.getStartTime())));
+        Loggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", Utils.formatDate(simulation.getStartTime())));
     }
-    private List<String> getValuesListForProperty(SingleSimulationLog log,
+    private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
                                                   String entityName, String propertyName) {
-        Entity mainEntity = log.getFinishWorldState().getEntitiesMap().get(entityName);
+        Entity mainEntity = singleSimulation.getFinishWorldState().getEntitiesMap().get(entityName);
 
         if (Objects.isNull(mainEntity))
             return null;
@@ -51,10 +50,10 @@ public class HistoryManager {
                                                             String propertyName) throws UUIDNotFoundException {
         HashMap<String, Integer> histogram = new HashMap<>();
 
-        SingleSimulationLog simulationLog = getPastSimulation(uuid).getLog();
-        getSimulationDetails(uuid, simulationLog);
+        SingleSimulation foundSimulation = getPastSimulation(uuid);
+        getSimulationDetails(uuid, foundSimulation);
 
-        List<String> propertyValues = getValuesListForProperty(simulationLog, entityName, propertyName);
+        List<String> propertyValues = getValuesListForProperty(foundSimulation, entityName, propertyName);
 
         if (Objects.isNull(propertyValues))
             return null;
@@ -68,12 +67,12 @@ public class HistoryManager {
     public HashMap<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
         HashMap<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
 
-        SingleSimulationLog simulationLog = getPastSimulation(uuid).getLog();
-        getSimulationDetails(uuid, simulationLog);
+        SingleSimulation simulation = getPastSimulation(uuid);
+        getSimulationDetails(uuid, simulation);
 
-        simulationLog.getStartWorldState().getEntitiesMap().forEach((key, entity) -> {
+        simulation.getStartWorldState().getEntitiesMap().forEach((key, entity) -> {
             int startAmount = entity.getPopulation();
-            Entity finishEntity = simulationLog.getFinishWorldState().getEntitiesMap().get(key);
+            Entity finishEntity = simulation.getFinishWorldState().getEntitiesMap().get(key);
             int finishAmount =  Objects.isNull(finishEntity) ? 0 : finishEntity.getPopulation();
             Integer[] array = { startAmount, finishAmount };
 
