@@ -69,6 +69,8 @@ public class XmlParserTests {
                 String.format("%s/err-calculation-args.xml", testFilesPath),
                 String.format("%s/err-entity-not-found.xml", testFilesPath),
                 String.format("%s/err-increase-args.xml", testFilesPath),
+                String.format("%s/err-invalid-range.xml", testFilesPath),
+                String.format("%s/err-negative-population.xml", testFilesPath),
                 String.format("%s/err-property-not-found.xml", testFilesPath),
                 String.format("%s/err-set-args.xml", testFilesPath),
                 String.format("%s/err-unique-name.xml", testFilesPath));
