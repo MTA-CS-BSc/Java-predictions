@@ -1,6 +1,6 @@
 package engine.tests;
 
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.parsers.XmlParser;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;
@@ -20,7 +20,7 @@ public class XmlParserTests {
 
     public XmlParserTests() throws IOException {
         FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/xml_parse_error.log");
-        Loggers.XML_ERRORS_LOGGER.addHandler(fh);
+        EngineLoggers.XML_ERRORS_LOGGER.addHandler(fh);
     }
 
     @Test

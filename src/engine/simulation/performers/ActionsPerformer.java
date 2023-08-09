@@ -2,9 +2,8 @@ package engine.simulation.performers;
 import engine.consts.*;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
-import engine.exceptions.PropertyNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 
@@ -41,7 +40,7 @@ public class ActionsPerformer {
         }
 
         catch (Exception e) {
-            Loggers.SIMULATION_LOGGER.info(e.getMessage());
+            EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
         }
     }
 
@@ -49,13 +48,13 @@ public class ActionsPerformer {
         Entity entity = Utils.findEntityByName(world, action.getEntityName());
 
         if (Objects.isNull(entity)) {
-            Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] not found, skipping action...",
+            EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] not found, skipping action...",
                     action.getType(), action.getEntityName()));
             return false;
         }
 
         else if (entity.getPopulation() == 0) {
-            Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] has 0 population, skipping action...",
+            EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] has 0 population, skipping action...",
                     action.getType(), action.getEntityName()));
             return false;
         }
@@ -89,7 +88,7 @@ public class ActionsPerformer {
         property.getValue().setCurrentValue(newValue);
         property.setStableTime(0);
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Property [%s]: value changed to [%s]",
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Property [%s]: value changed to [%s]",
                 actionType, entityName, property.getName(), newValue));
     }
 }

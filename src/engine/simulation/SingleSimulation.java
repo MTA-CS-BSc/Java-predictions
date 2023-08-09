@@ -1,6 +1,6 @@
 package engine.simulation;
 
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.consts.TerminationReasons;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
@@ -56,7 +56,7 @@ public class SingleSimulation extends SingleSimulationLog {
             ActionsPerformer.updateStableTimeToAllProps(world);
         }
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
                                             uuid.toString(), isSimulationFinished(startTimeMillis)));
 
         setEndTime(new Date());

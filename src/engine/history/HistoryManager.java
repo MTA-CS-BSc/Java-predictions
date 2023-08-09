@@ -1,7 +1,7 @@
 package engine.history;
 
 import engine.exceptions.UUIDNotFoundException;
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
@@ -28,8 +28,8 @@ public class HistoryManager {
         if (Objects.isNull(simulation))
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
-        Loggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", Utils.formatDate(simulation.getStartTime())));
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", Utils.formatDate(simulation.getStartTime())));
     }
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
                                                   String entityName, String propertyName) {

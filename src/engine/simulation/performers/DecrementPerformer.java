@@ -2,10 +2,8 @@ package engine.simulation.performers;
 
 import engine.consts.ActionTypes;
 import engine.exceptions.ErrorMessageFormatter;
-import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
-import engine.exceptions.ValueNotInRangeException;
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
@@ -25,7 +23,7 @@ public class DecrementPerformer {
             try {
                 handleSingle(world, action, entity);
             } catch (Exception e) {
-                Loggers.SIMULATION_LOGGER.info(e.getMessage());
+                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
@@ -43,7 +41,7 @@ public class DecrementPerformer {
             try {
                 handleSingle(world, action, on);
             } catch (Exception e) {
-                Loggers.SIMULATION_LOGGER.info(e.getMessage());
+                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         }
     }

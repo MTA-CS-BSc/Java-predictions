@@ -1,6 +1,6 @@
 package engine.validators;
 
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.prototypes.jaxb.*;
 import engine.validators.entities.PRDEntitiesValidators;
 import engine.validators.env.PRDEnvironmentValidators;
@@ -20,7 +20,7 @@ public class PRDWorldValidators {
         }
 
         catch (Exception e) {
-            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            EngineLoggers.XML_ERRORS_LOGGER.info(e.getMessage());
             return false;
         }
     }
@@ -30,7 +30,7 @@ public class PRDWorldValidators {
         }
 
         catch (Exception e) {
-            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            EngineLoggers.XML_ERRORS_LOGGER.info(e.getMessage());
             return false;
         }
     }
@@ -39,7 +39,7 @@ public class PRDWorldValidators {
             return PRDEnvironmentValidators.validateEnvironment(world);
         }
         catch (Exception e) {
-            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            EngineLoggers.XML_ERRORS_LOGGER.info(e.getMessage());
             return false;
         }
     }
@@ -49,7 +49,7 @@ public class PRDWorldValidators {
         }
 
         catch (Exception e) {
-            Loggers.XML_ERRORS_LOGGER.info(e.getMessage());
+            EngineLoggers.XML_ERRORS_LOGGER.info(e.getMessage());
             return false;
         }
     }

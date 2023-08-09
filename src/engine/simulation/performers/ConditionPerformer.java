@@ -5,7 +5,7 @@ import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.PropertyNotFoundException;
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
@@ -63,7 +63,7 @@ public class ConditionPerformer {
                          try {
                              return evaluateCondition(world, action, current, on);
                          } catch (Exception e) {
-                             Loggers.SIMULATION_LOGGER.info(e.getMessage());
+                             EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
                              return false;
                          }
                      });
@@ -75,7 +75,7 @@ public class ConditionPerformer {
                         try {
                             return evaluateCondition(world, action, current, on);
                         } catch (Exception e) {
-                            Loggers.SIMULATION_LOGGER.info(e.getMessage());
+                            EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
                             return false;
                         }
                     });
@@ -95,7 +95,7 @@ public class ConditionPerformer {
             try {
                 handleSingle(world, action, on);
             } catch (Exception e) {
-                Loggers.SIMULATION_LOGGER.info(e.getMessage());
+                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
@@ -105,7 +105,7 @@ public class ConditionPerformer {
         Else prdElse = action.getElse();
         boolean conditionResult = evaluateCondition(world, action, condition, on);
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Condition result is [%s]," +
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Condition result is [%s]," +
                 " evaluating relevant actions...", action.getType(), action.getEntityName(), conditionResult));
 
         if (conditionResult)

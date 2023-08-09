@@ -1,6 +1,6 @@
 package engine.simulation.performers;
 
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import java.util.Collections;
@@ -15,7 +15,7 @@ public class KillPerformer {
         mainEntity.setPopulation(0);
         mainEntity.setSingleEntities(Collections.emptyList());
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Killed entity [%s]", action.getEntityName()));
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Killed entity [%s]", action.getEntityName()));
     }
     public static void handleSingle(World world, Action action, SingleEntity kill) {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
@@ -28,7 +28,7 @@ public class KillPerformer {
         mainEntity.setSingleEntities(updatedList);
         mainEntity.setPopulation(mainEntity.getPopulation() - 1);
 
-        Loggers.SIMULATION_LOGGER.info(String.format("Killed 1 entity named [%s]. Population is [%d]", action.getEntityName(), mainEntity.getPopulation()));
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Killed 1 entity named [%s]. Population is [%d]", action.getEntityName(), mainEntity.getPopulation()));
     }
     public static void handle(World world, Action action, SingleEntity kill) {
         if (Objects.isNull(kill))

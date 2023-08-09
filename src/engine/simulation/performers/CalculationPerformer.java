@@ -2,7 +2,7 @@ package engine.simulation.performers;
 
 import engine.consts.ActionTypes;
 import engine.exceptions.*;
-import engine.logs.Loggers;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
@@ -34,7 +34,7 @@ public class CalculationPerformer {
             try {
                 handleSingle(world, action, entity);
             } catch (Exception e) {
-                Loggers.SIMULATION_LOGGER.info(e.getMessage());
+                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
@@ -51,7 +51,7 @@ public class CalculationPerformer {
             try {
                 handleSingle(world, action, on);
             } catch (Exception e) {
-                Loggers.SIMULATION_LOGGER.info(e.getMessage());
+                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         }
     }
