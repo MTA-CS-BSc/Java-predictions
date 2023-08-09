@@ -78,7 +78,6 @@ public class Utils {
             return false;
         }
     }
-
     public static boolean isFloat(String str) {
         try {
             Float.parseFloat(str);
@@ -92,7 +91,6 @@ public class Utils {
     public static String formatDate(Date date) {
         return new SimpleDateFormat("dd-MM-yyyy | hh.mm.ss").format(date);
     }
-
     public static boolean isBoolean(String str) {
         return str.equalsIgnoreCase(BoolPropValues.TRUE) || str.equalsIgnoreCase(BoolPropValues.FALSE);
     }
