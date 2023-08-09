@@ -36,50 +36,84 @@ public class ValidatorsUtils {
     public static String getSystemFunctionType(String expression) {
         return expression.substring(0, expression.indexOf("("));
     }
-    public static boolean validateExpressionType(PRDWorld world, PRDAction action, PRDProperty property, String value) {
-        PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), value);
+    public static boolean validateExpressionType(PRDWorld world, PRDAction action, PRDProperty property, String expression) {
+        PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), expression);
 
-        if (ValidatorsUtils.isSystemFunction(value)) {
-            String systemFunctionType = ValidatorsUtils.getSystemFunctionType(value);
-
-            if (systemFunctionType.equals(SystemFunctions.RANDOM))
-                return property.getType().equals(PropTypes.DECIMAL) &&
-                        Utils.isDecimal(value.substring(value.lastIndexOf("(") + 1, value.lastIndexOf(")")));
-
-            else if (systemFunctionType.equals(SystemFunctions.ENVIRONMENT)) {
-                PRDEnvProperty envProp = world.getPRDEvironment().getPRDEnvProperty()
-                        .stream()
-                        .filter(element -> element.getPRDName().equals(value.substring(value.lastIndexOf("(") + 1,
-                                value.lastIndexOf(")"))))
-                        .findFirst().orElse(null);
-
-                if (Objects.isNull(envProp))
-                    return false;
-
-                return envProp.getType().equals(property.getType())
-                        || (envProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
-            }
-        }
+        if (ValidatorsUtils.isSystemFunction(expression))
+            return validateSystemFuncExpressionType(world, action, property, expression);
 
         else if (!Objects.isNull(expressionEntityProp))
             return expressionEntityProp.getType().equals(property.getType())
-                    || (expressionEntityProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
+                    || (expressionEntityProp.getType().equals(PropTypes.DECIMAL)
+                    && property.getType().equals(PropTypes.FLOAT));
 
         else {
-            if (Utils.isDecimal(value))
+            if (Utils.isDecimal(expression))
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());
 
-            else if (Utils.isFloat(value)) {
-                if (!value.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+            else if (Utils.isFloat(expression)) {
+                if (!expression.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
                     return property.getType().equals(PropTypes.FLOAT);
 
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());
             }
 
-            else if (Utils.isBoolean(value))
+            else if (Utils.isBoolean(expression))
                 return property.getType().equals(PropTypes.BOOLEAN);
         }
 
         return property.getType().equals(PropTypes.STRING);
+    }
+    private static boolean validateSystemFuncRandom(PRDProperty property, String systemFunctionValue) {
+        return property.getType().equals(PropTypes.DECIMAL) && Utils.isDecimal(systemFunctionValue);
+    }
+    private static boolean validateSystemFuncExpressionType(PRDWorld world, PRDAction action,
+                                                            PRDProperty property, String expression) {
+        String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
+        String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1, expression.lastIndexOf(")"));
+
+        switch (systemFunctionType) {
+            case SystemFunctions.RANDOM:
+                return validateSystemFuncRandom(property, systemFunctionValue);
+            case SystemFunctions.ENVIRONMENT:
+                return validateSystemFuncEnv(world, property, systemFunctionValue);
+            case SystemFunctions.EVALUATE:
+                return validateSystemFuncEvaluate(world, action, property, systemFunctionValue);
+        }
+
+        return false;
+    }
+    private static boolean validateSystemFuncEnv(PRDWorld world, PRDProperty property, String systemFunctionValue) {
+        PRDEnvProperty envProp = world.getPRDEvironment().getPRDEnvProperty()
+                .stream()
+                .filter(element -> element.getPRDName().equals(systemFunctionValue))
+                .findFirst().orElse(null);
+
+        if (Objects.isNull(envProp))
+            return false;
+
+        return envProp.getType().equals(property.getType())
+                || (envProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
+    }
+    private static boolean validateSystemFuncEvaluate(PRDWorld world, PRDAction action, PRDProperty property,
+                                                      String systemFunctionValue) {
+        PRDEntity actionEntity = world.getPRDEntities().getPRDEntity()
+                .stream()
+                .filter(element -> element.getName().equals(action.getEntity()))
+                .findFirst().orElse(null);
+
+        if (Objects.isNull(actionEntity))
+            return false;
+
+        PRDProperty systemFuncProp = actionEntity.getPRDProperties().getPRDProperty()
+                .stream()
+                .filter(element -> element.getPRDName().equals(systemFunctionValue))
+                .findFirst().orElse(null);
+
+        if (Objects.isNull(systemFuncProp))
+            return false;
+
+        return systemFuncProp.getType().equals(property.getType())
+                || (systemFuncProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
     }
 }

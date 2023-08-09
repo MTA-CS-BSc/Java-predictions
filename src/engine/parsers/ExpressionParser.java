@@ -26,7 +26,6 @@ public class ExpressionParser {
 
         return expression;
     }
-
     private static String evaluateSystemExpression(World world, Action action, String expression, SingleEntity on) throws PropertyNotFoundException {
         String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
         String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1,
@@ -37,6 +36,9 @@ public class ExpressionParser {
 
         else if (systemFunctionType.equals(SystemFunctions.ENVIRONMENT))
             return evaluateSystemFuncEnv(world, systemFunctionValue);
+
+        else if (systemFunctionType.equals(SystemFunctions.EVALUATE))
+            return evaluateSystemFuncEvaluate(world, action, systemFunctionValue, on);
 
         return "";
     }
@@ -53,5 +55,14 @@ public class ExpressionParser {
             throw new PropertyNotFoundException("environment(" + propertyName + ") does not exist");
 
         return envProp.getValue().getCurrentValue();
+    }
+    private static String evaluateSystemFuncEvaluate(World world, Action action, String propName, SingleEntity on) {
+        if (!Objects.isNull(on))
+            return Utils.findPropertyByName(on, propName).getValue().getCurrentValue();
+
+        Property anyProp = Utils.findAnyPropertyByName(world, action.getEntityName(), propName);
+
+        return !Objects.isNull(anyProp) && !anyProp.getValue().isRandomInitialize() ?
+                anyProp.getValue().getCurrentValue() : "";
     }
 }
