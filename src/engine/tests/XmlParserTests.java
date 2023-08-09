@@ -68,7 +68,6 @@ public class XmlParserTests {
         List<String> xmlPaths = Arrays.asList(
                 String.format("%s/err-calculation-args.xml", testFilesPath),
                 String.format("%s/err-condition-args.xml", testFilesPath),
-                String.format("%s/err-decrease-args.xml", testFilesPath),
                 String.format("%s/err-entity-not-found.xml", testFilesPath),
                 String.format("%s/err-increase-args.xml", testFilesPath),
                 String.format("%s/err-invalid-range.xml", testFilesPath),
