@@ -38,7 +38,8 @@ public class PRDEntitiesValidators {
     private static boolean validateEntitiesPopulation(PRDWorld world) throws Exception {
         for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
             if (entity.getPRDPopulation() <= 0)
-                throw new ValueNotInRangeException("Entity [%s]: Population must be positive");
+                throw new ValueNotInRangeException(String.format("Entity [%s]: Population must be positive",
+                        entity.getName()));
 
         return true;
     }
