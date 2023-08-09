@@ -12,7 +12,7 @@ import engine.prototypes.implemented.World;
 
 import java.util.Objects;
 
-public class ExpressionParser {
+public abstract class ExpressionParser {
     public static String evaluateExpression(World world, Action action, String expression, SingleEntity on) throws PropertyNotFoundException {
         Property expressionEntityProp = Objects.isNull(on) ? Utils.findAnyPropertyByName(world, action.getEntityName(), expression)
                 : Utils.findPropertyByName(on, expression);

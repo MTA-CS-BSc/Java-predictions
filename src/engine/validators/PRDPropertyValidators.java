@@ -1,6 +1,5 @@
 package engine.validators;
 
-import engine.consts.BoolPropValues;
 import engine.consts.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.*;
@@ -11,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class PRDPropertyValidators {
+public abstract class PRDPropertyValidators {
     public static boolean validateProperties(PRDEntity entity) throws Exception {
         return validatePropsUniqueNames(entity)
                 && validateNoWhitespacesInNames(entity)

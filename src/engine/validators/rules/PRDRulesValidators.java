@@ -6,7 +6,7 @@ import engine.prototypes.jaxb.PRDRule;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.actions.PRDActionsValidators;
 
-public class PRDRulesValidators {
+public abstract class PRDRulesValidators {
     public static boolean validateRules(PRDWorld world) throws Exception {
         return validateRulesUniqueNames(world)
                 && validateNoWhitespacesInNames(world)

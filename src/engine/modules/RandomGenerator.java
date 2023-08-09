@@ -4,7 +4,7 @@ import engine.consts.Restrictions;
 
 import java.util.Random;
 
-public class RandomGenerator {
+public abstract class RandomGenerator {
     public static Integer randomizeRandomNumber(int min, int max) {
         return new Random().nextInt(max - min) + min;
     }

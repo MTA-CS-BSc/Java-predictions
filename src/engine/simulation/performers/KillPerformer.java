@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class KillPerformer {
+public abstract class KillPerformer {
     public static void handleAll(World world, Action action) {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 

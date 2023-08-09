@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class PRDEnvironmentValidators {
+public abstract class PRDEnvironmentValidators {
     public static boolean validateEnvironment(PRDWorld world) throws Exception {
         return validatePropsUniqueNames(world) && validatePropsTypes(world)
                 && validateRanges(world) && validateNoWhitespacesInNames(world);

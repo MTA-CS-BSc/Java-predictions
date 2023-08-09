@@ -7,7 +7,7 @@ import engine.validators.env.PRDEnvironmentValidators;
 import engine.validators.rules.PRDRulesValidators;
 import engine.validators.termination.PRDTerminationValidators;
 
-public class PRDWorldValidators {
+public abstract class PRDWorldValidators {
     public static boolean validateWorld(PRDWorld world) {
         StringTrimmer.trimAllStrings(world);
 

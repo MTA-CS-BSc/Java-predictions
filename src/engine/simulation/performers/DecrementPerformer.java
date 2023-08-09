@@ -10,7 +10,7 @@ import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
-public class DecrementPerformer {
+public abstract class DecrementPerformer {
     private static String getDecrementResult(String propValue, String by) {
         String result = String.valueOf(Float.parseFloat(propValue) - Float.parseFloat(by));
 

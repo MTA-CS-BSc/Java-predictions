@@ -8,7 +8,7 @@ import engine.prototypes.jaxb.*;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
-public class ValidatorsUtils {
+public abstract class ValidatorsUtils {
     public static PRDEntity findPRDEntityByName(PRDWorld world, String entityName) {
         return world.getPRDEntities().getPRDEntity()
                 .stream()

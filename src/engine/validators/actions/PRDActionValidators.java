@@ -8,7 +8,7 @@ import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.Objects;
 
-public class PRDActionValidators {
+public abstract class PRDActionValidators {
     public static boolean validateAction(PRDWorld world, PRDAction action) throws Exception {
         if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getEntity())))
             throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist",

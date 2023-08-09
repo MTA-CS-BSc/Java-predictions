@@ -12,7 +12,7 @@ import engine.prototypes.implemented.*;
 import java.util.List;
 import java.util.Objects;
 
-public class ConditionPerformer {
+public abstract class ConditionPerformer {
     private static boolean evaluateSingleCondition(World world, Action action,
                                                    Condition condition, SingleEntity on) throws Exception {
         Property property = Utils.findPropertyByName(on, condition.getProperty());

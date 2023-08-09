@@ -9,7 +9,7 @@ import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.Objects;
 
-public class SetValidator {
+public abstract class SetValidator {
     public static boolean validate(PRDWorld world, PRDAction action) throws Exception {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), action.getProperty());
 

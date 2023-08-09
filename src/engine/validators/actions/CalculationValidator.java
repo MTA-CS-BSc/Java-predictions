@@ -8,7 +8,7 @@ import engine.prototypes.jaxb.*;
 
 import java.util.Objects;
 
-public class CalculationValidator {
+public abstract class CalculationValidator {
     public static boolean validate(PRDWorld world, PRDAction action) throws InvalidTypeException, PropertyNotFoundException {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), action.getResultProp());
         PRDMultiply multiply = action.getPRDMultiply();

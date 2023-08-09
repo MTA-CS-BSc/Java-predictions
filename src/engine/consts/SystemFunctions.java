@@ -3,7 +3,7 @@ package engine.consts;
 import java.util.Arrays;
 import java.util.List;
 
-public class SystemFunctions {
+public abstract class SystemFunctions {
     public static final String RANDOM = "random";
     public static final String ENVIRONMENT = "environment";
     public static final String EVALUATE = "evaluate";

@@ -9,7 +9,7 @@ import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
-public class CalculationPerformer {
+public abstract class CalculationPerformer {
     private static String getCalculationResult(World world, Action action, SingleEntity on) throws Exception {
         Multiply multiply = action.getMultiply();
         Divide divide = action.getDivide();

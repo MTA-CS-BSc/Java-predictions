@@ -10,7 +10,7 @@ import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
-public class SetPerformer {
+public abstract class SetPerformer {
     private static void handleAll(World world, Action action) {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 

@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class ActionTypes {
+public abstract class ActionTypes {
     public static final String INCREASE = "increase";
     public static final String DECREASE = "decrease";
     public static final String CALCULATION = "calculation";

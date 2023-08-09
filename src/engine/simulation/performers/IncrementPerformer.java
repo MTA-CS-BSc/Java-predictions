@@ -10,7 +10,7 @@ import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
-public class IncrementPerformer {
+public abstract class IncrementPerformer {
     private static String getIncrementResult(String propValue, String by) {
         String result = String.valueOf(Float.parseFloat(propValue) + Float.parseFloat(by));
         return result.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;

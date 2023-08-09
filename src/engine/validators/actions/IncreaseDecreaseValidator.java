@@ -10,7 +10,7 @@ import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.Objects;
 
-public class IncreaseDecreaseValidator {
+public abstract class IncreaseDecreaseValidator {
     public static boolean validate(PRDWorld world, PRDAction action) throws InvalidTypeException, PropertyNotFoundException {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), action.getProperty());
 

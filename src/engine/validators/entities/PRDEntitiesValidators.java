@@ -5,7 +5,7 @@ import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDPropertyValidators;
 
-public class PRDEntitiesValidators {
+public abstract class PRDEntitiesValidators {
     public static boolean validateEntities(PRDWorld world) throws Exception {
         return validateEntitiesUniqueNames(world)
                 && validateNoWhitespacesInNames(world)

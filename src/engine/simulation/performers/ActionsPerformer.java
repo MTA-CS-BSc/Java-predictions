@@ -9,7 +9,7 @@ import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
-public class ActionsPerformer {
+public abstract class ActionsPerformer {
     public static void fireAction(World world, Action action, SingleEntity on) {
         if (!validateEntityExists(world, action))
             return;

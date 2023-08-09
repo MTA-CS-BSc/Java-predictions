@@ -12,7 +12,7 @@ import engine.prototypes.jaxb.PRDWorld;
 import java.util.List;
 import java.util.Objects;
 
-public class ConditionValidators {
+public abstract class ConditionValidators {
     public static boolean validateSingleCondition(PRDWorld world, PRDAction action,
                                                   PRDCondition condition) throws Exception {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, condition.getEntity(),

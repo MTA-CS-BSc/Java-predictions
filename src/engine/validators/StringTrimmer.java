@@ -4,7 +4,7 @@ import engine.prototypes.jaxb.*;
 
 import java.util.Objects;
 
-public class StringTrimmer {
+public abstract class StringTrimmer {
     public static void trimAllStrings(PRDWorld world) {
         trimEntities(world);
         trimEnvironment(world);
