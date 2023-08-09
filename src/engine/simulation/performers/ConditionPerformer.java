@@ -27,6 +27,10 @@ public class ConditionPerformer {
 
         String value = ExpressionParser.evaluateExpression(world, action, condition.getValue(), on);
         String operator = condition.getOperator();
+
+        return getConditionResult(property, operator, value);
+    }
+    private static boolean getConditionResult(Property property, String operator, String value) {
         boolean isNumeric = Utils.isDecimal(value) || Utils.isFloat(value);
 
         switch (operator) {
