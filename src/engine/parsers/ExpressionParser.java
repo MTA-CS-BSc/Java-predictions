@@ -29,20 +29,18 @@ public class ExpressionParser {
 
     private static String evaluateSystemExpression(World world, Action action, String expression, SingleEntity on) throws PropertyNotFoundException {
         String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
+        String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1,
+                expression.lastIndexOf(")"));
 
         if (systemFunctionType.equals(SystemFunctions.RANDOM))
-            return evaluateSystemFuncRandom(expression);
+            return evaluateSystemFuncRandom(systemFunctionValue);
 
         else if (systemFunctionType.equals(SystemFunctions.ENVIRONMENT))
-            return evaluateSystemFuncEnv(world, expression.substring(expression.lastIndexOf("(") + 1,
-                    expression.lastIndexOf(")")));
+            return evaluateSystemFuncEnv(world, systemFunctionValue);
 
         return "";
     }
-    private static String evaluateSystemFuncRandom(String expression) {
-        String bound = expression.substring(expression.lastIndexOf("(") + 1,
-                expression.lastIndexOf(")"));
-
+    private static String evaluateSystemFuncRandom(String bound) {
         return String.valueOf(RandomGenerator.randomizeRandomNumber(0, Integer.parseInt(bound)));
     }
     private static String evaluateSystemFuncEnv(World world, String propertyName) throws PropertyNotFoundException {
