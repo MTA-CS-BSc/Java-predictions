@@ -74,4 +74,12 @@ public class HistoryManager {
 
         return entitiesBeforeAfter;
     }
+    public World getLatestWorldObject() {
+        SingleSimulation latestSimulation = pastSimulations.values()
+                .stream()
+                .max(Comparator.comparing(SingleSimulation::getFinishedTime))
+                .orElse(null);
+
+        return !Objects.isNull(latestSimulation) ? latestSimulation.getWorld() : null;
+    }
 }
