@@ -12,7 +12,6 @@ public class SingleSimulation extends SingleSimulationLog {
     protected World world;
     protected long ticks = 0;
     protected UUID uuid;
-
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
         world = _world;
