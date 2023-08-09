@@ -43,8 +43,6 @@ public class PRDValue {
     @XmlAttribute(name = "init")
     protected String init;
 
-    protected String currentValue;
-
     /**
      * Gets the value of the randomInitialize property.
      * 
@@ -84,9 +82,4 @@ public class PRDValue {
     public void setInit(String value) {
         this.init = value;
     }
-
-    public void setCurrentValue(String value) { this.currentValue = value; }
-
-    public String getCurrentValue() { return this.currentValue; }
-
 }
