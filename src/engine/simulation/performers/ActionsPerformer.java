@@ -12,19 +12,8 @@ import java.util.Objects;
 
 public class ActionsPerformer {
     public static void fireAction(World world, Action action, SingleEntity on) {
-        Entity entity = Utils.findEntityByName(world, action.getEntityName());
-
-        if (Objects.isNull(entity)) {
-             Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] not found, skipping action...",
-                     action.getType(), action.getEntityName()));
-             return;
-        }
-
-        else if (entity.getPopulation() == 0) {
-            Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] has 0 population, skipping action...",
-                    action.getType(), action.getEntityName()));
+        if (!validateEntityExists(world, action))
             return;
-        }
 
         String type = action.getType();
 
@@ -56,6 +45,25 @@ public class ActionsPerformer {
         catch (Exception e) {
             Loggers.SIMULATION_LOGGER.info(e.getMessage());
         }
+    }
+
+    private static boolean validateEntityExists(World world, Action action) {
+        Entity entity = Utils.findEntityByName(world, action.getEntityName());
+
+        if (Objects.isNull(entity)) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] not found, skipping action...",
+                    action.getType(), action.getEntityName()));
+            return false;
+        }
+
+        else if (entity.getPopulation() == 0) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] has 0 population, skipping action...",
+                    action.getType(), action.getEntityName()));
+            return false;
+        }
+
+        return true;
+
     }
     public static void updateStableTimeToAllProps(World world) {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
