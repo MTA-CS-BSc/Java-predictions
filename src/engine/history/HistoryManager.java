@@ -12,7 +12,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class HistoryManager {
-    protected HashMap<String, SingleSimulation> pastSimulations;
+    protected Map<String, SingleSimulation> pastSimulations;
 
     public HistoryManager() {
         pastSimulations = new HashMap<>();
@@ -58,8 +58,8 @@ public class HistoryManager {
 
         return propertyValues.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
-    public HashMap<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
-        HashMap<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
+    public Map<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
+        Map<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
 
         SingleSimulation simulation = getPastSimulation(uuid);
         getSimulationDetails(uuid, simulation);

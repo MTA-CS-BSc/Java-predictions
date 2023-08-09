@@ -4,14 +4,15 @@ import engine.prototypes.jaxb.PRDRule;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Rules {
-    protected HashMap<String, Rule> rulesMap;
+    protected Map<String, Rule> rulesMap;
     public Rules(List<PRDRule> list) {
         rulesMap = new HashMap<>();
 
         for (PRDRule rule : list)
             rulesMap.put(rule.getName(), new Rule(rule));
     }
-    public HashMap<String, Rule> getRulesMap() { return rulesMap; }
+    public Map<String, Rule> getRulesMap() { return rulesMap; }
 }

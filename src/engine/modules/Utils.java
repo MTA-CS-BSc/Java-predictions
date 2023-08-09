@@ -49,7 +49,7 @@ public class Utils {
 
         return true;
     }
-    public static boolean isPossibleToPerformRule(HashMap<String, Rule> allRules, String ruleName, long ticks) {
+    public static boolean isPossibleToPerformRule(Map<String, Rule> allRules, String ruleName, long ticks) {
         float randomProbability = RandomGenerator.randomizeProbability();
         Rule rule = allRules.get(ruleName);
 
@@ -57,7 +57,7 @@ public class Utils {
                 && ticks % rule.getActivation().getTicks() == 0;
     }
     public static Map<String, Rule> getRulesToApply(World world, long ticks) {
-        HashMap<String, Rule> allRules = world.getRules().getRulesMap();
+        Map<String, Rule> allRules = world.getRules().getRulesMap();
 
         return allRules.values()
                 .stream()
