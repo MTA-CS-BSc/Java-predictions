@@ -44,7 +44,7 @@
 	<PRD-rules>
 		<PRD-rule name="r1">
 			<PRD-actions>
-				<PRD-action type="increase" entity="ent-1" property="p1" by="nothing"/>
+				<PRD-action type="increase" entity="ent-1" property="p1" by="3"/>
 				<PRD-action type="decrease" entity="ent-1" property="p2" by="environment(e3)"/>
 				<PRD-action type="calculation" entity="ent-1" result-prop="p1">
 					<PRD-multiply arg1="p1" arg2="environment(e1)"/>
@@ -59,7 +59,7 @@
 			<PRD-actions>
 				<PRD-action type="condition" entity="ent-1">
 					<PRD-condition singularity="multiple" logical="or">
-						<PRD-condition singularity="single" entity="ent-1" property="p1" operator="bt" value="4"/>
+						<PRD-condition singularity="single" entity="ent-1" property="p1" operator="bt" value="abc"/>
 						<PRD-condition singularity="single" entity="ent-1" property="p2" operator="lt" value="3"/>
 						<PRD-condition singularity="multiple" logical="and">
 							<PRD-condition singularity="single" entity="ent-1" property="p4" operator="!=" value="nothing"/>
