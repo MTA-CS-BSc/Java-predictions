@@ -43,7 +43,7 @@ public class CalculationPerformer {
 
         if (!Utils.validateValueInRange(resultProperty, newValue))
                 throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(action.getType(), action.getEntityName(),
-                        action.getResultPropertyName(), "Value is not in property's range and therefore is not set"));
+                        action.getResultPropertyName(), String.format("value [%s] is not in property's range and therefore is not set", newValue)));
 
         ActionsPerformer.setPropertyValue(action.getType(), action.getEntityName(), resultProperty, newValue);
     }
