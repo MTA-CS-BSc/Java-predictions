@@ -2,6 +2,7 @@ package engine.modules;
 
 import engine.consts.PropTypes;
 import engine.consts.SystemFunctions;
+import engine.exceptions.InvalidTypeException;
 import engine.prototypes.jaxb.*;
 
 import java.util.Objects;
@@ -78,7 +79,9 @@ public class ValidatorsUtils {
             case SystemFunctions.ENVIRONMENT:
                 return validateSystemFuncEnv(world, property, systemFunctionValue);
             case SystemFunctions.EVALUATE:
-                return validateSystemFuncEvaluate(world, action, property, systemFunctionValue);
+                return validateSystemFuncEvaluate(world, action.getEntity(), property, systemFunctionValue);
+            case SystemFunctions.PERCENT:
+                return validateSystemFuncPercent(world, action, property, systemFunctionValue);
         }
 
         return false;
@@ -89,17 +92,15 @@ public class ValidatorsUtils {
                 .filter(element -> element.getPRDName().equals(systemFunctionValue))
                 .findFirst().orElse(null);
 
-        if (Objects.isNull(envProp))
-            return false;
-
-        return envProp.getType().equals(property.getType())
-                || (envProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
+        return (!Objects.isNull(envProp) &&
+                (envProp.getType().equals(property.getType())
+                || (envProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT))));
     }
-    private static boolean validateSystemFuncEvaluate(PRDWorld world, PRDAction action, PRDProperty property,
+    private static boolean validateSystemFuncEvaluate(PRDWorld world, String entityName, PRDProperty property,
                                                       String systemFunctionValue) {
         PRDEntity actionEntity = world.getPRDEntities().getPRDEntity()
                 .stream()
-                .filter(element -> element.getName().equals(action.getEntity()))
+                .filter(element -> element.getName().equals(entityName))
                 .findFirst().orElse(null);
 
         if (Objects.isNull(actionEntity))
@@ -115,5 +116,14 @@ public class ValidatorsUtils {
 
         return systemFuncProp.getType().equals(property.getType())
                 || (systemFuncProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
+    }
+    private static boolean validateSystemFuncPercent(PRDWorld world, PRDAction action, PRDProperty property, String args) {
+        String[] splitArgs = args.split(",");
+
+        if (splitArgs.length != 2)
+            return false;
+
+        return validateExpressionType(world, action, property, splitArgs[0])
+                && validateExpressionType(world, action, property, splitArgs[1]);
     }
 }

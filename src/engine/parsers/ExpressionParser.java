@@ -9,7 +9,6 @@ import engine.prototypes.implemented.Action;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.SingleEntity;
 import engine.prototypes.implemented.World;
-import engine.prototypes.jaxb.PRDEnvProperty;
 
 import java.util.Objects;
 
@@ -31,14 +30,16 @@ public class ExpressionParser {
         String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1,
                 expression.lastIndexOf(")"));
 
-        if (systemFunctionType.equals(SystemFunctions.RANDOM))
-            return evaluateSystemFuncRandom(systemFunctionValue);
-
-        else if (systemFunctionType.equals(SystemFunctions.ENVIRONMENT))
-            return evaluateSystemFuncEnv(world, systemFunctionValue);
-
-        else if (systemFunctionType.equals(SystemFunctions.EVALUATE))
-            return evaluateSystemFuncEvaluate(world, action, systemFunctionValue, on);
+        switch (systemFunctionType) {
+            case SystemFunctions.RANDOM:
+                return evaluateSystemFuncRandom(systemFunctionValue);
+            case SystemFunctions.ENVIRONMENT:
+                return evaluateSystemFuncEnv(world, systemFunctionValue);
+            case SystemFunctions.EVALUATE:
+                return evaluateSystemFuncEvaluate(world, action, systemFunctionValue, on);
+            case SystemFunctions.PERCENT:
+                return evaluateSystemFuncPercent(world, action, systemFunctionValue, on);
+        }
 
         return "";
     }
@@ -64,5 +65,10 @@ public class ExpressionParser {
 
         return !Objects.isNull(anyProp) && !anyProp.getValue().isRandomInitialize() ?
                 anyProp.getValue().getCurrentValue() : "";
+    }
+    private static String evaluateSystemFuncPercent(World world, Action action, String args, SingleEntity on) throws PropertyNotFoundException {
+        String[] splitArgs = args.split(",");
+        return String.valueOf(Float.parseFloat(evaluateExpression(world, action, splitArgs[0], on)) /
+                Float.parseFloat(evaluateExpression(world, action, splitArgs[1], on)));
     }
 }
