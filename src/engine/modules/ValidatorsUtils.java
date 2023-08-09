@@ -83,7 +83,7 @@ public class ValidatorsUtils {
             case SystemFunctions.PERCENT:
                 return validateSystemFuncPercent(world, action, property, systemFunctionValue);
             case SystemFunctions.TICKS:
-                return validateSystemFuncTicks(world, action, property, systemFunctionValue);
+                return validateSystemFuncTicks(world, property, systemFunctionValue);
         }
 
         return false;
@@ -128,8 +128,7 @@ public class ValidatorsUtils {
         return validateExpressionType(world, action, property, splitArgs[0])
                 && validateExpressionType(world, action, property, splitArgs[1]);
     }
-
-    private static boolean validateSystemFuncTicks(PRDWorld world, PRDAction action, PRDProperty property, String args) {
+    private static boolean validateSystemFuncTicks(PRDWorld world, PRDProperty property, String args) {
         String[] splitArgs = args.split("\\.");
 
         if (splitArgs.length != 2)
