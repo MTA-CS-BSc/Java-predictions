@@ -1,7 +1,9 @@
 package engine.simulation.performers;
 
+import engine.consts.ActionTypes;
 import engine.consts.PropTypes;
 import engine.exceptions.ErrorMessageFormatter;
+import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
@@ -18,22 +20,15 @@ public class SetPerformer {
         mainEntity.getSingleEntities().forEach(entity -> {
             try {
                 handleSingle(world, action, entity);
-            } catch (ValueNotInRangeException | PropertyNotFoundException e) {
+            } catch (Exception e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         });
     }
-    private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException, PropertyNotFoundException {
+    private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
         Property property = Utils.findPropertyByName(on, action.getPropertyName());
         String newValue = ExpressionParser.evaluateExpression(world, action, action.getValue(), on);
-
-        if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
-            if (!Utils.validateValueInRange(property, newValue))
-                throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                        "Set", action.getEntityName(), action.getPropertyName(),
-                        String.format("value [%s] not in range and therefore is not set", newValue)));
-
-        ActionsPerformer.setPropertyValue("Set", action.getEntityName(), property, newValue);
+        ActionsPerformer.setPropertyValue(ActionTypes.SET, action.getEntityName(), property, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))
@@ -42,7 +37,7 @@ public class SetPerformer {
         else {
             try {
                 handleSingle(world, action, on);
-            } catch (ValueNotInRangeException | PropertyNotFoundException e) {
+            } catch (Exception e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         }

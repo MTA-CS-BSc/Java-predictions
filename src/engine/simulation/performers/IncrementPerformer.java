@@ -1,6 +1,8 @@
 package engine.simulation.performers;
 
+import engine.consts.ActionTypes;
 import engine.exceptions.ErrorMessageFormatter;
+import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.logs.Loggers;
@@ -26,17 +28,11 @@ public class IncrementPerformer {
             }
         });
     }
-    private static void handleSingle(World world, Action action, SingleEntity on) throws ValueNotInRangeException, PropertyNotFoundException {
+    private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
         Property propToChange = Utils.findPropertyByName(on, action.getPropertyName());
         String by = ExpressionParser.evaluateExpression(world, action, action.getBy(), on);
         String newValue = getIncrementResult(propToChange.getValue().getCurrentValue(), by);
-
-        if (!Utils.validateValueInRange(propToChange, newValue))
-            throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                    "Increase", action.getEntityName(), action.getPropertyName(),
-                    String.format("value [%s] not in range and therefore is not set", newValue)));
-
-        ActionsPerformer.setPropertyValue("Increase", action.getEntityName(), propToChange, newValue);
+        ActionsPerformer.setPropertyValue(ActionTypes.INCREASE, action.getEntityName(), propToChange, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))
@@ -45,7 +41,7 @@ public class IncrementPerformer {
         else {
             try {
                 handleSingle(world, action, on);
-            } catch (ValueNotInRangeException | PropertyNotFoundException e) {
+            } catch (Exception e) {
                 Loggers.SIMULATION_LOGGER.info(e.getMessage());
             }
         }

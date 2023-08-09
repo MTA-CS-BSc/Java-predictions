@@ -1,5 +1,6 @@
 package engine.simulation.performers;
 
+import engine.consts.ActionTypes;
 import engine.exceptions.*;
 import engine.logs.Loggers;
 import engine.modules.Utils;
@@ -40,12 +41,7 @@ public class CalculationPerformer {
     private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
         Property resultProperty = Utils.findPropertyByName(on, action.getResultPropertyName());
         String newValue = getCalculationResult(world, action, on);
-
-        if (!Utils.validateValueInRange(resultProperty, newValue))
-                throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(action.getType(), action.getEntityName(),
-                        action.getResultPropertyName(), String.format("value [%s] is not in property's range and therefore is not set", newValue)));
-
-        ActionsPerformer.setPropertyValue(action.getType(), action.getEntityName(), resultProperty, newValue);
+        ActionsPerformer.setPropertyValue(ActionTypes.CALCULATION, action.getEntityName(), resultProperty, newValue);
     }
     private static void performAction(World world, Action action, SingleEntity on) {
         if (Objects.isNull(on))
