@@ -59,7 +59,7 @@ public class ActionsPerformer {
         if (newValue.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
             newValue = newValue.split("\\.")[0];
 
-        else if (Utils.isFloat(newValue) && property.getType().equals(PropTypes.DECIMAL))
+        else if (Utils.isFloat(newValue) && !Utils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
             throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal",
                     actionType, entityName, property.getName(), newValue));
 
