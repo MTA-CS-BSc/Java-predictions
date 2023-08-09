@@ -65,10 +65,9 @@ public class HistoryManager {
         getSimulationDetails(uuid, simulation);
 
         simulation.getStartWorldState().getEntitiesMap().forEach((key, entity) -> {
-            int startAmount = entity.getPopulation();
             Entity finishEntity = simulation.getFinishWorldState().getEntitiesMap().get(key);
             int finishAmount =  Objects.isNull(finishEntity) ? 0 : finishEntity.getPopulation();
-            Integer[] array = { startAmount, finishAmount };
+            Integer[] array = { entity.getPopulation(), finishAmount };
 
             entitiesBeforeAfter.put(key, array);
         });
