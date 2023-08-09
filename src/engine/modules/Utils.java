@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
-    public static String REGEX_ONLY_ZEROES_AFTER_DOT = "^\\d+\\.[0]+$";
+    public static String REGEX_ONLY_ZEROES_AFTER_DOT = "^\\d+\\.0+$";
     public static Entity findEntityByName(World world, String entityName) {
         return world.getEntities().getEntitiesMap().get(entityName);
     }
