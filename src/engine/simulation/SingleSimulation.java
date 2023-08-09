@@ -63,4 +63,5 @@ public class SingleSimulation extends SingleSimulationLog {
         setFinishWorldState(world);
         return uuid.toString();
     }
+    public World getWorld() { return world; }
 }
