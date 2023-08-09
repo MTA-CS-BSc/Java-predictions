@@ -5,7 +5,7 @@ import ui.enums.MainMenu;
 
 import java.util.Arrays;
 
-public class MainMenuPrinter {
+public abstract class MainMenuPrinter {
     public static void print() {
         System.out.println("Please choose an option from the menu below:");
         System.out.println("---------------------------------------------");
