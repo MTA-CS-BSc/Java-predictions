@@ -79,7 +79,8 @@ public class XmlParserTests {
                 String.format("%s/err-unique-name.xml", testFilesPath));
 
         Assertions.assertAll(
-                xmlPaths.stream().map(element -> () -> Assertions.assertFalse(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element))))
+                xmlPaths.stream().map(element -> ()
+                        -> Assertions.assertFalse(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element))))
         );
     }
 }
