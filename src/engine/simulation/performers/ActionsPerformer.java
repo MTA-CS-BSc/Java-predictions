@@ -12,8 +12,17 @@ import java.util.Objects;
 
 public class ActionsPerformer {
     public static void fireAction(World world, Action action, SingleEntity on) {
-        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
+        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName()))) {
+             Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] not found, skipping action...",
+                     action.getType(), action.getEntityName()));
+             return;
+        }
+
+        else if (Utils.findEntityByName(world, action.getEntityName()).getPopulation() == 0) {
+            Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] has 0 population, skipping action...",
+                    action.getType(), action.getEntityName()));
             return;
+        }
 
         String type = action.getType();
 
@@ -37,12 +46,13 @@ public class ActionsPerformer {
                 case ActionTypes.CONDITION:
                     ConditionPerformer.handle(world, action, on);
                     break;
+                case ActionTypes.REPLACE:
+                    ReplacePerformer.handle(world, action, on);
             }
         }
 
         catch (Exception e) {
-            Loggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Property not found. Skipping action...",
-                    type, action.getEntityName()));
+            Loggers.SIMULATION_LOGGER.info(e.getMessage());
         }
     }
     public static void updateStableTimeToAllProps(World world) {
