@@ -8,6 +8,7 @@ import engine.prototypes.implemented.Properties;
 import engine.simulation.SingleSimulation;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class HistoryManager {
@@ -46,23 +47,16 @@ public class HistoryManager {
                 .map(Value::getCurrentValue)
                 .collect(Collectors.toList());
     }
-    public HashMap<String, Integer> getEntitiesCountForProp(String uuid, String entityName,
+    public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName,
                                                             String propertyName) throws UUIDNotFoundException {
-        HashMap<String, Integer> histogram = new HashMap<>();
-
         SingleSimulation foundSimulation = getPastSimulation(uuid);
         getSimulationDetails(uuid, foundSimulation);
-
         List<String> propertyValues = getValuesListForProperty(foundSimulation, entityName, propertyName);
 
         if (Objects.isNull(propertyValues))
             return null;
 
-        for (String value : propertyValues)
-            if (!histogram.containsKey(value))
-                histogram.put(value, Collections.frequency(propertyValues, value));
-
-        return histogram;
+        return propertyValues.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
     public HashMap<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
         HashMap<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
