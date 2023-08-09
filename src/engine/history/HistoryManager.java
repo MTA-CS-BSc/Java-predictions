@@ -27,8 +27,8 @@ public class HistoryManager {
         if (Objects.isNull(simulationLog))
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
 
-        System.out.printf("Simulation uuid: [%s]%n", uuid);
-        System.out.printf("Simulation start time:  [%s]%n", Utils.formatDate(simulationLog.getStartTime()));
+        Loggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
+        Loggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", Utils.formatDate(simulationLog.getStartTime())));
     }
     private List<String> getValuesListForProperty(SingleSimulationLog log,
                                                   String entityName, String propertyName) {
