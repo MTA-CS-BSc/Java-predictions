@@ -82,6 +82,8 @@ public class ValidatorsUtils {
                 return validateSystemFuncEvaluate(world, action.getEntity(), property, systemFunctionValue);
             case SystemFunctions.PERCENT:
                 return validateSystemFuncPercent(world, action, property, systemFunctionValue);
+            case SystemFunctions.TICKS:
+                return validateSystemFuncTicks(world, action, property, systemFunctionValue);
         }
 
         return false;
@@ -125,5 +127,19 @@ public class ValidatorsUtils {
 
         return validateExpressionType(world, action, property, splitArgs[0])
                 && validateExpressionType(world, action, property, splitArgs[1]);
+    }
+
+    private static boolean validateSystemFuncTicks(PRDWorld world, PRDAction action, PRDProperty property, String args) {
+        String[] splitArgs = args.split("\\.");
+
+        if (splitArgs.length != 2)
+            return false;
+
+        PRDProperty ticksProp = findPRDPropertyByName(world, splitArgs[0], splitArgs[1]);
+
+        if (Objects.isNull(ticksProp))
+            return false;
+
+        return PropTypes.NUMERIC_PROPS.contains(property.getType());
     }
 }
