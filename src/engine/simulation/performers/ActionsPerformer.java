@@ -37,8 +37,6 @@ public class ActionsPerformer {
                 case ActionTypes.CONDITION:
                     ConditionPerformer.handle(world, action, on);
                     break;
-                case ActionTypes.REPLACE:
-                    ReplacePerformer.handle(world, action, on);
             }
         }
 
