@@ -60,7 +60,7 @@ public class ActionsPerformer {
             newValue = newValue.split("\\.")[0];
 
         else if (Utils.isFloat(newValue) && !Utils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
-            throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal",
+            throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal and therefore is not set",
                     actionType, entityName, property.getName(), newValue));
 
         if (!Utils.validateValueInRange(property, newValue))
