@@ -7,11 +7,11 @@ import java.util.Date;
 import java.util.UUID;
 
 public class SingleSimulationLog {
-    Date start;
-    Date finished;
-    WorldState startWorldState;
-    WorldState finishWorldState;
-    UUID uuid;
+    protected Date start;
+    protected Date finished;
+    protected WorldState startWorldState;
+    protected WorldState finishWorldState;
+    protected UUID uuid;
 
     public SingleSimulationLog(UUID _uuid, World _startWorldState) {
         uuid = _uuid;

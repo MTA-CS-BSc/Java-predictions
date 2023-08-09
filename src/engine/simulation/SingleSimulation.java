@@ -9,10 +9,10 @@ import engine.simulation.performers.ActionsPerformer;
 import java.util.*;
 
 public class SingleSimulation {
-    World world;
-    long ticks = 0;
-    UUID uuid;
-    SingleSimulationLog log;
+    protected World world;
+    protected long ticks = 0;
+    protected UUID uuid;
+    protected SingleSimulationLog log;
 
     public SingleSimulation(World _world) {
         uuid = UUID.randomUUID();
