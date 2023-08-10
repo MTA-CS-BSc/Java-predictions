@@ -15,7 +15,6 @@ public abstract class SimulationPrinter {
         printRules(world.getRules());
         printTermination(world.getTermination());
     }
-
     private static void printEntities(Entities entities) {
         System.out.println("###########Entities details###########");
 
