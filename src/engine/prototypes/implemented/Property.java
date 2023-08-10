@@ -1,9 +1,9 @@
 package engine.prototypes.implemented;
 
+import engine.consts.PropTypes;
 import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
-import engine.prototypes.jaxb.PRDRange;
 import engine.prototypes.jaxb.PRDValue;
 
 import java.util.Objects;
@@ -59,7 +59,9 @@ public class Property {
         name = property.getPRDName();
         type = property.getType();
         value = new Value(property.getPRDValue());
-        range = new Range(property.getPRDRange());
+
+        if (PropTypes.NUMERIC_PROPS.contains(type))
+            range = new Range(property.getPRDRange());
 
         value.setRandomInitialize(property.getPRDValue().isRandomInitialize());
 
