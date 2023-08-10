@@ -29,11 +29,17 @@ public abstract class CalculationValidator {
                         action.getType(), action.getEntity()));
 
         //TODO: Add validation arg2 != 0
-        else if (!Objects.isNull(divide))
-            if (!ValidatorsUtils.validateExpressionType(world, action, property, divide.getArg1())
+        else if (!Objects.isNull(divide)) {
+                if (!ValidatorsUtils.validateExpressionType(world, action, property, divide.getArg1())
                         || !ValidatorsUtils.validateExpressionType(world, action, property, divide.getArg2()))
-                throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
-                    action.getType(), action.getEntity()));
+                    throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
+                            action.getType(), action.getEntity()));
+
+
+                else if (divide.getArg2().equals("0"))
+                    throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Can't divide by zero",
+                            action.getType(), action.getEntity()));
+            }
 
         return true;
     }
