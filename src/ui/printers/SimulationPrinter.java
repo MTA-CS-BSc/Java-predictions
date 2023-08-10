@@ -1,9 +1,7 @@
 package ui.printers;
 
 import engine.consts.Restrictions;
-import engine.prototypes.implemented.Entities;
-import engine.prototypes.implemented.Entity;
-import engine.prototypes.implemented.World;
+import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
@@ -14,22 +12,22 @@ public abstract class SimulationPrinter {
         System.out.println("--------------------------------------");
 
         printEntities(world.getEntities());
-       // printRules(world.getRules());
-        //printTermination(world.getTermination());
+        printRules(world.getRules());
+        printTermination(world.getTermination());
     }
 
     private static void printEntities(Entities entities) {
-        System.out.println("***Entities details***");
+        System.out.println("###########Entities details###########");
 
         entities.getEntitiesMap().values().forEach(entity -> {
-            System.out.println("++++++++Entity++++++++");
+            System.out.println("#####Entity######");
             System.out.println("Name: " + entity.getName());
             System.out.println("Population: " + entity.getPopulation());
             printEntityProps(entity);
         });
     }
     private static void printEntityProps(Entity entity) {
-        System.out.println("Properties: ");
+        System.out.println("###########Properties###########");
 
         entity.getInitialProperties().getPropsMap().values().forEach(property -> {
             System.out.println("#####Property#####");
@@ -43,6 +41,30 @@ public abstract class SimulationPrinter {
                     System.out.printf("Range: [%s, %s]%n", property.getRange().getFrom(),
                             property.getRange().getTo());
             }
+        });
+    }
+    private static void printTermination(Termination termination) {
+        System.out.println("###########Termination###########");
+        termination.getStopConditions().forEach(stopCondition -> {
+           System.out.println("#####Stop Condition######");
+
+           if (stopCondition.getClass() == ByTicks.class)
+               System.out.printf("Stop after [%d] ticks%n", ((ByTicks)stopCondition).getCount());
+
+           else if (stopCondition.getClass() == BySecond.class)
+               System.out.printf("Stop after [%d] seconds%n", ((BySecond)stopCondition).getCount());
+        });
+    }
+    private static void printRules(Rules rules) {
+        System.out.println("###########Rules###########");
+
+        rules.getRulesMap().values().forEach(rule -> {
+            System.out.println("#####Rule######");
+
+            System.out.println("Name: " + rule.getName());
+            System.out.println("Activation ticks: " + rule.getActivation().getTicks());
+            System.out.println("Activation probability: " + rule.getActivation().getProbability());
+            System.out.println("Actions amount: " + rule.getActions().getActions().size());
         });
     }
 }
