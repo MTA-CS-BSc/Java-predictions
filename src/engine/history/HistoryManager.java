@@ -81,8 +81,8 @@ public class HistoryManager {
 
         return !Objects.isNull(latestSimulation) ? latestSimulation.getWorld() : null;
     }
-
     public boolean isEmpty() {
         return pastSimulations.isEmpty();
     }
+    public Map<String, SingleSimulation> getPastSimulations() { return pastSimulations; }
 }
