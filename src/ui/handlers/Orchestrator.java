@@ -10,6 +10,7 @@ import engine.validators.PRDWorldValidators;
 import ui.consts.Constants;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
+import ui.printers.SimulationPrinter;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -56,7 +57,7 @@ public class Orchestrator {
             try {
                 Files.delete(Paths.get(Constants.HISTORY_FILE_PATH));
                 UILoggers.OrchestratorLogger.info("Old history deleted.");
-            } catch (Exception e) { }
+            } catch (Exception ignored) { }
 
             UILoggers.OrchestratorLogger.info("XML file was loaded successfully.");
         }
@@ -65,7 +66,12 @@ public class Orchestrator {
         //TODO: Not Implemented
     }
     private void handleShowSimulationDetails() {
-        //TODO: Not Implemented
+        if (Objects.isNull(world)) {
+            UILoggers.OrchestratorLogger.info("No XML was loaded to the system!");
+            return;
+        }
+
+        SimulationPrinter.print(world);
     }
     private void handleLoadWorldState() {
         try {
