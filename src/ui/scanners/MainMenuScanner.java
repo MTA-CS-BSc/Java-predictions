@@ -14,7 +14,7 @@ public abstract class MainMenuScanner {
         maxOption = MainMenu.values().length;
         scanner = new Scanner(System.in);
     }
-    public int scanMenuOption() {
+    protected int scanMenuOption() {
         int selected;
 
         try {
