@@ -41,6 +41,9 @@ public class Orchestrator {
 
         SingleSimulation simulation = new SingleSimulation(world);
 
+        //TODO: Add get environment props values
+        // getEnvironmentPropsValues();
+
         UILoggers.OrchestratorLogger.info("Starting simulation...");
         simulation.run();
         historyManager.addPastSimulation(simulation);
@@ -67,7 +70,7 @@ public class Orchestrator {
     }
     private void handleShowSimulationDetails() {
         if (Objects.isNull(world)) {
-            UILoggers.OrchestratorLogger.info("No XML was loaded to the system!");
+            UILoggers.OrchestratorLogger.info("Attempted to show simulation details but no XML file was loaded to the system");
             return;
         }
 
@@ -85,17 +88,17 @@ public class Orchestrator {
         }
 
         catch (Exception e) {
-            UILoggers.OrchestratorLogger.info("No history file found!");
+            UILoggers.OrchestratorLogger.info("Attempted to load history but no history file was found");
         }
     }
     private void handleSaveWorldState() {
         if (Objects.isNull(world)) {
-            UILoggers.OrchestratorLogger.info("No XML was loaded to the system!");
+            UILoggers.OrchestratorLogger.info("Attempted to save world state but no XML file was loaded to the system");
             return;
         }
 
         else if (historyManager.isEmpty()) {
-            UILoggers.OrchestratorLogger.info("No simulations were made!");
+            UILoggers.OrchestratorLogger.info("Attempted to save world state but no simulations were made");
             return;
         }
 
