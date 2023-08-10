@@ -40,6 +40,7 @@ public abstract class ShowPastSimulationPrinter {
     }
 
     public static void propHistogramPrintEntities(SingleSimulation simulation) {
+        System.out.println("Available entities: ");
         AtomicInteger index = new AtomicInteger(1);
 
         simulation.getStartWorldState().getEntitiesMap()
@@ -52,6 +53,7 @@ public abstract class ShowPastSimulationPrinter {
     }
 
     public static void propHistogramPrintEntityProps(Entity entity) {
+        System.out.printf("Available properties for entity [%s]: ", entity.getName());
         AtomicInteger index = new AtomicInteger(1);
 
         entity.getInitialProperties().getPropsMap().values()

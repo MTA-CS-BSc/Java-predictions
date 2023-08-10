@@ -1,5 +1,6 @@
 package ui.handlers;
 
+import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
 import engine.parsers.XmlParser;
@@ -67,7 +68,7 @@ public class Orchestrator {
             UILoggers.OrchestratorLogger.info("XML file was loaded successfully.");
         }
     }
-    private void handleShowPastSimulation() {
+    private void handleShowPastSimulation() throws UUIDNotFoundException {
         if (Objects.isNull(world)) {
             UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no XML file was loaded to the system");
             return;
