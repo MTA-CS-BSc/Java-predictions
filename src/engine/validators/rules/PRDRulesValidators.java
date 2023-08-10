@@ -1,16 +1,20 @@
 package engine.validators.rules;
 
 import engine.exceptions.UniqueNameException;
+import engine.exceptions.ValueNotInRangeException;
 import engine.exceptions.WhitespacesFoundException;
 import engine.prototypes.jaxb.PRDRule;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.actions.PRDActionsValidators;
 
+import java.util.Objects;
+
 public class PRDRulesValidators {
     public static boolean validateRules(PRDWorld world) throws Exception {
         return validateRulesUniqueNames(world)
                 && validateNoWhitespacesInNames(world)
-                && validateActions(world);
+                && validateActions(world)
+                && validateActivations(world);
     }
     private static boolean validateRulesUniqueNames(PRDWorld world) throws UniqueNameException {
         for (PRDRule rule : world.getPRDRules().getPRDRule())
@@ -33,6 +37,23 @@ public class PRDRulesValidators {
     private static boolean validateActions(PRDWorld world) throws Exception {
         for (PRDRule rule : world.getPRDRules().getPRDRule())
             PRDActionsValidators.validateActions(world, rule.getPRDActions().getPRDAction());
+
+        return true;
+    }
+
+    private static boolean validateActivations(PRDWorld world) throws ValueNotInRangeException {
+        for (PRDRule rule : world.getPRDRules().getPRDRule()) {
+            if (!Objects.isNull(rule.getPRDActivation().getProbability()))
+                if (rule.getPRDActivation().getProbability() < 0
+                        || rule.getPRDActivation().getProbability() > 1)
+                    throw new ValueNotInRangeException(String.format("Rule [%s]: Activation probability should be on the interval [0,1]",
+                            rule.getName()));
+
+            if (!Objects.isNull(rule.getPRDActivation().getTicks()))
+                if (rule.getPRDActivation().getTicks() < 0)
+                    throw new ValueNotInRangeException(String.format("Rule [%s]: Activation ticks should be positive",
+                            rule.getName()));
+        }
 
         return true;
     }
