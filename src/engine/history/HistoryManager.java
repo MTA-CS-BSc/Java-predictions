@@ -23,7 +23,6 @@ public class HistoryManager {
     public SingleSimulation getPastSimulation(String uuid) {
         return pastSimulations.get(uuid);
     }
-
     public void getSimulationDetails(String uuid, SingleSimulation simulation) throws UUIDNotFoundException {
         if (Objects.isNull(simulation))
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
@@ -81,5 +80,9 @@ public class HistoryManager {
                 .orElse(null);
 
         return !Objects.isNull(latestSimulation) ? latestSimulation.getWorld() : null;
+    }
+
+    public boolean isEmpty() {
+        return pastSimulations.isEmpty();
     }
 }
