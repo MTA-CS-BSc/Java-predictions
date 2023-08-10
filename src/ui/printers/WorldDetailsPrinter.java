@@ -5,7 +5,7 @@ import engine.prototypes.implemented.*;
 
 import java.util.Objects;
 
-public abstract class SimulationPrinter {
+public abstract class WorldDetailsPrinter {
     public static void print(World world) {
         System.out.println("--------------------------------------");
         System.out.println("----------Simulation details-----------");

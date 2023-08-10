@@ -10,7 +10,7 @@ import engine.validators.PRDWorldValidators;
 import ui.consts.Constants;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
-import ui.printers.SimulationPrinter;
+import ui.printers.WorldDetailsPrinter;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -74,7 +74,7 @@ public class Orchestrator {
             return;
         }
 
-        SimulationPrinter.print(world);
+        WorldDetailsPrinter.print(world);
     }
     private void handleLoadWorldState() {
         try {
