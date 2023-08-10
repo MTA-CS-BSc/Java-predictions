@@ -24,11 +24,13 @@ public class Orchestrator {
     protected World world;
     protected XmlLoaderHandler xmlLoaderHandler;
     protected MainMenuHandler mainMenuHandler;
+    protected ShowPastSimulationHandler showPastSimulationHandler;
 
     public Orchestrator() {
+        historyManager = new HistoryManager();
         xmlLoaderHandler = new XmlLoaderHandler();
         mainMenuHandler = new MainMenuHandler();
-        historyManager = new HistoryManager();
+        showPastSimulationHandler = new ShowPastSimulationHandler(historyManager);
 
         EngineLoggers.XML_ERRORS_LOGGER.addHandler(new ConsoleHandler());
         UILoggers.OrchestratorLogger.addHandler(new ConsoleHandler());
@@ -66,7 +68,17 @@ public class Orchestrator {
         }
     }
     private void handleShowPastSimulation() {
-        //TODO: Not Implemented
+        if (Objects.isNull(world)) {
+            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no XML file was loaded to the system");
+            return;
+        }
+
+        else if (historyManager.isEmpty()) {
+            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no simulations were made");
+            return;
+        }
+
+        showPastSimulationHandler.handle();
     }
     private void handleShowSimulationDetails() {
         if (Objects.isNull(world)) {
