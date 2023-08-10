@@ -12,7 +12,7 @@ public class Main {
         }
 
         catch (Exception e) {
-            UILoggers.ScannerLogger.info(e.getMessage());
+            UILoggers.OrchestratorLogger.info(e.getMessage());
         }
     }
 }
