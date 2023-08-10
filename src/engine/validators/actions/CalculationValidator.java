@@ -28,7 +28,6 @@ public abstract class CalculationValidator {
                 throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
                         action.getType(), action.getEntity()));
 
-        //TODO: Add validation arg2 != 0
         else if (!Objects.isNull(divide)) {
                 if (!ValidatorsUtils.validateExpressionType(world, action, property, divide.getArg1())
                         || !ValidatorsUtils.validateExpressionType(world, action, property, divide.getArg2()))
