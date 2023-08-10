@@ -15,7 +15,7 @@ public class MainMenuHandler extends MainMenuScanner {
         MainMenuPrinter.print();
         int selected = scanMenuOption();
 
-        while (selected != MainMenu.EXIT.ordinal() + 1  && selected == Constants.NOT_FOUND) {
+        while (selected == Constants.NOT_FOUND) {
             System.out.println("Invalid choice! Please try again:");
             MainMenuPrinter.print();
             selected = scanMenuOption();

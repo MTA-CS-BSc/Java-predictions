@@ -21,7 +21,7 @@ public abstract class MainMenuScanner {
             selected = scanner.nextInt();
 
             if (selected > maxOption || selected < 1) {
-                UILoggers.MainMenuScannerLogger.info("Option value entered is not in range");
+                UILoggers.ScannerLogger.info("Option value entered is not in range");
                 return Constants.NOT_FOUND;
             }
 
@@ -29,7 +29,7 @@ public abstract class MainMenuScanner {
         }
 
         catch (Exception e) {
-            UILoggers.MainMenuScannerLogger.info("Option value entered is not a number");
+            UILoggers.ScannerLogger.info("Option value entered is not a number");
             return Constants.NOT_FOUND;
         }
     }
