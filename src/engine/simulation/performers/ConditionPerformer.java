@@ -45,8 +45,14 @@ public abstract class ConditionPerformer {
                             < Float.parseFloat(value);
                 break;
             case Operators.EQUALS:
+                if (value.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+                    value = value.split("\\.")[0];
+
                 return value.equals(property.getValue().getCurrentValue());
             case Operators.NOT_EQUALS:
+                if (value.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+                    value = value.split("\\.")[0];
+
                 return !value.equals(property.getValue().getCurrentValue());
         }
 
