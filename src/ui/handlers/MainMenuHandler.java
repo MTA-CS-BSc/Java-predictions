@@ -11,7 +11,6 @@ public class MainMenuHandler extends MainMenuScanner {
     public MainMenuHandler() {
         super();
     }
-
     public int selectionCycle() {
         MainMenuPrinter.print();
         int selected = scanMenuOption();
