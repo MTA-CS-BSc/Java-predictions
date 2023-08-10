@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class ConditionValidators {
-    public static boolean validateSingleCondition(PRDWorld world, PRDAction action,
+    private static boolean validateSingleCondition(PRDWorld world, PRDAction action,
                                                   PRDCondition condition) throws Exception {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, condition.getEntity(),
                 condition.getProperty());
@@ -45,7 +45,7 @@ public abstract class ConditionValidators {
 
         return true;
     }
-    public static boolean validateMultipleCondition(PRDWorld world, PRDAction action,
+    private static boolean validateMultipleCondition(PRDWorld world, PRDAction action,
                                                     PRDCondition condition) throws Exception{
         List<PRDCondition> allConditions = condition.getPRDCondition();
 
