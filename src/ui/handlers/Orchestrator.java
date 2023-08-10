@@ -7,11 +7,14 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
+import ui.consts.Constants;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
 
 import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.logging.ConsoleHandler;
 
@@ -31,7 +34,7 @@ public class Orchestrator {
     }
     private void handleRunSimulation() throws Exception {
         if (Objects.isNull(world)) {
-            UILoggers.OrchestratorLogger.info("No xml was loaded to the system");
+            UILoggers.OrchestratorLogger.info("No xml was loaded to the system!");
             return;
         }
 
@@ -49,22 +52,62 @@ public class Orchestrator {
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {
             world = new World(prdWorld);
+
+            try {
+                Files.delete(Paths.get(Constants.HISTORY_FILE_PATH));
+                UILoggers.OrchestratorLogger.info("Old history deleted.");
+            } catch (Exception e) { }
+
             UILoggers.OrchestratorLogger.info("XML file was loaded successfully.");
         }
     }
-
     private void handleShowPastSimulation() {
         //TODO: Not Implemented
     }
-
     private void handleShowSimulationDetails() {
         //TODO: Not Implemented
     }
     private void handleLoadWorldState() {
-        //TODO: Not Implemented
+        try {
+            FileInputStream fi = new FileInputStream(Constants.HISTORY_FILE_PATH);
+            ObjectInputStream oi = new ObjectInputStream(fi);
+            historyManager = (HistoryManager) oi.readObject();
+            world = historyManager.getLatestWorldObject();
+
+            oi.close();
+            fi.close();
+        }
+
+        catch (Exception e) {
+            UILoggers.OrchestratorLogger.info("No history file found!");
+        }
     }
     private void handleSaveWorldState() {
-        //TODO: Not Implemented
+        if (Objects.isNull(world)) {
+            UILoggers.OrchestratorLogger.info("No XML was loaded to the system!");
+            return;
+        }
+
+        else if (historyManager.isEmpty()) {
+            UILoggers.OrchestratorLogger.info("No simulations were made!");
+            return;
+        }
+
+        writeHistoryToFile();
+    }
+    private void writeHistoryToFile() {
+        try {
+            FileOutputStream f = new FileOutputStream(Constants.HISTORY_FILE_PATH);
+            ObjectOutputStream o = new ObjectOutputStream(f);
+            o.writeObject(historyManager);
+            o.close();
+            f.close();
+
+            UILoggers.OrchestratorLogger.info("History saved successfully.");
+        } catch (Exception e) {
+            UILoggers.OrchestratorLogger.info("Could not save history: " + e.getMessage());
+        }
+
     }
     private void fireOptionSelection(int selectedOption) throws Exception {
         selectedOption--;
