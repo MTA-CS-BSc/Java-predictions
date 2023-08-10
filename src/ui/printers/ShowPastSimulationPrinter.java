@@ -3,6 +3,9 @@ package ui.printers;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.modules.Utils;
+import engine.prototypes.implemented.Entity;
+import engine.prototypes.implemented.Property;
+import engine.simulation.SingleSimulation;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -33,6 +36,41 @@ public abstract class ShowPastSimulationPrinter {
 
         entitiesBeforeAndAfter.forEach((entityName, amount) -> {
             System.out.printf("Entity [%s]: %d->%d%n", entityName, amount[0], amount[1]);
+        });
+    }
+
+    public static void propHistogramPrintEntities(SingleSimulation simulation) {
+        AtomicInteger index = new AtomicInteger(1);
+
+        simulation.getStartWorldState().getEntitiesMap()
+                .values()
+                .stream()
+                .sorted(Comparator.comparing(Entity::getName))
+                .forEach(entity -> {
+                    System.out.printf("%d. %s", index.getAndIncrement(), entity.getName());
+                });
+    }
+
+    public static void propHistogramPrintEntityProps(Entity entity) {
+        AtomicInteger index = new AtomicInteger(1);
+
+        entity.getInitialProperties().getPropsMap().values()
+                .stream()
+                .sorted(Comparator.comparing(Property::getName))
+                .forEach(property -> {
+                    System.out.printf("%d. %s", index.getAndIncrement(), property.getName());
+                });
+    }
+
+    public static void printPropHistogram(HistoryManager historyManager, String simulationUUID,
+                                          String entityName, String propertyName) throws UUIDNotFoundException {
+        Map<String, Long> entitiesCountForProp =
+                historyManager.getEntitiesCountForProp(simulationUUID, entityName, propertyName);
+
+        System.out.printf("Entities [%s] count for property [%s] values%n:", entityName, propertyName);
+
+        entitiesCountForProp.forEach((propValue, amount) -> {
+            System.out.printf("Value [%s]: %d entities%n", propValue, amount);
         });
     }
 }

@@ -2,6 +2,7 @@ package ui.handlers;
 
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
+import engine.prototypes.implemented.World;
 import engine.simulation.SingleSimulation;
 import ui.consts.Constants;
 import ui.enums.PastSimulationOutputOptions;
@@ -14,7 +15,6 @@ import java.util.Comparator;
 import java.util.stream.Collectors;
 
 public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
-
     public ShowPastSimulationHandler(HistoryManager historyManager) {
         super(historyManager);
     }
@@ -44,9 +44,8 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         else if (selected == PastSimulationOutputOptions.PROPERTY_HISTOGRAM.ordinal() + 1)
             showPropertyHistogram(simulation);
     }
-
     private void showPropertyHistogram(SingleSimulation simulation) {
-        //TODO: Not implemented
+        //TODO: Not Implemented
     }
 
     public void handle() {
