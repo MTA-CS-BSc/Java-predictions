@@ -9,7 +9,7 @@ import engine.validators.actions.PRDActionsValidators;
 
 import java.util.Objects;
 
-public class PRDRulesValidators {
+public abstract class PRDRulesValidators {
     public static boolean validateRules(PRDWorld world) throws Exception {
         return validateRulesUniqueNames(world)
                 && validateNoWhitespacesInNames(world)
