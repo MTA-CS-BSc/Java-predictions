@@ -7,11 +7,12 @@ import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
 import engine.simulation.SingleSimulation;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class HistoryManager {
+public class HistoryManager implements Serializable {
     protected Map<String, SingleSimulation> pastSimulations;
 
     public HistoryManager() {
@@ -28,7 +29,7 @@ public class HistoryManager {
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
-        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", Utils.formatDate(simulation.getStartTime())));
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", simulation.getStartTimestamp()));
     }
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
                                                   String entityName, String propertyName) {
@@ -76,7 +77,7 @@ public class HistoryManager {
     public World getLatestWorldObject() {
         SingleSimulation latestSimulation = pastSimulations.values()
                 .stream()
-                .max(Comparator.comparing(SingleSimulation::getFinishedTime))
+                .max(Comparator.comparing(SingleSimulation::getFinishedTimestamp))
                 .orElse(null);
 
         return !Objects.isNull(latestSimulation) ? latestSimulation.getWorld() : null;

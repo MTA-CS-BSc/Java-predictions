@@ -2,9 +2,10 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDRule;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Rule {
+public class Rule implements Serializable {
     protected String name;
     protected Actions actions;
     protected Activation activation;

@@ -12,7 +12,7 @@ public abstract class MainMenuPrinter {
 
         Arrays.stream(MainMenu.values())
                 .forEach(element -> {
-                    System.out.printf("%d -> %s\n", element.ordinal() + 1,
+                    System.out.printf("%d -> %s%n", element.ordinal() + 1,
                             StringUtils.capitalize(element.name().replace("_", " ").toLowerCase()));
                 });
     }

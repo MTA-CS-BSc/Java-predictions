@@ -1,9 +1,10 @@
 package engine.prototypes.implemented;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class WorldState {
+public class WorldState implements Serializable {
     protected Map<String, Entity> entitiesMap;
 
     public WorldState(World world) {

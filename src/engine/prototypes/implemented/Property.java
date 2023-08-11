@@ -6,9 +6,10 @@ import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDValue;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Property {
+public class Property implements Serializable {
     protected int stableTime;
     protected String name;
     protected Range range;

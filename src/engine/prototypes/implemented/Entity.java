@@ -2,10 +2,11 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDEntity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Entity {
+public class Entity implements Serializable {
     protected String name;
     protected int population;
     List<SingleEntity> singleEntities;

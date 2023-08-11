@@ -8,9 +8,10 @@ import engine.prototypes.jaxb.PRDRange;
 import engine.prototypes.jaxb.PRDTermination;
 import engine.prototypes.jaxb.PRDWorld;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class World {
+public class World implements Serializable {
     protected Environment environment;
     protected Entities entities;
     protected Termination termination;

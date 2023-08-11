@@ -2,11 +2,12 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDElse;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Else {
+public class Else implements Serializable {
     List<Action> actions;
 
     public Else(PRDElse _else) {

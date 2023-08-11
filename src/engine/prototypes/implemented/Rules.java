@@ -2,11 +2,12 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDRule;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Rules {
+public class Rules implements Serializable {
     protected Map<String, Rule> rulesMap;
     public Rules(List<PRDRule> list) {
         rulesMap = new HashMap<>();

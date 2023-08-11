@@ -2,9 +2,10 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDProperty;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class SingleEntity {
+public class SingleEntity implements Serializable {
     protected Properties properties;
 
     public SingleEntity(List<PRDProperty> props) {

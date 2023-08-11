@@ -2,9 +2,10 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDValue;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Value {
+public class Value implements Serializable {
     protected boolean isRandomInitialize;
     protected String init;
     protected String currentValue;

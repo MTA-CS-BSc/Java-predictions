@@ -4,11 +4,12 @@ import engine.prototypes.jaxb.PRDBySecond;
 import engine.prototypes.jaxb.PRDByTicks;
 import engine.prototypes.jaxb.PRDTermination;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Termination {
+public class Termination implements Serializable {
     List<Object> stopConditions;
     public Termination (PRDTermination _termination) {
         stopConditions = new ArrayList<>();

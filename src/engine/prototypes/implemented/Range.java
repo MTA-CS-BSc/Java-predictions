@@ -3,9 +3,10 @@ package engine.prototypes.implemented;
 import engine.consts.Restrictions;
 import engine.prototypes.jaxb.PRDRange;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Range {
+public class Range implements Serializable {
     protected double to;
     protected double from;
 

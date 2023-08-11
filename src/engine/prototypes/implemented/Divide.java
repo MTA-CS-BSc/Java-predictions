@@ -2,9 +2,10 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDDivide;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Divide {
+public class Divide implements Serializable {
     protected String arg1;
     protected String arg2;
 

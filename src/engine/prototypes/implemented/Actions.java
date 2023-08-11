@@ -2,10 +2,11 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDAction;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Actions {
+public class Actions implements Serializable {
     protected List<Action> actions = new ArrayList<>();
 
     public Actions(List<PRDAction> _actions) {

@@ -23,7 +23,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
     private SingleSimulation findSelectedSimulation(int selection) {
         return historyManager.getPastSimulations().values()
                 .stream()
-                .sorted(Comparator.comparing(s -> s.getStartTime()))
+                .sorted(Comparator.comparing(s -> s.getStartTimestamp()))
                 .collect(Collectors.toList()).get(selection - 1);
     }
     private void showSelectedSimulationDetails(SingleSimulation simulation) throws UUIDNotFoundException {
@@ -32,7 +32,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printOutputOptions();
-            selected = Utils.scanOption(scanner, maxOption);
+            selected = Utils.scanOption(scanner, 2);
         }
 
         if (selected == PastSimulationOutputOptions.ENTITIES_AMOUNT_BEFORE_AND_AFTER_SIMULATION.ordinal() + 1) {
@@ -92,11 +92,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         System.out.println("---------------------------------");
 
         ShowPastSimulationPrinter.printAvailableSimulations(historyManager);
-        int selected = Utils.scanOption(scanner, maxOption);
+        int selected = Utils.scanOption(scanner, historyManager.getPastSimulations().size());
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printAvailableSimulations(historyManager);
-            selected = Utils.scanOption(scanner, maxOption);
+            selected = Utils.scanOption(scanner, historyManager.getPastSimulations().size());
         }
 
         showSelectedSimulationDetails(findSelectedSimulation(selected));

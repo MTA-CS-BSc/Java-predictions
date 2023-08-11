@@ -34,7 +34,7 @@ public abstract class WorldDetailsPrinter {
             System.out.println("Type: " + property.getType());
             System.out.println("Is random initialize: " + property.getValue().isRandomInitialize());
 
-            if (Objects.isNull(property.getRange())) {
+            if (!Objects.isNull(property.getRange())) {
                 if (property.getRange().getFrom() != (double)Restrictions.MIN_RANGE
                     || property.getRange().getTo() != (double)Restrictions.MAX_RANGE)
                     System.out.printf("Range: [%s, %s]%n", property.getRange().getFrom(),

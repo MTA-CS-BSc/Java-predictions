@@ -2,9 +2,10 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDMultiply;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Multiply {
+public class Multiply implements Serializable {
     protected String arg1;
     protected String arg2;
 

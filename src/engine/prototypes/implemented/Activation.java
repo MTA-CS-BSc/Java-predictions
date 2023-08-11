@@ -2,9 +2,10 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDActivation;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Activation {
+public class Activation implements Serializable {
     protected int ticks;
     protected double probability;
 

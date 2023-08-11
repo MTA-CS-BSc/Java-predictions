@@ -2,11 +2,12 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDCondition;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Condition {
+public class Condition implements Serializable {
     protected List<Condition> conditions;
     protected String value;
     protected String singularity;

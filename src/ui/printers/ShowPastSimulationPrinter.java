@@ -17,12 +17,14 @@ public abstract class ShowPastSimulationPrinter {
 
         historyManager.getPastSimulations().values()
                 .stream()
-                .sorted(Comparator.comparing(s -> s.getStartTime()))
+                .sorted(Comparator.comparing(s -> s.getStartTimestamp()))
                 .forEach(simulation -> {
-                    System.out.printf("%d. UUID: [%s], timestamp: [%s]",
+                    System.out.printf("%d. UUID: [%s], timestamp: [%s]%n",
                             index.getAndIncrement(), simulation.getUUID().toString(),
-                            Utils.formatDate(simulation.getStartTime()));
+                            simulation.getStartTimestamp());
                 });
+
+        System.out.println("Please select your choice:");
     }
 
     public static void printOutputOptions() {
@@ -48,19 +50,19 @@ public abstract class ShowPastSimulationPrinter {
                 .stream()
                 .sorted(Comparator.comparing(Entity::getName))
                 .forEach(entity -> {
-                    System.out.printf("%d. %s", index.getAndIncrement(), entity.getName());
+                    System.out.printf("%d. %s%n", index.getAndIncrement(), entity.getName());
                 });
     }
 
     public static void propHistogramPrintEntityProps(Entity entity) {
-        System.out.printf("Available properties for entity [%s]: ", entity.getName());
+        System.out.printf("Available properties for entity [%s]:%n ", entity.getName());
         AtomicInteger index = new AtomicInteger(1);
 
         entity.getInitialProperties().getPropsMap().values()
                 .stream()
                 .sorted(Comparator.comparing(Property::getName))
                 .forEach(property -> {
-                    System.out.printf("%d. %s", index.getAndIncrement(), property.getName());
+                    System.out.printf("%d. %s%n", index.getAndIncrement(), property.getName());
                 });
     }
 

@@ -2,9 +2,10 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDAction;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Action {
+public class Action implements Serializable {
     protected Divide divide;
     protected Multiply multiply;
     protected Condition condition;

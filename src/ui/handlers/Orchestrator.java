@@ -38,7 +38,7 @@ public class Orchestrator {
     }
     private void handleRunSimulation() throws Exception {
         if (Objects.isNull(world)) {
-            UILoggers.OrchestratorLogger.info("No xml was loaded to the system!");
+            UILoggers.OrchestratorLogger.info("Attempted to run simulation but no xml was loaded to the system!");
             return;
         }
 
@@ -95,9 +95,12 @@ public class Orchestrator {
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
             world = historyManager.getLatestWorldObject();
+            showPastSimulationHandler = new ShowPastSimulationHandler(historyManager);
 
             oi.close();
             fi.close();
+
+            UILoggers.OrchestratorLogger.info("History was loaded successfully.");
         }
 
         catch (Exception e) {

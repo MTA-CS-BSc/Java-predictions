@@ -2,11 +2,12 @@ package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDProperty;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Properties {
+public class Properties implements Serializable {
     protected Map<String, Property> propertiesMap;
     public Properties(List<PRDProperty> list) {
         propertiesMap = new HashMap<>();

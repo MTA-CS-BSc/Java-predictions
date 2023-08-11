@@ -6,17 +6,18 @@ import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.simulation.performers.ActionsPerformer;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class SingleSimulation extends SingleSimulationLog {
+public class SingleSimulation extends SingleSimulationLog implements Serializable {
     protected World world;
     protected long ticks = 0;
-    protected UUID uuid;
+    protected String uuid;
     public SingleSimulation(World _world) {
-        uuid = UUID.randomUUID();
+        uuid = UUID.randomUUID().toString();
         world = _world;
     }
-    public UUID getUUID() { return uuid; }
+    public String getUUID() { return uuid; }
     public String isSimulationFinished(long startTimeMillis) {
         Termination termination = world.getTermination();
 
@@ -57,11 +58,11 @@ public class SingleSimulation extends SingleSimulationLog {
         }
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
-                                            uuid.toString(), isSimulationFinished(startTimeMillis)));
+                                            uuid, isSimulationFinished(startTimeMillis)));
 
         setEndTime(new Date());
         setFinishWorldState(world);
-        return uuid.toString();
+        return uuid;
     }
     public World getWorld() { return world; }
 }
