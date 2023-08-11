@@ -68,7 +68,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
                 .values()
                 .stream()
                 .sorted(Comparator.comparing(Property::getName))
-                .collect(Collectors.toList()).get(selection);
+                .collect(Collectors.toList()).get(selection - 1);
     }
     private Entity getEntitySelection(SingleSimulation simulation) {
         int entitiesAmount = simulation.getStartWorldState().getEntitiesMap().size();
@@ -85,7 +85,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
                 .values()
                 .stream()
                 .sorted(Comparator.comparing(Entity::getName))
-                .collect(Collectors.toList()).get(selection);
+                .collect(Collectors.toList()).get(selection - 1);
     }
     public void handle() throws UUIDNotFoundException {
         System.out.println("Available past simulations: ");

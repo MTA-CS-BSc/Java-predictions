@@ -1,12 +1,16 @@
 package ui.printers;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.modules.Utils;
 import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.simulation.SingleSimulation;
+import ui.enums.MainMenu;
+import ui.enums.PastSimulationOutputOptions;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -20,7 +24,7 @@ public abstract class ShowPastSimulationPrinter {
                 .sorted(Comparator.comparing(s -> s.getStartTimestamp()))
                 .forEach(simulation -> {
                     System.out.printf("%d. UUID: [%s], timestamp: [%s]%n",
-                            index.getAndIncrement(), simulation.getUUID().toString(),
+                            index.getAndIncrement(), simulation.getUUID(),
                             simulation.getStartTimestamp());
                 });
 
@@ -29,8 +33,12 @@ public abstract class ShowPastSimulationPrinter {
 
     public static void printOutputOptions() {
         System.out.println("Please select an output option: ");
-        System.out.println("1. Show entities before and after simulation");
-        System.out.println("2. Show property histogram");
+
+        Arrays.stream(PastSimulationOutputOptions.values())
+                .forEach(element -> {
+                    System.out.printf("%d -> %s%n", element.ordinal() + 1,
+                            StringUtils.capitalize(element.name().replace("_", " ").toLowerCase()));
+                });
     }
 
     public static void printEntitiesBeforeAfter(HistoryManager historyManager, String simulationUUID) throws UUIDNotFoundException {
@@ -52,10 +60,12 @@ public abstract class ShowPastSimulationPrinter {
                 .forEach(entity -> {
                     System.out.printf("%d. %s%n", index.getAndIncrement(), entity.getName());
                 });
+
+        System.out.println("Please select your choice:");
     }
 
     public static void propHistogramPrintEntityProps(Entity entity) {
-        System.out.printf("Available properties for entity [%s]:%n ", entity.getName());
+        System.out.printf("Available properties for entity [%s]: ", entity.getName());
         AtomicInteger index = new AtomicInteger(1);
 
         entity.getInitialProperties().getPropsMap().values()
