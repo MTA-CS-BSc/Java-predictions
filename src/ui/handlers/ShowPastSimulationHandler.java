@@ -37,7 +37,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
 
         if (selected == PastSimulationOutputOptions.ENTITIES_AMOUNT_BEFORE_AND_AFTER_SIMULATION.ordinal() + 1) {
             try {
-                ShowPastSimulationPrinter.printEntitiesBeforeAfter(historyManager, simulation.getUUID().toString());
+                ShowPastSimulationPrinter.printEntitiesBeforeAfter(historyManager, simulation.getUUID());
             } catch (UUIDNotFoundException e) {
                 UILoggers.OrchestratorLogger.info(e.getMessage());
             }
@@ -50,7 +50,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         Entity entity = getEntitySelection(simulation);
         Property property = getPropertySelection(entity);
 
-        ShowPastSimulationPrinter.printPropHistogram(historyManager, simulation.getUUID().toString(),
+        ShowPastSimulationPrinter.printPropHistogram(historyManager, simulation.getUUID(),
                 entity.getName(), property.getName());
     }
     private Property getPropertySelection(Entity entity) {
