@@ -65,7 +65,7 @@ public abstract class ShowPastSimulationPrinter {
     }
 
     public static void propHistogramPrintEntityProps(Entity entity) {
-        System.out.printf("Available properties for entity [%s]: ", entity.getName());
+        System.out.printf("Available properties for entity [%s]:\n ", entity.getName());
         AtomicInteger index = new AtomicInteger(1);
 
         entity.getInitialProperties().getPropsMap().values()
@@ -81,10 +81,12 @@ public abstract class ShowPastSimulationPrinter {
         Map<String, Long> entitiesCountForProp =
                 historyManager.getEntitiesCountForProp(simulationUUID, entityName, propertyName);
 
-        System.out.printf("Entities [%s] count for property [%s] values%n:", entityName, propertyName);
+        System.out.printf("Entities [%s] count for property [%s] values:%n", entityName, propertyName);
 
         entitiesCountForProp.forEach((propValue, amount) -> {
             System.out.printf("Value [%s]: %d entities%n", propValue, amount);
         });
+
+        System.out.println("--------------------------");
     }
 }
