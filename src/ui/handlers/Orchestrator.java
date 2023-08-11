@@ -26,12 +26,14 @@ public class Orchestrator {
     protected XmlLoaderHandler xmlLoaderHandler;
     protected MainMenuHandler mainMenuHandler;
     protected ShowPastSimulationHandler showPastSimulationHandler;
+    protected EnvPropsInitializerHandler envPropsInitializerHandler;
 
     public Orchestrator() {
         historyManager = new HistoryManager();
         xmlLoaderHandler = new XmlLoaderHandler();
         mainMenuHandler = new MainMenuHandler();
         showPastSimulationHandler = new ShowPastSimulationHandler(historyManager);
+        envPropsInitializerHandler = new EnvPropsInitializerHandler();
 
         EngineLoggers.XML_ERRORS_LOGGER.addHandler(new ConsoleHandler());
         UILoggers.OrchestratorLogger.addHandler(new ConsoleHandler());
@@ -44,14 +46,13 @@ public class Orchestrator {
 
         SingleSimulation simulation = new SingleSimulation(world);
 
-        //TODO: Add get environment props values
-        // getEnvironmentPropsValues();
+        envPropsInitializerHandler.handlePropsSettings(world);
 
         UILoggers.OrchestratorLogger.info("Starting simulation...");
         simulation.run();
         historyManager.addPastSimulation(simulation);
 
-        UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] ended", simulation.getUUID().toString()));
+        UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] ended", simulation.getUUID()));
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
         String xmlPath = xmlLoaderHandler.fileInputCycle();
