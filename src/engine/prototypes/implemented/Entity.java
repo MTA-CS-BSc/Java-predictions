@@ -9,8 +9,8 @@ import java.util.List;
 public class Entity implements Serializable {
     protected String name;
     protected int population;
-    List<SingleEntity> singleEntities;
-    Properties initialProperties;
+    protected List<SingleEntity> singleEntities;
+    protected Properties initialProperties;
 
     public Properties getInitialProperties() {
         return initialProperties;
@@ -41,6 +41,7 @@ public class Entity implements Serializable {
         name = other.getName();
         population = other.getPopulation();
         singleEntities = new ArrayList<>();
+        initialProperties = new Properties(other.getInitialProperties());
 
         other.getSingleEntities().forEach(singleEntity -> {
            singleEntities.add(new SingleEntity(singleEntity));
