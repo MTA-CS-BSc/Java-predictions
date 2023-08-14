@@ -1,24 +1,16 @@
 package ui.handlers;
 
 import engine.SystemOrchestrator;
-import engine.exceptions.UUIDNotFoundException;
-import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
 import engine.parsers.XmlParser;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
-import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
-import ui.consts.Constants;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
-import ui.printers.WorldDetailsPrinter;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Objects;
 import java.util.logging.ConsoleHandler;
 
 public class Orchestrator {
