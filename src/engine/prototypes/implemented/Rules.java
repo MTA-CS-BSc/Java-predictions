@@ -16,4 +16,13 @@ public class Rules implements Serializable {
             rulesMap.put(rule.getName(), new Rule(rule));
     }
     public Map<String, Rule> getRulesMap() { return rulesMap; }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("###########Rules###########\n");
+
+        getRulesMap().values().forEach(rule -> sb.append(rule.toString()).append("\n"));
+
+        return sb.toString();
+    }
 }

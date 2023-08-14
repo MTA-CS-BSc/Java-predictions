@@ -49,4 +49,16 @@ public class Entity implements Serializable {
     }
 
     public void setSingleEntities(List<SingleEntity> list) { singleEntities = list; }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#####Entity######\n");
+        sb.append("Name: ").append(getName()).append("\n");
+        sb.append("Population: ").append(getPopulation()).append("\n");
+
+        getInitialProperties().propertiesMap.values().forEach(property -> sb.append(property.toString()).append("\n"));
+
+        return sb.toString();
+    }
 }

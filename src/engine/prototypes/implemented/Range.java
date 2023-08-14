@@ -24,4 +24,8 @@ public class Range implements Serializable {
 
     public double getTo() { return to; }
     public double getFrom() { return from; }
+    @Override
+    public String toString() {
+        return "Range: [" + getFrom() + ", " + getTo() + "]\n";
+    }
 }

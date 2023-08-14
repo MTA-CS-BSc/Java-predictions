@@ -65,4 +65,11 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         return uuid;
     }
     public World getWorld() { return world; }
+    @Override
+    public String toString() {
+        return "--------------------------------------\n" +
+                "----------Simulation details-----------\n" +
+                "--------------------------------------\n" +
+                world.toString();
+    }
 }

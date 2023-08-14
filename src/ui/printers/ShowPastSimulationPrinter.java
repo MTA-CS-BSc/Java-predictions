@@ -1,6 +1,7 @@
 package ui.printers;
 
 import com.sun.xml.internal.ws.util.StringUtils;
+import engine.SystemOrchestrator;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.modules.Utils;
@@ -16,18 +17,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ShowPastSimulationPrinter {
-    public static void printAvailableSimulations(HistoryManager historyManager) {
-        AtomicInteger index = new AtomicInteger(1);
-
-        historyManager.getPastSimulations().values()
-                .stream()
-                .sorted(Comparator.comparing(s -> s.getStartTimestamp()))
-                .forEach(simulation -> {
-                    System.out.printf("%d. UUID: [%s], timestamp: [%s]%n",
-                            index.getAndIncrement(), simulation.getUUID(),
-                            simulation.getStartTimestamp());
-                });
-
+    public static void printAvailableSimulations(SystemOrchestrator so) {
+        System.out.println(so.getPastSimulationsMenu());
         System.out.println("Please select your choice:");
     }
 

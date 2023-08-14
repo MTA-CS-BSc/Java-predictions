@@ -18,13 +18,13 @@ public class Orchestrator {
     protected XmlLoaderHandler xmlLoaderHandler;
     protected SystemOrchestrator systemOrchestrator;
     protected MainMenuHandler mainMenuHandler;
-    protected EnvPropsInitializerHandler envPropsInitializerHandler;
+    //protected EnvPropsInitializerHandler envPropsInitializerHandler;
 
     public Orchestrator() {
         systemOrchestrator = new SystemOrchestrator();
         xmlLoaderHandler = new XmlLoaderHandler();
         mainMenuHandler = new MainMenuHandler();
-        envPropsInitializerHandler = new EnvPropsInitializerHandler();
+      //  envPropsInitializerHandler = new EnvPropsInitializerHandler();
 
         EngineLoggers.XML_ERRORS_LOGGER.addHandler(new ConsoleHandler());
         UILoggers.OrchestratorLogger.addHandler(new ConsoleHandler());
@@ -45,8 +45,7 @@ public class Orchestrator {
         else if (selectedOption == MainMenu.RUN_SIMULATION.ordinal())
             handleRunSimulation();
         else if (selectedOption == MainMenu.SHOW_SIMULATION_DETAILS.ordinal())
-            System.out.println("Not implemented");
-//            handleShowSimulationDetails();
+            handleShowSimulationDetails();
         else if (selectedOption == MainMenu.SHOW_PAST_SIMULATION.ordinal())
             System.out.println("Not implemented");
 //            handleShowPastSimulation();
@@ -66,8 +65,11 @@ public class Orchestrator {
         String xmlPath = xmlLoaderHandler.fileInputCycle();
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
-        if (PRDWorldValidators.validateWorld(prdWorld))
+        if (PRDWorldValidators.validateWorld(prdWorld)) {
             systemOrchestrator.setInitialXmlWorld(new World(prdWorld));
+            currentSimulationUuid = systemOrchestrator.createSimulation();
+            UILoggers.OrchestratorLogger.info("XML loaded successfully.");
+        }
     }
     private void handleSaveWorldState() {
         if (!systemOrchestrator.isXmlLoaded()) {
@@ -89,8 +91,7 @@ public class Orchestrator {
             return;
         }
 
-        //envPropsInitializerHandler.handlePropsSettings(world);
-        currentSimulationUuid = systemOrchestrator.createSimulation();
+        //envPropsInitializerHandler.handlePropsSettings(systemOrchestrator);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
         systemOrchestrator.runSimulation(currentSimulationUuid);
@@ -98,25 +99,25 @@ public class Orchestrator {
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] ended", currentSimulationUuid));
     }
 
-//    private void handleShowPastSimulation() throws UUIDNotFoundException {
-//        if (Objects.isNull(world)) {
+    private void handleShowSimulationDetails() {
+        if (!systemOrchestrator.isXmlLoaded()) {
+            UILoggers.OrchestratorLogger.info("Attempted to show simulation details but no XML file was loaded to the system");
+            return;
+        }
+
+        System.out.println(systemOrchestrator.getSimulationDetails(currentSimulationUuid));
+    }
+//    private void handleShowPastSimulation() {
+//        if (!systemOrchestrator.isXmlLoaded()) {
 //            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no XML file was loaded to the system");
 //            return;
 //        }
 //
-//        else if (historyManager.isEmpty()) {
+//        else if (systemOrchestrator.isHistoryEmpty()) {
 //            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no simulations were made");
 //            return;
 //        }
 //
-//        showPastSimulationHandler.handle();
-//    }
-//    private void handleShowSimulationDetails() {
-//        if (Objects.isNull(world)) {
-//            UILoggers.OrchestratorLogger.info("Attempted to show simulation details but no XML file was loaded to the system");
-//            return;
-//        }
-//
-//        WorldDetailsPrinter.print(world);
+//        //showPastSimulationHandler.handle();
 //    }
 }

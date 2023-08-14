@@ -16,4 +16,14 @@ public class Entities implements Serializable {
             entitiesMap.put(entity.getName(), new Entity(entity));
     }
     public Map<String, Entity> getEntitiesMap() { return entitiesMap; }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("###########Entities###########\n");
+
+        entitiesMap.values().forEach(entity -> sb.append(entity.toString()).append("\n"));
+
+        return sb.toString();
+    }
 }

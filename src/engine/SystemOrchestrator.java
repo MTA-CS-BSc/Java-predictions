@@ -9,8 +9,10 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Objects;
 
 public class SystemOrchestrator {
+    //TODO: Create DTOs to return from here
     protected HistoryManager historyManager;
     public SystemOrchestrator() {
         historyManager = new HistoryManager();
@@ -57,6 +59,16 @@ public class SystemOrchestrator {
         return sm.getUUID();
     }
     public void runSimulation(String uuid) throws Exception {
-        historyManager.getPastSimulation(uuid).run();
+        if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
+            historyManager.getPastSimulation(uuid).run();
+    }
+    public String getSimulationDetails(String uuid) {
+        if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return historyManager.getPastSimulation(uuid).toString();
+
+        return "";
+    }
+    public String getPastSimulationsMenu() {
+        return historyManager.getPastSimulationsMenu();
     }
 }

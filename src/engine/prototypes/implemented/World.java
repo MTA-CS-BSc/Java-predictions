@@ -54,4 +54,8 @@ public class World implements Serializable {
             property.getValue().setCurrentValue(property.getValue().getInit());
         });
     }
+    @Override
+    public String toString() {
+        return entities.toString() + rules.toString() + termination.toString();
+    }
 }

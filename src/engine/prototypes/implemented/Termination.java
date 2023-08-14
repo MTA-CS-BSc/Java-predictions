@@ -27,4 +27,22 @@ public class Termination implements Serializable {
     public List<Object> getStopConditions() {
         return stopConditions;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("###########Termination###########\n");
+
+        getStopConditions().forEach(stopCondition -> {
+            sb.append("#####Stop Condition######\n");
+
+            if (stopCondition.getClass() == ByTicks.class)
+                sb.append("Stop after [").append(((ByTicks)stopCondition).getCount()).append("] ticks\n");
+
+            else if (stopCondition.getClass() == BySecond.class)
+                sb.append("Stop after [").append(((BySecond)stopCondition).getCount()).append("] seconds\n");
+        });
+
+        return sb.toString();
+    }
 }

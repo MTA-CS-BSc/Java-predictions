@@ -1,6 +1,7 @@
 package engine.prototypes.implemented;
 
 import engine.consts.PropTypes;
+import engine.consts.Restrictions;
 import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
@@ -97,4 +98,16 @@ public class Property implements Serializable {
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#####Property#####\n").append("Name: ").append(getName()).append("\n").append("Type: ")
+                .append(getType()).append("\n").append("Is Random initialize: ").append(getValue().isRandomInitialize()).append("\n");
+
+
+        if (!Objects.isNull(getRange()))
+            sb.append(getRange().toString());
+
+        return sb.toString();
+    }
 }
