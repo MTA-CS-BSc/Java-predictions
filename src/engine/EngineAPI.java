@@ -11,10 +11,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Objects;
 
-public class SystemOrchestrator {
+public class EngineAPI {
     //TODO: Create DTOs to return from here
     protected HistoryManager historyManager;
-    public SystemOrchestrator() {
+    public EngineAPI() {
         historyManager = new HistoryManager();
     }
     public boolean isHistoryEmpty() {

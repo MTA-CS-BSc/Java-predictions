@@ -1,6 +1,6 @@
 package ui.handlers;
 
-import engine.SystemOrchestrator;
+import engine.EngineAPI;
 import engine.logs.EngineLoggers;
 import engine.parsers.XmlParser;
 import engine.prototypes.implemented.World;
@@ -16,12 +16,12 @@ import java.util.logging.ConsoleHandler;
 public class Orchestrator {
     String currentSimulationUuid;
     protected XmlLoaderHandler xmlLoaderHandler;
-    protected SystemOrchestrator systemOrchestrator;
+    protected EngineAPI engineAPI;
     protected MainMenuHandler mainMenuHandler;
     //protected EnvPropsInitializerHandler envPropsInitializerHandler;
 
     public Orchestrator() {
-        systemOrchestrator = new SystemOrchestrator();
+        engineAPI = new EngineAPI();
         xmlLoaderHandler = new XmlLoaderHandler();
         mainMenuHandler = new MainMenuHandler();
       //  envPropsInitializerHandler = new EnvPropsInitializerHandler();
@@ -55,7 +55,7 @@ public class Orchestrator {
             handleSaveWorldState();
     }
     private void handleLoadWorldState() {
-        if (!systemOrchestrator.loadHistory())
+        if (!engineAPI.loadHistory())
             UILoggers.OrchestratorLogger.info("Error loading history.");
 
         else
@@ -66,27 +66,27 @@ public class Orchestrator {
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {
-            systemOrchestrator.setInitialXmlWorld(new World(prdWorld));
-            currentSimulationUuid = systemOrchestrator.createSimulation();
+            engineAPI.setInitialXmlWorld(new World(prdWorld));
+            currentSimulationUuid = engineAPI.createSimulation();
             UILoggers.OrchestratorLogger.info("XML loaded successfully.");
         }
     }
     private void handleSaveWorldState() {
-        if (!systemOrchestrator.isXmlLoaded()) {
+        if (!engineAPI.isXmlLoaded()) {
             UILoggers.OrchestratorLogger.info("Attempted to save world state but no XML file was loaded to the system");
             return;
         }
 
-        else if (systemOrchestrator.isHistoryEmpty()) {
+        else if (engineAPI.isHistoryEmpty()) {
             UILoggers.OrchestratorLogger.info("Attempted to save world state but no simulations were made");
             return;
         }
 
-        if (!systemOrchestrator.writeHistoryToFile())
+        if (!engineAPI.writeHistoryToFile())
             System.out.println("Error writing history file!");
     }
     private void handleRunSimulation() throws Exception {
-        if (!systemOrchestrator.isXmlLoaded()) {
+        if (!engineAPI.isXmlLoaded()) {
             UILoggers.OrchestratorLogger.info("Attempted to run simulation but no xml was loaded to the system!");
             return;
         }
@@ -94,18 +94,18 @@ public class Orchestrator {
         //envPropsInitializerHandler.handlePropsSettings(systemOrchestrator);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
-        systemOrchestrator.runSimulation(currentSimulationUuid);
+        engineAPI.runSimulation(currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] ended", currentSimulationUuid));
     }
 
     private void handleShowSimulationDetails() {
-        if (!systemOrchestrator.isXmlLoaded()) {
+        if (!engineAPI.isXmlLoaded()) {
             UILoggers.OrchestratorLogger.info("Attempted to show simulation details but no XML file was loaded to the system");
             return;
         }
 
-        System.out.println(systemOrchestrator.getSimulationDetails(currentSimulationUuid));
+        System.out.println(engineAPI.getSimulationDetails(currentSimulationUuid));
     }
 //    private void handleShowPastSimulation() {
 //        if (!systemOrchestrator.isXmlLoaded()) {

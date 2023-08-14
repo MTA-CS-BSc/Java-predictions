@@ -1,14 +1,12 @@
 package ui.printers;
 
 import com.sun.xml.internal.ws.util.StringUtils;
-import engine.SystemOrchestrator;
+import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
-import engine.modules.Utils;
 import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.simulation.SingleSimulation;
-import ui.enums.MainMenu;
 import ui.enums.PastSimulationOutputOptions;
 
 import java.util.Arrays;
@@ -17,7 +15,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ShowPastSimulationPrinter {
-    public static void printAvailableSimulations(SystemOrchestrator so) {
+    public static void printAvailableSimulations(EngineAPI so) {
         System.out.println(so.getPastSimulationsMenu());
         System.out.println("Please select your choice:");
     }
