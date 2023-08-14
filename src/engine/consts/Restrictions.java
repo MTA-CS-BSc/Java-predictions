@@ -9,7 +9,7 @@ public abstract class Restrictions {
             PropTypes.FLOAT, PropTypes.BOOLEAN, PropTypes.STRING);
     public final static List<String> PRD_PROPERTY_RANGE_ALLOWED_TYPES = Arrays.asList(PropTypes.DECIMAL, PropTypes.FLOAT);
     public final static int MAX_RANDOM_STRING_LENGTH = 50;
-
+    public static final String HISTORY_FILE_PATH = "history.txt";
     public final static int MIN_RANGE = -999999999;
     public final static int MAX_RANGE = 999999999;
 }
