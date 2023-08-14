@@ -1,30 +1,33 @@
 package engine.history;
 
+import engine.consts.Restrictions;
 import engine.exceptions.UUIDNotFoundException;
 import engine.logs.EngineLoggers;
-import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
 import engine.simulation.SingleSimulation;
 
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class HistoryManager implements Serializable {
     protected Map<String, SingleSimulation> pastSimulations;
+    protected World initialWorld;
 
     public HistoryManager() {
         pastSimulations = new HashMap<>();
     }
     public void addPastSimulation(SingleSimulation pastSimulation) {
-        pastSimulations.put(pastSimulation.getUUID().toString(), pastSimulation);
+        pastSimulations.put(pastSimulation.getUUID(), pastSimulation);
     }
     public SingleSimulation getPastSimulation(String uuid) {
         return pastSimulations.get(uuid);
     }
-    public void getSimulationDetails(String uuid, SingleSimulation simulation) throws UUIDNotFoundException {
+    private void getSimulationDetails(String uuid, SingleSimulation simulation) throws UUIDNotFoundException {
         if (Objects.isNull(simulation))
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
 
@@ -86,4 +89,19 @@ public class HistoryManager implements Serializable {
         return pastSimulations.isEmpty();
     }
     public Map<String, SingleSimulation> getPastSimulations() { return pastSimulations; }
+    public void clearHistory() {
+        pastSimulations.clear();
+    }
+    public void setInitialXmlWorld(World _initialXmlWorld) {
+        clearHistory();
+        initialWorld = _initialXmlWorld;
+
+        try {
+            Files.delete(Paths.get(Restrictions.HISTORY_FILE_PATH));
+        } catch (Exception ignored) { }
+    }
+    public boolean isXmlLoaded() {
+        return !Objects.isNull(initialWorld);
+    }
+    public World getInitialWorld() { return initialWorld; }
 }
