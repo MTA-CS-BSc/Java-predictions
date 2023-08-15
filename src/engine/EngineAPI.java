@@ -121,7 +121,8 @@ public class EngineAPI {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return Collections.emptyList();
 
-        return historyManager.getPastSimulation(uuid).getWorld().getEntities().getEntitiesMap().values()
+        return historyManager.getPastSimulation(uuid).getStartWorldState()
+                .getEntitiesMap().values()
                 .stream()
                 .map(EntityDTO::new)
                 .sorted(Comparator.comparing(EntityDTO::getName))
@@ -132,5 +133,21 @@ public class EngineAPI {
             return null;
 
         return historyManager.getEntitiesBeforeAndAfter(uuid);
+    }
+    public SingleSimulationDTO findSelectedSimulationDTO(int selection) {
+        return getPastSimulations().get(selection - 1);
+    }
+    private SingleSimulationDTO findSimulationDTOByUuid(String uuid) {
+        return getPastSimulations().stream().filter(element -> element.getUuid().equals(uuid))
+                .findFirst().orElse(null);
+    }
+    public EntityDTO findSelectedEntityDTO(String uuid, int selection) {
+        if (Objects.isNull(findSimulationDTOByUuid(uuid)))
+            return null;
+
+        return getEntities(uuid).get(selection - 1);
+    }
+    public PropertyDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
+        return entity.getProperties().get(selection - 1);
     }
 }
