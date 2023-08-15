@@ -134,6 +134,12 @@ public class EngineAPI {
 
         return historyManager.getEntitiesBeforeAndAfter(uuid);
     }
+    public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return null;
+
+        return historyManager.getEntitiesCountForProp(uuid, entityName, propertyName);
+    }
     public SingleSimulationDTO findSelectedSimulationDTO(int selection) {
         return getPastSimulations().get(selection - 1);
     }

@@ -2,7 +2,8 @@ package ui.handlers;
 
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
-import engine.simulation.SingleSimulationDTO;
+import engine.prototypes.EntityDTO;
+import engine.prototypes.PropertyDTO;
 import ui.consts.Constants;
 import ui.enums.PastSimulationOutputOptions;
 import ui.modules.Utils;
@@ -11,11 +12,7 @@ import ui.scanners.ShowPastSimulationScanner;
 
 public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
     public ShowPastSimulationHandler(EngineAPI api) { super(api); }
-
-    private SingleSimulationDTO findSelectedSimulation(int selection) {
-        return api.getPastSimulations().get(selection - 1);
-    }
-    private void showSelectedSimulationDetails(SingleSimulationDTO simulation) throws UUIDNotFoundException {
+    private void showSelectedSimulationDetails(String uuid) throws UUIDNotFoundException {
         ShowPastSimulationPrinter.printOutputOptions();
         int selected = Utils.scanOption(scanner, 2);
 
@@ -25,53 +22,43 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         }
 
         if (selected == PastSimulationOutputOptions.ENTITIES_AMOUNT_BEFORE_AND_AFTER_SIMULATION.ordinal() + 1)
-            ShowPastSimulationPrinter.printEntitiesBeforeAndAfterSimulation(api, simulation.getUuid());
+            ShowPastSimulationPrinter.printEntitiesBeforeAndAfterSimulation(api, uuid);
 
         else if (selected == PastSimulationOutputOptions.PROPERTY_HISTOGRAM.ordinal() + 1)
-            System.out.println("Not implemented");
-            //showPropertyHistogram(simulation);
+            showPropertyHistogram(uuid);
     }
-//    private void showPropertyHistogram(SingleSimulation simulation) throws UUIDNotFoundException {
-//        Entity entity = getEntitySelection(simulation);
-//        Property property = getPropertySelection(entity);
-//
-//        ShowPastSimulationPrinter.printPropHistogram(historyManager, simulation.getUUID(),
-//                entity.getName(), property.getName());
-//    }
-//    private Property getPropertySelection(Entity entity) {
-//        int propertiesAmount = entity.getInitialProperties().getPropsMap().size();
-//
-//        ShowPastSimulationPrinter.propHistogramPrintEntityProps(entity);
-//        int selection = Utils.scanOption(scanner, propertiesAmount);
-//
-//        while (selection == Constants.NOT_FOUND) {
-//            ShowPastSimulationPrinter.propHistogramPrintEntityProps(entity);
-//            selection = Utils.scanOption(scanner, propertiesAmount);
-//        }
-//
-//        return entity.getInitialProperties().getPropsMap()
-//                .values()
-//                .stream()
-//                .sorted(Comparator.comparing(Property::getName))
-//                .collect(Collectors.toList()).get(selection - 1);
-//    }
-//    private Entity getEntitySelection(SingleSimulation simulation) {
-//        int entitiesAmount = simulation.getStartWorldState().getEntitiesMap().size();
-//
-//        ShowPastSimulationPrinter.propHistogramPrintEntities(simulation);
-//        int selection = Utils.scanOption(scanner, entitiesAmount);
-//
-//        while (selection == Constants.NOT_FOUND) {
-//            ShowPastSimulationPrinter.propHistogramPrintEntities(simulation);
-//            selection = Utils.scanOption(scanner, entitiesAmount);
-//        }
-//
-//        return simulation.getFinishWorldState().getEntitiesMap()
-//                .values()
-//                .stream()
-//                .sorted(Comparator.comparing(Entity::getName))
-//                .collect(Collectors.toList()).get(selection - 1);
-//    }
+    private void showPropertyHistogram(String uuid) throws UUIDNotFoundException {
+        EntityDTO entity = getEntitySelection(uuid);
+        PropertyDTO property = getPropertySelection(entity);
+
+        ShowPastSimulationPrinter.printPropHistogram(api, uuid, entity.getName(), property.getName());
+    }
+    private PropertyDTO getPropertySelection(EntityDTO entity) {
+        int propertiesAmount = entity.getProperties().size();
+
+        ShowPastSimulationPrinter.propHistogramPrintEntityProps(entity);
+        int selection = Utils.scanOption(scanner, propertiesAmount);
+
+        while (selection == Constants.NOT_FOUND) {
+            ShowPastSimulationPrinter.propHistogramPrintEntityProps(entity);
+            selection = Utils.scanOption(scanner, propertiesAmount);
+        }
+
+        return api.findSelectedPropertyDTO(entity, selection);
+    }
+    private EntityDTO getEntitySelection(String uuid) {
+        int entitiesAmount = api.getEntities(uuid).size();
+
+        ShowPastSimulationPrinter.propHistogramPrintEntities(api, uuid);
+        int selection = Utils.scanOption(scanner, entitiesAmount);
+
+        while (selection == Constants.NOT_FOUND) {
+            ShowPastSimulationPrinter.propHistogramPrintEntities(api, uuid);
+            selection = Utils.scanOption(scanner, entitiesAmount);
+        }
+
+        return api.findSelectedEntityDTO(uuid, selection);
+    }
     public void handle() throws UUIDNotFoundException {
         System.out.println("Available past simulations: ");
         System.out.println("---------------------------------");
@@ -84,6 +71,6 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
             selected = Utils.scanOption(scanner, api.getPastSimulations().size() + 1);
         }
 
-        showSelectedSimulationDetails(findSelectedSimulation(selected));
+        showSelectedSimulationDetails(api.findSelectedSimulationDTO(selected).getUuid());
     }
 }
