@@ -61,6 +61,12 @@ public class EngineAPI {
     public boolean isXmlLoaded() {
         return historyManager.isXmlLoaded();
     }
+    private World getInitialWorldForSimulation() {
+        if (!historyManager.isEmpty())
+            return historyManager.getLatestWorldObject();
+
+        return historyManager.getInitialWorld();
+    }
     public String createSimulation() {
         SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
         historyManager.addPastSimulation(sm);
@@ -101,11 +107,5 @@ public class EngineAPI {
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
         }
-    }
-    private World getInitialWorldForSimulation() {
-        if (!historyManager.isEmpty())
-            return historyManager.getLatestWorldObject();
-
-        return historyManager.getInitialWorld();
     }
 }
