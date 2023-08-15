@@ -7,6 +7,7 @@ import engine.prototypes.PropertyDTO;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.simulation.SingleSimulation;
+import engine.simulation.SingleSimulationDTO;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -19,7 +20,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class EngineAPI {
-    //TODO: Create DTOs to return from here
     protected HistoryManager historyManager;
     public EngineAPI() {
         historyManager = new HistoryManager();
@@ -61,8 +61,8 @@ public class EngineAPI {
     public boolean isXmlLoaded() {
         return historyManager.isXmlLoaded();
     }
-    public String createSimulation(World _world) {
-        SingleSimulation sm = new SingleSimulation(_world);
+    public String createSimulation() {
+        SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
         historyManager.addPastSimulation(sm);
         return sm.getUUID();
     }
@@ -70,15 +70,12 @@ public class EngineAPI {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
             historyManager.getPastSimulation(uuid).run();
     }
-    public String getSimulationDetails(String uuid) {
+    public SingleSimulationDTO getSimulationDetails(String uuid) {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return historyManager.getPastSimulation(uuid).toString();
+            return new SingleSimulationDTO(historyManager.getPastSimulation(uuid));
 
         EngineLoggers.API_LOGGER.info("Simulation with uuid " + uuid + " not found!");
-        return "";
-    }
-    public String getPastSimulationsMenu() {
-        return historyManager.getPastSimulationsMenu();
+        return null;
     }
     public List<PropertyDTO> getEnvironmentProperties(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
@@ -105,7 +102,7 @@ public class EngineAPI {
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
         }
     }
-    public World getInitialWorldForSimulation() {
+    private World getInitialWorldForSimulation() {
         if (!historyManager.isEmpty())
             return historyManager.getLatestWorldObject();
 
