@@ -1,5 +1,6 @@
 package engine.prototypes.implemented;
 
+import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDValue;
 
 import java.io.Serializable;
@@ -39,8 +40,12 @@ public class Value implements Serializable {
     }
 
     public void setRandomInitialize(boolean value) { isRandomInitialize = value; }
+    public void setInit(String value) {
+        if (!value.isEmpty() && value.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+            value = value.split("\\.")[0];
 
-    public void setInit(String value) { init = value; }
+        init = value;
+    }
 
     public void setCurrentValue(String value) { currentValue = value; }
 }
