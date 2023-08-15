@@ -8,9 +8,11 @@ import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
+import ui.printers.WorldDetailsPrinter;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
+import java.util.Objects;
 import java.util.logging.ConsoleHandler;
 
 public class Orchestrator {
@@ -91,7 +93,7 @@ public class Orchestrator {
             return;
         }
 
-        currentSimulationUuid = engineAPI.createSimulation(engineAPI.getInitialWorldForSimulation());
+        currentSimulationUuid = engineAPI.createSimulation();
         environmentPropsInitializer.handlePropsSettings(engineAPI, currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
@@ -106,7 +108,8 @@ public class Orchestrator {
             return;
         }
 
-        System.out.println(engineAPI.getSimulationDetails(currentSimulationUuid));
+        if (!Objects.isNull(engineAPI.getSimulationDetails(currentSimulationUuid)))
+            WorldDetailsPrinter.print(engineAPI.getSimulationDetails(currentSimulationUuid));
     }
     private void handleShowPastSimulation() {
         if (!engineAPI.isXmlLoaded()) {
