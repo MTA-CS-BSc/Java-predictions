@@ -4,12 +4,12 @@ import engine.consts.Restrictions;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
+import engine.prototypes.EntityDTO;
 import engine.prototypes.PropertyDTO;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.simulation.SingleSimulation;
 import engine.simulation.SingleSimulationDTO;
-import engine.simulation.SingleSimulationLog;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -89,8 +89,8 @@ public class EngineAPI {
         return historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
                 .getEnvVars().values()
                 .stream()
-                .sorted(Comparator.comparing(Property::getName))
-                .map(property -> new PropertyDTO(property.getName(), property.getType()))
+                .map(PropertyDTO::new)
+                .sorted(Comparator.comparing(PropertyDTO::getName))
                 .collect(Collectors.toList());
     }
     public void setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
@@ -113,8 +113,18 @@ public class EngineAPI {
 
         return historyManager.getPastSimulations().values()
                 .stream()
-                .sorted(Comparator.comparing(SingleSimulationLog::getStartTimestamp))
                 .map(SingleSimulationDTO::new)
+                .sorted(Comparator.comparing(SingleSimulationDTO::getStartTimestamp))
+                .collect(Collectors.toList());
+    }
+    public List<EntityDTO> getEntities(String uuid) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return Collections.emptyList();
+
+        return historyManager.getPastSimulation(uuid).getWorld().getEntities().getEntitiesMap().values()
+                .stream()
+                .map(EntityDTO::new)
+                .sorted(Comparator.comparing(EntityDTO::getName))
                 .collect(Collectors.toList());
     }
     public Map<String, Integer[]> getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
