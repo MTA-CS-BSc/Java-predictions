@@ -15,16 +15,18 @@ import java.util.logging.ConsoleHandler;
 
 public class Orchestrator {
     String currentSimulationUuid;
-    protected XmlLoaderHandler xmlLoaderHandler;
     protected EngineAPI engineAPI;
+    protected XmlLoaderHandler xmlLoaderHandler;
     protected MainMenuHandler mainMenuHandler;
     protected EnvPropsInitializerHandler environmentPropsInitializer;
+    protected ShowPastSimulationHandler showPastSimulationHandler;
 
     public Orchestrator() {
         engineAPI = new EngineAPI();
         xmlLoaderHandler = new XmlLoaderHandler();
         mainMenuHandler = new MainMenuHandler();
         environmentPropsInitializer = new EnvPropsInitializerHandler();
+        showPastSimulationHandler = new ShowPastSimulationHandler(engineAPI);
 
         EngineLoggers.XML_ERRORS_LOGGER.addHandler(new ConsoleHandler());
         UILoggers.OrchestratorLogger.addHandler(new ConsoleHandler());
@@ -47,8 +49,7 @@ public class Orchestrator {
         else if (selectedOption == MainMenu.SHOW_SIMULATION_DETAILS.ordinal())
             handleShowSimulationDetails();
         else if (selectedOption == MainMenu.SHOW_PAST_SIMULATION.ordinal())
-            System.out.println("Not implemented");
-//            handleShowPastSimulation();
+            handleShowPastSimulation();
         else if (selectedOption == MainMenu.LOAD_WORLD_STATE.ordinal())
             handleLoadWorldState();
         else if (selectedOption == MainMenu.SAVE_WORLD_STATE.ordinal())
@@ -90,13 +91,14 @@ public class Orchestrator {
             return;
         }
 
-        currentSimulationUuid = engineAPI.createSimulation();
+        currentSimulationUuid = engineAPI.createSimulation(engineAPI.getInitialWorldForSimulation());
         environmentPropsInitializer.handlePropsSettings(engineAPI, currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
         engineAPI.runSimulation(currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] ended", currentSimulationUuid));
+        currentSimulationUuid = "";
     }
     private void handleShowSimulationDetails() {
         if (!engineAPI.isXmlLoaded()) {
@@ -106,17 +108,17 @@ public class Orchestrator {
 
         System.out.println(engineAPI.getSimulationDetails(currentSimulationUuid));
     }
-//    private void handleShowPastSimulation() {
-//        if (!systemOrchestrator.isXmlLoaded()) {
-//            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no XML file was loaded to the system");
-//            return;
-//        }
-//
-//        else if (systemOrchestrator.isHistoryEmpty()) {
-//            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no simulations were made");
-//            return;
-//        }
-//
-//        //showPastSimulationHandler.handle();
-//    }
+    private void handleShowPastSimulation() {
+        if (!engineAPI.isXmlLoaded()) {
+            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no XML file was loaded to the system");
+            return;
+        }
+
+        else if (engineAPI.isHistoryEmpty()) {
+            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no simulations were made");
+            return;
+        }
+
+        showPastSimulationHandler.handle();
+    }
 }
