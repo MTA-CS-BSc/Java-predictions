@@ -2,9 +2,11 @@ package engine.validators.actions;
 
 import engine.consts.ActionTypes;
 import engine.exceptions.EntityNotFoundException;
+import engine.exceptions.ValueNotInRangeException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDWorld;
+import helpers.TypesUtils;
 
 import java.util.Objects;
 
@@ -13,6 +15,10 @@ public abstract class PRDActionValidators {
         if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getEntity())))
             throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist",
                     action.getType(), action.getEntity()));
+
+        if (!Objects.isNull(action.getPRDSecondaryEntity()))
+            if (!validateSecondaryEntity(world, action))
+                return false;
 
         switch (action.getType()) {
             case ActionTypes.SET:
@@ -31,5 +37,22 @@ public abstract class PRDActionValidators {
         }
 
         return false;
+    }
+    private static boolean validateSecondaryEntity(PRDWorld world, PRDAction action) throws Exception {
+        if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getPRDSecondaryEntity().getEntity())))
+            throw new EntityNotFoundException(String.format("Action [%s]: Secondary entity [%s] does not exist",
+                    action.getType(), action.getPRDSecondaryEntity().getEntity()));
+
+        String count = action.getPRDSecondaryEntity().getPRDSelection().getCount();
+
+        if (!count.equals(ActionTypes.ALL) && !TypesUtils.isDecimal(count))
+            throw new ValueNotInRangeException(String.format("Action [%s]: Secondary entity [%s]: count is not valid",
+                    action.getType(), action.getPRDSecondaryEntity().getEntity()));
+
+        if (!ConditionValidators.validate(world, action, action.getPRDSecondaryEntity().getPRDSelection().getPRDCondition()))
+            throw new Exception(String.format("Action [%s]: Secondary entity [%s]: Failed to validate condition",
+                    action.getType(), action.getPRDSecondaryEntity().getEntity()));
+
+        return true;
     }
 }
