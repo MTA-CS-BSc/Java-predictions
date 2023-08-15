@@ -11,8 +11,6 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -106,19 +104,4 @@ public class HistoryManager implements Serializable {
         return !Objects.isNull(initialWorld);
     }
     public World getInitialWorld() { return initialWorld; }
-    public String getPastSimulationsMenu() {
-        AtomicReference<String> menu = new AtomicReference<>("");
-        AtomicInteger index = new AtomicInteger(1);
-
-        getPastSimulations().values()
-                .stream()
-                .sorted(Comparator.comparing(s -> s.getStartTimestamp()))
-                .forEach(simulation -> {
-                    menu.set(menu.get() + String.format("%d. UUID: [%s], timestamp: [%s]\n",
-                            index.getAndIncrement(), simulation.getUUID(),
-                            simulation.getStartTimestamp()));
-                });
-
-        return menu.get();
-    }
 }
