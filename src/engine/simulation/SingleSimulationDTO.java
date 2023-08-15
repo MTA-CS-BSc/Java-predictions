@@ -12,6 +12,12 @@ public class SingleSimulationDTO {
         startTimestamp = simulation.getStartTimestamp();
         world = simulation.getWorld();
     }
+
+    public SingleSimulationDTO(World _world) {
+        uuid = "";
+        startTimestamp = "";
+        world = _world;
+    }
     public String getUuid() { return uuid; }
 
     public String getStartTimestamp() { return startTimestamp; }
