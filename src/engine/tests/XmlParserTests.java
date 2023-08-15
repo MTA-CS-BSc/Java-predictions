@@ -1,7 +1,7 @@
 package engine.tests;
 
 import engine.logs.EngineLoggers;
-import helpers.XmlParser;
+import engine.parsers.XmlParser;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;
 import org.junit.Test;
