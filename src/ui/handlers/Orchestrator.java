@@ -38,13 +38,11 @@ public class Orchestrator {
         int selectedOption = mainMenuHandler.selectionCycle();
 
         while (selectedOption != MainMenu.EXIT.ordinal() + 1) {
-            fireOptionSelection(selectedOption);
+            fireOptionSelection(selectedOption - 1);
             selectedOption = mainMenuHandler.selectionCycle();
         }
     }
     private void fireOptionSelection(int selectedOption) throws Exception {
-        selectedOption--;
-
         if (selectedOption == MainMenu.LOAD_XML_FILE.ordinal())
             handleLoadXmlFile();
         else if (selectedOption == MainMenu.RUN_SIMULATION.ordinal())
