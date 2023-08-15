@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-abstract class SingleSimulationLog implements Serializable {
+public abstract class SingleSimulationLog implements Serializable {
     protected String start;
     protected String finished;
     protected WorldState startWorldState;
