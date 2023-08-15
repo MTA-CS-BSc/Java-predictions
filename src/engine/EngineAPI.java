@@ -61,8 +61,8 @@ public class EngineAPI {
     public boolean isXmlLoaded() {
         return historyManager.isXmlLoaded();
     }
-    public String createSimulation() {
-        SingleSimulation sm = new SingleSimulation(historyManager.getInitialWorld());
+    public String createSimulation(World _world) {
+        SingleSimulation sm = new SingleSimulation(_world);
         historyManager.addPastSimulation(sm);
         return sm.getUUID();
     }
@@ -104,5 +104,11 @@ public class EngineAPI {
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
         }
+    }
+    public World getInitialWorldForSimulation() {
+        if (!historyManager.isEmpty())
+            return historyManager.getLatestWorldObject();
+
+        return historyManager.getInitialWorld();
     }
 }
