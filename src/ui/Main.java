@@ -1,6 +1,5 @@
 package ui;
 
-import ui.handlers.MainMenuHandler;
 import ui.handlers.Orchestrator;
 import ui.logs.UILoggers;
 
