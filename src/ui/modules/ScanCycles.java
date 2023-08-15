@@ -1,12 +1,13 @@
 package ui.modules;
 
 import engine.consts.BoolPropValues;
+import helpers.TypesUtils;
 import ui.consts.Constants;
 import ui.logs.UILoggers;
 
 import java.util.Scanner;
 
-public class Utils {
+public class ScanCycles {
     public static String scanBoolean(Scanner scanner) {
         String selected = scanner.nextLine();
 
@@ -20,7 +21,7 @@ public class Utils {
     public static String scanFloat(Scanner scanner) {
         String selected = scanner.nextLine();
 
-        while (!engine.modules.Utils.isFloat(selected) && !engine.modules.Utils.isDecimal(selected)) {
+        while (!TypesUtils.isFloat(selected) && !TypesUtils.isDecimal(selected)) {
             UILoggers.ScannerLogger.info("Option value entered is not a float");
             selected = scanner.nextLine();
         }
@@ -34,7 +35,7 @@ public class Utils {
         try {
             selected = scanner.nextLine();
 
-            if (!engine.modules.Utils.isDecimal(selected)) {
+            if (!TypesUtils.isDecimal(selected)) {
                 UILoggers.ScannerLogger.info("Option value entered is not a number");
                 return Constants.NOT_FOUND;
 
@@ -60,7 +61,7 @@ public class Utils {
     public static String scanDecimal(Scanner scanner) {
         String selected = scanner.nextLine();
 
-        while (!engine.modules.Utils.isDecimal(selected)) {
+        while (!TypesUtils.isDecimal(selected)) {
             UILoggers.ScannerLogger.info("Option value entered is not a decimal");
             selected = scanner.nextLine();
         }

@@ -6,7 +6,7 @@ import engine.prototypes.EntityDTO;
 import engine.prototypes.PropertyDTO;
 import ui.consts.Constants;
 import ui.enums.PastSimulationOutputOptions;
-import ui.modules.Utils;
+import ui.modules.ScanCycles;
 import ui.printers.ShowPastSimulationPrinter;
 import ui.scanners.ShowPastSimulationScanner;
 
@@ -14,11 +14,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
     public ShowPastSimulationHandler(EngineAPI api) { super(api); }
     private void showSelectedSimulationDetails(String uuid) throws UUIDNotFoundException {
         ShowPastSimulationPrinter.printOutputOptions();
-        int selected = Utils.scanOption(scanner, 2);
+        int selected = ScanCycles.scanOption(scanner, 2);
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printOutputOptions();
-            selected = Utils.scanOption(scanner, 2);
+            selected = ScanCycles.scanOption(scanner, 2);
         }
 
         if (selected == PastSimulationOutputOptions.ENTITIES_AMOUNT_BEFORE_AND_AFTER_SIMULATION.ordinal() + 1)
@@ -37,11 +37,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         int propertiesAmount = entity.getProperties().size();
 
         ShowPastSimulationPrinter.propHistogramPrintEntityProps(entity);
-        int selection = Utils.scanOption(scanner, propertiesAmount);
+        int selection = ScanCycles.scanOption(scanner, propertiesAmount);
 
         while (selection == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.propHistogramPrintEntityProps(entity);
-            selection = Utils.scanOption(scanner, propertiesAmount);
+            selection = ScanCycles.scanOption(scanner, propertiesAmount);
         }
 
         return api.findSelectedPropertyDTO(entity, selection);
@@ -50,11 +50,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         int entitiesAmount = api.getEntities(uuid).size();
 
         ShowPastSimulationPrinter.propHistogramPrintEntities(api, uuid);
-        int selection = Utils.scanOption(scanner, entitiesAmount);
+        int selection = ScanCycles.scanOption(scanner, entitiesAmount);
 
         while (selection == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.propHistogramPrintEntities(api, uuid);
-            selection = Utils.scanOption(scanner, entitiesAmount);
+            selection = ScanCycles.scanOption(scanner, entitiesAmount);
         }
 
         return api.findSelectedEntityDTO(uuid, selection);
@@ -64,11 +64,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         System.out.println("---------------------------------");
 
         ShowPastSimulationPrinter.printAvailableSimulations(api);
-        int selected = Utils.scanOption(scanner, api.getPastSimulations().size() + 1);
+        int selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size() + 1);
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printAvailableSimulations(api);
-            selected = Utils.scanOption(scanner, api.getPastSimulations().size() + 1);
+            selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size() + 1);
         }
 
         showSelectedSimulationDetails(api.findSelectedSimulationDTO(selected).getUuid());

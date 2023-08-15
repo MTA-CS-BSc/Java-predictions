@@ -3,7 +3,7 @@ package ui.handlers;
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
 import engine.logs.EngineLoggers;
-import engine.parsers.XmlParser;
+import helpers.XmlParser;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;

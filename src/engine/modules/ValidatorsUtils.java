@@ -2,8 +2,8 @@ package engine.modules;
 
 import engine.consts.PropTypes;
 import engine.consts.SystemFunctions;
-import engine.exceptions.InvalidTypeException;
 import engine.prototypes.jaxb.*;
+import helpers.TypesUtils;
 
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -49,24 +49,24 @@ public abstract class ValidatorsUtils {
                     && property.getType().equals(PropTypes.FLOAT));
 
         else {
-            if (Utils.isDecimal(expression))
+            if (TypesUtils.isDecimal(expression))
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());
 
-            else if (Utils.isFloat(expression)) {
+            else if (TypesUtils.isFloat(expression)) {
                 if (!expression.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
                     return property.getType().equals(PropTypes.FLOAT);
 
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());
             }
 
-            else if (Utils.isBoolean(expression))
+            else if (TypesUtils.isBoolean(expression))
                 return property.getType().equals(PropTypes.BOOLEAN);
         }
 
         return property.getType().equals(PropTypes.STRING);
     }
     private static boolean validateSystemFuncRandom(PRDProperty property, String systemFunctionValue) {
-        return property.getType().equals(PropTypes.DECIMAL) && Utils.isDecimal(systemFunctionValue);
+        return property.getType().equals(PropTypes.DECIMAL) && TypesUtils.isDecimal(systemFunctionValue);
     }
     private static boolean validateSystemFuncExpressionType(PRDWorld world, PRDAction action,
                                                             PRDProperty property, String expression) {

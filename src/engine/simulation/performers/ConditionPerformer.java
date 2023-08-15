@@ -9,6 +9,8 @@ import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import helpers.TypesUtils;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -31,7 +33,7 @@ public abstract class ConditionPerformer {
         return getConditionResult(property, operator, value);
     }
     private static boolean getConditionResult(Property property, String operator, String value) {
-        boolean isNumeric = Utils.isDecimal(value) || Utils.isFloat(value);
+        boolean isNumeric = TypesUtils.isDecimal(value) || TypesUtils.isFloat(value);
 
         switch (operator) {
             case Operators.BT:

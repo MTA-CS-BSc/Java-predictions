@@ -6,6 +6,7 @@ import engine.exceptions.ValueNotInRangeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
+import helpers.TypesUtils;
 
 import java.util.Objects;
 
@@ -76,7 +77,7 @@ public abstract class ActionsPerformer {
         if (newValue.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
             newValue = newValue.split("\\.")[0];
 
-        else if (Utils.isFloat(newValue) && !Utils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
+        else if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
             throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal and therefore is not set",
                     actionType, entityName, property.getName(), newValue));
 

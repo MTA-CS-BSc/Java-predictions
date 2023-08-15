@@ -4,7 +4,7 @@ import engine.EngineAPI;
 import engine.consts.PropTypes;
 import engine.prototypes.PropertyDTO;
 import ui.consts.Constants;
-import ui.modules.Utils;
+import ui.modules.ScanCycles;
 import ui.printers.EnvPropsInitializerPrinter;
 import ui.scanners.EnvPropsInitializerScanner;
 
@@ -20,16 +20,16 @@ public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
 
         switch (prop.getType()) {
             case PropTypes.BOOLEAN:
-                val = Utils.scanBoolean(scanner);
+                val = ScanCycles.scanBoolean(scanner);
                 break;
             case PropTypes.STRING:
                 val = scanner.nextLine();
                 break;
             case PropTypes.DECIMAL:
-                val = Utils.scanDecimal(scanner);
+                val = ScanCycles.scanDecimal(scanner);
                 break;
             case PropTypes.FLOAT:
-                val = Utils.scanFloat(scanner);
+                val = ScanCycles.scanFloat(scanner);
                 break;
         }
 
@@ -38,10 +38,10 @@ public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
     public boolean printVarsAndHandleSelectedPropChange(EngineAPI api, String uuid) {
         System.out.println("Available env vars to set: ");
         int propsAmount = EnvPropsInitializerPrinter.printEnvironmentProps(api, uuid);
-        int selection = Utils.scanOption(scanner, propsAmount + 1);
+        int selection = ScanCycles.scanOption(scanner, propsAmount + 1);
 
         while (selection == Constants.NOT_FOUND)
-            selection = Utils.scanOption(scanner, propsAmount + 1);
+            selection = ScanCycles.scanOption(scanner, propsAmount + 1);
 
         if (selection == propsAmount + 1)
             return false;

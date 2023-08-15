@@ -3,8 +3,11 @@ package engine.validators;
 import engine.consts.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.*;
-import engine.modules.Utils;
-import engine.prototypes.jaxb.*;
+import engine.prototypes.jaxb.PRDEntity;
+import engine.prototypes.jaxb.PRDProperty;
+import engine.prototypes.jaxb.PRDRange;
+import engine.prototypes.jaxb.PRDValue;
+import helpers.TypesUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +41,7 @@ public abstract class PRDPropertyValidators {
         }
 
         else if (property.getType().equals(PropTypes.BOOLEAN))
-            return Utils.isBoolean(init);
+            return TypesUtils.isBoolean(init);
 
         return true;
     }

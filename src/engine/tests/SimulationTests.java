@@ -2,7 +2,7 @@ package engine.tests;
 
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
-import engine.parsers.XmlParser;
+import helpers.XmlParser;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;

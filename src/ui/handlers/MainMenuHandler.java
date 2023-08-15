@@ -2,9 +2,8 @@ package ui.handlers;
 
 
 import ui.consts.Constants;
-import ui.enums.MainMenu;
 import ui.logs.UILoggers;
-import ui.modules.Utils;
+import ui.modules.ScanCycles;
 import ui.printers.MainMenuPrinter;
 import ui.scanners.MainMenuScanner;
 
@@ -14,12 +13,12 @@ public class MainMenuHandler extends MainMenuScanner {
     }
     public int selectionCycle() {
         MainMenuPrinter.print();
-        int selected = Utils.scanOption(scanner, maxOption);
+        int selected = ScanCycles.scanOption(scanner, maxOption);
 
         while (selected == Constants.NOT_FOUND) {
             UILoggers.OrchestratorLogger.info("Invalid menu option option selected");
             MainMenuPrinter.print();
-            selected = Utils.scanOption(scanner, maxOption);
+            selected = ScanCycles.scanOption(scanner, maxOption);
         }
 
         return selected;

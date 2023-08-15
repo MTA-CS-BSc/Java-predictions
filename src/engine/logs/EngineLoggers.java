@@ -1,7 +1,7 @@
 package engine.logs;
 
 import engine.EngineAPI;
-import engine.parsers.XmlParser;
+import helpers.XmlParser;
 import engine.simulation.SingleSimulation;
 
 import java.util.logging.Logger;
