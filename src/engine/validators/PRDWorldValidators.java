@@ -12,7 +12,8 @@ public abstract class PRDWorldValidators {
         StringTrimmer.trimAllStrings(world);
 
         return validateEntities(world) && validateTermination(world)
-                && validateEnvironment(world) && validateRules(world);
+                && validateEnvironment(world) && validateRules(world)
+                && validateThreadpool(world);
     }
     private static boolean validateEntities(PRDWorld world) {
         try {
@@ -53,5 +54,10 @@ public abstract class PRDWorldValidators {
             return false;
         }
     }
+    private static boolean validateThreadpool(PRDWorld world) {
+        if (world.getPRDThreadCount() <= 0)
+            EngineLoggers.XML_ERRORS_LOGGER.info("Threadpool count is less or equal to zero");
 
+        return world.getPRDThreadCount() > 0;
+    }
 }
