@@ -41,7 +41,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             actionsToPerform.getActions().forEach(action -> ActionsPerformer.fireAction(world, action, null));
         });
     }
-    public String run() throws Exception {
+    public void run() throws Exception {
         if (Objects.isNull(world))
             throw new Exception();
 
@@ -62,7 +62,6 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
         setEndTime(new Date());
         setFinishWorldState(world);
-        return uuid;
     }
     public World getWorld() { return world; }
     @Override
