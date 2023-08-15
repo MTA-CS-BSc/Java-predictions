@@ -31,8 +31,8 @@ public abstract class StringTrimmer {
         });
     }
     private static void trimEnvironment(PRDWorld world) {
-        if (!Objects.isNull(world.getPRDEvironment()))
-            world.getPRDEvironment().getPRDEnvProperty().forEach(property -> {
+        if (!Objects.isNull(world.getPRDEnvironment()))
+            world.getPRDEnvironment().getPRDEnvProperty().forEach(property -> {
                 if (!Objects.isNull(property.getPRDName()))
                     property.setPRDName(property.getPRDName().trim());
 
