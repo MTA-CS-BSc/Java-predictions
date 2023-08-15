@@ -11,4 +11,6 @@ public abstract class ShowPastSimulationScanner {
         scanner = new Scanner(System.in);
         api = _api;
     }
+
+    public EngineAPI getApi() { return api; }
 }
