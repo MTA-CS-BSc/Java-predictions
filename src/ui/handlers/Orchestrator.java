@@ -71,7 +71,6 @@ public class Orchestrator {
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {
             engineAPI.setInitialXmlWorld(new World(prdWorld));
-            currentSimulationUuid = engineAPI.createSimulation();
             UILoggers.OrchestratorLogger.info("XML loaded successfully.");
         }
     }
@@ -95,12 +94,14 @@ public class Orchestrator {
             return;
         }
 
+        currentSimulationUuid = engineAPI.createSimulation();
         environmentPropsInitializer.handlePropsSettings(engineAPI, currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
+
         engineAPI.runSimulation(currentSimulationUuid);
 
-        UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] ended", currentSimulationUuid));
+        UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] has ended", currentSimulationUuid));
         currentSimulationUuid = "";
     }
     private void handleShowSimulationDetails() {
@@ -109,8 +110,8 @@ public class Orchestrator {
             return;
         }
 
-        if (!Objects.isNull(engineAPI.getSimulationDetails(currentSimulationUuid)))
-            WorldDetailsPrinter.print(engineAPI.getSimulationDetails(currentSimulationUuid));
+        if (!Objects.isNull(engineAPI.getSimulationDetails()))
+            WorldDetailsPrinter.print(engineAPI.getSimulationDetails());
     }
     private void handleShowPastSimulation() throws UUIDNotFoundException {
         if (!engineAPI.isXmlLoaded()) {
