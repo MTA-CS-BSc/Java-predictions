@@ -3,8 +3,8 @@ package engine.simulation;
 import engine.prototypes.implemented.World;
 
 public class SingleSimulationDTO {
-    protected String uuid;
-    protected World world;
+    protected final String uuid;
+    private final World world;
 
     public SingleSimulationDTO(SingleSimulation simulation) {
         uuid = simulation.getUUID();
