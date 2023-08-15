@@ -1,6 +1,7 @@
 package engine;
 
 import engine.consts.Restrictions;
+import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
 import engine.prototypes.PropertyDTO;
@@ -14,10 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EngineAPI {
@@ -118,5 +116,11 @@ public class EngineAPI {
                 .sorted(Comparator.comparing(SingleSimulationLog::getStartTimestamp))
                 .map(SingleSimulationDTO::new)
                 .collect(Collectors.toList());
+    }
+    public Map<String, Integer[]> getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return null;
+
+        return historyManager.getEntitiesBeforeAndAfter(uuid);
     }
 }
