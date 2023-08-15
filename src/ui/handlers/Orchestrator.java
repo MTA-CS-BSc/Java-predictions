@@ -67,7 +67,6 @@ public class Orchestrator {
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {
             engineAPI.setInitialXmlWorld(new World(prdWorld));
-            currentSimulationUuid = engineAPI.createSimulation();
             UILoggers.OrchestratorLogger.info("XML loaded successfully.");
         }
     }
@@ -91,6 +90,7 @@ public class Orchestrator {
             return;
         }
 
+        currentSimulationUuid = engineAPI.createSimulation();
         environmentPropsInitializer.handlePropsSettings(engineAPI, currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
