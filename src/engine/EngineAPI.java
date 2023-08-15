@@ -2,6 +2,9 @@ package engine;
 
 import engine.consts.Restrictions;
 import engine.history.HistoryManager;
+import engine.logs.EngineLoggers;
+import engine.prototypes.PropertyDTO;
+import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.simulation.SingleSimulation;
 
@@ -9,7 +12,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class EngineAPI {
     //TODO: Create DTOs to return from here
@@ -27,11 +34,11 @@ public class EngineAPI {
             o.writeObject(historyManager);
             o.close();
             f.close();
+            EngineLoggers.API_LOGGER.info("History saved successfully.");
             return true;
-//            EngineLoggers.OrchestratorLogger.info("History saved successfully.");
         } catch (Exception e) {
+            EngineLoggers.API_LOGGER.info("Could not save history: " + e.getMessage());
             return false;
-//            UILoggers.OrchestratorLogger.info("Could not save history: " + e.getMessage());
         }
     }
     public boolean loadHistory() {
@@ -39,12 +46,13 @@ public class EngineAPI {
             FileInputStream fi = new FileInputStream(Restrictions.HISTORY_FILE_PATH);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
+            EngineLoggers.API_LOGGER.info("History was loaded successfully");
             return true;
         }
 
         catch (Exception e) {
+            EngineLoggers.API_LOGGER.info("Attempted to load history but no history file was found");
             return false;
-            // UILoggers.OrchestratorLogger.info("Attempted to load history but no history file was found");
         }
     }
     public void setInitialXmlWorld(World _initialWorld) {
@@ -66,9 +74,35 @@ public class EngineAPI {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
             return historyManager.getPastSimulation(uuid).toString();
 
+        EngineLoggers.API_LOGGER.info("Simulation with uuid " + uuid + " not found!");
         return "";
     }
     public String getPastSimulationsMenu() {
         return historyManager.getPastSimulationsMenu();
+    }
+    public List<PropertyDTO> getEnvironmentProperties(String uuid) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return Collections.emptyList();
+
+        return historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
+                .getEnvVars().values()
+                .stream()
+                .sorted(Comparator.comparing(Property::getName))
+                .map(property -> new PropertyDTO(property.getName(), property.getType()))
+                .collect(Collectors.toList());
+    }
+    public void setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return;
+
+        Property foundProp = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
+                .getEnvVars().values().stream().filter(envProp -> envProp.getName().equals(prop.getName()))
+                .findFirst().orElse(null);
+
+        if (!Objects.isNull(foundProp)) {
+            foundProp.getValue().setRandomInitialize(false);
+            foundProp.getValue().setInit(val);
+            foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
+        }
     }
 }

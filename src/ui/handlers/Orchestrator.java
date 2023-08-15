@@ -18,13 +18,13 @@ public class Orchestrator {
     protected XmlLoaderHandler xmlLoaderHandler;
     protected EngineAPI engineAPI;
     protected MainMenuHandler mainMenuHandler;
-    //protected EnvPropsInitializerHandler envPropsInitializerHandler;
+    protected EnvPropsInitializerHandler environmentPropsInitializer;
 
     public Orchestrator() {
         engineAPI = new EngineAPI();
         xmlLoaderHandler = new XmlLoaderHandler();
         mainMenuHandler = new MainMenuHandler();
-      //  envPropsInitializerHandler = new EnvPropsInitializerHandler();
+        environmentPropsInitializer = new EnvPropsInitializerHandler();
 
         EngineLoggers.XML_ERRORS_LOGGER.addHandler(new ConsoleHandler());
         UILoggers.OrchestratorLogger.addHandler(new ConsoleHandler());
@@ -91,14 +91,13 @@ public class Orchestrator {
             return;
         }
 
-        //envPropsInitializerHandler.handlePropsSettings(systemOrchestrator);
+        environmentPropsInitializer.handlePropsSettings(engineAPI, currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
         engineAPI.runSimulation(currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] ended", currentSimulationUuid));
     }
-
     private void handleShowSimulationDetails() {
         if (!engineAPI.isXmlLoaded()) {
             UILoggers.OrchestratorLogger.info("Attempted to show simulation details but no XML file was loaded to the system");
