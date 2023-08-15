@@ -18,7 +18,7 @@ public abstract class ShowPastSimulationPrinter {
         AtomicInteger index = new AtomicInteger(1);
 
         simulations.forEach(simulation -> {
-            System.out.printf("%d. UUID: %s, Timestamp: %s", index.getAndIncrement(),
+            System.out.printf("%d. UUID: %s, Timestamp: %s%n", index.getAndIncrement(),
                     simulation.getUuid(), simulation.getStartTimestamp());
         });
 
@@ -48,7 +48,7 @@ public abstract class ShowPastSimulationPrinter {
         System.out.println("Please select your choice:");
     }
     public static void propHistogramPrintEntityProps(EntityDTO entity) {
-        System.out.printf("Available properties for entity [%s]:\n ", entity.getName());
+        System.out.printf("Available properties for entity [%s]:%n", entity.getName());
         AtomicInteger index = new AtomicInteger(1);
 
         entity.getProperties().forEach(property -> System.out.printf("%d. %s%n", index.getAndIncrement(), property.getName()));
