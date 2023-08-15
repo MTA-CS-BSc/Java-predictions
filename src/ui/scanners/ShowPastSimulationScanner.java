@@ -1,15 +1,14 @@
 package ui.scanners;
 
-import engine.history.HistoryManager;
+import engine.EngineAPI;
 
 import java.util.Scanner;
 
 public abstract class ShowPastSimulationScanner {
     protected Scanner scanner;
-    protected HistoryManager historyManager;
-
-    public ShowPastSimulationScanner(HistoryManager hm) {
-        historyManager = hm;
+    protected EngineAPI api;
+    public ShowPastSimulationScanner(EngineAPI _api) {
         scanner = new Scanner(System.in);
+        api = _api;
     }
 }
