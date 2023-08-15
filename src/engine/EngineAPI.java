@@ -75,12 +75,8 @@ public class EngineAPI {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
             historyManager.getPastSimulation(uuid).run();
     }
-    public SingleSimulationDTO getSimulationDetails(String uuid) {
-        if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new SingleSimulationDTO(historyManager.getPastSimulation(uuid));
-
-        EngineLoggers.API_LOGGER.info("Simulation with uuid " + uuid + " not found!");
-        return null;
+    public SingleSimulationDTO getSimulationDetails() {
+        return historyManager.getMockSimulationForDetails();
     }
     public List<PropertyDTO> getEnvironmentProperties(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
@@ -148,10 +144,7 @@ public class EngineAPI {
                 .findFirst().orElse(null);
     }
     public EntityDTO findSelectedEntityDTO(String uuid, int selection) {
-        if (Objects.isNull(findSimulationDTOByUuid(uuid)))
-            return null;
-
-        return getEntities(uuid).get(selection - 1);
+        return !Objects.isNull(findSimulationDTOByUuid(uuid)) ? getEntities(uuid).get(selection - 1) : null;
     }
     public PropertyDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
         return entity.getProperties().get(selection - 1);

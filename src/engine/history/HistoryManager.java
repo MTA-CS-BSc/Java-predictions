@@ -6,6 +6,7 @@ import engine.logs.EngineLoggers;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
 import engine.simulation.SingleSimulation;
+import engine.simulation.SingleSimulationDTO;
 
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -104,4 +105,10 @@ public class HistoryManager implements Serializable {
         return !Objects.isNull(initialWorld);
     }
     public World getInitialWorld() { return initialWorld; }
+    public SingleSimulationDTO getMockSimulationForDetails() {
+        if (!Objects.isNull(initialWorld))
+            return new SingleSimulationDTO(initialWorld);
+
+        return null;
+    }
 }
