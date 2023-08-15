@@ -59,11 +59,7 @@ public class Orchestrator {
             handleSaveWorldState();
     }
     private void handleLoadWorldState() {
-        if (!engineAPI.loadHistory())
-            UILoggers.OrchestratorLogger.info("Error loading history.");
-
-        else
-            UILoggers.OrchestratorLogger.info("History was loaded");
+        UILoggers.OrchestratorLogger.info(!engineAPI.loadHistory() ? "Error loading history" : "History was loaded");
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
         String xmlPath = xmlLoaderHandler.fileInputCycle();
