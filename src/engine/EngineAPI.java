@@ -8,13 +8,14 @@ import engine.prototypes.EntityDTO;
 import engine.prototypes.PropertyDTO;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
+import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.simulation.SingleSimulationDTO;
+import engine.parsers.XmlParser;
+import engine.validators.PRDWorldValidators;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import javax.xml.bind.JAXBException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,16 @@ public class EngineAPI {
             EngineLoggers.API_LOGGER.info("Attempted to load history but no history file was found");
             return false;
         }
+    }
+    public boolean loadXml(String xmlPath) throws JAXBException, FileNotFoundException {
+        PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
+
+        if (PRDWorldValidators.validateWorld(prdWorld)) {
+            setInitialXmlWorld(new World(prdWorld));
+            return true;
+        }
+
+        return false;
     }
     public void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);
