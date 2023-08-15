@@ -13,7 +13,7 @@ public abstract class PRDWorldValidators {
 
         return validateEntities(world) && validateTermination(world)
                 && validateEnvironment(world) && validateRules(world)
-                && validateThreadpool(world);
+                && validateThreadpool(world) && validateGrid(world);
     }
     private static boolean validateEntities(PRDWorld world) {
         try {
@@ -59,5 +59,21 @@ public abstract class PRDWorldValidators {
             EngineLoggers.XML_ERRORS_LOGGER.info("Threadpool count is less or equal to zero");
 
         return world.getPRDThreadCount() > 0;
+    }
+    private static boolean validateGrid(PRDWorld world) {
+        PRDWorld.PRDGrid grid = world.getPRDGrid();
+
+        if (grid.getRows() < 10 || grid.getRows() > 100) {
+            EngineLoggers.XML_ERRORS_LOGGER.info("World grid rows range is [10, 100] but value is " + grid.getRows());
+            return false;
+        }
+
+        else if (grid.getColumns() < 10 || grid.getColumns() > 100) {
+            EngineLoggers.XML_ERRORS_LOGGER.info("World grid columns range is [10, 100] but value is " + grid.getColumns());
+            return false;
+        }
+
+        return true;
+
     }
 }
