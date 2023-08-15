@@ -1,6 +1,7 @@
 package ui.handlers;
 
 import engine.EngineAPI;
+import engine.exceptions.UUIDNotFoundException;
 import engine.logs.EngineLoggers;
 import engine.parsers.XmlParser;
 import engine.prototypes.implemented.World;
@@ -111,7 +112,7 @@ public class Orchestrator {
         if (!Objects.isNull(engineAPI.getSimulationDetails(currentSimulationUuid)))
             WorldDetailsPrinter.print(engineAPI.getSimulationDetails(currentSimulationUuid));
     }
-    private void handleShowPastSimulation() {
+    private void handleShowPastSimulation() throws UUIDNotFoundException {
         if (!engineAPI.isXmlLoaded()) {
             UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no XML file was loaded to the system");
             return;
