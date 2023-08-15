@@ -25,7 +25,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         }
 
         if (selected == PastSimulationOutputOptions.ENTITIES_AMOUNT_BEFORE_AND_AFTER_SIMULATION.ordinal() + 1)
-            ShowPastSimulationPrinter.printEntitiesBeforeAfter(api, simulation.getUuid());
+            ShowPastSimulationPrinter.printEntitiesBeforeAndAfterSimulation(api, simulation.getUuid());
 
         else if (selected == PastSimulationOutputOptions.PROPERTY_HISTOGRAM.ordinal() + 1)
             System.out.println("Not implemented");

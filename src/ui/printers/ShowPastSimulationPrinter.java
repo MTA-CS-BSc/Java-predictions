@@ -32,7 +32,7 @@ public abstract class ShowPastSimulationPrinter {
                             StringUtils.capitalize(element.name().replace("_", " ").toLowerCase()));
                 });
     }
-    public static void printEntitiesBeforeAfter(EngineAPI api, String uuid) throws UUIDNotFoundException {
+    public static void printEntitiesBeforeAndAfterSimulation(EngineAPI api, String uuid) throws UUIDNotFoundException {
         Map<String, Integer[]> entitiesBeforeAndAfter = api.getEntitiesBeforeAndAfterSimulation(uuid);
 
         entitiesBeforeAndAfter.forEach((entityName, amount) -> {
