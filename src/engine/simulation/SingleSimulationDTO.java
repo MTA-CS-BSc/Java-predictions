@@ -10,7 +10,6 @@ public class SingleSimulationDTO {
         uuid = simulation.getUUID();
         world = simulation.getWorld();
     }
-
     @Override
     public String toString() {
         return "--------------------------------------\n" +
