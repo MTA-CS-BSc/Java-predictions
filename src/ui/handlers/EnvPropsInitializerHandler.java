@@ -2,7 +2,6 @@ package ui.handlers;
 
 import engine.EngineAPI;
 import engine.consts.PropTypes;
-import engine.consts.Restrictions;
 import engine.prototypes.PropertyDTO;
 import ui.consts.Constants;
 import ui.modules.Utils;
@@ -27,7 +26,7 @@ public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
                 val = scanner.nextLine();
                 break;
             case PropTypes.DECIMAL:
-                val = String.valueOf(Utils.scanOption(scanner, Restrictions.MAX_RANGE));
+                val = Utils.scanDecimal(scanner);
                 break;
             case PropTypes.FLOAT:
                 val = Utils.scanFloat(scanner);

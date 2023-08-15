@@ -65,8 +65,13 @@ public abstract class Utils {
 
     }
     public static boolean isDecimal(String str) {
+        String newStr = str;
+
+        if (str.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+            newStr = str.split("\\.")[0];
+
         try {
-            Integer.parseInt(str);
+            Integer.parseInt(newStr);
             return true;
         }
 

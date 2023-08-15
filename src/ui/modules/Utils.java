@@ -57,4 +57,14 @@ public class Utils {
             return Constants.NOT_FOUND;
         }
     }
+    public static String scanDecimal(Scanner scanner) {
+        String selected = scanner.nextLine();
+
+        while (!engine.modules.Utils.isDecimal(selected)) {
+            UILoggers.ScannerLogger.info("Option value entered is not a decimal");
+            selected = scanner.nextLine();
+        }
+
+        return selected;
+    }
 }
