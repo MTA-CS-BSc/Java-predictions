@@ -18,6 +18,6 @@ public class EntityDTO {
                 .sorted(Comparator.comparing(PropertyDTO::getName))
                 .collect(Collectors.toList());
     }
-
     public String getName() { return name; }
+    public List<PropertyDTO> getProperties() { return properties; }
 }
