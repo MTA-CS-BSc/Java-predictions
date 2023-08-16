@@ -6,7 +6,7 @@ import engine.logs.EngineLoggers;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
 import engine.simulation.SingleSimulation;
-import engine.simulation.SingleSimulationDTO;
+import dtos.SingleSimulationDTO;
 
 import java.io.Serializable;
 import java.nio.file.Files;

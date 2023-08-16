@@ -1,4 +1,4 @@
-package engine.prototypes;
+package dtos;
 
 import engine.prototypes.implemented.Property;
 

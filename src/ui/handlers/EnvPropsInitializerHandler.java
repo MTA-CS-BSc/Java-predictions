@@ -2,7 +2,7 @@ package ui.handlers;
 
 import engine.EngineAPI;
 import engine.consts.PropTypes;
-import engine.prototypes.PropertyDTO;
+import dtos.PropertyDTO;
 import ui.consts.Constants;
 import ui.modules.ScanCycles;
 import ui.printers.EnvPropsInitializerPrinter;

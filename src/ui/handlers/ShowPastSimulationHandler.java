@@ -2,8 +2,8 @@ package ui.handlers;
 
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
-import engine.prototypes.EntityDTO;
-import engine.prototypes.PropertyDTO;
+import dtos.EntityDTO;
+import dtos.PropertyDTO;
 import ui.consts.Constants;
 import ui.enums.PastSimulationOutputOptions;
 import ui.modules.ScanCycles;

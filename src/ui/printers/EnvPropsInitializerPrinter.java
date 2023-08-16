@@ -1,11 +1,8 @@
 package ui.printers;
 
 import engine.EngineAPI;
-import engine.prototypes.PropertyDTO;
-import engine.prototypes.implemented.Environment;
-import engine.prototypes.implemented.Property;
+import dtos.PropertyDTO;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 

@@ -1,6 +1,6 @@
 package ui.printers;
 
-import engine.simulation.SingleSimulationDTO;
+import dtos.SingleSimulationDTO;
 
 public class WorldDetailsPrinter {
     public static void print(SingleSimulationDTO singleSimulation) {

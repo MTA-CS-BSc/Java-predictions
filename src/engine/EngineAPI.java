@@ -4,13 +4,13 @@ import engine.consts.Restrictions;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
-import engine.prototypes.EntityDTO;
-import engine.prototypes.PropertyDTO;
+import dtos.EntityDTO;
+import dtos.PropertyDTO;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
-import engine.simulation.SingleSimulationDTO;
+import dtos.SingleSimulationDTO;
 import engine.parsers.XmlParser;
 import engine.validators.PRDWorldValidators;
 

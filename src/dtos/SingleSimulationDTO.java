@@ -1,6 +1,7 @@
-package engine.simulation;
+package dtos;
 
 import engine.prototypes.implemented.World;
+import engine.simulation.SingleSimulation;
 
 public class SingleSimulationDTO {
     protected final String uuid;
