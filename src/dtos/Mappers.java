@@ -1,6 +1,5 @@
 package dtos;
 
-import engine.consts.TerminationReasons;
 import engine.prototypes.implemented.*;
 import engine.simulation.SingleSimulation;
 
@@ -57,15 +56,15 @@ public class Mappers {
     }
     public static StopConditionDTO toDto(Object stopCondition) {
         if (stopCondition.getClass() == ByTicks.class)
-            return new StopConditionDTO(TerminationReasons.BY_TICKS, ((ByTicks)stopCondition).getCount());
+            return new StopConditionDTO("ticks", ((ByTicks)stopCondition).getCount());
 
-        return new StopConditionDTO(TerminationReasons.BY_SECOND, ((BySecond)stopCondition).getCount());
+        return new StopConditionDTO("seconds", ((BySecond)stopCondition).getCount());
     }
     public static RuleDTO toDto(Rule rule) {
         return new RuleDTO(rule.getName(), rule.getActivation().getTicks(),
                 rule.getActivation().getProbability(), rule.getActions().getActions().size());
     }
     public static RangeDTO toDto(Range range) {
-        return new RangeDTO(range.getFrom(), range.getTo());
+        return !Objects.isNull(range) ? new RangeDTO(range.getFrom(), range.getTo()) : null;
     }
 }
