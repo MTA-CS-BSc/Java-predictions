@@ -6,6 +6,7 @@ import engine.simulation.SingleSimulation;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Mappers {
@@ -46,10 +47,13 @@ public class Mappers {
                 .map(Mappers::toDto)
                 .collect(Collectors.toList());
 
-        return new EntityDTO(entity.getName(), entityProps);
+        return new EntityDTO(entity.getName(), entity.getPopulation(), entityProps);
     }
     public static PropertyDTO toDto(Property property) {
-        return new PropertyDTO(property.getName(), property.getType(), toDto(property.getRange()));
+        String value = !Objects.isNull(property.getValue().getCurrentValue()) ?
+                property.getValue().getCurrentValue() : property.getValue().getInit();
+
+        return new PropertyDTO(property.getName(), property.getType(), toDto(property.getRange()), value, property.getValue().isRandomInitialize());
     }
     public static StopConditionDTO toDto(Object stopCondition) {
         if (stopCondition.getClass() == ByTicks.class)

@@ -42,4 +42,17 @@ public class RuleDTO {
     public void setActionsAmount(int actionsAmount) {
         this.actionsAmount = actionsAmount;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#####Rule######\n");
+
+        sb.append("Name: ").append(getName()).append("\n");
+        sb.append("Activation ticks: ").append(getTicks()).append("\n");
+        sb.append("Activation probability: ").append(getProbability()).append("\n");
+        sb.append("Actions amount: ").append(getActionsAmount()).append("\n");
+
+        return sb.toString();
+    }
 }

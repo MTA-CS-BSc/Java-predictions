@@ -1,15 +1,20 @@
 package dtos;
 
+import java.util.Objects;
+
 public class PropertyDTO {
     protected String name;
     protected String type;
-
+    protected String value;
     protected RangeDTO range;
+    protected boolean isRandom;
 
-    public PropertyDTO(String _name, String _type, RangeDTO _range) {
+    public PropertyDTO(String _name, String _type, RangeDTO _range, String _value, boolean _isRandom) {
         name = _name;
         type = _type;
         range = _range;
+        value = _value;
+        isRandom = _isRandom;
     }
 
     public String getName() {
@@ -30,5 +35,24 @@ public class PropertyDTO {
 
     public RangeDTO getRange() {
         return range;
+    }
+
+    public String getValue() { return value; }
+
+    public void setValue(String value) { this.value = value; }
+
+    public boolean getIsRandom() { return isRandom; }
+
+    public void setIsRandom(boolean value) { this.isRandom = value; }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("#####Property#####\n").append("Name: ").append(getName()).append("\n").append("Type: ")
+                .append(getType()).append("\n").append("Is Random initialize: ").append(getIsRandom()).append("\n");
+
+        if (!Objects.isNull(getRange()))
+            sb.append(getRange().toString());
+
+        return sb.toString();
     }
 }

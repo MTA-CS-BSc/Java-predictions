@@ -17,7 +17,34 @@ public class WorldDTO {
 
     @Override
     public String toString() {
-        //todo: implement to strings
-        return entities.toString() + rules.toString() + termination.toString();
+        return getEntitiesDetails() + getRulesDetails() + getTerminationDetails();
+    }
+
+    public String getEntitiesDetails() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("###########Entities###########\n");
+        entities.forEach(entity -> sb.append(entity.toString()).append("\n"));
+        return sb.toString();
+    }
+
+    public String getRulesDetails() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("###########Rules###########\n");
+
+        rules.forEach(rule -> sb.append(rule.toString()).append("\n"));
+
+        return sb.toString();
+    }
+
+    public String getTerminationDetails() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("###########Termination###########\n");
+
+        termination.forEach(stopCondition -> {
+            sb.append("#####Stop Condition######\n");
+            sb.append(stopCondition);
+        });
+
+        return sb.toString();
     }
 }

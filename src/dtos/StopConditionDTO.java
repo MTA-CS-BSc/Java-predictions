@@ -8,4 +8,9 @@ public class StopConditionDTO {
         byWho = _byWho;
         count = _count;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Stop after [%d] %s\n", count, byWho);
+    }
 }
