@@ -71,6 +71,28 @@ public abstract class StringTrimmer {
         if (!Objects.isNull(action.getValue()))
             action.setValue(action.getValue().trim());
 
+        if (!Objects.isNull(action.getPRDSecondaryEntity())) {
+            action.getPRDSecondaryEntity().setEntity(action.getPRDSecondaryEntity().getPRDSelection().getCount().trim());
+            trimCondition(action.getPRDSecondaryEntity().getPRDSelection().getPRDCondition());
+        }
+
+        if (!Objects.isNull(action.getCreate()))
+            action.setCreate(action.getCreate().trim());
+
+        if (!Objects.isNull(action.getKill()))
+            action.setKill(action.getKill().trim());
+
+        if (!Objects.isNull(action.getPRDBetween())) {
+            action.getPRDBetween().setSourceEntity(action.getPRDBetween().getSourceEntity().trim());
+            action.getPRDBetween().setTargetEntity(action.getPRDBetween().getTargetEntity().trim());
+        }
+
+        if (!Objects.isNull(action.getPRDEnvDepth()))
+            action.getPRDEnvDepth().setOf(action.getPRDEnvDepth().getOf().trim());
+
+        if (!Objects.isNull(action.getMode()))
+            action.setMode(action.getMode().trim());
+
         trimCondition(action.getPRDCondition());
         trimThen(action.getPRDThen());
         trimElse(action.getPRDElse());
