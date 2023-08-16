@@ -15,7 +15,7 @@ public class Termination implements Serializable {
         stopConditions = new ArrayList<>();
 
         if (!Objects.isNull(_termination)) {
-            _termination.getPRDByTicksOrPRDBySecond().forEach(_stopCondition -> {
+            _termination.getPRDBySecondOrPRDByTicks().forEach(_stopCondition -> {
                 if (_stopCondition.getClass() == PRDByTicks.class)
                     stopConditions.add(new ByTicks((PRDByTicks) _stopCondition));
 

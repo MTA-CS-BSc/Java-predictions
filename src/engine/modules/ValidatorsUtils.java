@@ -89,7 +89,7 @@ public abstract class ValidatorsUtils {
         return false;
     }
     private static boolean validateSystemFuncEnv(PRDWorld world, PRDProperty property, String systemFunctionValue) {
-        PRDEnvProperty envProp = world.getPRDEvironment().getPRDEnvProperty()
+        PRDEnvProperty envProp = world.getPRDEnvironment().getPRDEnvProperty()
                 .stream()
                 .filter(element -> element.getPRDName().equals(systemFunctionValue))
                 .findFirst().orElse(null);
