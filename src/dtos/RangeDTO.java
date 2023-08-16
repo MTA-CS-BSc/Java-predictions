@@ -17,4 +17,8 @@ public class RangeDTO {
     public double getFrom() {
         return from;
     }
+    @Override
+    public String toString() {
+        return "Range: [" + getFrom() + ", " + getTo() + "]\n";
+    }
 }
