@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class Mappers {
+public abstract class Mappers {
     public static SingleSimulationDTO toDto(SingleSimulation simulation) {
         return new SingleSimulationDTO(simulation.getUUID(), simulation.getStartTimestamp(),
                 toDto(simulation.getWorld()));
