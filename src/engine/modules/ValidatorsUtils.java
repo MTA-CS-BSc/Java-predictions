@@ -27,7 +27,7 @@ public abstract class ValidatorsUtils {
                 .findFirst().orElse(null);
     }
     public static boolean isSystemFunction(String expression) {
-        String pattern = "^[A-Za-z]{1,}\\([A-Za-z0-9]{1,}\\)$";
+        String pattern = "^[A-Za-z]{1,}\\(.+\\)$";
 
         if (!Pattern.matches(pattern, expression))
             return false;
@@ -71,7 +71,7 @@ public abstract class ValidatorsUtils {
     private static boolean validateSystemFuncExpressionType(PRDWorld world, PRDAction action,
                                                             PRDProperty property, String expression) {
         String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
-        String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1, expression.lastIndexOf(")"));
+        String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
         switch (systemFunctionType) {
             case SystemFunctions.RANDOM:
@@ -79,7 +79,7 @@ public abstract class ValidatorsUtils {
             case SystemFunctions.ENVIRONMENT:
                 return validateSystemFuncEnv(world, property, systemFunctionValue);
             case SystemFunctions.EVALUATE:
-                return validateSystemFuncEvaluate(world, action.getEntity(), property, systemFunctionValue);
+                return validateSystemFuncEvaluate(world, systemFunctionValue.split("\\.")[0], property, systemFunctionValue.split("\\.")[1]);
             case SystemFunctions.PERCENT:
                 return validateSystemFuncPercent(world, action, property, systemFunctionValue);
             case SystemFunctions.TICKS:

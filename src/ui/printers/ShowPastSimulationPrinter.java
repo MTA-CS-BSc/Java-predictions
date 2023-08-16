@@ -3,8 +3,8 @@ package ui.printers;
 import com.sun.xml.internal.ws.util.StringUtils;
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
-import engine.prototypes.EntityDTO;
-import engine.simulation.SingleSimulationDTO;
+import dtos.EntityDTO;
+import dtos.SingleSimulationDTO;
 import ui.enums.PastSimulationOutputOptions;
 
 import java.util.Arrays;

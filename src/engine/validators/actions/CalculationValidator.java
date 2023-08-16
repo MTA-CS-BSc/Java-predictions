@@ -20,7 +20,7 @@ public abstract class CalculationValidator {
 
         else if (!PropTypes.NUMERIC_PROPS.contains(property.getType()))
             throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation on non-numeric type",
-                    action.getType(), action.getEntity(), action.getBy()));
+                    action.getType(), action.getEntity()));
 
         if (!Objects.isNull(multiply))
             if (!ValidatorsUtils.validateExpressionType(world, action, property, multiply.getArg1())

@@ -1,5 +1,6 @@
 package engine.modules;
 
+import dtos.PropertyDTO;
 import engine.consts.PropTypes;
 import engine.prototypes.implemented.*;
 
@@ -38,6 +39,14 @@ public abstract class Utils {
         property.getValue().setCurrentValue(property.getValue().getInit());
     }
     public static boolean validateValueInRange(Property property, String newValue) {
+        if (!Objects.isNull(property.getRange()))
+            return !(Float.parseFloat(newValue) > property.getRange().getTo())
+                    && !(Float.parseFloat(newValue) < property.getRange().getFrom());
+
+        return true;
+    }
+
+    public static boolean validateValueInRange(PropertyDTO property, String newValue) {
         if (!Objects.isNull(property.getRange()))
             return !(Float.parseFloat(newValue) > property.getRange().getTo())
                     && !(Float.parseFloat(newValue) < property.getRange().getFrom());

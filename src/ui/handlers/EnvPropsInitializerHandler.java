@@ -2,7 +2,8 @@ package ui.handlers;
 
 import engine.EngineAPI;
 import engine.consts.PropTypes;
-import engine.prototypes.PropertyDTO;
+import dtos.PropertyDTO;
+import engine.modules.Utils;
 import ui.consts.Constants;
 import ui.modules.ScanCycles;
 import ui.printers.EnvPropsInitializerPrinter;
@@ -33,7 +34,16 @@ public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
                 break;
         }
 
-        api.setEnvironmentVariable(uuid, prop, val);
+        if (PropTypes.NUMERIC_PROPS.contains(prop.getType())) {
+            if (Utils.validateValueInRange(prop, val))
+                api.setEnvironmentVariable(uuid, prop, val);
+
+            else
+                System.out.println("Value not in range!");
+        }
+
+        else
+            api.setEnvironmentVariable(uuid, prop, val);
     }
     public boolean printVarsAndHandleSelectedPropChange(EngineAPI api, String uuid) {
         System.out.println("Available env vars to set: ");
