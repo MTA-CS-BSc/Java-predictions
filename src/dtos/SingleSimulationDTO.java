@@ -10,7 +10,6 @@ public class SingleSimulationDTO {
         startTimestamp = _startTimestamp;
         world = _world;
     }
-
     public SingleSimulationDTO(WorldDTO _world) {
         uuid = "";
         startTimestamp = "";
