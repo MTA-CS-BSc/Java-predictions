@@ -40,7 +40,6 @@ public abstract class PRDRulesValidators {
 
         return true;
     }
-
     private static boolean validateActivations(PRDWorld world) throws ValueNotInRangeException {
         for (PRDRule rule : world.getPRDRules().getPRDRule()) {
             if (!Objects.isNull(rule.getPRDActivation().getProbability()))
