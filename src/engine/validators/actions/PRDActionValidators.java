@@ -13,7 +13,8 @@ import java.util.Objects;
 
 public abstract class PRDActionValidators {
     public static boolean validateAction(PRDWorld world, PRDAction action) throws Exception {
-        if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getEntity())))
+        if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getEntity()))
+        && !action.getType().equals(ActionTypes.PROXIMITY) && !action.getType().equals(ActionTypes.REPLACE))
             throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist",
                     action.getType(), action.getEntity()));
 
