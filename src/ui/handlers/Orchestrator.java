@@ -2,7 +2,7 @@ package ui.handlers;
 
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
-import engine.logs.EngineLoggers;
+import helpers.CustomConsoleHandler;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
 import ui.printers.WorldDetailsPrinter;
@@ -10,7 +10,6 @@ import ui.printers.WorldDetailsPrinter;
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.util.Objects;
-import java.util.logging.ConsoleHandler;
 
 public class Orchestrator {
     String currentSimulationUuid;
@@ -27,8 +26,14 @@ public class Orchestrator {
         environmentPropsInitializer = new EnvPropsInitializerHandler();
         showPastSimulationHandler = new ShowPastSimulationHandler(api);
 
-        EngineLoggers.XML_ERRORS_LOGGER.addHandler(new ConsoleHandler());
-        UILoggers.OrchestratorLogger.addHandler(new ConsoleHandler());
+        configureLoggers();
+    }
+    private void configureLoggers() {
+        UILoggers.ScannerLogger.setUseParentHandlers(false);
+        UILoggers.OrchestratorLogger.setUseParentHandlers(false);
+
+        UILoggers.ScannerLogger.addHandler(new CustomConsoleHandler());
+        UILoggers.OrchestratorLogger.addHandler(new CustomConsoleHandler());
     }
     public void start() throws Exception {
         int selectedOption = mainMenuHandler.selectionCycle();
@@ -56,8 +61,7 @@ public class Orchestrator {
         UILoggers.OrchestratorLogger.info(!api.loadHistory() ? "Error loading history" : "History was loaded");
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
-        UILoggers.OrchestratorLogger.info(api.loadXml(xmlLoaderHandler.fileInputCycle()) ?
-                "XML File loaded successfully" : "XML was not loaded.");
+        UILoggers.OrchestratorLogger.info(api.loadXml(xmlLoaderHandler.fileInputCycle()) ? "XML loaded successfully" : "XML was not loaded, history unchanged.");
     }
     private void handleSaveWorldState() {
         if (!api.isXmlLoaded()) {

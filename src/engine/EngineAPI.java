@@ -1,29 +1,40 @@
 package engine;
 
+import dtos.EntityDTO;
 import dtos.Mappers;
+import dtos.PropertyDTO;
+import dtos.SingleSimulationDTO;
 import engine.consts.Restrictions;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
-import dtos.EntityDTO;
-import dtos.PropertyDTO;
+import engine.parsers.XmlParser;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
-import dtos.SingleSimulationDTO;
-import engine.parsers.XmlParser;
 import engine.validators.PRDWorldValidators;
+import helpers.CustomConsoleHandler;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class EngineAPI {
     protected HistoryManager historyManager;
     public EngineAPI() {
         historyManager = new HistoryManager();
+
+        configureLoggers();
+    }
+    private void configureLoggers() {
+        EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
+        EngineLoggers.API_LOGGER.setLevel(Level.OFF);
+
+        EngineLoggers.XML_ERRORS_LOGGER.setUseParentHandlers(false);
+        EngineLoggers.XML_ERRORS_LOGGER.addHandler(new CustomConsoleHandler());
     }
     public boolean isHistoryEmpty() {
         return historyManager.isEmpty();
