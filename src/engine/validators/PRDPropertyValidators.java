@@ -6,7 +6,6 @@ import engine.exceptions.*;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;
-import engine.prototypes.jaxb.PRDValue;
 import helpers.TypesUtils;
 
 import java.util.List;
@@ -23,25 +22,20 @@ public abstract class PRDPropertyValidators {
                 && validatePropsValuesInRanges(entity)
                 && validateInitExistsOnNonRandomProps(entity);
     }
-    private static boolean validatePropValue(PRDProperty property) throws Exception {
-        PRDValue value = property.getPRDValue();
-        if (value.isRandomInitialize())
+    private static boolean validatePropValue(PRDProperty property) {
+        if (property.getPRDValue().isRandomInitialize())
             return true;
 
-        String init = value.getInit();
+        String init = property.getPRDValue().getInit();
 
-        if (property.getType().equals(PropTypes.DECIMAL) || property.getType().equals(PropTypes.FLOAT)) {
-            try {
-                Float.parseFloat(init);
-            }
-
-            catch (Exception e) {
-                return false;
-            }
+        switch (property.getType()) {
+            case PropTypes.DECIMAL:
+                return TypesUtils.isDecimal(init);
+            case PropTypes.BOOLEAN:
+                return TypesUtils.isBoolean(init);
+            case PropTypes.FLOAT:
+                return TypesUtils.isFloat(init);
         }
-
-        else if (property.getType().equals(PropTypes.BOOLEAN))
-            return TypesUtils.isBoolean(init);
 
         return true;
     }
