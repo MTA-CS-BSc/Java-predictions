@@ -4,9 +4,12 @@ public class PropertyDTO {
     protected String name;
     protected String type;
 
-    public PropertyDTO(String _name, String _type) {
+    protected RangeDTO range;
+
+    public PropertyDTO(String _name, String _type, RangeDTO _range) {
         name = _name;
         type = _type;
+        range = _range;
     }
 
     public String getName() {
@@ -23,5 +26,9 @@ public class PropertyDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public RangeDTO getRange() {
+        return range;
     }
 }

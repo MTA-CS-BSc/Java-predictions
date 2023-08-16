@@ -49,7 +49,7 @@ public class Mappers {
         return new EntityDTO(entity.getName(), entityProps);
     }
     public static PropertyDTO toDto(Property property) {
-        return new PropertyDTO(property.getName(), property.getType());
+        return new PropertyDTO(property.getName(), property.getType(), toDto(property.getRange()));
     }
     public static StopConditionDTO toDto(Object stopCondition) {
         if (stopCondition.getClass() == ByTicks.class)
@@ -60,5 +60,8 @@ public class Mappers {
     public static RuleDTO toDto(Rule rule) {
         return new RuleDTO(rule.getName(), rule.getActivation().getTicks(),
                 rule.getActivation().getProbability(), rule.getActions().getActions().size());
+    }
+    public static RangeDTO toDto(Range range) {
+        return new RangeDTO(range.getFrom(), range.getTo());
     }
 }
