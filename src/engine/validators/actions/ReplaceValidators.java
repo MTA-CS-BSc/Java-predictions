@@ -27,7 +27,7 @@ public abstract class ReplaceValidators {
             throw new EntityNotFoundException(String.format("Action [%s]: Create entity [%s] does not exist!",
                     action.getType(), createEntity));
 
-        else if (ReplaceActionModes.REPLACE_MODES.contains(action.getMode()))
+        else if (!ReplaceActionModes.REPLACE_MODES.contains(action.getMode()))
             throw new ValueNotInRangeException(String.format("Action [%s]: Mode [%s] is not valid!",
                     action.getType(), action.getMode()));
 
