@@ -1,6 +1,7 @@
 package engine.validators.actions;
 
 import engine.consts.ActionTypes;
+import engine.consts.SecondaryEntityCounts;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.modules.ValidatorsUtils;
@@ -46,7 +47,7 @@ public abstract class PRDActionValidators {
 
         String count = action.getPRDSecondaryEntity().getPRDSelection().getCount();
 
-        if (!count.equals(ActionTypes.ALL) && !TypesUtils.isDecimal(count))
+        if (!count.equals(SecondaryEntityCounts.ALL) && !TypesUtils.isDecimal(count))
             throw new ValueNotInRangeException(String.format("Action [%s]: Secondary entity [%s]: count is not valid",
                     action.getType(), action.getPRDSecondaryEntity().getEntity()));
 
