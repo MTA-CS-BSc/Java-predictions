@@ -1,14 +1,12 @@
 package dtos;
 
-import engine.prototypes.implemented.Property;
-
 public class PropertyDTO {
     protected String name;
     protected String type;
 
-    public PropertyDTO(Property property) {
-        name = property.getName();
-        type = property.getType();
+    public PropertyDTO(String _name, String _type) {
+        name = _name;
+        type = _type;
     }
 
     public String getName() {

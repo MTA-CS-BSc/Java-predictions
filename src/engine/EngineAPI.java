@@ -1,5 +1,6 @@
 package engine;
 
+import dtos.Mappers;
 import engine.consts.Restrictions;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
@@ -96,7 +97,7 @@ public class EngineAPI {
         return historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
                 .getEnvVars().values()
                 .stream()
-                .map(PropertyDTO::new)
+                .map(Mappers::toDto)
                 .sorted(Comparator.comparing(PropertyDTO::getName))
                 .collect(Collectors.toList());
     }
@@ -120,7 +121,7 @@ public class EngineAPI {
 
         return historyManager.getPastSimulations().values()
                 .stream()
-                .map(SingleSimulationDTO::new)
+                .map(Mappers::toDto)
                 .sorted(Comparator.comparing(SingleSimulationDTO::getStartTimestamp))
                 .collect(Collectors.toList());
     }
@@ -131,7 +132,7 @@ public class EngineAPI {
         return historyManager.getPastSimulation(uuid).getStartWorldState()
                 .getEntitiesMap().values()
                 .stream()
-                .map(EntityDTO::new)
+                .map(Mappers::toDto)
                 .sorted(Comparator.comparing(EntityDTO::getName))
                 .collect(Collectors.toList());
     }

@@ -1,5 +1,6 @@
 package engine.history;
 
+import dtos.Mappers;
 import engine.consts.Restrictions;
 import engine.exceptions.UUIDNotFoundException;
 import engine.logs.EngineLoggers;
@@ -107,7 +108,7 @@ public class HistoryManager implements Serializable {
     public World getInitialWorld() { return initialWorld; }
     public SingleSimulationDTO getMockSimulationForDetails() {
         if (!Objects.isNull(initialWorld))
-            return new SingleSimulationDTO(initialWorld);
+            return new SingleSimulationDTO(Mappers.toDto(initialWorld));
 
         return null;
     }
