@@ -22,6 +22,7 @@ public class EntityDTO {
         sb.append("Name: ").append(getName()).append("\n");
         sb.append("Population: ").append(population).append("\n");
 
+        sb.append("Properties: ");
         properties.forEach(property -> sb.append(property.toString()).append("\n"));
 
         return sb.toString();
