@@ -72,7 +72,7 @@ public abstract class StringTrimmer {
             action.setValue(action.getValue().trim());
 
         if (!Objects.isNull(action.getPRDSecondaryEntity())) {
-            action.getPRDSecondaryEntity().setEntity(action.getPRDSecondaryEntity().getPRDSelection().getCount().trim());
+            action.getPRDSecondaryEntity().setEntity(action.getPRDSecondaryEntity().getEntity().trim());
             trimCondition(action.getPRDSecondaryEntity().getPRDSelection().getPRDCondition());
         }
 
