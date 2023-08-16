@@ -10,7 +10,7 @@ import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.Objects;
 
-public class ReplaceValidators {
+public abstract class ReplaceValidators {
     public static boolean validate(PRDWorld world, PRDAction action) throws Exception {
         String killEntity = action.getKill();
         String createEntity = action.getCreate();

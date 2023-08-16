@@ -12,7 +12,7 @@ import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.Objects;
 
-public class ProximityValidators {
+public abstract class ProximityValidators {
     public static boolean validate(PRDWorld world, PRDAction action) throws Exception {
         PRDAction.PRDBetween prdBetween = action.getPRDBetween();
         PRDAction.PRDEnvDepth prdEnvDepth = action.getPRDEnvDepth();
