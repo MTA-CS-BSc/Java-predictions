@@ -17,6 +17,7 @@ public class WorldDTO {
 
     @Override
     public String toString() {
+        //todo: implement to strings
         return entities.toString() + rules.toString() + termination.toString();
     }
 }

@@ -16,24 +16,24 @@ public class Mappers {
     public static WorldDTO toDto(World world) {
         List<EntityDTO> entities = world.getEntities().getEntitiesMap().values()
                 .stream()
-                .map(this::toDto)
+                .map(Mappers::toDto)
                 .sorted(Comparator.comparing(EntityDTO::getName))
                 .collect(Collectors.toList());
 
         List<StopConditionDTO> stopConditions = world.getTermination().getStopConditions()
                 .stream()
-                .map(this::toDto)
+                .map(Mappers::toDto)
                 .collect(Collectors.toList());
 
         List<PropertyDTO> envs = world.getEnvironment().getEnvVars().values()
                 .stream()
-                .map(this::toDto)
+                .map(Mappers::toDto)
                 .sorted(Comparator.comparing(PropertyDTO::getName))
                 .collect(Collectors.toList());
 
         List<RuleDTO> rules = world.getRules().getRulesMap().values()
                 .stream()
-                .map(this::toDto)
+                .map(Mappers::toDto)
                 .sorted(Comparator.comparing(RuleDTO::getName))
                 .collect(Collectors.toList());
 
@@ -43,7 +43,7 @@ public class Mappers {
         List<PropertyDTO> entityProps = entity.getInitialProperties().getPropsMap()
                 .values()
                 .stream()
-                .map(this::toDto)
+                .map(Mappers::toDto)
                 .collect(Collectors.toList());
 
         return new EntityDTO(entity.getName(), entityProps);
