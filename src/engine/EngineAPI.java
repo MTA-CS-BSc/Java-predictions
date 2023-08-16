@@ -4,7 +4,6 @@ import dtos.EntityDTO;
 import dtos.Mappers;
 import dtos.PropertyDTO;
 import dtos.SingleSimulationDTO;
-import engine.consts.Restrictions;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
@@ -14,6 +13,7 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
+import helpers.Constants;
 import helpers.CustomConsoleHandler;
 
 import javax.xml.bind.JAXBException;
@@ -41,7 +41,7 @@ public class EngineAPI {
     }
     public boolean writeHistoryToFile() {
         try {
-            FileOutputStream f = new FileOutputStream(Restrictions.HISTORY_FILE_PATH);
+            FileOutputStream f = new FileOutputStream(Constants.HISTORY_FILE_PATH);
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(historyManager);
             o.close();
@@ -55,7 +55,7 @@ public class EngineAPI {
     }
     public boolean loadHistory() {
         try {
-            FileInputStream fi = new FileInputStream(Restrictions.HISTORY_FILE_PATH);
+            FileInputStream fi = new FileInputStream(Constants.HISTORY_FILE_PATH);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
             EngineLoggers.API_LOGGER.info("History was loaded successfully");

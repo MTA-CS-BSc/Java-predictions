@@ -6,6 +6,7 @@ import engine.exceptions.ValueNotInRangeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 import helpers.TypesUtils;
 
 import java.util.Objects;
@@ -74,7 +75,7 @@ public abstract class ActionsPerformer {
     }
     public static void setPropertyValue(String actionType, String entityName,
                                          Property property, String newValue) throws Exception {
-        if (newValue.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+        if (newValue.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
             newValue = newValue.split("\\.")[0];
 
         else if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))

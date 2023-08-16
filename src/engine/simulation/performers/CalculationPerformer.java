@@ -6,6 +6,7 @@ import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public abstract class CalculationPerformer {
         String result = String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(arg1) / Float.parseFloat(arg2)
                 : Float.parseFloat(arg1) * Float.parseFloat(arg2));
 
-        return result.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
+        return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
 
     }
     private static void handleAll(World world, Action action) {

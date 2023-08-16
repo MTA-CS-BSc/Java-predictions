@@ -1,6 +1,6 @@
 package engine.simulation;
 
-import engine.consts.SimulationState;
+import helpers.SimulationState;
 import engine.logs.EngineLoggers;
 import engine.consts.TerminationReasons;
 import engine.modules.Utils;

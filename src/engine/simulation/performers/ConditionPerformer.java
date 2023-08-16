@@ -9,6 +9,7 @@ import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 import helpers.TypesUtils;
 
 import java.util.List;
@@ -47,12 +48,12 @@ public abstract class ConditionPerformer {
                             < Float.parseFloat(value);
                 break;
             case Operators.EQUALS:
-                if (value.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+                if (value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
                     value = value.split("\\.")[0];
 
                 return value.equals(property.getValue().getCurrentValue());
             case Operators.NOT_EQUALS:
-                if (value.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+                if (value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
                     value = value.split("\\.")[0];
 
                 return !value.equals(property.getValue().getCurrentValue());
