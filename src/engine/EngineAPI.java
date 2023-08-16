@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class EngineAPI {
+    protected int threadpoolCount;
     protected HistoryManager historyManager;
     public EngineAPI() {
         historyManager = new HistoryManager();
@@ -60,6 +61,7 @@ public class EngineAPI {
 
         if (PRDWorldValidators.validateWorld(prdWorld)) {
             setInitialXmlWorld(new World(prdWorld));
+            threadpoolCount = prdWorld.getPRDThreadCount();
             return true;
         }
 
