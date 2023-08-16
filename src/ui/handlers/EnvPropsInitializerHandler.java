@@ -46,7 +46,7 @@ public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
             api.setEnvironmentVariable(uuid, prop, val);
     }
     public boolean printVarsAndHandleSelectedPropChange(EngineAPI api, String uuid) {
-        System.out.println("Available env vars to set: ");
+        System.out.println("Available environment variables to set: ");
         int propsAmount = EnvPropsInitializerPrinter.printEnvironmentProps(api, uuid);
         int selection = ScanCycles.scanOption(scanner, propsAmount + 1);
 
@@ -61,5 +61,7 @@ public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
     }
     public void handlePropsSettings(EngineAPI api, String uuid) {
         while (printVarsAndHandleSelectedPropChange(api, uuid));
+
+        System.out.println("Set all requested variables. Environment variables that weren't set will be randomly assigned.");
     }
 }
