@@ -24,7 +24,7 @@ public abstract class ConditionValidators {
 
         if (Objects.isNull(property))
             throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] does not exist",
-                    action.getType(), action.getEntity(), action.getProperty()));
+                    action.getType(), condition.getEntity(), condition.getProperty()));
 
         if (Objects.isNull(action.getPRDThen()))
             throw new Exception(String.format("Action [%s]: Entity [%s]: No PRDThen tag found",
