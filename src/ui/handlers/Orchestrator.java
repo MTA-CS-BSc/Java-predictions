@@ -2,7 +2,6 @@ package ui.handlers;
 
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
-import helpers.CustomConsoleHandler;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
 import ui.printers.WorldDetailsPrinter;
@@ -29,14 +28,8 @@ public class Orchestrator {
         configureLoggers();
     }
     private void configureLoggers() {
-        UILoggers.ScannerLogger.setUseParentHandlers(false);
-        UILoggers.OrchestratorLogger.setUseParentHandlers(false);
-
-        UILoggers.ScannerLogger.setUseParentHandlers(false);
-        UILoggers.ScannerLogger.addHandler(new CustomConsoleHandler());
-
-        UILoggers.OrchestratorLogger.setUseParentHandlers(false);
-        UILoggers.OrchestratorLogger.addHandler(new CustomConsoleHandler());
+        UILoggers.formatLogger(UILoggers.ScannerLogger);
+        UILoggers.formatLogger(UILoggers.OrchestratorLogger);
     }
     public void start() throws Exception {
         int selectedOption = mainMenuHandler.selectionCycle();

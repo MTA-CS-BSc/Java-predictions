@@ -14,7 +14,6 @@ import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.Constants;
-import helpers.CustomConsoleHandler;
 import helpers.SimulationState;
 
 import javax.xml.bind.JAXBException;
@@ -34,11 +33,8 @@ public class EngineAPI {
         EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
         EngineLoggers.API_LOGGER.setLevel(Level.OFF);
 
-        EngineLoggers.XML_ERRORS_LOGGER.setUseParentHandlers(false);
-        EngineLoggers.XML_ERRORS_LOGGER.addHandler(new CustomConsoleHandler());
-
-        EngineLoggers.SIMULATION_ERRORS_LOGGER.setUseParentHandlers(false);
-        EngineLoggers.SIMULATION_ERRORS_LOGGER.addHandler(new CustomConsoleHandler());
+        EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
+        EngineLoggers.formatLogger(EngineLoggers.SIMULATION_ERRORS_LOGGER);
     }
     public boolean isHistoryEmpty() {
         return historyManager.isEmpty();
