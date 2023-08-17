@@ -1,5 +1,7 @@
 package dtos;
 
+import helpers.Constants;
+
 import java.util.Objects;
 
 public class PropertyDTO {
@@ -44,6 +46,11 @@ public class PropertyDTO {
     public boolean getIsRandom() { return isRandom; }
 
     public void setIsRandom(boolean value) { this.isRandom = value; }
+
+    public boolean hasNoRange() {
+        return Objects.isNull(getRange())
+                || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

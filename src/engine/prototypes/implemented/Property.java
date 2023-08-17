@@ -1,11 +1,11 @@
 package engine.prototypes.implemented;
 
 import engine.consts.PropTypes;
-import engine.consts.Restrictions;
 import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDValue;
+import helpers.Constants;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -55,6 +55,11 @@ public class Property implements Serializable {
 
     public void setStableTime(int stableTime) {
         this.stableTime = stableTime;
+    }
+
+    public boolean hasNoRange() {
+        return Objects.isNull(getRange())
+                || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
     }
 
     public Property(PRDProperty property) {
