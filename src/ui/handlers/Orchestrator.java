@@ -55,35 +55,38 @@ public class Orchestrator {
     }
     private void handleLoadWorldState() {
         if (api.loadHistory())
-            UILoggers.OrchestratorLogger.info("History loaded successfully");
+            System.out.println("History loaded successfully");
 
         else
-            UILoggers.OrchestratorLogger.info("Error loading history!");
+            System.out.println("Error loading history!");
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
         if (api.loadXml(xmlLoaderHandler.fileInputCycle()))
-            UILoggers.OrchestratorLogger.info("XML loaded successfully\n");
+            System.out.println("XML loaded successfully\n");
 
         else
-            UILoggers.OrchestratorLogger.info("XML was not loaded. History unchanged.\n");
+            System.out.println("XML was not loaded. History unchanged.\n");
     }
     private void handleSaveWorldState() {
         if (!api.isXmlLoaded()) {
-            UILoggers.OrchestratorLogger.info("Attempted to save world state but no XML file was loaded to the system");
+            System.out.println("Attempted to save world state but no XML file was loaded to the system");
             return;
         }
 
         else if (api.isHistoryEmpty()) {
-            UILoggers.OrchestratorLogger.info("Attempted to save world state but no simulations were made");
+            System.out.println("Attempted to save world state but no simulations were made");
             return;
         }
 
         if (!api.writeHistoryToFile())
             System.out.println("Error writing history file!");
+
+        else
+            System.out.println("History saved.");
     }
     private void handleRunSimulation() throws Exception {
         if (!api.isXmlLoaded()) {
-            UILoggers.OrchestratorLogger.info("Attempted to run simulation but no xml was loaded to the system!");
+            System.out.println("Attempted to run simulation but no xml was loaded to the system!");
             return;
         }
 
@@ -94,12 +97,12 @@ public class Orchestrator {
 
         api.runSimulation(currentSimulationUuid);
 
-        UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] has ended", currentSimulationUuid));
+        System.out.printf("Simulation [%s] has ended", currentSimulationUuid);
         currentSimulationUuid = "";
     }
     private void handleShowSimulationDetails() {
         if (!api.isXmlLoaded()) {
-            UILoggers.OrchestratorLogger.info("Attempted to show simulation details but no XML file was loaded to the system");
+            System.out.println("Attempted to show simulation details but no XML file was loaded to the system");
             return;
         }
 
@@ -108,12 +111,12 @@ public class Orchestrator {
     }
     private void handleShowPastSimulation() throws UUIDNotFoundException {
         if (!api.isXmlLoaded()) {
-            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no XML file was loaded to the system");
+            System.out.println("Attempted to show past simulation but no XML file was loaded to the system");
             return;
         }
 
         else if (api.isHistoryEmpty()) {
-            UILoggers.OrchestratorLogger.info("Attempted to show past simulation but no simulations were made");
+            System.out.println("Attempted to show past simulation but no simulations were made");
             return;
         }
 
