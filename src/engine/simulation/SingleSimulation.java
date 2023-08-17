@@ -6,7 +6,6 @@ import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.simulation.performers.ActionsPerformer;
 import helpers.SimulationState;
-import ui.logs.UILoggers;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -56,11 +55,8 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 } catch (Exception e) {
                     simulationState = SimulationState.ERROR;
 
-                    EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
-                    EngineLoggers.SIMULATION_LOGGER.info("Runtime error! Stopping...");
-
-                    UILoggers.OrchestratorLogger.info(e.getMessage());
-                    UILoggers.OrchestratorLogger.info("Runtime error! Stopping...");
+                    EngineLoggers.SIMULATION_ERRORS_LOGGER.info(e.getMessage());
+                    EngineLoggers.SIMULATION_ERRORS_LOGGER.info("Runtime error! Stopping...");
                 }
             });
         });
@@ -93,6 +89,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         setFinishWorldState(world);
     }
     public World getWorld() { return world; }
+    public SimulationState getSimulationState() { return simulationState; }
     @Override
     public String toString() {
         return "--------------------------------------\n" +

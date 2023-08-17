@@ -15,6 +15,7 @@ import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.Constants;
 import helpers.CustomConsoleHandler;
+import helpers.SimulationState;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -95,8 +96,13 @@ public class EngineAPI {
         return sm.getUUID();
     }
     public void runSimulation(String uuid) throws Exception {
-        if (!Objects.isNull(historyManager.getPastSimulation(uuid)))
+        if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
             historyManager.getPastSimulation(uuid).run();
+
+            //TODO: Check if it needs to be removed?
+            if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR)
+                historyManager.getPastSimulations().remove(uuid);
+        }
     }
     public SingleSimulationDTO getSimulationDetails() {
         return historyManager.getMockSimulationForDetails();
