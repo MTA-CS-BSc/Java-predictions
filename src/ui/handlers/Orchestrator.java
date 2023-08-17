@@ -58,10 +58,18 @@ public class Orchestrator {
             handleSaveWorldState();
     }
     private void handleLoadWorldState() {
-        UILoggers.OrchestratorLogger.info(!api.loadHistory() ? "Error loading history" : "History was loaded");
+        if (api.loadHistory())
+            UILoggers.OrchestratorLogger.info("History loaded successfully");
+
+        else
+            UILoggers.OrchestratorLogger.info("Error loading history!");
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
-        UILoggers.OrchestratorLogger.info(api.loadXml(xmlLoaderHandler.fileInputCycle()) ? "XML loaded successfully" : "XML was not loaded, history unchanged.");
+        if (api.loadXml(xmlLoaderHandler.fileInputCycle()))
+            UILoggers.OrchestratorLogger.info("XML loaded successfully\n");
+
+        else
+            UILoggers.OrchestratorLogger.info("XML was not loaded. History unchanged.\n");
     }
     private void handleSaveWorldState() {
         if (!api.isXmlLoaded()) {

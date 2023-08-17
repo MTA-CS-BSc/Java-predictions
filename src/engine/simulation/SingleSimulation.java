@@ -67,14 +67,18 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         long startTimeMillis = System.currentTimeMillis();
         simulationState = SimulationState.RUNNING;
 
-        while (isSimulationFinished(startTimeMillis).isEmpty()) {
+        while (isSimulationFinished(startTimeMillis).isEmpty()
+        && simulationState != SimulationState.ERROR) {
             ticks++;
             handleSingleTick();
             ActionsPerformer.updateStableTimeToAllProps(world);
         }
 
-        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
-                                            uuid, isSimulationFinished(startTimeMillis)));
+        if (simulationState != SimulationState.ERROR)
+            EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached", uuid, isSimulationFinished(startTimeMillis)));
+
+        else
+            EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to runtime error", uuid));
 
         setEndTime(new Date());
         setFinishWorldState(world);
