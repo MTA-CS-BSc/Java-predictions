@@ -4,6 +4,7 @@ import engine.consts.ConditionLogicalOperators;
 import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
 import engine.exceptions.EntityNotFoundException;
+import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
@@ -33,7 +34,7 @@ public abstract class ConditionPerformer {
 
         return getConditionResult(property, operator, value);
     }
-    private static boolean getConditionResult(Property property, String operator, String value) {
+    private static boolean getConditionResult(Property property, String operator, String value) throws InvalidTypeException {
         boolean isNumeric = TypesUtils.isDecimal(value) || TypesUtils.isFloat(value);
 
         switch (operator) {
@@ -41,12 +42,16 @@ public abstract class ConditionPerformer {
                 if (isNumeric)
                     return Float.parseFloat(property.getValue().getCurrentValue())
                             > Float.parseFloat(value);
-                break;
-            case Operators.LT:
+
+                else
+                    throw new InvalidTypeException("LT & BT are only for numeric values");
+                case Operators.LT:
                 if (isNumeric)
                     return Float.parseFloat(property.getValue().getCurrentValue())
                             < Float.parseFloat(value);
-                break;
+
+                else
+                    throw new InvalidTypeException("LT & BT are only for numeric values");
             case Operators.EQUALS:
                 if (value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
                     value = value.split("\\.")[0];
@@ -118,10 +123,22 @@ public abstract class ConditionPerformer {
                 " evaluating relevant actions...", action.getType(), action.getEntityName(), conditionResult));
 
         if (conditionResult)
-            thenActions.forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
+            thenActions.forEach(actToPerform -> {
+                try {
+                    ActionsPerformer.fireAction(world, actToPerform, on);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
         else
-            prdElse.getActions().forEach(actToPerform -> ActionsPerformer.fireAction(world, actToPerform, on));
+            prdElse.getActions().forEach(actToPerform -> {
+                try {
+                    ActionsPerformer.fireAction(world, actToPerform, on);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            });
     }
     public static void handle(World world, Action action, SingleEntity on) throws Exception {
         if (Objects.isNull(on))
