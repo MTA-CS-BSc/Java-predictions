@@ -10,7 +10,6 @@ import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
-import helpers.Constants;
 import helpers.TypesUtils;
 
 import java.util.List;
@@ -53,14 +52,10 @@ public abstract class ConditionPerformer {
                 else
                     throw new InvalidTypeException("LT & BT are only for numeric values");
             case Operators.EQUALS:
-                if (value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-                    value = value.split("\\.")[0];
-
+                value = TypesUtils.removeExtraZeroes(property, value);
                 return value.equals(property.getValue().getCurrentValue());
             case Operators.NOT_EQUALS:
-                if (value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-                    value = value.split("\\.")[0];
-
+                value = TypesUtils.removeExtraZeroes(property, value);
                 return !value.equals(property.getValue().getCurrentValue());
         }
 
