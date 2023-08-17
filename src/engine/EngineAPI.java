@@ -15,6 +15,7 @@ import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.Constants;
 import helpers.SimulationState;
+import helpers.TypesUtils;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -127,6 +128,8 @@ public class EngineAPI {
 
         if (!Objects.isNull(foundProp)) {
             foundProp.getValue().setRandomInitialize(false);
+
+            val = TypesUtils.removeExtraZeroes(foundProp, val);
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
         }
