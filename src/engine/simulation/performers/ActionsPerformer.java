@@ -1,12 +1,13 @@
 package engine.simulation.performers;
-import engine.consts.*;
+
+import engine.consts.ActionTypes;
+import engine.consts.PropTypes;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
-import helpers.Constants;
 import helpers.TypesUtils;
 
 import java.util.Objects;
@@ -69,10 +70,9 @@ public abstract class ActionsPerformer {
     }
     public static void setPropertyValue(String actionType, String entityName,
                                          Property property, String newValue) throws Exception {
-        if (newValue.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-            newValue = newValue.split("\\.")[0];
+        newValue = TypesUtils.removeExtraZeroes(property, newValue);
 
-        else if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
+        if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
             throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal and therefore is not set",
                     actionType, entityName, property.getName(), newValue));
 
