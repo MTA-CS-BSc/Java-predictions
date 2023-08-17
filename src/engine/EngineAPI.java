@@ -37,6 +37,9 @@ public class EngineAPI {
 
         EngineLoggers.XML_ERRORS_LOGGER.setUseParentHandlers(false);
         EngineLoggers.XML_ERRORS_LOGGER.addHandler(new CustomConsoleHandler());
+
+        EngineLoggers.SIMULATION_ERRORS_LOGGER.setUseParentHandlers(false);
+        EngineLoggers.SIMULATION_ERRORS_LOGGER.addHandler(new CustomConsoleHandler());
     }
     public boolean isHistoryEmpty() {
         return historyManager.isEmpty();
