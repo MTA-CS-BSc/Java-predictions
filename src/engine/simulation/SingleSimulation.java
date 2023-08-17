@@ -1,14 +1,18 @@
 package engine.simulation;
 
-import helpers.SimulationState;
-import engine.logs.EngineLoggers;
 import engine.consts.TerminationReasons;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.simulation.performers.ActionsPerformer;
+import helpers.SimulationState;
+import ui.logs.UILoggers;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class SingleSimulation extends SingleSimulationLog implements Serializable {
     protected SimulationState simulationState;
@@ -51,7 +55,12 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                     ActionsPerformer.fireAction(world, action, null);
                 } catch (Exception e) {
                     simulationState = SimulationState.ERROR;
-                    //TODO: Add log to user
+
+                    EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
+                    EngineLoggers.SIMULATION_LOGGER.info("Runtime error! Stopping...");
+
+                    UILoggers.OrchestratorLogger.info(e.getMessage());
+                    UILoggers.OrchestratorLogger.info("Runtime error! Stopping...");
                 }
             });
         });
