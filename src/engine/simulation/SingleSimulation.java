@@ -46,7 +46,14 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
         rulesToApply.forEach((ruleName, rule) -> {
             Actions actionsToPerform = rule.getActions();
-            actionsToPerform.getActions().forEach(action -> ActionsPerformer.fireAction(world, action, null));
+            actionsToPerform.getActions().forEach(action -> {
+                try {
+                    ActionsPerformer.fireAction(world, action, null);
+                } catch (Exception e) {
+                    simulationState = SimulationState.ERROR;
+                    //TODO: Add log to user
+                }
+            });
         });
     }
     public void run() throws Exception {

@@ -4,5 +4,6 @@ public enum SimulationState {
     CREATED,
     RUNNING,
     STOPPED,
-    FINISHED
+    FINISHED,
+    ERROR
 }
