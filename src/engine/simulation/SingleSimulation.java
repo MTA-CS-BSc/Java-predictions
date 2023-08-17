@@ -1,14 +1,17 @@
 package engine.simulation;
 
-import engine.consts.SimulationState;
-import engine.logs.EngineLoggers;
 import engine.consts.TerminationReasons;
+import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.simulation.performers.ActionsPerformer;
+import helpers.SimulationState;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 public class SingleSimulation extends SingleSimulationLog implements Serializable {
     protected SimulationState simulationState;
@@ -46,7 +49,16 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
         rulesToApply.forEach((ruleName, rule) -> {
             Actions actionsToPerform = rule.getActions();
-            actionsToPerform.getActions().forEach(action -> ActionsPerformer.fireAction(world, action, null));
+            actionsToPerform.getActions().forEach(action -> {
+                try {
+                    ActionsPerformer.fireAction(world, action, null);
+                } catch (Exception e) {
+                    simulationState = SimulationState.ERROR;
+
+                    EngineLoggers.SIMULATION_ERRORS_LOGGER.info(e.getMessage());
+                    EngineLoggers.SIMULATION_ERRORS_LOGGER.info("Runtime error! Stopping...");
+                }
+            });
         });
     }
     public void run() throws Exception {
@@ -60,19 +72,24 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         long startTimeMillis = System.currentTimeMillis();
         simulationState = SimulationState.RUNNING;
 
-        while (isSimulationFinished(startTimeMillis).isEmpty()) {
+        while (isSimulationFinished(startTimeMillis).isEmpty()
+        && simulationState != SimulationState.ERROR) {
             ticks++;
             handleSingleTick();
             ActionsPerformer.updateStableTimeToAllProps(world);
         }
 
-        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached",
-                                            uuid, isSimulationFinished(startTimeMillis)));
+        if (simulationState != SimulationState.ERROR)
+            EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached", uuid, isSimulationFinished(startTimeMillis)));
+
+        else
+            EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to runtime error", uuid));
 
         setEndTime(new Date());
         setFinishWorldState(world);
     }
     public World getWorld() { return world; }
+    public SimulationState getSimulationState() { return simulationState; }
     @Override
     public String toString() {
         return "--------------------------------------\n" +

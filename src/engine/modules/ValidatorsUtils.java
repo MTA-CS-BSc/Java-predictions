@@ -3,6 +3,7 @@ package engine.modules;
 import engine.consts.PropTypes;
 import engine.consts.SystemFunctions;
 import engine.prototypes.jaxb.*;
+import helpers.Constants;
 import helpers.TypesUtils;
 
 import java.util.Objects;
@@ -53,7 +54,7 @@ public abstract class ValidatorsUtils {
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());
 
             else if (TypesUtils.isFloat(expression)) {
-                if (!expression.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+                if (!expression.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
                     return property.getType().equals(PropTypes.FLOAT);
 
                 return PropTypes.NUMERIC_PROPS.contains(property.getType());

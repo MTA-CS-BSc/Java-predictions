@@ -6,6 +6,7 @@ import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 
 import java.util.Objects;
 
@@ -21,10 +22,13 @@ public abstract class CalculationPerformer {
             throw new EmptyExpressionException(String.format("Action [%s]: Type [%s]: Arg1 or Arg2 are not valid expressions",
                     action.getType(), Objects.isNull(multiply) ? "Divide" : "Multiply"));
 
+        if (!Objects.isNull(divide) && Float.parseFloat(arg2) == 0)
+            throw new InvalidTypeException("Action [%s]: Can't divide by zero!");
+
         String result = String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(arg1) / Float.parseFloat(arg2)
                 : Float.parseFloat(arg1) * Float.parseFloat(arg2));
 
-        return result.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
+        return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
 
     }
     private static void handleAll(World world, Action action) {

@@ -1,13 +1,13 @@
 package engine.history;
 
 import dtos.Mappers;
-import engine.consts.Restrictions;
+import dtos.SingleSimulationDTO;
 import engine.exceptions.UUIDNotFoundException;
 import engine.logs.EngineLoggers;
-import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.Properties;
+import engine.prototypes.implemented.*;
 import engine.simulation.SingleSimulation;
-import dtos.SingleSimulationDTO;
+import helpers.Constants;
 
 import java.io.Serializable;
 import java.nio.file.Files;
@@ -99,7 +99,7 @@ public class HistoryManager implements Serializable {
         initialWorld = _initialXmlWorld;
 
         try {
-            Files.delete(Paths.get(Restrictions.HISTORY_FILE_PATH));
+            Files.delete(Paths.get(Constants.HISTORY_FILE_PATH));
         } catch (Exception ignored) { }
     }
     public boolean isXmlLoaded() {

@@ -7,6 +7,7 @@ import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 
 import java.util.Objects;
 
@@ -14,7 +15,7 @@ public abstract class DecrementPerformer {
     private static String getDecrementResult(String propValue, String by) {
         String result = String.valueOf(Float.parseFloat(propValue) - Float.parseFloat(by));
 
-        return result.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
+        return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
     }
     private static void handleAll(World world, Action action) {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());

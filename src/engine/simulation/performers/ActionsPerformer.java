@@ -6,42 +6,37 @@ import engine.exceptions.ValueNotInRangeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 import helpers.TypesUtils;
 
 import java.util.Objects;
 
 public abstract class ActionsPerformer {
-    public static void fireAction(World world, Action action, SingleEntity on) {
+    public static void fireAction(World world, Action action, SingleEntity on) throws Exception {
         if (!validateEntityExists(world, action))
-            return;
+            return; // Might be dead already
 
         String type = action.getType();
 
-        try {
-            switch (type) {
-                case ActionTypes.INCREASE:
-                    IncrementPerformer.handle(world, action, on);
-                    break;
-                case ActionTypes.DECREASE:
-                    DecrementPerformer.handle(world, action, on);
-                    break;
-                case ActionTypes.CALCULATION:
-                    CalculationPerformer.handle(world, action, on);
-                    break;
-                case ActionTypes.SET:
-                    SetPerformer.handle(world, action, on);
-                    break;
-                case ActionTypes.KILL:
-                    KillPerformer.handle(world, action, on);
-                    break;
-                case ActionTypes.CONDITION:
-                    ConditionPerformer.handle(world, action, on);
-                    break;
-            }
-        }
-
-        catch (Exception e) {
-            EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
+        switch (type) {
+            case ActionTypes.INCREASE:
+                IncrementPerformer.handle(world, action, on);
+                break;
+            case ActionTypes.DECREASE:
+                DecrementPerformer.handle(world, action, on);
+                break;
+            case ActionTypes.CALCULATION:
+                CalculationPerformer.handle(world, action, on);
+                break;
+            case ActionTypes.SET:
+                SetPerformer.handle(world, action, on);
+                break;
+            case ActionTypes.KILL:
+                KillPerformer.handle(world, action, on);
+                break;
+            case ActionTypes.CONDITION:
+                ConditionPerformer.handle(world, action, on);
+                break;
         }
     }
 
@@ -74,7 +69,7 @@ public abstract class ActionsPerformer {
     }
     public static void setPropertyValue(String actionType, String entityName,
                                          Property property, String newValue) throws Exception {
-        if (newValue.matches(Utils.REGEX_ONLY_ZEROES_AFTER_DOT))
+        if (newValue.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
             newValue = newValue.split("\\.")[0];
 
         else if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))

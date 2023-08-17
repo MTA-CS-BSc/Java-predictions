@@ -1,8 +1,9 @@
-package engine.consts;
+package helpers;
 
 public enum SimulationState {
     CREATED,
     RUNNING,
     STOPPED,
-    FINISHED
+    FINISHED,
+    ERROR
 }

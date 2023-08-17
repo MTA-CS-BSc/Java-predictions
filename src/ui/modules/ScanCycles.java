@@ -1,6 +1,6 @@
 package ui.modules;
 
-import engine.consts.BoolPropValues;
+import helpers.BoolPropValues;
 import helpers.TypesUtils;
 import ui.consts.Constants;
 import ui.logs.UILoggers;
