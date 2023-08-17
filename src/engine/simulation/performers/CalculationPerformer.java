@@ -22,6 +22,9 @@ public abstract class CalculationPerformer {
             throw new EmptyExpressionException(String.format("Action [%s]: Type [%s]: Arg1 or Arg2 are not valid expressions",
                     action.getType(), Objects.isNull(multiply) ? "Divide" : "Multiply"));
 
+        if (!Objects.isNull(divide) && Float.parseFloat(arg2) == 0)
+            throw new InvalidTypeException("Action [%s]: Can't divide by zero!");
+
         String result = String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(arg1) / Float.parseFloat(arg2)
                 : Float.parseFloat(arg1) * Float.parseFloat(arg2));
 
