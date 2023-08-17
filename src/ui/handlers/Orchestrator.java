@@ -32,7 +32,10 @@ public class Orchestrator {
         UILoggers.ScannerLogger.setUseParentHandlers(false);
         UILoggers.OrchestratorLogger.setUseParentHandlers(false);
 
+        UILoggers.ScannerLogger.setUseParentHandlers(false);
         UILoggers.ScannerLogger.addHandler(new CustomConsoleHandler());
+
+        UILoggers.OrchestratorLogger.setUseParentHandlers(false);
         UILoggers.OrchestratorLogger.addHandler(new CustomConsoleHandler());
     }
     public void start() throws Exception {
