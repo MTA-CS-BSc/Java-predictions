@@ -2,6 +2,7 @@ package engine.simulation.performers;
 
 import engine.consts.ActionTypes;
 import engine.consts.PropTypes;
+import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
 import engine.exceptions.ValueNotInRangeException;
@@ -41,14 +42,12 @@ public abstract class ActionsPerformer {
         }
     }
 
-    private static boolean validateEntityExists(World world, Action action) {
+    private static boolean validateEntityExists(World world, Action action) throws EntityNotFoundException {
         Entity entity = Utils.findEntityByName(world, action.getEntityName());
 
-        if (Objects.isNull(entity)) {
-            EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] not found, skipping action...",
+        if (Objects.isNull(entity))
+            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] not found!",
                     action.getType(), action.getEntityName()));
-            return false;
-        }
 
         else if (entity.getPopulation() == 0) {
             EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s] has 0 population, skipping action...",
