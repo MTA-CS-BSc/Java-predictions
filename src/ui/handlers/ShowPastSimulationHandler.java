@@ -14,11 +14,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
     public ShowPastSimulationHandler(EngineAPI api) { super(api); }
     private void showSelectedSimulationDetails(String uuid) throws UUIDNotFoundException {
         ShowPastSimulationPrinter.printOutputOptions();
-        int selected = ScanCycles.scanOption(scanner, 2);
+        int selected = ScanCycles.scanOption(scanner, Constants.STATISTICS_OPTIONS);
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printOutputOptions();
-            selected = ScanCycles.scanOption(scanner, 2);
+            selected = ScanCycles.scanOption(scanner, Constants.STATISTICS_OPTIONS);
         }
 
         if (selected == PastSimulationOutputOptions.ENTITIES_AMOUNT_BEFORE_AND_AFTER_SIMULATION.ordinal() + 1)
