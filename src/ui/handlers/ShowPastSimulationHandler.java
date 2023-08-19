@@ -64,11 +64,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         System.out.println("---------------------------------");
 
         ShowPastSimulationPrinter.printAvailableSimulations(api);
-        int selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size() + 1);
+        int selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size());
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printAvailableSimulations(api);
-            selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size() + 1);
+            selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size());
         }
 
         showSelectedSimulationDetails(api.findSelectedSimulationDTO(selected).getUuid());
