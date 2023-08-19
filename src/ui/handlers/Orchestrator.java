@@ -56,20 +56,16 @@ public class Orchestrator {
     private void handleLoadWorldState() {
         String fullPath = filePathsHandler.filePathToReadCycle(null);
 
-        if (Objects.isNull(fullPath) || fullPath.isEmpty()) {
-            System.out.println("Invalid path!");
+        if (Objects.isNull(fullPath) || fullPath.isEmpty())
             return;
-        }
 
         System.out.println(api.loadHistory(fullPath) ? "History was loaded." : "Error loading history!");
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
         String fullPath = filePathsHandler.filePathToReadCycle(".xml");
 
-        if (Objects.isNull(fullPath) || fullPath.isEmpty()) {
-            System.out.println("Invalid path!");
+        if (Objects.isNull(fullPath) || fullPath.isEmpty())
             return;
-        }
 
         System.out.println(api.loadXml(fullPath) ? "XML loaded successfully\n" :
                 "XML was not loaded. History unchanged.\n");
@@ -87,10 +83,8 @@ public class Orchestrator {
 
         String fullPath = filePathsHandler.filePathToWriteCycle();
 
-        if (Objects.isNull(fullPath) || fullPath.isEmpty()) {
-            System.out.println("Invalid path!");
+        if (Objects.isNull(fullPath) || fullPath.isEmpty())
             return;
-        }
 
         System.out.println(api.writeHistoryToFile(fullPath) ? "History saved." : "Error writing history file!");
     }
