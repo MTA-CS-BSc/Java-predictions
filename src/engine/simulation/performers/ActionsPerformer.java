@@ -38,7 +38,6 @@ public abstract class ActionsPerformer {
                 break;
         }
     }
-
     private static boolean validateEntityExists(World world, Action action) throws EntityNotFoundException {
         Entity entity = Utils.findEntityByName(world, action.getEntityName());
 
