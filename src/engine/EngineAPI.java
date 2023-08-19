@@ -7,6 +7,7 @@ import dtos.SingleSimulationDTO;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
+import engine.modules.Utils;
 import engine.parsers.XmlParser;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
@@ -14,7 +15,6 @@ import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.SimulationState;
-import helpers.TypesUtils;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -127,7 +127,7 @@ public class EngineAPI {
         if (!Objects.isNull(foundProp)) {
             foundProp.getValue().setRandomInitialize(false);
 
-            val = TypesUtils.removeExtraZeroes(foundProp, val);
+            val = Utils.removeExtraZeroes(foundProp, val);
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
         }

@@ -3,6 +3,7 @@ package engine.modules;
 import dtos.PropertyDTO;
 import engine.consts.PropTypes;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 
 import java.util.Map;
 import java.util.Objects;
@@ -70,5 +71,12 @@ public abstract class Utils {
                         rule -> rule
                 ));
 
+    }
+    public static String removeExtraZeroes(Property property, String value) {
+        if (PropTypes.NUMERIC_PROPS.contains(property.getType())
+                && value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
+            return value.split("\\.")[0];
+
+        return value;
     }
 }

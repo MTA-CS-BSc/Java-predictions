@@ -77,7 +77,7 @@ public class Property implements Serializable {
             Utils.setPropRandomInit(this, range);
 
         else
-            value.setInit(TypesUtils.removeExtraZeroes(this, property.getPRDValue().getInit()));
+            value.setInit(Utils.removeExtraZeroes(this, property.getPRDValue().getInit()));
 
         value.setCurrentValue(value.getInit());
     }

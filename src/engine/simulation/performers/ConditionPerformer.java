@@ -51,10 +51,10 @@ public abstract class ConditionPerformer {
                 else
                     throw new InvalidTypeException("LT & BT are only for numeric values");
             case Operators.EQUALS:
-                value = TypesUtils.removeExtraZeroes(property, value);
+                value = Utils.removeExtraZeroes(property, value);
                 return value.equalsIgnoreCase(property.getValue().getCurrentValue());
             case Operators.NOT_EQUALS:
-                value = TypesUtils.removeExtraZeroes(property, value);
+                value = Utils.removeExtraZeroes(property, value);
                 return !value.equalsIgnoreCase(property.getValue().getCurrentValue());
         }
 

@@ -1,8 +1,5 @@
 package helpers;
 
-import engine.consts.PropTypes;
-import engine.prototypes.implemented.Property;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -38,13 +35,5 @@ public class TypesUtils {
     }
     public static boolean isBoolean(String str) {
         return str.equalsIgnoreCase(BoolPropValues.TRUE) || str.equalsIgnoreCase(BoolPropValues.FALSE);
-    }
-
-    public static String removeExtraZeroes(Property property, String value) {
-        if (PropTypes.NUMERIC_PROPS.contains(property.getType())
-                && value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-            return value.split("\\.")[0];
-
-        return value;
     }
 }
