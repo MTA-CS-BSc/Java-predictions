@@ -97,7 +97,7 @@ public class Orchestrator {
 
         api.runSimulation(currentSimulationUuid);
 
-        System.out.printf("Simulation [%s] has ended", currentSimulationUuid);
+        System.out.printf("Simulation [%s] has ended%n", currentSimulationUuid);
         currentSimulationUuid = "";
     }
     private void handleShowSimulationDetails() {
