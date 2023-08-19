@@ -13,7 +13,6 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
-import helpers.Constants;
 import helpers.SimulationState;
 import helpers.TypesUtils;
 
@@ -40,9 +39,9 @@ public class EngineAPI {
     public boolean isHistoryEmpty() {
         return historyManager.isEmpty();
     }
-    public boolean writeHistoryToFile() {
+    public boolean writeHistoryToFile(String filePath) {
         try {
-            FileOutputStream f = new FileOutputStream(Constants.HISTORY_FILE_PATH);
+            FileOutputStream f = new FileOutputStream(filePath);
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(historyManager);
             o.close();
@@ -54,9 +53,9 @@ public class EngineAPI {
             return false;
         }
     }
-    public boolean loadHistory() {
+    public boolean loadHistory(String filePath) {
         try {
-            FileInputStream fi = new FileInputStream(Constants.HISTORY_FILE_PATH);
+            FileInputStream fi = new FileInputStream(filePath);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
             EngineLoggers.API_LOGGER.info("History was loaded successfully");
