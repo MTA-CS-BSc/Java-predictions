@@ -99,7 +99,6 @@ public class EngineAPI {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
             historyManager.getPastSimulation(uuid).run();
 
-            //TODO: Check if it needs to be removed?
             if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR)
                 historyManager.getPastSimulations().remove(uuid);
         }
