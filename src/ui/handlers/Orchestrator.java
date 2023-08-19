@@ -13,16 +13,16 @@ import java.util.Objects;
 public class Orchestrator {
     String currentSimulationUuid;
     protected EngineAPI api;
-    protected XmlLoaderHandler xmlLoaderHandler;
     protected MainMenuHandler mainMenuHandler;
     protected EnvPropsInitializerHandler environmentPropsInitializer;
     protected ShowPastSimulationHandler showPastSimulationHandler;
+    protected FilePathsHandler filePathsHandler;
 
     public Orchestrator() {
         api = new EngineAPI();
-        xmlLoaderHandler = new XmlLoaderHandler();
         mainMenuHandler = new MainMenuHandler();
         environmentPropsInitializer = new EnvPropsInitializerHandler();
+        filePathsHandler = new FilePathsHandler();
         showPastSimulationHandler = new ShowPastSimulationHandler(api);
 
         configureLoggers();
@@ -54,15 +54,15 @@ public class Orchestrator {
             handleSaveWorldState();
     }
     private void handleLoadWorldState() {
-        if (api.loadHistory())
+        if (api.loadHistory(filePathsHandler.filePathToReadCycle(null)))
             System.out.println("History loaded successfully");
 
         else
             System.out.println("Error loading history!");
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
-        if (api.loadXml(xmlLoaderHandler.fileInputCycle()))
-            System.out.println("XML loaded successfully\n");
+        if (api.loadXml(filePathsHandler.filePathToReadCycle(".xml")))
+            System.out.println("XML loaded sucessfully\n");
 
         else
             System.out.println("XML was not loaded. History unchanged.\n");
@@ -78,7 +78,7 @@ public class Orchestrator {
             return;
         }
 
-        if (!api.writeHistoryToFile())
+        if (!api.writeHistoryToFile(filePathsHandler.filePathToWriteCycle()))
             System.out.println("Error writing history file!");
 
         else
