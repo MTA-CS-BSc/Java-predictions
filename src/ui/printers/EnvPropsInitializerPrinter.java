@@ -14,7 +14,7 @@ public abstract class EnvPropsInitializerPrinter {
 
         props.forEach(property -> {
             if (!Objects.isNull(property.getRange()) && !property.hasNoRange())
-                System.out.printf("%d. %s %s, range: [%f, %f]%n", index.getAndIncrement(),
+                System.out.printf("%d. %s %s, range: [%.2f, %.2f]%n", index.getAndIncrement(),
                         property.getType(), property.getName(), property.getRange().getFrom(), property.getRange().getTo());
 
             else
