@@ -41,7 +41,6 @@ public abstract class ConditionPerformer {
                 if (isNumeric)
                     return Float.parseFloat(property.getValue().getCurrentValue())
                             > Float.parseFloat(value);
-//TODO: Add to user log
                 else
                     throw new InvalidTypeException("LT & BT are only for numeric values");
                 case Operators.LT:
@@ -53,10 +52,10 @@ public abstract class ConditionPerformer {
                     throw new InvalidTypeException("LT & BT are only for numeric values");
             case Operators.EQUALS:
                 value = TypesUtils.removeExtraZeroes(property, value);
-                return value.equals(property.getValue().getCurrentValue());
+                return value.equalsIgnoreCase(property.getValue().getCurrentValue());
             case Operators.NOT_EQUALS:
                 value = TypesUtils.removeExtraZeroes(property, value);
-                return !value.equals(property.getValue().getCurrentValue());
+                return !value.equalsIgnoreCase(property.getValue().getCurrentValue());
         }
 
         return true;
