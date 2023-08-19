@@ -5,7 +5,6 @@ import engine.consts.PropTypes;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
-import engine.exceptions.ValueNotInRangeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
@@ -18,9 +17,7 @@ public abstract class ActionsPerformer {
         if (!validateEntityExists(world, action))
             return; // Might be dead already
 
-        String type = action.getType();
-
-        switch (type) {
+        switch (action.getType()) {
             case ActionTypes.INCREASE:
                 IncrementPerformer.handle(world, action, on);
                 break;
@@ -41,7 +38,6 @@ public abstract class ActionsPerformer {
                 break;
         }
     }
-
     private static boolean validateEntityExists(World world, Action action) throws EntityNotFoundException {
         Entity entity = Utils.findEntityByName(world, action.getEntityName());
 
@@ -75,10 +71,13 @@ public abstract class ActionsPerformer {
             throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal and therefore is not set",
                     actionType, entityName, property.getName(), newValue));
 
-        if (!Utils.validateValueInRange(property, newValue))
-            throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
+        if (!Utils.validateValueInRange(property, newValue)) {
+            EngineLoggers.SIMULATION_LOGGER.info(ErrorMessageFormatter.formatActionErrorMessage(
                     actionType, entityName, property.getName(),
                     String.format("value [%s] not in range and therefore is not set", newValue)));
+
+            return;
+        }
 
         property.getValue().setCurrentValue(newValue);
         property.setStableTime(0);

@@ -1,8 +1,10 @@
 package engine.simulation.performers;
 
 import engine.consts.ActionTypes;
-import engine.exceptions.*;
-import engine.logs.EngineLoggers;
+import engine.exceptions.EmptyExpressionException;
+import engine.exceptions.ErrorMessageFormatter;
+import engine.exceptions.InvalidTypeException;
+import engine.exceptions.PropertyNotFoundException;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
@@ -31,35 +33,25 @@ public abstract class CalculationPerformer {
         return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
 
     }
-    private static void handleAll(World world, Action action) {
+    private static void handleAll(World world, Action action) throws Exception {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
-        mainEntity.getSingleEntities().forEach(entity -> {
-            try {
-                handleSingle(world, action, entity);
-            } catch (Exception e) {
-                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
-            }
-        });
+        for (SingleEntity entity : mainEntity.getSingleEntities())
+            handleSingle(world, action, entity);
     }
     private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
         Property resultProperty = Utils.findPropertyByName(on, action.getResultPropertyName());
         String newValue = getCalculationResult(world, action, on);
         ActionsPerformer.setPropertyValue(ActionTypes.CALCULATION, action.getEntityName(), resultProperty, newValue);
     }
-    private static void performAction(World world, Action action, SingleEntity on) {
+    private static void performAction(World world, Action action, SingleEntity on) throws Exception {
         if (Objects.isNull(on))
             handleAll(world, action);
 
-        else {
-            try {
-                handleSingle(world, action, on);
-            } catch (Exception e) {
-                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
-            }
-        }
+        else
+            handleSingle(world, action, on);
     }
-    public static void handle(World world, Action action, SingleEntity on) throws PropertyNotFoundException {
+    public static void handle(World world, Action action, SingleEntity on) throws Exception {
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getResultPropertyName())))
             throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));
 

@@ -96,16 +96,11 @@ public abstract class ConditionPerformer {
 
         return evaluateMultipleCondition(world, action, condition, on);
     }
-    private static void handleAll(World world, Action action) {
+    private static void handleAll(World world, Action action) throws Exception {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
-        mainEntity.getSingleEntities().forEach(on -> {
-            try {
-                handleSingle(world, action, on);
-            } catch (Exception e) {
-                EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
-            }
-        });
+        for (SingleEntity entity : mainEntity.getSingleEntities())
+            handleSingle(world, action, entity);
     }
     private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
         Condition condition = action.getCondition();
@@ -117,22 +112,12 @@ public abstract class ConditionPerformer {
                 " evaluating relevant actions...", action.getType(), action.getEntityName(), conditionResult));
 
         if (conditionResult)
-            thenActions.forEach(actToPerform -> {
-                try {
-                    ActionsPerformer.fireAction(world, actToPerform, on);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+            for (Action actToPerform : thenActions)
+                ActionsPerformer.fireAction(world, actToPerform, on);
 
-        else
-            prdElse.getActions().forEach(actToPerform -> {
-                try {
-                    ActionsPerformer.fireAction(world, actToPerform, on);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            });
+        else if (!Objects.isNull(prdElse))
+            for (Action actToPerform : prdElse.getActions())
+                ActionsPerformer.fireAction(world, actToPerform, on);
     }
     public static void handle(World world, Action action, SingleEntity on) throws Exception {
         if (Objects.isNull(on))
