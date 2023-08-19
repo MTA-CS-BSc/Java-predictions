@@ -59,6 +59,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
 
         return api.findSelectedEntityDTO(uuid, selection);
     }
+
     public void handle() throws UUIDNotFoundException {
         System.out.println("Available past simulations: ");
         System.out.println("---------------------------------");
