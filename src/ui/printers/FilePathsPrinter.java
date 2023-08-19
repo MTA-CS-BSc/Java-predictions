@@ -7,12 +7,12 @@ public class FilePathsPrinter {
     }
 
     public static void printDirectory() {
-        System.out.println("Please the directory you'd like to write to:");
+        System.out.println("Please enter the directory you'd like to write to:");
         System.out.println("---------------------------------------------");
     }
 
     public static void printFileName() {
-        System.out.println("Please the file name and extension: ");
+        System.out.println("Please enter the file name and extension: ");
         System.out.println("---------------------------------------------");
     }
 }
