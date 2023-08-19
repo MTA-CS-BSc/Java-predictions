@@ -7,11 +7,8 @@ import engine.logs.EngineLoggers;
 import engine.prototypes.implemented.Properties;
 import engine.prototypes.implemented.*;
 import engine.simulation.SingleSimulation;
-import helpers.Constants;
 
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -97,10 +94,6 @@ public class HistoryManager implements Serializable {
     public void setInitialXmlWorld(World _initialXmlWorld) {
         clearHistory();
         initialWorld = _initialXmlWorld;
-
-        try {
-            Files.delete(Paths.get(Constants.HISTORY_FILE_PATH));
-        } catch (Exception ignored) { }
     }
     public boolean isXmlLoaded() {
         return !Objects.isNull(initialWorld);

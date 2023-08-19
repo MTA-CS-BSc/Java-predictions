@@ -72,8 +72,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         long startTimeMillis = System.currentTimeMillis();
         simulationState = SimulationState.RUNNING;
 
-        while (isSimulationFinished(startTimeMillis).isEmpty()
-        && simulationState != SimulationState.ERROR) {
+        while (isSimulationFinished(startTimeMillis).isEmpty() && simulationState != SimulationState.ERROR) {
             ticks++;
             handleSingleTick();
             ActionsPerformer.updateStableTimeToAllProps(world);

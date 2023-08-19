@@ -14,11 +14,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
     public ShowPastSimulationHandler(EngineAPI api) { super(api); }
     private void showSelectedSimulationDetails(String uuid) throws UUIDNotFoundException {
         ShowPastSimulationPrinter.printOutputOptions();
-        int selected = ScanCycles.scanOption(scanner, 2);
+        int selected = ScanCycles.scanOption(scanner, Constants.STATISTICS_OPTIONS);
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printOutputOptions();
-            selected = ScanCycles.scanOption(scanner, 2);
+            selected = ScanCycles.scanOption(scanner, Constants.STATISTICS_OPTIONS);
         }
 
         if (selected == PastSimulationOutputOptions.ENTITIES_AMOUNT_BEFORE_AND_AFTER_SIMULATION.ordinal() + 1)
@@ -64,11 +64,11 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         System.out.println("---------------------------------");
 
         ShowPastSimulationPrinter.printAvailableSimulations(api);
-        int selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size() + 1);
+        int selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size());
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printAvailableSimulations(api);
-            selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size() + 1);
+            selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size());
         }
 
         showSelectedSimulationDetails(api.findSelectedSimulationDTO(selected).getUuid());

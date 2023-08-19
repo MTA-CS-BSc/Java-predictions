@@ -1,7 +1,6 @@
 package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDValue;
-import helpers.Constants;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -41,9 +40,6 @@ public class Value implements Serializable {
 
     public void setRandomInitialize(boolean value) { isRandomInitialize = value; }
     public void setInit(String value) {
-        if (!value.isEmpty() && value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-            value = value.split("\\.")[0];
-
         init = value;
     }
 

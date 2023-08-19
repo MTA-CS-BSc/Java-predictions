@@ -7,14 +7,13 @@ import dtos.SingleSimulationDTO;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
+import engine.modules.Utils;
 import engine.parsers.XmlParser;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
-import helpers.Constants;
-import helpers.CustomConsoleHandler;
 import helpers.SimulationState;
 
 import javax.xml.bind.JAXBException;
@@ -35,18 +34,15 @@ public class EngineAPI {
         EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
         EngineLoggers.API_LOGGER.setLevel(Level.OFF);
 
-        EngineLoggers.XML_ERRORS_LOGGER.setUseParentHandlers(false);
-        EngineLoggers.XML_ERRORS_LOGGER.addHandler(new CustomConsoleHandler());
-
-        EngineLoggers.SIMULATION_ERRORS_LOGGER.setUseParentHandlers(false);
-        EngineLoggers.SIMULATION_ERRORS_LOGGER.addHandler(new CustomConsoleHandler());
+        EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
+        EngineLoggers.formatLogger(EngineLoggers.SIMULATION_ERRORS_LOGGER);
     }
     public boolean isHistoryEmpty() {
         return historyManager.isEmpty();
     }
-    public boolean writeHistoryToFile() {
+    public boolean writeHistoryToFile(String filePath) {
         try {
-            FileOutputStream f = new FileOutputStream(Constants.HISTORY_FILE_PATH);
+            FileOutputStream f = new FileOutputStream(filePath);
             ObjectOutputStream o = new ObjectOutputStream(f);
             o.writeObject(historyManager);
             o.close();
@@ -58,9 +54,9 @@ public class EngineAPI {
             return false;
         }
     }
-    public boolean loadHistory() {
+    public boolean loadHistory(String filePath) {
         try {
-            FileInputStream fi = new FileInputStream(Constants.HISTORY_FILE_PATH);
+            FileInputStream fi = new FileInputStream(filePath);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
             EngineLoggers.API_LOGGER.info("History was loaded successfully");
@@ -104,7 +100,6 @@ public class EngineAPI {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
             historyManager.getPastSimulation(uuid).run();
 
-            //TODO: Check if it needs to be removed?
             if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR)
                 historyManager.getPastSimulations().remove(uuid);
         }
@@ -133,6 +128,8 @@ public class EngineAPI {
 
         if (!Objects.isNull(foundProp)) {
             foundProp.getValue().setRandomInitialize(false);
+
+            val = Utils.removeExtraZeroes(foundProp, val);
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
         }

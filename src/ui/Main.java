@@ -1,7 +1,6 @@
 package ui;
 
 import ui.handlers.Orchestrator;
-import ui.logs.UILoggers;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,7 +11,7 @@ public class Main {
         }
 
         catch (Exception e) {
-            UILoggers.OrchestratorLogger.info(e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 }

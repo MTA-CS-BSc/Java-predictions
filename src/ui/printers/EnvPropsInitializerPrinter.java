@@ -1,9 +1,10 @@
 package ui.printers;
 
-import engine.EngineAPI;
 import dtos.PropertyDTO;
+import engine.EngineAPI;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class EnvPropsInitializerPrinter {
@@ -12,8 +13,12 @@ public abstract class EnvPropsInitializerPrinter {
         List<PropertyDTO> props = api.getEnvironmentProperties(uuid);
 
         props.forEach(property -> {
-            System.out.printf("%d. %s %s%n", index.getAndIncrement(),
-                    property.getType(), property.getName());
+            if (!Objects.isNull(property.getRange()) && !property.hasNoRange())
+                System.out.printf("%d. %s %s, range: [%.2f, %.2f]%n", index.getAndIncrement(),
+                        property.getType(), property.getName(), property.getRange().getFrom(), property.getRange().getTo());
+
+            else
+                System.out.printf("%d. %s %s%n", index.getAndIncrement(), property.getType(), property.getName());
         });
 
         System.out.println(index.get() + ". I'm done!");

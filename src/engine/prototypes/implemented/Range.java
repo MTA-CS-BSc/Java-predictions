@@ -1,7 +1,7 @@
 package engine.prototypes.implemented;
 
-import engine.consts.Restrictions;
 import engine.prototypes.jaxb.PRDRange;
+import helpers.Constants;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -17,8 +17,8 @@ public class Range implements Serializable {
         }
 
         else {
-            to = Restrictions.MAX_RANGE;
-            from = Restrictions.MIN_RANGE;
+            to = Constants.MAX_RANGE;
+            from = Constants.MIN_RANGE;
         }
     }
 

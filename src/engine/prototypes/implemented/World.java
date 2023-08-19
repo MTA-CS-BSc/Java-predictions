@@ -26,13 +26,12 @@ public class World implements Serializable {
         entities.getEntitiesMap().values().forEach(entity -> {
             entity.getSingleEntities().forEach(singleEntity -> {
                 singleEntity.getProperties().getPropsMap().values().forEach(property -> {
-                    Range range = property.getRange();
+                    if (!property.getValue().isRandomInitialize()
+                            && Objects.isNull(property.getValue().getInit()))
+                        property.getValue().setRandomInitialize(true);
 
                     if (property.getValue().isRandomInitialize())
-                        Utils.setPropRandomInit(property, range);
-
-                    else if (property.getValue().getInit().isEmpty())
-                        Utils.setPropRandomInit(property, range);
+                        Utils.setPropRandomInit(property, property.getRange());
 
                     property.getValue().setCurrentValue(property.getValue().getInit());
                 });
@@ -44,8 +43,9 @@ public class World implements Serializable {
                     && Objects.isNull(property.getValue().getInit()))
                 property.getValue().setRandomInitialize(true);
 
-            Range range = property.getRange();
-            Utils.setPropRandomInit(property, range);
+            if (property.getValue().isRandomInitialize())
+                Utils.setPropRandomInit(property, property.getRange());
+
             property.getValue().setCurrentValue(property.getValue().getInit());
         });
     }

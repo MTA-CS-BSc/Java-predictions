@@ -1,11 +1,12 @@
 package engine.prototypes.implemented;
 
 import engine.consts.PropTypes;
-import engine.consts.Restrictions;
 import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDValue;
+import helpers.Constants;
+import helpers.TypesUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -57,6 +58,11 @@ public class Property implements Serializable {
         this.stableTime = stableTime;
     }
 
+    public boolean hasNoRange() {
+        return Objects.isNull(getRange())
+                || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
+    }
+
     public Property(PRDProperty property) {
         name = property.getPRDName();
         type = property.getType();
@@ -71,14 +77,17 @@ public class Property implements Serializable {
             Utils.setPropRandomInit(this, range);
 
         else
-            value.setInit(property.getPRDValue().getInit());
+            value.setInit(Utils.removeExtraZeroes(this, property.getPRDValue().getInit()));
 
         value.setCurrentValue(value.getInit());
     }
 
     public Property(PRDEnvProperty envProperty) {
         name = envProperty.getPRDName();
-        range = new Range(envProperty.getPRDRange());
+
+        if (PropTypes.NUMERIC_PROPS.contains(envProperty.getType()))
+            range = new Range(envProperty.getPRDRange());
+
         type = envProperty.getType();
         value = new Value(new PRDValue());
         value.setRandomInitialize(true);

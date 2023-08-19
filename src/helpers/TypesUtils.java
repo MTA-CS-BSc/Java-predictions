@@ -34,6 +34,6 @@ public class TypesUtils {
         return new SimpleDateFormat("dd-MM-yyyy | hh.mm.ss").format(date);
     }
     public static boolean isBoolean(String str) {
-        return str.equals(BoolPropValues.TRUE) || str.equals(BoolPropValues.FALSE);
+        return str.equalsIgnoreCase(BoolPropValues.TRUE) || str.equalsIgnoreCase(BoolPropValues.FALSE);
     }
 }

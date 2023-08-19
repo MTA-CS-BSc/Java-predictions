@@ -1,6 +1,5 @@
 package ui.modules;
 
-import helpers.BoolPropValues;
 import helpers.TypesUtils;
 import ui.consts.Constants;
 import ui.logs.UILoggers;
@@ -11,7 +10,7 @@ public class ScanCycles {
     public static String scanBoolean(Scanner scanner) {
         String selected = scanner.nextLine();
 
-        while (!selected.equals(BoolPropValues.TRUE) && !selected.equals(BoolPropValues.FALSE)) {
+        while (!TypesUtils.isBoolean(selected)) {
             UILoggers.ScannerLogger.info("Option value entered is not a boolean");
             selected = scanner.nextLine();
         }
