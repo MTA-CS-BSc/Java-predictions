@@ -84,7 +84,10 @@ public class Property implements Serializable {
 
     public Property(PRDEnvProperty envProperty) {
         name = envProperty.getPRDName();
-        range = new Range(envProperty.getPRDRange());
+
+        if (PropTypes.NUMERIC_PROPS.contains(envProperty.getType()))
+            range = new Range(envProperty.getPRDRange());
+
         type = envProperty.getType();
         value = new Value(new PRDValue());
         value.setRandomInitialize(true);
