@@ -3,9 +3,7 @@ package engine.simulation.performers;
 import engine.consts.ActionTypes;
 import engine.consts.PropTypes;
 import engine.exceptions.EntityNotFoundException;
-import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
-import engine.exceptions.ValueNotInRangeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
@@ -71,14 +69,16 @@ public abstract class ActionsPerformer {
                                          Property property, String newValue) throws Exception {
         newValue = Utils.removeExtraZeroes(property, newValue);
 
-        if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
+        if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL)) {
             throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal and therefore is not set",
                     actionType, entityName, property.getName(), newValue));
+        }
 
-        if (!Utils.validateValueInRange(property, newValue))
-            throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
-                    actionType, entityName, property.getName(),
-                    String.format("value [%s] not in range and therefore is not set", newValue)));
+        //TODO: Change
+//        if (!Utils.validateValueInRange(property, newValue))
+//            throw new ValueNotInRangeException(ErrorMessageFormatter.formatActionErrorMessage(
+//                    actionType, entityName, property.getName(),
+//                    String.format("value [%s] not in range and therefore is not set", newValue)));
 
         property.getValue().setCurrentValue(newValue);
         property.setStableTime(0);
