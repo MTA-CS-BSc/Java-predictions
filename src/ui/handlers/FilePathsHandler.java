@@ -14,10 +14,9 @@ public class FilePathsHandler extends FilePathsScanner {
         String dir = scanDirectoryToWrite();
         String fileName;
 
-        while (dir.isEmpty()) {
+        if (dir.isEmpty()) {
             System.out.println("Invalid directory!");
-            FilePathsPrinter.printDirectory();
-            dir = scanDirectoryToWrite();
+            return "";
         }
 
         FilePathsPrinter.printFileName();
@@ -29,11 +28,8 @@ public class FilePathsHandler extends FilePathsScanner {
         FilePathsPrinter.printRead();
         String filePath = scanFilePathToRead(extension);
 
-        while (filePath.isEmpty()) {
-            System.out.println("File path entered is not a valid file");
-            FilePathsPrinter.printRead();
-            filePath = scanFilePathToRead(extension);
-        }
+        if (filePath.isEmpty())
+            System.out.println("Entered file path is not a valid file!");
 
         return filePath;
     }

@@ -54,18 +54,25 @@ public class Orchestrator {
             handleSaveWorldState();
     }
     private void handleLoadWorldState() {
-        if (api.loadHistory(filePathsHandler.filePathToReadCycle(null)))
-            System.out.println("History loaded successfully");
+        String fullPath = filePathsHandler.filePathToReadCycle(null);
 
-        else
-            System.out.println("Error loading history!");
+        if (Objects.isNull(fullPath) || fullPath.isEmpty()) {
+            System.out.println("Invalid path!");
+            return;
+        }
+
+        System.out.println(api.loadHistory(fullPath) ? "History was loaded." : "Error loading history!");
     }
     private void handleLoadXmlFile() throws JAXBException, FileNotFoundException {
-        if (api.loadXml(filePathsHandler.filePathToReadCycle(".xml")))
-            System.out.println("XML loaded sucessfully\n");
+        String fullPath = filePathsHandler.filePathToReadCycle(".xml");
 
-        else
-            System.out.println("XML was not loaded. History unchanged.\n");
+        if (Objects.isNull(fullPath) || fullPath.isEmpty()) {
+            System.out.println("Invalid path!");
+            return;
+        }
+
+        System.out.println(api.loadXml(fullPath) ? "XML loaded successfully\n" :
+                "XML was not loaded. History unchanged.\n");
     }
     private void handleSaveWorldState() {
         if (!api.isXmlLoaded()) {
@@ -78,11 +85,14 @@ public class Orchestrator {
             return;
         }
 
-        if (!api.writeHistoryToFile(filePathsHandler.filePathToWriteCycle()))
-            System.out.println("Error writing history file!");
+        String fullPath = filePathsHandler.filePathToWriteCycle();
 
-        else
-            System.out.println("History saved.");
+        if (Objects.isNull(fullPath) || fullPath.isEmpty()) {
+            System.out.println("Invalid path!");
+            return;
+        }
+
+        System.out.println(api.writeHistoryToFile(fullPath) ? "History saved." : "Error writing history file!");
     }
     private void handleRunSimulation() throws Exception {
         if (!api.isXmlLoaded()) {
