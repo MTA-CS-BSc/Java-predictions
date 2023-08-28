@@ -29,9 +29,7 @@ public class Entity implements Serializable {
     }
     public Entity(PRDEntity entity) {
         name = entity.getName();
-//        population = entity.getPRDPopulation();
-        //TODO: Change
-        population = 100;
+        population = 0;
         singleEntities = new ArrayList<>();
         initialProperties = new Properties(entity.getPRDProperties().getPRDProperty());
 
