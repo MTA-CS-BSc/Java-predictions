@@ -38,6 +38,50 @@ public abstract class ValidatorsUtils {
     public static String getSystemFunctionType(String expression) {
         return expression.substring(0, expression.indexOf("("));
     }
+    public static String getExpressionType(PRDWorld world, PRDAction action, String expression) {
+        PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), expression);
+
+        if (ValidatorsUtils.isSystemFunction(expression)) {
+            switch (getSystemFunctionType(expression)) {
+                case SystemFunctions.RANDOM:
+                case SystemFunctions.TICKS:
+                    return PropTypes.DECIMAL;
+                case SystemFunctions.PERCENT:
+                    return PropTypes.FLOAT;
+                case SystemFunctions.ENVIRONMENT:
+                    String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
+                    PRDEnvProperty envProp = world.getPRDEnvironment().getPRDEnvProperty()
+                            .stream()
+                            .filter(element -> element.getPRDName().equals(systemFunctionValue))
+                            .findFirst().orElse(null);
+
+                    assert !Objects.isNull(envProp);
+                    return envProp.getType();
+                case SystemFunctions.EVALUATE:
+                    String entityName = expression.split("\\.")[0];
+                    String propName = expression.split("\\.")[1];
+
+                    PRDProperty property = findPRDPropertyByName(world, entityName, propName);
+
+                    assert !Objects.isNull(property);
+                    return property.getType();
+            }
+        }
+
+        else if (!Objects.isNull(expressionEntityProp))
+            return expressionEntityProp.getType();
+
+        else if (TypesUtils.isDecimal(expression))
+            return PropTypes.DECIMAL;
+
+        else if (TypesUtils.isFloat(expression))
+            return PropTypes.FLOAT;
+
+        else if (TypesUtils.isBoolean(expression))
+            return PropTypes.BOOLEAN;
+
+        return PropTypes.STRING;
+    }
     public static boolean validateExpressionType(PRDWorld world, PRDAction action, String expectedType, String expression) {
         PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), expression);
 
