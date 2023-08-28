@@ -1,6 +1,7 @@
 package engine.validators.actions;
 
 import engine.consts.ConditionSingularities;
+import engine.consts.Operators;
 import engine.consts.PropTypes;
 import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
@@ -17,19 +18,11 @@ public abstract class ConditionValidators {
     private static boolean validateSingleCondition(PRDWorld world, PRDAction action,
                                                   PRDCondition condition) throws Exception {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, condition.getEntity(), condition.getProperty());
-
-        if (Objects.isNull(property))
-            throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] does not exist",
-                    action.getType(), condition.getEntity(), condition.getProperty()));
+        String propertyExpressionType = ValidatorsUtils.getExpressionType(world, action, condition.getProperty());
+        String valueExpressionType = ValidatorsUtils.getExpressionType(world, action, condition.getValue());
 
         if (Objects.isNull(action.getPRDThen()))
-            throw new Exception(String.format("Action [%s]: Entity [%s]: No PRDThen tag found",
-                    action.getType(), condition.getEntity()));
-
-        if (!ValidatorsUtils.validateExpressionType(world, action, property.getType(), condition.getValue())
-        && !ValidatorsUtils.validateExpressionType(world, action, PropTypes.FLOAT, condition.getValue()))
-            throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
-                    action.getType(), condition.getEntity()));
+            throw new Exception(String.format("Action [%s]: Entity [%s]: No PRDThen tag found", action.getType(), condition.getEntity()));
 
         if (!Objects.isNull(action.getPRDElse()))
             for (PRDAction elseAct : action.getPRDElse().getPRDAction())
@@ -39,7 +32,18 @@ public abstract class ConditionValidators {
             for (PRDAction thenAct : action.getPRDThen().getPRDAction())
                 PRDActionValidators.validateAction(world, thenAct);
 
-        return true;
+        if (!Objects.isNull(property)) {
+            if (!ValidatorsUtils.validateExpressionType(world, action, property.getType(), condition.getValue())
+                    && !ValidatorsUtils.validateExpressionType(world, action, PropTypes.FLOAT, condition.getValue()))
+                throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
+                        action.getType(), condition.getEntity()));
+
+            return true;
+        }
+
+        return propertyExpressionType.equals(valueExpressionType)
+                || (PropTypes.NUMERIC_PROPS.contains(propertyExpressionType)
+                    && PropTypes.NUMERIC_PROPS.contains(valueExpressionType));
     }
     private static boolean validateMultipleCondition(PRDWorld world, PRDAction action,
                                                     PRDCondition condition) throws Exception{
