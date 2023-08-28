@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class Termination implements Serializable {
-    List<Object> stopConditions;
+    protected List<Object> stopConditions;
+    protected boolean isStopByUser;
     public Termination (PRDTermination _termination) {
         stopConditions = new ArrayList<>();
 
@@ -22,12 +23,16 @@ public class Termination implements Serializable {
                 else if (_stopCondition.getClass() == PRDBySecond.class)
                     stopConditions.add(new BySecond((PRDBySecond) _stopCondition));
             });
+
+            isStopByUser = false;
         }
+
+        else
+            isStopByUser = true;
     }
     public List<Object> getStopConditions() {
         return stopConditions;
     }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
