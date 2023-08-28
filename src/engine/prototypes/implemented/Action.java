@@ -18,6 +18,13 @@ public class Action implements Serializable {
     protected String entityName;
     protected String by;
 
+    protected String kill;
+    protected String create;
+    protected String mode;
+    protected String envDepthExpression;
+    protected Between between;
+    protected SecondaryEntity secondaryEntity;
+
     public Action(PRDAction action) {
         if (!Objects.isNull(action)) {
             value = action.getValue();
@@ -26,6 +33,18 @@ public class Action implements Serializable {
             propertyName = action.getProperty();
             entityName = action.getEntity();
             by = action.getBy();
+            create = action.getCreate();
+            kill = action.getKill();
+            mode = action.getMode();
+
+            if (!Objects.isNull(action.getPRDEnvDepth()))
+                envDepthExpression = action.getPRDEnvDepth().getOf();
+
+            if (!Objects.isNull(action.getPRDBetween()))
+                between = new Between(action.getPRDBetween());
+
+            if (!Objects.isNull(action.getPRDSecondaryEntity()))
+                secondaryEntity = new SecondaryEntity(action.getPRDSecondaryEntity());
 
             if (!Objects.isNull(action.getPRDDivide()))
                 divide = new Divide(action.getPRDDivide());
