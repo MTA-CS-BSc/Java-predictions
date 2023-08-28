@@ -10,6 +10,10 @@ public abstract class PRDTerminationValidators {
         && Objects.isNull(world.getPRDTermination().getPRDByUser()))
             throw new Exception("No termination found");
 
+        else if (!world.getPRDTermination().getPRDBySecondOrPRDByTicks().isEmpty()
+                && !Objects.isNull(world.getPRDTermination().getPRDByUser()))
+            throw new Exception("Termination by user cannot come along with any other termination rule.");
+
         return true;
     }
 }
