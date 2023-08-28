@@ -23,14 +23,14 @@ public abstract class CalculationValidator {
                     action.getType(), action.getEntity()));
 
         if (!Objects.isNull(multiply))
-            if (!ValidatorsUtils.validateExpressionType(world, action, property, multiply.getArg1())
-                || !ValidatorsUtils.validateExpressionType(world, action, property, multiply.getArg2()))
+            if (!ValidatorsUtils.validateExpressionType(world, action, property.getType(), multiply.getArg1())
+                || !ValidatorsUtils.validateExpressionType(world, action, property.getType(), multiply.getArg2()))
                 throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
                         action.getType(), action.getEntity()));
 
         else if (!Objects.isNull(divide)) {
-                if (!ValidatorsUtils.validateExpressionType(world, action, property, divide.getArg1())
-                        || !ValidatorsUtils.validateExpressionType(world, action, property, divide.getArg2()))
+                if (!ValidatorsUtils.validateExpressionType(world, action, property.getType(), divide.getArg1())
+                        || !ValidatorsUtils.validateExpressionType(world, action, property.getType(), divide.getArg2()))
                     throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
                             action.getType(), action.getEntity()));
 

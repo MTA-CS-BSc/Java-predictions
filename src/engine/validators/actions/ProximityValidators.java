@@ -17,8 +17,6 @@ public abstract class ProximityValidators {
         PRDAction.PRDBetween prdBetween = action.getPRDBetween();
         PRDAction.PRDEnvDepth prdEnvDepth = action.getPRDEnvDepth();
         PRDActions prdActions = action.getPRDActions();
-        PRDProperty decimalTestProp = new PRDProperty();
-        decimalTestProp.setType(PropTypes.DECIMAL);
 
         if (!PRDActionsValidators.validateActions(world, prdActions.getPRDAction()))
             throw new Exception(String.format("Action [%s]: Could not validate actions", action.getType()));
@@ -34,7 +32,7 @@ public abstract class ProximityValidators {
             throw new EntityNotFoundException(String.format("Action [%s]: Between: Target entity [%s] does not exist",
                     action.getType(), prdBetween.getTargetEntity()));
 
-        else if (!ValidatorsUtils.validateExpressionType(world, action, decimalTestProp, prdEnvDepth.getOf()))
+        else if (!ValidatorsUtils.validateExpressionType(world, action, PropTypes.DECIMAL, prdEnvDepth.getOf()))
             throw new InvalidTypeException(String.format("Action [%s]: Env Depth: Expression is not decimal",
                     action.getType()));
 

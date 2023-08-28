@@ -18,9 +18,6 @@ public abstract class ConditionValidators {
                                                   PRDCondition condition) throws Exception {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, condition.getEntity(), condition.getProperty());
 
-        PRDProperty floatTestProp = new PRDProperty();
-        floatTestProp.setType(PropTypes.FLOAT);
-
         if (Objects.isNull(property))
             throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] does not exist",
                     action.getType(), condition.getEntity(), condition.getProperty()));
@@ -29,8 +26,8 @@ public abstract class ConditionValidators {
             throw new Exception(String.format("Action [%s]: Entity [%s]: No PRDThen tag found",
                     action.getType(), condition.getEntity()));
 
-        if (!ValidatorsUtils.validateExpressionType(world, action, property, condition.getValue())
-        && !ValidatorsUtils.validateExpressionType(world, action, floatTestProp, condition.getValue()))
+        if (!ValidatorsUtils.validateExpressionType(world, action, property.getType(), condition.getValue())
+        && !ValidatorsUtils.validateExpressionType(world, action, PropTypes.FLOAT, condition.getValue()))
             throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
                     action.getType(), condition.getEntity()));
 
