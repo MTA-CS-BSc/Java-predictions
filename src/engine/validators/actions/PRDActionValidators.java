@@ -9,12 +9,17 @@ import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDWorld;
 import helpers.TypesUtils;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class PRDActionValidators {
     public static boolean validateAction(PRDWorld world, PRDAction action) throws Exception {
+        List<String> optionalEntityActionTypes = Arrays.asList(ActionTypes.PROXIMITY,
+                ActionTypes.REPLACE, ActionTypes.CONDITION);
+
         if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getEntity()))
-        && !action.getType().equals(ActionTypes.PROXIMITY) && !action.getType().equals(ActionTypes.REPLACE))
+                && !optionalEntityActionTypes.contains(action.getType()))
             throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist",
                     action.getType(), action.getEntity()));
 
