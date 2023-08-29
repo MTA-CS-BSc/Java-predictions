@@ -109,4 +109,7 @@ public class Action implements Serializable {
     public Between getBetween() { return between; }
     public String getDepthExpression() { return depthExpression; }
     public Actions getActions() { return actions; }
+    public String getCreate() { return create; }
+    public String getMode() { return mode; }
+    public String getKill() { return kill; }
 }
