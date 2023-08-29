@@ -1,5 +1,8 @@
 package ui.handlers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import dtos.SingleSimulationDTO;
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
 import dtos.EntityDTO;
@@ -9,6 +12,8 @@ import ui.enums.PastSimulationOutputOptions;
 import ui.modules.ScanCycles;
 import ui.printers.ShowPastSimulationPrinter;
 import ui.scanners.ShowPastSimulationScanner;
+
+import java.util.List;
 
 public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
     public ShowPastSimulationHandler(EngineAPI api) { super(api); }
@@ -65,13 +70,15 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         System.out.println("---------------------------------");
 
         ShowPastSimulationPrinter.printAvailableSimulations(api);
-        int selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size());
+        List<SingleSimulationDTO> pastSimulations = new Gson().fromJson(api.getPastSimulations().getData(), new TypeToken<List<SingleSimulationDTO>>(){}.getType());
+        int selected = ScanCycles.scanOption(scanner, pastSimulations.size());
 
         while (selected == Constants.NOT_FOUND) {
             ShowPastSimulationPrinter.printAvailableSimulations(api);
-            selected = ScanCycles.scanOption(scanner, api.getPastSimulations().size());
+            selected = ScanCycles.scanOption(scanner, pastSimulations.size());
         }
 
-        showSelectedSimulationDetails(api.findSelectedSimulationDTO(selected).getUuid());
+        SingleSimulationDTO singleSimulation = new Gson().fromJson(api.findSelectedSimulationDTO(selected).getData(), SingleSimulationDTO.class);
+        showSelectedSimulationDetails(singleSimulation.getUuid());
     }
 }

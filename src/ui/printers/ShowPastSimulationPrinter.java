@@ -1,5 +1,7 @@
 package ui.printers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.sun.xml.internal.ws.util.StringUtils;
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
@@ -14,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ShowPastSimulationPrinter {
     public static void printAvailableSimulations(EngineAPI api) {
-        List<SingleSimulationDTO> simulations = api.getPastSimulations();
+        List<SingleSimulationDTO> simulations = new Gson().fromJson(api.getPastSimulations().getData(), new TypeToken<List<SingleSimulationDTO>>(){}.getType());
         AtomicInteger index = new AtomicInteger(1);
 
         simulations.forEach(simulation -> {

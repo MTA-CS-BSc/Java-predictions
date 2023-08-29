@@ -1,5 +1,7 @@
 package ui.handlers;
 
+import com.google.gson.Gson;
+import dtos.SingleSimulationDTO;
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
 import helpers.BoolPropValues;
@@ -73,12 +75,12 @@ public class Orchestrator {
                 "XML was not loaded. History unchanged.\n");
     }
     private void handleSaveWorldState() {
-        if (!api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
             System.out.println("Attempted to save world state but no XML file was loaded to the system");
             return;
         }
 
-        else if (api.isHistoryEmpty()) {
+        else if (api.isHistoryEmpty().getData().equals(BoolPropValues.TRUE)) {
             System.out.println("Attempted to save world state but no simulations were made");
             return;
         }
@@ -88,10 +90,11 @@ public class Orchestrator {
         if (Objects.isNull(fullPath) || fullPath.isEmpty())
             return;
 
-        System.out.println(api.writeHistoryToFile(fullPath) ? "History saved." : "Error writing history file!");
+        System.out.println(api.writeHistoryToFile(fullPath).getData().equals(BoolPropValues.TRUE) ?
+                "History saved." : "Error writing history file!");
     }
     private void handleRunSimulation() throws Exception {
-        if (!api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
             System.out.println("Attempted to run simulation but no xml was loaded to the system!");
             return;
         }
@@ -107,21 +110,23 @@ public class Orchestrator {
         currentSimulationUuid = "";
     }
     private void handleShowSimulationDetails() {
-        if (!api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
             System.out.println("Attempted to show simulation details but no XML file was loaded to the system");
             return;
         }
 
-        if (!Objects.isNull(api.getSimulationDetails()))
-            WorldDetailsPrinter.print(api.getSimulationDetails());
+        if (!Objects.isNull(api.getSimulationDetails())) {
+            SingleSimulationDTO simulation = new Gson().fromJson(api.getSimulationDetails().getData(), SingleSimulationDTO.class);
+            WorldDetailsPrinter.print(simulation);
+        }
     }
     private void handleShowPastSimulation() throws UUIDNotFoundException {
-        if (!api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
             System.out.println("Attempted to show past simulation but no XML file was loaded to the system");
             return;
         }
 
-        else if (api.isHistoryEmpty()) {
+        else if (api.isHistoryEmpty().getData().equals(BoolPropValues.TRUE)) {
             System.out.println("Attempted to show past simulation but no simulations were made");
             return;
         }

@@ -1,5 +1,7 @@
 package ui.handlers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import dtos.PropertyDTO;
 import dtos.ResponseDTO;
 import engine.EngineAPI;
@@ -9,15 +11,18 @@ import ui.modules.ScanCycles;
 import ui.printers.EnvPropsInitializerPrinter;
 import ui.scanners.EnvPropsInitializerScanner;
 
+import java.util.List;
+
 public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
     public EnvPropsInitializerHandler() {
         super();
     }
     private void handleEnvSetSelection(EngineAPI api, String uuid, int selection) {
+        List<PropertyDTO> props = new Gson().fromJson(api.getEnvironmentProperties(uuid).getData(), new TypeToken<List<PropertyDTO>>(){}.getType());
+        PropertyDTO prop = props.get(selection - 1);
+
         String val = "";
         System.out.println("Enter value:");
-
-        PropertyDTO prop = api.getEnvironmentProperties(uuid).get(selection - 1);
 
         switch (prop.getType()) {
             case PropTypes.BOOLEAN:
