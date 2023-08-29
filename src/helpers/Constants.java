@@ -9,4 +9,5 @@ public class Constants {
     public final static int MAX_RANGE = 999999999;
     public final static int MIN_GRID_HEIGHT = 10;
     public final static int MAX_GRID_HEIGHT = 100;
+    public final static int NOT_SET = -1;
 }
