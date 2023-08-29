@@ -7,6 +7,7 @@ import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
 import dtos.EntityDTO;
 import dtos.SingleSimulationDTO;
+import helpers.Constants;
 import ui.enums.PastSimulationOutputOptions;
 
 import java.util.Arrays;
@@ -36,7 +37,8 @@ public abstract class ShowPastSimulationPrinter {
                 });
     }
     public static void printEntitiesBeforeAndAfterSimulation(EngineAPI api, String uuid) throws UUIDNotFoundException {
-        Map<String, Integer[]> entitiesBeforeAndAfter = api.getEntitiesBeforeAndAfterSimulation(uuid);
+        Map<String, Integer[]> entitiesBeforeAndAfter = new Gson().fromJson(api.getEntitiesBeforeAndAfterSimulation(uuid).getData(),
+                new TypeToken<Map<String, Integer[]>>(){}.getType());
 
         entitiesBeforeAndAfter.forEach((entityName, amount) -> {
             System.out.printf("Entity [%s]: %d->%d%n", entityName, amount[0], amount[1]);
@@ -46,7 +48,9 @@ public abstract class ShowPastSimulationPrinter {
         System.out.println("Available entities: ");
         AtomicInteger index = new AtomicInteger(1);
 
-        api.getEntities(uuid).forEach(entity -> System.out.printf("%d. %s%n", index.getAndIncrement(), entity.getName()));
+        List<EntityDTO> entities = new Gson().fromJson(api.getEntities(uuid).getData(), new TypeToken<List<EntityDTO>>(){}.getType());
+
+        entities.forEach(entity -> System.out.printf("%d. %s%n", index.getAndIncrement(), entity.getName()));
         System.out.println("Please select your choice:");
     }
     public static void propHistogramPrintEntityProps(EntityDTO entity) {
@@ -58,8 +62,8 @@ public abstract class ShowPastSimulationPrinter {
     }
     public static void printPropHistogram(EngineAPI api, String simulationUUID,
                                           String entityName, String propertyName) throws UUIDNotFoundException {
-        Map<String, Long> entitiesCountForProp =
-                api.getEntitiesCountForProp(simulationUUID, entityName, propertyName);
+        Map<String, Long> entitiesCountForProp = Constants.GSON_UTIL.fromJson(api.getEntitiesCountForProp(simulationUUID, entityName, propertyName).getData(),
+                new TypeToken<Map<String, Long>>(){}.getType());
 
         System.out.printf("Entities [%s] count for property [%s] values:%n", entityName, propertyName);
 

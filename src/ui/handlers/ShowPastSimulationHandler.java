@@ -54,7 +54,8 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
         return new Gson().fromJson(api.findSelectedPropertyDTO(entity, selection).getData(), PropertyDTO.class);
     }
     private EntityDTO getEntitySelection(String uuid) {
-        int entitiesAmount = api.getEntities(uuid).size();
+        List<EntityDTO> entities = new Gson().fromJson(api.getEntities(uuid).getData(), new TypeToken<List<EntityDTO>>(){}.getType());
+        int entitiesAmount = entities.size();
 
         ShowPastSimulationPrinter.propHistogramPrintEntities(api, uuid);
         int selection = ScanCycles.scanOption(scanner, entitiesAmount);

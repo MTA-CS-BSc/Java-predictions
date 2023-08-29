@@ -142,7 +142,12 @@ public class EngineAPI {
         return new ResponseDTO(200, pastSimulations.get(selection - 1));
     }
     public ResponseDTO findSelectedEntityDTO(String uuid, int selection) {
-        EntityDTO data = !Objects.isNull(findSimulationDTOByUuid(uuid)) ? getEntities(uuid).get(selection - 1) : null;
+        EntityDTO data = null;
+
+        if (!Objects.isNull(findSimulationDTOByUuid(uuid))) {
+            List<EntityDTO> entities = new Gson().fromJson(getEntities(uuid).getData(), new TypeToken<List<EntityDTO>>(){});
+            data = entities.get(selection - 1);
+        }
 
         return Objects.isNull(data) ?
                 new ResponseDTO(500, null, "Unknown") : new ResponseDTO(200, data);
@@ -153,31 +158,30 @@ public class EngineAPI {
 
         return new ResponseDTO(200, entity.getProperties().get(selection - 1));
     }
-    public List<EntityDTO> getEntities(String uuid) {
-        //TODO: Change response value to ResponseDTO
+    public ResponseDTO getEntities(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return Collections.emptyList();
+            return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
-        return historyManager.getPastSimulation(uuid).getStartWorldState()
+        List<EntityDTO> data = historyManager.getPastSimulation(uuid).getStartWorldState()
                 .getEntitiesMap().values()
                 .stream()
                 .map(Mappers::toDto)
                 .sorted(Comparator.comparing(EntityDTO::getName))
                 .collect(Collectors.toList());
-    }
-    public Map<String, Integer[]> getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
-        //TODO: Change response value to ResponseDTO
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return null;
 
-        return historyManager.getEntitiesBeforeAndAfter(uuid);
+        return new ResponseDTO(200, data);
     }
-    public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
-        //TODO: Change response value to ResponseDTO
+    public ResponseDTO getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return null;
+            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
-        return historyManager.getEntitiesCountForProp(uuid, entityName, propertyName);
+        return new ResponseDTO(200, historyManager.getEntitiesBeforeAndAfter(uuid));
+    }
+    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+
+        return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
     public void runSimulation(String uuid) throws Exception {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
