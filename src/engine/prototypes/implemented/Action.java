@@ -21,9 +21,10 @@ public class Action implements Serializable {
     protected String kill;
     protected String create;
     protected String mode;
-    protected String envDepthExpression;
+    protected String depthExpression;
     protected Between between;
     protected SecondaryEntity secondaryEntity;
+    protected Actions actions;
 
     public Action(PRDAction action) {
         if (!Objects.isNull(action)) {
@@ -37,8 +38,11 @@ public class Action implements Serializable {
             kill = action.getKill();
             mode = action.getMode();
 
+            if (!Objects.isNull(action.getPRDActions()))
+                actions = new Actions(action.getPRDActions().getPRDAction());
+
             if (!Objects.isNull(action.getPRDEnvDepth()))
-                envDepthExpression = action.getPRDEnvDepth().getOf();
+                depthExpression = action.getPRDEnvDepth().getOf();
 
             if (!Objects.isNull(action.getPRDBetween()))
                 between = new Between(action.getPRDBetween());
@@ -103,4 +107,6 @@ public class Action implements Serializable {
     }
 
     public Between getBetween() { return between; }
+    public String getDepthExpression() { return depthExpression; }
+    public Actions getActions() { return actions; }
 }
