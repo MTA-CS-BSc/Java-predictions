@@ -71,7 +71,7 @@ public class EngineAPI {
     public boolean loadXml(String xmlPath) throws JAXBException, FileNotFoundException {
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
-        if (PRDWorldValidators.validateWorld(prdWorld)) {
+        if (Objects.isNull(PRDWorldValidators.validateWorld(prdWorld).getErrorDescription())) {
             setInitialXmlWorld(new World(prdWorld));
             threadpoolCount = prdWorld.getPRDThreadCount();
             return true;

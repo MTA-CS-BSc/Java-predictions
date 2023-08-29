@@ -1,6 +1,5 @@
 package engine.tests;
 
-import engine.logs.EngineLoggers;
 import engine.parsers.XmlParser;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;
@@ -13,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.FileHandler;
 
 public class XmlParserTests {
 //    public final static String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
@@ -62,7 +60,7 @@ public class XmlParserTests {
     public void ex1ValidationsForValidXml() throws JAXBException, FileNotFoundException {
         String xmlPath = String.format("%s/master-ex1.xml", ex1TestFilesPath);
         PRDWorld world = XmlParser.parseWorldXml(xmlPath);
-        Assertions.assertTrue(PRDWorldValidators.validateWorld(world));
+        Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
     }
 
     @Test
@@ -82,7 +80,7 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> ()
-                        -> Assertions.assertFalse(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element))))
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element)).getErrorDescription()))
         );
     }
 
@@ -91,7 +89,7 @@ public class XmlParserTests {
     public void ex2ValidationsForValidXml() throws JAXBException, FileNotFoundException {
         String xmlPath = String.format("%s\\master-ex2.xml", ex2TestFilesPath);
         PRDWorld world = XmlParser.parseWorldXml(xmlPath);
-        Assertions.assertTrue(PRDWorldValidators.validateWorld(world));
+        Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
     }
 
     @Test
@@ -103,7 +101,7 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> ()
-                        -> Assertions.assertFalse(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element))))
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element)).getErrorDescription()))
         );
     }
 
