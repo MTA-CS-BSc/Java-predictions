@@ -141,6 +141,18 @@ public class EngineAPI {
         List<SingleSimulationDTO> pastSimulations = new Gson().fromJson(getPastSimulations().getData(), new TypeToken<List<SingleSimulationDTO>>(){}.getType());
         return new ResponseDTO(200, pastSimulations.get(selection - 1));
     }
+    public ResponseDTO findSelectedEntityDTO(String uuid, int selection) {
+        EntityDTO data = !Objects.isNull(findSimulationDTOByUuid(uuid)) ? getEntities(uuid).get(selection - 1) : null;
+
+        return Objects.isNull(data) ?
+                new ResponseDTO(500, null, "Unknown") : new ResponseDTO(200, data);
+    }
+    public ResponseDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
+        if (Objects.isNull(entity))
+            return new ResponseDTO(500, null, "Entity is null");
+
+        return new ResponseDTO(200, entity.getProperties().get(selection - 1));
+    }
     public List<EntityDTO> getEntities(String uuid) {
         //TODO: Change response value to ResponseDTO
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
@@ -174,14 +186,6 @@ public class EngineAPI {
             if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR)
                 historyManager.getPastSimulations().remove(uuid);
         }
-    }
-    public EntityDTO findSelectedEntityDTO(String uuid, int selection) {
-        //TODO: Change response value to ResponseDTO
-        return !Objects.isNull(findSimulationDTOByUuid(uuid)) ? getEntities(uuid).get(selection - 1) : null;
-    }
-    public PropertyDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
-        //TODO: Change response value to ResponseDTO
-        return entity.getProperties().get(selection - 1);
     }
     private void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);

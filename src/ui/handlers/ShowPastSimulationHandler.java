@@ -2,11 +2,12 @@ package ui.handlers;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import dtos.EntityDTO;
+import dtos.PropertyDTO;
+import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
-import dtos.EntityDTO;
-import dtos.PropertyDTO;
 import ui.consts.Constants;
 import ui.enums.PastSimulationOutputOptions;
 import ui.modules.ScanCycles;
@@ -14,6 +15,7 @@ import ui.printers.ShowPastSimulationPrinter;
 import ui.scanners.ShowPastSimulationScanner;
 
 import java.util.List;
+import java.util.Objects;
 
 public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
     public ShowPastSimulationHandler(EngineAPI api) { super(api); }
@@ -49,7 +51,7 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
             selection = ScanCycles.scanOption(scanner, propertiesAmount);
         }
 
-        return api.findSelectedPropertyDTO(entity, selection);
+        return new Gson().fromJson(api.findSelectedPropertyDTO(entity, selection).getData(), PropertyDTO.class);
     }
     private EntityDTO getEntitySelection(String uuid) {
         int entitiesAmount = api.getEntities(uuid).size();
@@ -62,7 +64,12 @@ public class ShowPastSimulationHandler extends ShowPastSimulationScanner {
             selection = ScanCycles.scanOption(scanner, entitiesAmount);
         }
 
-        return api.findSelectedEntityDTO(uuid, selection);
+        ResponseDTO findEntityResponse = api.findSelectedEntityDTO(uuid, selection);
+
+        if (!Objects.isNull(findEntityResponse.getData()))
+            return new Gson().fromJson(findEntityResponse.getData(), EntityDTO.class);
+
+        return null;
     }
 
     public void handle() throws UUIDNotFoundException {
