@@ -101,4 +101,6 @@ public class Action implements Serializable {
     public String getBy() {
         return by;
     }
+
+    public Between getBetween() { return between; }
 }
