@@ -35,16 +35,13 @@ public abstract class ValidatorsUtils {
 
         return SystemFunctions.ALL_SYSTEM_FUNCS.contains(expression.substring(0, expression.indexOf("(")));
     }
-    public static String getSystemFunctionType(String expression) {
-        return expression.substring(0, expression.indexOf("("));
-    }
     public static String getExpressionType(PRDWorld world, PRDAction action, String expression) {
         PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), expression);
 
         if (ValidatorsUtils.isSystemFunction(expression)) {
             String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
-            switch (getSystemFunctionType(expression)) {
+            switch (Utils.getSystemFunctionType(expression)) {
                 case SystemFunctions.RANDOM:
                 case SystemFunctions.TICKS:
                     return PropTypes.DECIMAL;
@@ -116,7 +113,7 @@ public abstract class ValidatorsUtils {
     }
     private static boolean validateSystemFuncExpressionType(PRDWorld world, PRDAction action,
                                                             String expectedType, String expression) {
-        String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
+        String systemFunctionType = Utils.getSystemFunctionType(expression);
         String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
         switch (systemFunctionType) {

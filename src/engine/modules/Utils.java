@@ -2,8 +2,10 @@ package engine.modules;
 
 import dtos.PropertyDTO;
 import engine.consts.PropTypes;
+import engine.consts.SystemFunctions;
 import engine.prototypes.implemented.*;
 import helpers.Constants;
+import helpers.TypesUtils;
 
 import java.util.Map;
 import java.util.Objects;
@@ -19,6 +21,12 @@ public abstract class Utils {
     }
     public static Property findPropertyByName(SingleEntity entity, String propertyName) {
         return entity.getProperties().getPropsMap().get(propertyName);
+    }
+    public static Property findEnvironmentPropertyByName(World world, String propertyName) {
+        return world.getEnvironment().getEnvVars().values()
+                .stream()
+                .filter(element -> element.getName().equals(propertyName))
+                .findFirst().orElse(null);
     }
     public static void setPropRandomInit(Property property, Range range) {
         switch (property.getType()) {
@@ -45,7 +53,6 @@ public abstract class Utils {
 
         return true;
     }
-
     public static boolean validateValueInRange(PropertyDTO property, String newValue) {
         if (!Objects.isNull(property.getRange()))
             return !(Float.parseFloat(newValue) > property.getRange().getTo())
@@ -72,11 +79,45 @@ public abstract class Utils {
                 ));
 
     }
-    public static String removeExtraZeroes(Property property, String value) {
-        if (PropTypes.NUMERIC_PROPS.contains(property.getType())
-                && value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-            return value.split("\\.")[0];
+    public static String removeExtraZeroes(String value) {
+        return value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? value.split("\\.")[0] : value;
+    }
+    public static String getSystemFunctionType(String expression) {
+        return expression.substring(0, expression.indexOf("("));
+    }
+    public static String getExpressionType(World world, Action action, String expression) {
+        Property expressionEntityProp = findAnyPropertyByName(world, action.getEntityName(), expression);
 
-        return value;
+        if (ValidatorsUtils.isSystemFunction(expression)) {
+            String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
+
+            switch (getSystemFunctionType(expression)) {
+                case SystemFunctions.RANDOM:
+                case SystemFunctions.TICKS:
+                    return PropTypes.DECIMAL;
+                case SystemFunctions.PERCENT:
+                    return PropTypes.FLOAT;
+                case SystemFunctions.ENVIRONMENT:
+                    return findEnvironmentPropertyByName(world, systemFunctionValue).getType();
+                case SystemFunctions.EVALUATE:
+                    String entityName = systemFunctionValue.split("\\.")[0];
+                    String propName = systemFunctionValue.split("\\.")[1];
+                    return findAnyPropertyByName(world, entityName, propName).getType();
+            }
+        }
+
+        else if (!Objects.isNull(expressionEntityProp))
+            return expressionEntityProp.getType();
+
+        else if (TypesUtils.isDecimal(expression))
+            return PropTypes.DECIMAL;
+
+        else if (TypesUtils.isFloat(expression))
+            return PropTypes.FLOAT;
+
+        else if (TypesUtils.isBoolean(expression))
+            return PropTypes.BOOLEAN;
+
+        return PropTypes.STRING;
     }
 }
