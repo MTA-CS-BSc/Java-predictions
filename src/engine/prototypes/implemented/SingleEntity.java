@@ -28,7 +28,7 @@ public class SingleEntity implements Serializable {
     }
     public Coordinate getCoordinate() { return coordinate; }
     public void setCoordinate(int x, int y) {
-        //TODO: Add randomized coordinates
+        //TODO: Add randomized coordinates + check for not same coordinate
         coordinate.setX(x);
         coordinate.setY(y);
     }
