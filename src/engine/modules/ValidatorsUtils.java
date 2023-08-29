@@ -44,9 +44,8 @@ public abstract class ValidatorsUtils {
             switch (Utils.getSystemFunctionType(expression)) {
                 case SystemFunctions.RANDOM:
                 case SystemFunctions.TICKS:
-                    return PropTypes.DECIMAL;
                 case SystemFunctions.PERCENT:
-                    return PropTypes.FLOAT;
+                    return PropTypes.DECIMAL;
                 case SystemFunctions.ENVIRONMENT:
                     PRDEnvProperty envProp = world.getPRDEnvironment().getPRDEnvProperty()
                             .stream()
