@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 public class ResponseDTO {
     protected int status;
     protected ErrorDescriptionDTO errorDescription;
-    protected String data;
+    protected String data; // JSON object
     public ResponseDTO(int _status) {
         status = _status;
         errorDescription = null;
