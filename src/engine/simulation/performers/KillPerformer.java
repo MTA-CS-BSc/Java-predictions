@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class KillPerformer {
-    public static void handleAll(World world, Action action) {
+    private static void handleAll(World world, Action action) {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
         mainEntity.setPopulation(0);
@@ -17,8 +17,8 @@ public abstract class KillPerformer {
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Killed entity [%s]", action.getEntityName()));
     }
-    public static void handleSingle(World world, Action action, SingleEntity kill) {
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
+    public static void handleSingle(World world, String entityName, SingleEntity kill) {
+        Entity mainEntity = Utils.findEntityByName(world, entityName);
 
         List<SingleEntity> updatedList = mainEntity.getSingleEntities()
                                         .stream()
@@ -28,13 +28,13 @@ public abstract class KillPerformer {
         mainEntity.setSingleEntities(updatedList);
         mainEntity.setPopulation(mainEntity.getPopulation() - 1);
 
-        EngineLoggers.SIMULATION_LOGGER.info(String.format("Killed 1 entity named [%s]. Population is [%d]", action.getEntityName(), mainEntity.getPopulation()));
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Killed 1 entity named [%s]. Population is [%d]", entityName, mainEntity.getPopulation()));
     }
     public static void handle(World world, Action action, SingleEntity kill) {
         if (Objects.isNull(kill))
             handleAll(world, action);
 
         else
-            handleSingle(world, action, kill);
+            handleSingle(world, action.getEntityName(), kill);
     }
 }
