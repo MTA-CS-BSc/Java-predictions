@@ -17,6 +17,7 @@ public abstract class ActionsPerformer {
         if (!ActionTypes.ENTITY_MAY_NOT_EXIST_TYPES.contains(action.getType()) && !validateEntityExists(world, action))
             return;
 
+        //TODO: Add secondary entity chooser & send to all functions
         switch (action.getType()) {
             case ActionTypes.INCREASE:
                 IncrementPerformer.handle(world, action, on);
@@ -35,6 +36,12 @@ public abstract class ActionsPerformer {
                 break;
             case ActionTypes.CONDITION:
                 ConditionPerformer.handle(world, action, on);
+                break;
+            case ActionTypes.PROXIMITY:
+                ProximityPerformer.handle(world, action, on);
+                break;
+            case ActionTypes.REPLACE:
+                ReplacePerformer.handle(world, action, on);
                 break;
         }
     }
