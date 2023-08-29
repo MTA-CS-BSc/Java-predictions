@@ -26,7 +26,7 @@ public abstract class ExpressionParser {
         return expression;
     }
     private static String evaluateSystemExpression(World world, Action action, String expression, SingleEntity on) throws PropertyNotFoundException {
-        String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
+        String systemFunctionType = Utils.getSystemFunctionType(expression);
         String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1,
                 expression.lastIndexOf(")"));
 
@@ -49,10 +49,7 @@ public abstract class ExpressionParser {
         return String.valueOf(RandomGenerator.randomizeRandomNumber(0, Integer.parseInt(bound)));
     }
     private static String evaluateSystemFuncEnv(World world, Action action, String propertyName) throws PropertyNotFoundException {
-        Property envProp = world.getEnvironment().getEnvVars().values()
-                .stream()
-                .filter(element -> element.getName().equals(propertyName))
-                .findFirst().orElse(null);
+        Property envProp = Utils.findEnvironmentPropertyByName(world, propertyName);
 
         if (Objects.isNull(envProp))
             throw new PropertyNotFoundException(String.format("Action [%s]: environment(%s) does not exist",

@@ -3,6 +3,7 @@ package engine;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dtos.*;
+import engine.consts.PropTypes;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
@@ -93,16 +94,18 @@ public class EngineAPI {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, "UUID", UUIDNotFoundException.class.getSimpleName());
 
-        Property foundProp = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
-                .getEnvVars().values().stream().filter(envProp -> envProp.getName().equals(prop.getName()))
-                .findFirst().orElse(null);
+        Property foundProp = Utils.findEnvironmentPropertyByName(historyManager.getPastSimulation(uuid).getWorld(), prop.getName());
 
         if (!Objects.isNull(foundProp)) {
             if (!Utils.validateValueInRange(prop, val))
                 return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
 
             foundProp.getValue().setRandomInitialize(false);
-            foundProp.getValue().setInit(Utils.removeExtraZeroes(foundProp, val));
+
+            if (PropTypes.NUMERIC_PROPS.contains(foundProp.getType()))
+                val = Utils.removeExtraZeroes(val);
+
+            foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
 
             return new ResponseDTO(200, String.format("UUID [%s]: Set environment variable [%s]: Value: [%s]",
