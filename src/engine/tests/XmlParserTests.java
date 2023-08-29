@@ -1,5 +1,6 @@
 package engine.tests;
 
+import engine.logs.EngineLoggers;
 import engine.parsers.XmlParser;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDWorldValidators;
@@ -12,16 +13,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.FileHandler;
 
 public class XmlParserTests {
-//    public final static String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
-    public final static String testFilesPath = "C:\\Users\\mayar\\OneDrive - The Academic College of Tel-Aviv Jaffa - MTA\\Desktop\\predictions\\src\\engine\\tests\\files";
+    public final static String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
     public final static String ex1TestFilesPath = String.format("%s/ex1", testFilesPath);
     public final static String ex2TestFilesPath = String.format("%s/ex2", testFilesPath);
 
     public XmlParserTests() throws IOException {
-//        FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/xml_parse_error.log");
-//        EngineLoggers.XML_ERRORS_LOGGER.addHandler(fh);
+        FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/xml_parse_error.log");
+        EngineLoggers.XML_ERRORS_LOGGER.addHandler(fh);
     }
 
     @Test
