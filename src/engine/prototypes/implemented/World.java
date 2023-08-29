@@ -26,20 +26,7 @@ public class World implements Serializable {
     public Rules getRules() { return rules; }
     public WorldGrid getGrid() { return grid; }
     public void initAllRandomVars() {
-        entities.getEntitiesMap().values().forEach(entity -> {
-            entity.getSingleEntities().forEach(singleEntity -> {
-                singleEntity.getProperties().getPropsMap().values().forEach(property -> {
-                    if (!property.getValue().isRandomInitialize()
-                            && Objects.isNull(property.getValue().getInit()))
-                        property.getValue().setRandomInitialize(true);
-
-                    if (property.getValue().isRandomInitialize())
-                        Utils.setPropRandomInit(property, property.getRange());
-
-                    property.getValue().setCurrentValue(property.getValue().getInit());
-                });
-            });
-        });
+        entities.initRandomVars();
 
         environment.getEnvVars().values().forEach(property -> {
             if (!property.getValue().isRandomInitialize()
