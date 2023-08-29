@@ -3,13 +3,12 @@ package engine.simulation.performers;
 import engine.consts.ConditionLogicalOperators;
 import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
-import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.InvalidTypeException;
-import engine.exceptions.PropertyNotFoundException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import helpers.Constants;
 import helpers.TypesUtils;
 
 import java.util.List;
@@ -19,43 +18,37 @@ public abstract class ConditionPerformer {
     private static boolean evaluateSingleCondition(World world, Action action,
                                                    Condition condition, SingleEntity on) throws Exception {
         Property property = Utils.findPropertyByName(on, condition.getProperty());
-
-        if (Objects.isNull(Utils.findEntityByName(world, condition.getEntityName())))
-            throw new EntityNotFoundException(String.format("Action: [%s]: Entity [%s] not found",
-                    action.getType(), action.getEntityName()));
-
-        else if (Objects.isNull(property) || Objects.isNull(property.getValue().getCurrentValue()))
-            throw new PropertyNotFoundException(String.format("Entity [%s] or property [%s] do not exist",
-                    condition.getEntityName(), condition.getProperty()));
-
-        String value = ExpressionParser.evaluateExpression(world, action, condition.getValue(), on);
+        String arg2 = ExpressionParser.evaluateExpression(world, action, condition.getValue(), on);
         String operator = condition.getOperator();
 
-        return getConditionResult(property, operator, value);
+        if (!Objects.isNull(property))
+            return getConditionResult(property.getValue().getCurrentValue(), arg2, operator);
+
+        String arg1 = ExpressionParser.evaluateExpression(world, action, condition.getProperty(), on);
+        return getConditionResult(arg1, arg2, operator);
+
     }
-    private static boolean getConditionResult(Property property, String operator, String value) throws InvalidTypeException {
-        boolean isNumeric = TypesUtils.isDecimal(value) || TypesUtils.isFloat(value);
+    private static boolean getConditionResult(String arg1, String arg2, String operator) throws InvalidTypeException {
+        boolean isNumeric = TypesUtils.isDecimal(arg1) || TypesUtils.isFloat(arg1);
+
+        if (isNumeric && arg2.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
+            arg2 = Utils.removeExtraZeroes(arg2);
 
         switch (operator) {
             case Operators.BT:
                 if (isNumeric)
-                    return Float.parseFloat(property.getValue().getCurrentValue())
-                            > Float.parseFloat(value);
+                    return Float.parseFloat(arg1) > Float.parseFloat(arg2);
                 else
-                    throw new InvalidTypeException("LT & BT are only for numeric values");
+                    throw new InvalidTypeException("lt & bt operators are only for numeric values");
                 case Operators.LT:
                 if (isNumeric)
-                    return Float.parseFloat(property.getValue().getCurrentValue())
-                            < Float.parseFloat(value);
-
+                    return Float.parseFloat(arg1) < Float.parseFloat(arg2);
                 else
-                    throw new InvalidTypeException("LT & BT are only for numeric values");
+                    throw new InvalidTypeException("lt & bt operators are only for numeric values");
             case Operators.EQUALS:
-                value = Utils.removeExtraZeroes(property, value);
-                return value.equalsIgnoreCase(property.getValue().getCurrentValue());
+                return arg1.equalsIgnoreCase(arg2);
             case Operators.NOT_EQUALS:
-                value = Utils.removeExtraZeroes(property, value);
-                return !value.equalsIgnoreCase(property.getValue().getCurrentValue());
+                return !arg1.equalsIgnoreCase(arg2);
         }
 
         return true;
