@@ -1,9 +1,6 @@
 package engine;
 
-import dtos.EntityDTO;
-import dtos.Mappers;
-import dtos.PropertyDTO;
-import dtos.SingleSimulationDTO;
+import dtos.*;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
@@ -14,6 +11,7 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
+import helpers.BoolPropValues;
 import helpers.SimulationState;
 
 import javax.xml.bind.JAXBException;
@@ -54,36 +52,35 @@ public class EngineAPI {
             return false;
         }
     }
-    public boolean loadHistory(String filePath) {
+    public ResponseDTO loadHistory(String filePath) {
         try {
             FileInputStream fi = new FileInputStream(filePath);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
-            EngineLoggers.API_LOGGER.info("History was loaded successfully");
-            return true;
+            return new ResponseDTO(200);
         }
 
         catch (Exception e) {
-            EngineLoggers.API_LOGGER.info("Attempted to load history but no history file was found");
-            return false;
+            EngineLoggers.API_LOGGER.info(e.getMessage());
+            return new ResponseDTO(500, "Attempted to load history but no history file was found");
         }
     }
-    public boolean loadXml(String xmlPath) throws JAXBException, FileNotFoundException {
+    public ResponseDTO loadXml(String xmlPath) throws JAXBException, FileNotFoundException {
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
+        ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
-        if (Objects.isNull(PRDWorldValidators.validateWorld(prdWorld).getErrorDescription())) {
+        if (Objects.isNull(validateWorldResponse.getErrorDescription())) {
             setInitialXmlWorld(new World(prdWorld));
             threadpoolCount = prdWorld.getPRDThreadCount();
-            return true;
         }
 
-        return false;
+        return validateWorldResponse;
     }
-    public void setInitialXmlWorld(World _initialWorld) {
+    private void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);
     }
-    public boolean isXmlLoaded() {
-        return historyManager.isXmlLoaded();
+    public ResponseDTO isXmlLoaded() {
+        return new ResponseDTO(200, historyManager.isXmlLoaded() ? BoolPropValues.TRUE : BoolPropValues.FALSE);
     }
     private World getInitialWorldForSimulation() {
         if (!historyManager.isEmpty())
@@ -91,10 +88,10 @@ public class EngineAPI {
 
         return historyManager.getInitialWorld();
     }
-    public String createSimulation() {
+    public ResponseDTO createSimulation() {
         SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
         historyManager.addPastSimulation(sm);
-        return sm.getUUID();
+        return new ResponseDTO(200, sm.getUUID());
     }
     public void runSimulation(String uuid) throws Exception {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
@@ -107,7 +104,31 @@ public class EngineAPI {
     public SingleSimulationDTO getSimulationDetails() {
         return historyManager.getMockSimulationForDetails();
     }
+    public ResponseDTO setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(400, "UUID", UUIDNotFoundException.class.getSimpleName());
+
+        Property foundProp = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
+                .getEnvVars().values().stream().filter(envProp -> envProp.getName().equals(prop.getName()))
+                .findFirst().orElse(null);
+
+        if (!Objects.isNull(foundProp)) {
+            if (!Utils.validateValueInRange(prop, val))
+                return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
+
+            foundProp.getValue().setRandomInitialize(false);
+            foundProp.getValue().setInit(Utils.removeExtraZeroes(foundProp, val));
+            foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
+
+            return new ResponseDTO(200, String.format("UUID [%s]: Set environment variable [%s]: Value: [%s]",
+                    uuid, foundProp.getName(), foundProp.getValue().getCurrentValue()));
+        }
+
+        return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()),
+                String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
+    }
     public List<PropertyDTO> getEnvironmentProperties(String uuid) {
+        //TODO: Change response value to ResponseDTO
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return Collections.emptyList();
 
@@ -118,23 +139,9 @@ public class EngineAPI {
                 .sorted(Comparator.comparing(PropertyDTO::getName))
                 .collect(Collectors.toList());
     }
-    public void setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return;
-
-        Property foundProp = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
-                .getEnvVars().values().stream().filter(envProp -> envProp.getName().equals(prop.getName()))
-                .findFirst().orElse(null);
-
-        if (!Objects.isNull(foundProp)) {
-            foundProp.getValue().setRandomInitialize(false);
-
-            val = Utils.removeExtraZeroes(foundProp, val);
-            foundProp.getValue().setInit(val);
-            foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
-        }
-    }
     public List<SingleSimulationDTO> getPastSimulations() {
+        //TODO: Change response value to ResponseDTO
+
         if (isHistoryEmpty())
             return Collections.emptyList();
 
@@ -145,6 +152,7 @@ public class EngineAPI {
                 .collect(Collectors.toList());
     }
     public List<EntityDTO> getEntities(String uuid) {
+        //TODO: Change response value to ResponseDTO
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return Collections.emptyList();
 
@@ -156,28 +164,34 @@ public class EngineAPI {
                 .collect(Collectors.toList());
     }
     public Map<String, Integer[]> getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
+        //TODO: Change response value to ResponseDTO
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return null;
 
         return historyManager.getEntitiesBeforeAndAfter(uuid);
     }
     public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
+        //TODO: Change response value to ResponseDTO
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return null;
 
         return historyManager.getEntitiesCountForProp(uuid, entityName, propertyName);
     }
     public SingleSimulationDTO findSelectedSimulationDTO(int selection) {
+        //TODO: Change response value to ResponseDTO
         return getPastSimulations().get(selection - 1);
     }
     private SingleSimulationDTO findSimulationDTOByUuid(String uuid) {
+        //TODO: Change response value to ResponseDTO
         return getPastSimulations().stream().filter(element -> element.getUuid().equals(uuid))
                 .findFirst().orElse(null);
     }
     public EntityDTO findSelectedEntityDTO(String uuid, int selection) {
+        //TODO: Change response value to ResponseDTO
         return !Objects.isNull(findSimulationDTOByUuid(uuid)) ? getEntities(uuid).get(selection - 1) : null;
     }
     public PropertyDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
+        //TODO: Change response value to ResponseDTO
         return entity.getProperties().get(selection - 1);
     }
 }

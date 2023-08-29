@@ -17,13 +17,13 @@ public abstract class PRDWorldValidators {
             if (validateEntities(world) && validateTermination(world)
                     && validateEnvironment(world) && validateRules(world)
                     && validateThreadpool(world) && validateGrid(world))
-                        return new ResponseDTO("XML validation passed", 200);
+                        return new ResponseDTO(200, "XML validation passed");
 
-            return new ResponseDTO("XML validation failed", 500, "Unknown reason", Exception.class.getSimpleName());
+            return new ResponseDTO(500, "XML validation failed", "Unknown");
         }
 
         catch (Exception e) {
-            return new ResponseDTO("XML validation failed", 400, e.getMessage(), e.getClass().getSimpleName());
+            return new ResponseDTO(400, "XML validation failed", e.getMessage());
         }
     }
     private static boolean validateEntities(PRDWorld world) throws Exception {
