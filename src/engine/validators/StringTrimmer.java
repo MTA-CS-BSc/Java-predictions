@@ -90,6 +90,10 @@ public abstract class StringTrimmer {
         if (!Objects.isNull(action.getPRDEnvDepth()))
             action.getPRDEnvDepth().setOf(action.getPRDEnvDepth().getOf().trim());
 
+        if (!Objects.isNull(action.getPRDActions()))
+            for (PRDAction act : action.getPRDActions().getPRDAction())
+                trimAction(act);
+
         if (!Objects.isNull(action.getMode()))
             action.setMode(action.getMode().trim());
 

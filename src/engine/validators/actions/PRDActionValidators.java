@@ -18,6 +18,11 @@ public abstract class PRDActionValidators {
             throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist",
                     action.getType(), action.getEntity()));
 
+        if (!Objects.isNull(action.getPRDActions()))
+            for (PRDAction act : action.getPRDActions().getPRDAction())
+                if (!validateAction(world, act))
+                    return false;
+
         if (!Objects.isNull(action.getPRDSecondaryEntity()))
             if (!validateSecondaryEntity(world, action))
                 return false;
