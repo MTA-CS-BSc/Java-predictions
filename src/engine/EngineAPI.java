@@ -183,13 +183,19 @@ public class EngineAPI {
 
         return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
-    public void runSimulation(String uuid) throws Exception {
+    public ResponseDTO runSimulation(String uuid) throws Exception {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
             historyManager.getPastSimulation(uuid).run();
 
-            if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR)
+            if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR) {
                 historyManager.getPastSimulations().remove(uuid);
+                return new ResponseDTO(500, String.format("Simulation [%s] was removed", uuid), "Simulation runtime error occurred.");
+            }
+
+            return new ResponseDTO(200, SimulationState.FINISHED);
         }
+
+        return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
     }
     private void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);
