@@ -6,7 +6,6 @@ import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDValue;
 import helpers.Constants;
-import helpers.TypesUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -76,8 +75,12 @@ public class Property implements Serializable {
         if (value.isRandomInitialize())
             Utils.setPropRandomInit(this, range);
 
-        else
-            value.setInit(Utils.removeExtraZeroes(this, property.getPRDValue().getInit()));
+        else {
+            if (PropTypes.NUMERIC_PROPS.contains(type))
+                property.getPRDValue().setInit(Utils.removeExtraZeroes(property.getPRDValue().getInit()));
+
+            value.setInit(property.getPRDValue().getInit());
+        }
 
         value.setCurrentValue(value.getInit());
     }
