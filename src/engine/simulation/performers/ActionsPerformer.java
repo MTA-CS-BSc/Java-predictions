@@ -14,8 +14,8 @@ import java.util.Objects;
 
 public abstract class ActionsPerformer {
     public static void fireAction(World world, Action action, SingleEntity on) throws Exception {
-        if (!validateEntityExists(world, action))
-            return; // Might be dead already
+        if (!ActionTypes.ENTITY_MAY_NOT_EXIST_TYPES.contains(action.getType()) && !validateEntityExists(world, action))
+            return;
 
         switch (action.getType()) {
             case ActionTypes.INCREASE:
