@@ -90,7 +90,7 @@ public abstract class ConditionPerformer {
         return evaluateMultipleCondition(world, action, condition, on);
     }
     private static void handleAll(World world, Action action) throws Exception {
-        Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
+        Entity mainEntity = Utils.findEntityByName(world, action.getCondition().getEntityName());
 
         for (SingleEntity entity : mainEntity.getSingleEntities())
             handleSingle(world, action, entity);
@@ -102,7 +102,7 @@ public abstract class ConditionPerformer {
         boolean conditionResult = evaluateCondition(world, action, condition, on);
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Condition result is [%s]," +
-                " evaluating relevant actions...", action.getType(), action.getEntityName(), conditionResult));
+                " evaluating relevant actions...", action.getType(), condition.getEntityName(), conditionResult));
 
         if (conditionResult)
             for (Action actToPerform : thenActions)
