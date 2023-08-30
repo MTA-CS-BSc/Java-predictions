@@ -3,7 +3,6 @@ package engine.simulation.performers;
 import engine.consts.ConditionLogicalOperators;
 import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
-import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.InvalidTypeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
@@ -92,13 +91,7 @@ public abstract class ConditionPerformer {
 
         return evaluateMultipleCondition(world, action, condition, on);
     }
-    private static void handleAll(World world, ConditionAction action) throws Exception {
-        Entity mainEntity = Utils.findEntityByName(world, action.getCondition().getEntityName());
-
-        for (SingleEntity entity : mainEntity.getSingleEntities())
-            handleSingle(world, action, entity);
-    }
-    private static void handleSingle(World world, ConditionAction action, SingleEntity on) throws Exception {
+    public static void performAction(World world, ConditionAction action, SingleEntity on) throws Exception {
         Condition condition = action.getCondition();
         List<Action> thenActions = action.getThen().getActions();
         Else prdElse = action.getElse();
@@ -114,15 +107,5 @@ public abstract class ConditionPerformer {
         else if (!Objects.isNull(prdElse))
             for (Action actToPerform : prdElse.getActions())
                 ActionsPerformer.fireAction(world, actToPerform, on);
-    }
-    public static void handle(World world, ConditionAction action, SingleEntity on) throws Exception {
-        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
-            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist", action.getType(), action.getEntityName()));
-
-        if (Objects.isNull(on))
-            handleAll(world, action);
-
-        else
-            handleSingle(world, action, on);
     }
 }

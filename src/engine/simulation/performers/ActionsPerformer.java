@@ -15,28 +15,28 @@ public abstract class ActionsPerformer {
         //TODO: Add secondary entity chooser & send to all functions
         switch (action.getType()) {
             case ActionTypes.INCREASE:
-                IncreasePerformer.handle(world, (IncreaseAction)action, on);
+                IncreasePerformer.performAction(world, (IncreaseAction)action, on);
                 break;
             case ActionTypes.DECREASE:
-                DecreasePerformer.handle(world, (DecreaseAction)action, on);
+                DecreasePerformer.performAction(world, (DecreaseAction)action, on);
                 break;
             case ActionTypes.CALCULATION:
-                CalculationPerformer.handle(world, (CalculationAction)action, on);
+                CalculationPerformer.performAction(world, (CalculationAction)action, on);
                 break;
             case ActionTypes.SET:
-                SetPerformer.handle(world, (SetAction)action, on);
+                SetPerformer.performAction(world, (SetAction)action, on);
                 break;
             case ActionTypes.KILL:
-                KillPerformer.handle(world, (KillAction)action, on);
+                KillPerformer.performAction(world, (KillAction)action, on);
                 break;
             case ActionTypes.CONDITION:
-                ConditionPerformer.handle(world, (ConditionAction)action, on);
+                ConditionPerformer.performAction(world, (ConditionAction)action, on);
                 break;
             case ActionTypes.PROXIMITY:
-                ProximityPerformer.handle(world, (ProximityAction)action, on);
+                ProximityPerformer.performAction(world, (ProximityAction)action, on);
                 break;
             case ActionTypes.REPLACE:
-                ReplacePerformer.handle(world, (ReplaceAction)action, on);
+                ReplacePerformer.performAction(world, (ReplaceAction)action, on);
                 break;
         }
     }
