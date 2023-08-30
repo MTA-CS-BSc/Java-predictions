@@ -11,7 +11,7 @@ public abstract class Action {
     protected String entityName;
     public Action(PRDAction action) {
         type = action.getType();
-        entityName = action.getEntity();
+        entityName = Objects.isNull(action.getEntity()) ? "" : action.getEntity();
 
         if (!Objects.isNull(action.getPRDSecondaryEntity()))
             this.secondaryEntity = new SecondaryEntity(action.getPRDSecondaryEntity());
