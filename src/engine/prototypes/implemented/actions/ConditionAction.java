@@ -6,15 +6,13 @@ import engine.prototypes.implemented.Then;
 import engine.prototypes.jaxb.PRDAction;
 
 public class ConditionAction extends Action {
-    protected String entityName;
     protected Condition condition;
     protected Then prdThen;
     protected Else prdElse;
 
     public ConditionAction(PRDAction action) {
-        super(action.getType(), action.getPRDSecondaryEntity());
+        super(action);
 
-        entityName = action.getEntity();
         condition = new Condition(action.getPRDCondition());
         prdThen = new Then(action.getPRDThen());
         prdElse = new Else(action.getPRDElse());
@@ -30,5 +28,4 @@ public class ConditionAction extends Action {
     public Else getElse() {
         return prdElse;
     }
-    public String getEntityName() { return entityName; }
 }

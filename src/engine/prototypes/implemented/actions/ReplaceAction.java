@@ -7,7 +7,7 @@ public class ReplaceAction extends Action {
     protected String create;
     protected String mode;
     public ReplaceAction(PRDAction action) {
-        super(action.getType(), action.getPRDSecondaryEntity());
+        super(action);
 
         kill = action.getKill();
         create = action.getCreate();

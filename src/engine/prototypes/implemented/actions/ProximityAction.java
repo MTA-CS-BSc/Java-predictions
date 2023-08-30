@@ -9,7 +9,7 @@ public class ProximityAction extends Action {
     protected String depthExpression;
     protected Actions actions;
     public ProximityAction(PRDAction action) {
-        super(action.getType(), action.getPRDSecondaryEntity());
+        super(action);
 
         depthExpression = action.getPRDEnvDepth().getOf();
         between = new Between(action.getPRDBetween());
