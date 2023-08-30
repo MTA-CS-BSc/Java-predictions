@@ -4,14 +4,13 @@ import engine.consts.TerminationReasons;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
+import engine.prototypes.implemented.actions.Action;
 import engine.simulation.performers.ActionsPerformer;
 import helpers.SimulationState;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class SingleSimulation extends SingleSimulationLog implements Serializable {
     protected SimulationState simulationState;
@@ -45,21 +44,45 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         return "";
     }
     public void handleSingleTick() {
-        Map<String, Rule> rulesToApply = Utils.getRulesToApply(world, ticks);
+        List<Action> actionsToPerform = getActionsToPerform();
+        List<SingleEntity> allEntities = getAllSingleEntities();
 
-        rulesToApply.forEach((ruleName, rule) -> {
-            Actions actionsToPerform = rule.getActions();
-            actionsToPerform.getActions().forEach(action -> {
-                try {
-                    ActionsPerformer.fireAction(world, action, null);
-                } catch (Exception e) {
-                    simulationState = SimulationState.ERROR;
+        allEntities.forEach(singleEntity -> {
+           actionsToPerform.forEach(action -> {
+              if (!action.getEntityName().isEmpty() && !action.getEntityName().equals(singleEntity.getEntityName())) { }
 
-                    EngineLoggers.SIMULATION_ERRORS_LOGGER.info(e.getMessage());
-                    EngineLoggers.SIMULATION_ERRORS_LOGGER.info("Runtime error! Stopping...");
-                }
-            });
+              else if (!action.getEntityName().isEmpty() && action.getEntityName().equals(singleEntity.getEntityName())) {
+                  if (Objects.isNull(action.getSecondaryEntity())) {
+                      try {
+                          ActionsPerformer.fireAction(world, action, singleEntity);
+                      } catch (Exception e) {
+                          simulationState = SimulationState.ERROR;
+                          EngineLoggers.SIMULATION_ERRORS_LOGGER.info(e.getMessage());
+                          EngineLoggers.SIMULATION_ERRORS_LOGGER.info("Runtime error! Stopping...");
+                      }
+                  }
+
+                  else {
+                      //TODO: Handle secondary entity exists
+                  }
+              }
+           });
         });
+    }
+    private List<SingleEntity> getAllSingleEntities() {
+        return world.getEntities().getEntitiesMap().values()
+                .stream()
+                .map(Entity::getSingleEntities)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
+    }
+    private List<Action> getActionsToPerform() {
+        return Utils.getRulesToApply(world, ticks).values()
+                .stream()
+                .map(Rule::getActions)
+                .map(Actions::getActions)
+                .flatMap(List::stream)
+                .collect(Collectors.toList());
     }
     public void run() throws Exception {
         if (Objects.isNull(world))
