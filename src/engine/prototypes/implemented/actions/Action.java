@@ -8,12 +8,15 @@ import java.util.Objects;
 public abstract class Action {
     protected String type;
     protected SecondaryEntity secondaryEntity;
-    public Action(String type, PRDAction.PRDSecondaryEntity secondaryEntity) {
-        this.type = type;
+    protected String entityName;
+    public Action(PRDAction action) {
+        type = action.getType();
+        entityName = action.getEntity();
 
-        if (!Objects.isNull(secondaryEntity))
-            this.secondaryEntity = new SecondaryEntity(secondaryEntity);
+        if (!Objects.isNull(action.getPRDSecondaryEntity()))
+            this.secondaryEntity = new SecondaryEntity(action.getPRDSecondaryEntity());
     }
     public String getType() { return type; }
     public SecondaryEntity getSecondaryEntity() { return secondaryEntity; }
+    public String getEntityName() { return entityName; }
 }
