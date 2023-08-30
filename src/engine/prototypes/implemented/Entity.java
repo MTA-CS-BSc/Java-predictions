@@ -49,7 +49,7 @@ public class Entity implements Serializable {
         setPopulation(_population);
 
         for (int i = 0; i < population; i++)
-            singleEntities.add(new SingleEntity(getInitialProperties()));
+            singleEntities.add(new SingleEntity(name, getInitialProperties()));
     }
     @Override
     public String toString() {

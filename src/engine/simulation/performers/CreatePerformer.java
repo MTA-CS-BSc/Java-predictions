@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class CreatePerformer {
     public static SingleEntity scratch(Entity entity) {
-        SingleEntity created = new SingleEntity(entity.getInitialProperties());
+        SingleEntity created = new SingleEntity(entity.getName(), entity.getInitialProperties());
         entity.getSingleEntities().add(created);
         entity.setPopulation(entity.getPopulation() + 1);
 
