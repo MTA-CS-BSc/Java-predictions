@@ -11,17 +11,21 @@ import java.util.Objects;
 public class SingleEntity implements Serializable {
     protected Properties properties;
     protected Coordinate coordinate;
-    public SingleEntity(List<PRDProperty> props) {
+    protected String entityName;
+    public SingleEntity(String entityName, List<PRDProperty> props) {
         properties = new Properties(props);
         coordinate = new Coordinate(Constants.NOT_SET, Constants.NOT_SET);
+        this.entityName = entityName;
     }
     public SingleEntity(SingleEntity other) {
         properties = new Properties(other.getProperties());
         coordinate = new Coordinate(other.coordinate);
+        entityName = other.entityName;
     }
-    public SingleEntity(Properties fromProperties) {
+    public SingleEntity(String entityName, Properties fromProperties) {
         properties = new Properties(fromProperties);
         coordinate = new Coordinate(Constants.NOT_SET, Constants.NOT_SET);
+        this.entityName = entityName;
     }
     public Properties getProperties() {
         return properties;
@@ -45,4 +49,6 @@ public class SingleEntity implements Serializable {
             property.getValue().setCurrentValue(property.getValue().getInit());
         });
     }
+
+    public String getEntityName() { return entityName; }
 }
