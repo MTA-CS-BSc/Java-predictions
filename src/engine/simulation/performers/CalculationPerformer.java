@@ -1,19 +1,17 @@
 package engine.simulation.performers;
 
 import engine.consts.ActionTypes;
-import engine.exceptions.EmptyExpressionException;
-import engine.exceptions.ErrorMessageFormatter;
-import engine.exceptions.InvalidTypeException;
-import engine.exceptions.PropertyNotFoundException;
+import engine.exceptions.*;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import engine.prototypes.implemented.actions.CalculationAction;
 import helpers.Constants;
 
 import java.util.Objects;
 
 public abstract class CalculationPerformer {
-    private static String getCalculationResult(World world, Action action, SingleEntity on) throws Exception {
+    private static String getCalculationResult(World world, CalculationAction action, SingleEntity on) throws Exception {
         Multiply multiply = action.getMultiply();
         Divide divide = action.getDivide();
 
@@ -33,27 +31,30 @@ public abstract class CalculationPerformer {
         return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
 
     }
-    private static void handleAll(World world, Action action) throws Exception {
+    private static void handleAll(World world, CalculationAction action) throws Exception {
         Entity mainEntity = Utils.findEntityByName(world, action.getEntityName());
 
         for (SingleEntity entity : mainEntity.getSingleEntities())
             handleSingle(world, action, entity);
     }
-    private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
+    private static void handleSingle(World world, CalculationAction action, SingleEntity on) throws Exception {
         Property resultProperty = Utils.findPropertyByName(on, action.getResultPropertyName());
         String newValue = getCalculationResult(world, action, on);
         ActionsPerformer.setPropertyValue(ActionTypes.CALCULATION, action.getEntityName(), resultProperty, newValue);
     }
-    private static void performAction(World world, Action action, SingleEntity on) throws Exception {
+    private static void performAction(World world, CalculationAction action, SingleEntity on) throws Exception {
         if (Objects.isNull(on))
             handleAll(world, action);
 
         else
             handleSingle(world, action, on);
     }
-    public static void handle(World world, Action action, SingleEntity on) throws Exception {
+    public static void handle(World world, CalculationAction action, SingleEntity on) throws Exception {
+        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
+            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist", action.getType(), action.getEntityName()));
+
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getResultPropertyName())))
-            throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));
+            throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getResultPropertyName()));
 
         performAction(world, action, on);
     }

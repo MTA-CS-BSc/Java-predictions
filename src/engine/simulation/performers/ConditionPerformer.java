@@ -3,11 +3,13 @@ package engine.simulation.performers;
 import engine.consts.ConditionLogicalOperators;
 import engine.consts.ConditionSingularities;
 import engine.consts.Operators;
+import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.InvalidTypeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import engine.prototypes.implemented.actions.ConditionAction;
 import helpers.Constants;
 import helpers.TypesUtils;
 
@@ -15,7 +17,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class ConditionPerformer {
-    private static boolean evaluateSingleCondition(World world, Action action,
+    private static boolean evaluateSingleCondition(World world, ConditionAction action,
                                                    Condition condition, SingleEntity on) throws Exception {
         Property property = Utils.findPropertyByName(on, condition.getProperty());
         String arg2 = ExpressionParser.evaluateExpression(world, action, condition.getValue(), on);
@@ -53,7 +55,7 @@ public abstract class ConditionPerformer {
 
         return true;
     }
-    private static boolean evaluateMultipleCondition(World world, Action action,
+    private static boolean evaluateMultipleCondition(World world, ConditionAction action,
                                                      Condition condition, SingleEntity on) {
         List<Condition> allConditions = condition.getConditions();
         String logicalOperator = condition.getLogicalOperator();
@@ -83,19 +85,19 @@ public abstract class ConditionPerformer {
 
         return true;
     }
-    private static boolean evaluateCondition(World world, Action action, Condition condition, SingleEntity on) throws Exception {
+    private static boolean evaluateCondition(World world, ConditionAction action, Condition condition, SingleEntity on) throws Exception {
         if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
             return evaluateSingleCondition(world, action, condition, on);
 
         return evaluateMultipleCondition(world, action, condition, on);
     }
-    private static void handleAll(World world, Action action) throws Exception {
+    private static void handleAll(World world, ConditionAction action) throws Exception {
         Entity mainEntity = Utils.findEntityByName(world, action.getCondition().getEntityName());
 
         for (SingleEntity entity : mainEntity.getSingleEntities())
             handleSingle(world, action, entity);
     }
-    private static void handleSingle(World world, Action action, SingleEntity on) throws Exception {
+    private static void handleSingle(World world, ConditionAction action, SingleEntity on) throws Exception {
         Condition condition = action.getCondition();
         List<Action> thenActions = action.getThen().getActions();
         Else prdElse = action.getElse();
@@ -112,7 +114,10 @@ public abstract class ConditionPerformer {
             for (Action actToPerform : prdElse.getActions())
                 ActionsPerformer.fireAction(world, actToPerform, on);
     }
-    public static void handle(World world, Action action, SingleEntity on) throws Exception {
+    public static void handle(World world, ConditionAction action, SingleEntity on) throws Exception {
+        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
+            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist", action.getType(), action.getEntityName()));
+
         if (Objects.isNull(on))
             handleAll(world, action);
 
