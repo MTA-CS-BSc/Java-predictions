@@ -85,8 +85,8 @@ public abstract class Utils {
     public static String getSystemFunctionType(String expression) {
         return expression.substring(0, expression.indexOf("("));
     }
-    public static String getExpressionType(World world, Action action, String expression) {
-        Property expressionEntityProp = findAnyPropertyByName(world, action.getEntityName(), expression);
+    public static String getExpressionType(World world, String entityName, String expression) {
+        Property expressionEntityProp = findAnyPropertyByName(world, entityName, expression);
 
         if (ValidatorsUtils.isSystemFunction(expression)) {
             String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
@@ -100,9 +100,9 @@ public abstract class Utils {
                 case SystemFunctions.ENVIRONMENT:
                     return findEnvironmentPropertyByName(world, systemFunctionValue).getType();
                 case SystemFunctions.EVALUATE:
-                    String entityName = systemFunctionValue.split("\\.")[0];
-                    String propName = systemFunctionValue.split("\\.")[1];
-                    return findAnyPropertyByName(world, entityName, propName).getType();
+                    String evaluateEntityName = systemFunctionValue.split("\\.")[0];
+                    String evaluatePropName = systemFunctionValue.split("\\.")[1];
+                    return findAnyPropertyByName(world, evaluateEntityName, evaluatePropName).getType();
             }
         }
 
