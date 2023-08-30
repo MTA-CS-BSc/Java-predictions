@@ -1,6 +1,7 @@
 package engine.prototypes.implemented;
 
 import engine.prototypes.implemented.actions.Action;
+import engine.prototypes.implemented.actions.ActionCreator;
 import engine.prototypes.jaxb.PRDElse;
 
 import java.io.Serializable;
@@ -15,7 +16,12 @@ public class Else implements Serializable {
         actions = new ArrayList<>();
 
         if (!Objects.isNull(_else))
-            _else.getPRDAction().forEach(action -> actions.add(new Action(action)));
+            _else.getPRDAction().forEach(action -> {
+                Action created = ActionCreator.createAction(action);
+
+                if (!Objects.isNull(created))
+                    actions.add(created);
+            });
     }
 
     public List<Action> getActions() { return actions; }
