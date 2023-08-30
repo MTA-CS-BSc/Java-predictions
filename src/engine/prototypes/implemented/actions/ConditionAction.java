@@ -1,6 +1,5 @@
 package engine.prototypes.implemented.actions;
 
-import engine.prototypes.implemented.Action;
 import engine.prototypes.implemented.Condition;
 import engine.prototypes.implemented.Else;
 import engine.prototypes.implemented.Then;

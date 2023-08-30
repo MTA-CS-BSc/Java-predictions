@@ -1,5 +1,6 @@
-package engine.prototypes.implemented;
+package engine.prototypes.implemented.actions;
 
+import engine.prototypes.implemented.SecondaryEntity;
 import engine.prototypes.jaxb.PRDAction;
 
 import java.util.Objects;

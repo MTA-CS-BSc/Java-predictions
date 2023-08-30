@@ -1,6 +1,5 @@
 package engine.prototypes.implemented.actions;
 
-import engine.prototypes.implemented.Action;
 import engine.prototypes.jaxb.PRDAction;
 
 public class DecreaseAction extends Action {

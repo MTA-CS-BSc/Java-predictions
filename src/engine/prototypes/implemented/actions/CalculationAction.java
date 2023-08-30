@@ -1,6 +1,5 @@
 package engine.prototypes.implemented.actions;
 
-import engine.prototypes.implemented.Action;
 import engine.prototypes.implemented.Divide;
 import engine.prototypes.implemented.Multiply;
 import engine.prototypes.jaxb.PRDAction;

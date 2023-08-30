@@ -9,6 +9,7 @@ import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import engine.prototypes.implemented.actions.Action;
 import engine.prototypes.implemented.actions.ConditionAction;
 import helpers.Constants;
 import helpers.TypesUtils;

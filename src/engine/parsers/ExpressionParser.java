@@ -5,7 +5,7 @@ import engine.exceptions.PropertyNotFoundException;
 import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.modules.ValidatorsUtils;
-import engine.prototypes.implemented.Action;
+import engine.prototypes.implemented.actions.Action;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.SingleEntity;
 import engine.prototypes.implemented.World;

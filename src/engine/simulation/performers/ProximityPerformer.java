@@ -3,6 +3,7 @@ package engine.simulation.performers;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
+import engine.prototypes.implemented.actions.Action;
 import engine.prototypes.implemented.actions.ProximityAction;
 
 import java.util.Objects;

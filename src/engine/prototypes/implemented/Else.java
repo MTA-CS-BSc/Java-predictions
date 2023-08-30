@@ -1,5 +1,6 @@
 package engine.prototypes.implemented;
 
+import engine.prototypes.implemented.actions.Action;
 import engine.prototypes.jaxb.PRDElse;
 
 import java.io.Serializable;
