@@ -192,9 +192,14 @@ public class EngineAPI {
     }
     public ResponseDTO runSimulation(String uuid) throws Exception {
         if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
-            historyManager.getPastSimulation(uuid).run();
+            SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
-            if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR) {
+            if (simulation.getSimulationState() == SimulationState.CREATED)
+                setEntitiesInitialLocations(simulation);
+
+            simulation.run();
+
+            if (simulation.getSimulationState() == SimulationState.ERROR) {
                 historyManager.getPastSimulations().remove(uuid);
                 return new ResponseDTO(500, String.format("Simulation [%s] was removed", uuid), "Simulation runtime error occurred.");
             }
@@ -215,8 +220,8 @@ public class EngineAPI {
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
     }
-    public ResponseDTO setEntitiesInitialLocations(String uuid) {
-        historyManager.getPastSimulation(uuid).getWorld()
+    private ResponseDTO setEntitiesInitialLocations(SingleSimulation simulation) {
+        simulation.getWorld()
                 .getEntities()
                 .getEntitiesMap()
                 .values()
@@ -225,23 +230,32 @@ public class EngineAPI {
                         Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1),
                                 RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
 
-                        while (isCoordinateTaken(uuid, randomCoordinate)) {
+                        while (isCoordinateTaken(simulation, randomCoordinate)) {
                             randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1));
                             randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
                         }
 
                         singleEntity.setCoordinate(randomCoordinate);
-                        changeCoordinateState(uuid, randomCoordinate);
+                        changeCoordinateState(simulation, randomCoordinate);
                     });
                 });
 
         return new ResponseDTO(200, "Set all entities' locations successfully.");
     }
-    private boolean isCoordinateTaken(String uuid, Coordinate coordinate) {
-        return historyManager.getPastSimulation(uuid).getWorld().getGrid().isTaken(coordinate);
+    public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+        if (!simulation.getSimulationState().equals(SimulationState.RUNNING))
+            return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
+                    "Requested simulation is not running");
+
+        simulation.setSimulationState(isFinished ? SimulationState.FINISHED : SimulationState.STOPPED);
+        return new ResponseDTO(200, String.format("Simulation [%s] is [%s]", uuid, isFinished ? "terminated" : "stopped"));
     }
-    private void changeCoordinateState(String uuid, Coordinate coordinate) {
-        historyManager.getPastSimulation(uuid).getWorld().getGrid().changeCoordinateState(coordinate);
+    private boolean isCoordinateTaken(SingleSimulation simulation, Coordinate coordinate) {
+        return simulation.getWorld().getGrid().isTaken(coordinate);
+    }
+    private void changeCoordinateState(SingleSimulation simulation, Coordinate coordinate) {
+        simulation.getWorld().getGrid().changeCoordinateState(coordinate);
     }
     private void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);
