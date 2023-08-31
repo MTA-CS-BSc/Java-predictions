@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import dtos.SingleSimulationDTO;
 import engine.EngineAPI;
 import engine.exceptions.UUIDNotFoundException;
-import helpers.BoolPropValues;
 import ui.enums.MainMenu;
 import ui.logs.UILoggers;
 import ui.printers.WorldDetailsPrinter;
@@ -75,12 +74,12 @@ public class Orchestrator {
                 "XML was not loaded. History unchanged.\n");
     }
     private void handleSaveWorldState() {
-        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (!new Gson().fromJson(api.isXmlLoaded().getData(), Boolean.class)) {
             System.out.println("Attempted to save world state but no XML file was loaded to the system");
             return;
         }
 
-        else if (api.isHistoryEmpty().getData().equals(BoolPropValues.TRUE)) {
+        else if (new Gson().fromJson(api.isHistoryEmpty().getData(), Boolean.class)) {
             System.out.println("Attempted to save world state but no simulations were made");
             return;
         }
@@ -90,16 +89,16 @@ public class Orchestrator {
         if (Objects.isNull(fullPath) || fullPath.isEmpty())
             return;
 
-        System.out.println(api.writeHistoryToFile(fullPath).getData().equals(BoolPropValues.TRUE) ?
+        System.out.println(new Gson().fromJson(api.writeHistoryToFile(fullPath).getData(), Boolean.class) ?
                 "History saved." : "Error writing history file!");
     }
     private void handleRunSimulation() throws Exception {
-        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (!new Gson().fromJson(api.isXmlLoaded().getData(), Boolean.class)) {
             System.out.println("Attempted to run simulation but no xml was loaded to the system!");
             return;
         }
 
-        currentSimulationUuid = api.createSimulation().getData();
+        currentSimulationUuid = new Gson().fromJson(api.createSimulation().getData(), String.class);
         environmentPropsInitializer.handlePropsSettings(api, currentSimulationUuid);
 
         UILoggers.OrchestratorLogger.info(String.format("Simulation [%s] is starting", currentSimulationUuid));
@@ -110,7 +109,7 @@ public class Orchestrator {
         currentSimulationUuid = "";
     }
     private void handleShowSimulationDetails() {
-        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (!new Gson().fromJson(api.isXmlLoaded().getData(), Boolean.class)) {
             System.out.println("Attempted to show simulation details but no XML file was loaded to the system");
             return;
         }
@@ -121,12 +120,12 @@ public class Orchestrator {
         }
     }
     private void handleShowPastSimulation() throws UUIDNotFoundException {
-        if (api.isXmlLoaded().getData().equals(BoolPropValues.FALSE)) {
+        if (!new Gson().fromJson(api.isXmlLoaded().getData(), Boolean.class)) {
             System.out.println("Attempted to show past simulation but no XML file was loaded to the system");
             return;
         }
 
-        else if (api.isHistoryEmpty().getData().equals(BoolPropValues.TRUE)) {
+        else if (new Gson().fromJson(api.isHistoryEmpty().getData(), Boolean.class)) {
             System.out.println("Attempted to show past simulation but no simulations were made");
             return;
         }
