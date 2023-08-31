@@ -32,8 +32,8 @@ public class SingleEntity implements Serializable {
     }
     public Coordinate getCoordinate() { return coordinate; }
     public void setCoordinate(Coordinate other) {
-        coordinate.setX(other.x);
-        coordinate.setY(other.y);
+        coordinate.setX(other.getX());
+        coordinate.setY(other.getY());
     }
     public void initRandomVars() {
         getProperties().getPropsMap().values().forEach(property -> {
