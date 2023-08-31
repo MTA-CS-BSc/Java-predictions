@@ -14,7 +14,6 @@ public abstract class EnvPropsInitializerPrinter {
         AtomicInteger index = new AtomicInteger(1);
         List<PropertyDTO> props = new Gson().fromJson(api.getEnvironmentProperties(uuid).getData(), new TypeToken<List<PropertyDTO>>(){}.getType());
 
-
         props.forEach(property -> {
             if (!Objects.isNull(property.getRange()) && !property.hasNoRange())
                 System.out.printf("%d. %s %s, range: [%.2f, %.2f]%n", index.getAndIncrement(),
