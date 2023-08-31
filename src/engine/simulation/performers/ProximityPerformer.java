@@ -26,7 +26,8 @@ public abstract class ProximityPerformer {
         Bounds bounds = getBounds(grid, start, depth);
 
         int iterator = bounds.colMDepth;
-        do {
+
+        while (iterator != (bounds.colPDepth + 1) % grid.getColumns()) {
             relevant.add(new Coordinate(bounds.rowMDepth, iterator));
             relevant.add(new Coordinate(bounds.rowPDepth, iterator));
 
@@ -34,10 +35,10 @@ public abstract class ProximityPerformer {
 
             if (iterator == grid.getColumns())
                 iterator = 0;
-        } while (iterator != (bounds.colPDepth + 1) % grid.getColumns());
+        }
 
         iterator = bounds.rowMDepth;
-        do {
+        while (iterator != (bounds.rowPDepth + 1) % grid.getRows()) {
             relevant.add(new Coordinate(iterator, bounds.colMDepth));
             relevant.add(new Coordinate(iterator, bounds.colPDepth));
 
@@ -45,7 +46,7 @@ public abstract class ProximityPerformer {
 
             if (iterator == grid.getRows())
                 iterator = 0;
-        } while (iterator != (bounds.rowPDepth + 1) % grid.getRows());
+        }
 
         return relevant;
     }
