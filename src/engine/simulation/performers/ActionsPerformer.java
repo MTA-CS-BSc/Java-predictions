@@ -15,31 +15,46 @@ import helpers.TypesUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class ActionsPerformer {
-    public static void fireAction(World world, Action action, SingleEntity main) throws Exception {
-        //TODO: Add secondary entity chooser & send to all functions
+    public static void fireAction(World world, Action actToPerform, SingleEntity main) throws Exception {
+        if (!Objects.isNull(actToPerform.getSecondaryEntity())) {
+            List<SingleEntity> secondaryEntities = ActionsPerformer.chooseSecondaryEntities(world, actToPerform);
+
+            if (secondaryEntities.isEmpty())
+                ActionsPerformer.handleAction(world, actToPerform, main, null);
+
+            else
+                for (SingleEntity currentSecondary : secondaryEntities)
+                    ActionsPerformer.handleAction(world, actToPerform, main, currentSecondary);
+        }
+
+        else
+            ActionsPerformer.handleAction(world, actToPerform, main, null);
+    }
+    private static void handleAction(World world, Action action, SingleEntity main, SingleEntity secondary) throws Exception {
         switch (action.getType()) {
             case ActionTypes.INCREASE:
-                IncreasePerformer.performAction(world, (IncreaseAction)action, main);
+                IncreasePerformer.performAction(world, (IncreaseAction)action, main, secondary);
                 break;
             case ActionTypes.DECREASE:
-                DecreasePerformer.performAction(world, (DecreaseAction)action, main);
+                DecreasePerformer.performAction(world, (DecreaseAction)action, main, secondary);
                 break;
             case ActionTypes.CALCULATION:
-                CalculationPerformer.performAction(world, (CalculationAction)action, main);
+                CalculationPerformer.performAction(world, (CalculationAction)action, main, secondary);
                 break;
             case ActionTypes.SET:
-                SetPerformer.performAction(world, (SetAction)action, main);
+                SetPerformer.performAction(world, (SetAction)action, main, secondary);
                 break;
             case ActionTypes.KILL:
-                KillPerformer.performAction(world, (KillAction)action, main);
+                KillPerformer.performAction(world, (KillAction)action, main, secondary);
                 break;
             case ActionTypes.CONDITION:
-                ConditionPerformer.performAction(world, (ConditionAction)action, main);
+                ConditionPerformer.performAction(world, (ConditionAction)action, main, secondary);
                 break;
             case ActionTypes.PROXIMITY:
-                ProximityPerformer.performAction(world, (ProximityAction)action, main);
+                ProximityPerformer.performAction(world, (ProximityAction)action, main, secondary);
                 break;
             case ActionTypes.REPLACE:
                 ReplacePerformer.performAction(world, (ReplaceAction)action, main);

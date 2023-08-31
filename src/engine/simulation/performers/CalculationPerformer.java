@@ -36,10 +36,10 @@ public abstract class CalculationPerformer {
         String newValue = getCalculationResult(world, action, main);
         ActionsPerformer.setPropertyValue(ActionTypes.CALCULATION, action.getEntityName(), resultProperty, newValue);
     }
-    public static void performAction(World world, CalculationAction action, SingleEntity main) throws Exception {
+    public static void performAction(World world, CalculationAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getResultPropertyName())))
             throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getResultPropertyName()));
 
-        handle(world, action, main);
+        handle(world, action, action.getEntityName().equals(main.getEntityName()) ? main : secondary);
     }
 }

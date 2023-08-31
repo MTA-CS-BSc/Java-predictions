@@ -1,17 +1,18 @@
 package engine.simulation;
 
-import engine.consts.ActionTypes;
 import engine.consts.TerminationReasons;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.Action;
-import engine.prototypes.implemented.actions.ProximityAction;
 import engine.simulation.performers.ActionsPerformer;
 import helpers.SimulationState;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class SingleSimulation extends SingleSimulationLog implements Serializable {
@@ -55,19 +56,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                   // Skip action
               }
 
-              else if (!action.getEntityName().isEmpty() && action.getEntityName().equals(singleEntity.getEntityName())) {
-                  if (Objects.isNull(action.getSecondaryEntity())) {
-                      try {
-                          ActionsPerformer.fireAction(world, action, singleEntity);
-                      } catch (Exception e) { simulationState = SimulationState.ERROR; }
-                  }
-
-                  else {
-                      //TODO: Handle secondary entity exists
-                  }
-              }
-
-              else if (action.getType().equals(ActionTypes.PROXIMITY) && ((ProximityAction)action).getBetween().getSourceEntity().equals(singleEntity.getEntityName())) {
+              else if (action.getEntityName().isEmpty() || action.getEntityName().equals(singleEntity.getEntityName())) {
                   try {
                       ActionsPerformer.fireAction(world, action, singleEntity);
                   } catch (Exception e) { simulationState = SimulationState.ERROR; }

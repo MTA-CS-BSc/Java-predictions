@@ -26,10 +26,10 @@ public abstract class KillPerformer {
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Killed 1 entity named [%s]. Population is [%d]", entityName, mainEntity.getPopulation()));
     }
-    public static void performAction(World world, KillAction action, SingleEntity kill) throws EntityNotFoundException {
+    public static void performAction(World world, KillAction action, SingleEntity main, SingleEntity secondary) throws EntityNotFoundException {
         if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
             throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist", action.getType(), action.getEntityName()));
 
-        handle(world, action.getEntityName(), kill);
+        handle(world, action.getEntityName(), action.getEntityName().equals(main.getEntityName()) ? main : secondary);
     }
 }

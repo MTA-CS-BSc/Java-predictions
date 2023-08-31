@@ -18,10 +18,10 @@ public abstract class SetPerformer {
         String newValue = ExpressionParser.evaluateExpression(world, action.getValue(), main);
         ActionsPerformer.setPropertyValue(ActionTypes.SET, action.getEntityName(), property, newValue);
     }
-    public static void performAction(World world, SetAction action, SingleEntity main) throws Exception {
+    public static void performAction(World world, SetAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getPropertyName())))
             throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));
 
-        handle(world, action, main);
+        handle(world, action, action.getEntityName().equals(main.getEntityName()) ? main : secondary);
     }
 }
