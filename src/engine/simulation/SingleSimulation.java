@@ -27,7 +27,6 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     }
     public String getUUID() { return uuid; }
     public String isSimulationFinished(long startTimeMillis) {
-        //TODO: Add termination by user handle
         Termination termination = world.getTermination();
 
         for (Object stopCondition : termination.getStopConditions()) {
@@ -87,6 +86,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             throw new Exception();
 
         if (simulationState == SimulationState.CREATED) {
+            initializeRandomVariables();
             setStartWorldState(world);
             setStartTime(new Date());
         }
