@@ -220,7 +220,16 @@ public class EngineAPI {
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
     }
-    private ResponseDTO setEntitiesInitialLocations(SingleSimulation simulation) {
+    public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+        if (!simulation.getSimulationState().equals(SimulationState.RUNNING))
+            return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
+                    "Requested simulation is not running");
+
+        simulation.setSimulationState(isFinished ? SimulationState.FINISHED : SimulationState.STOPPED);
+        return new ResponseDTO(200, String.format("Simulation [%s] is [%s]", uuid, isFinished ? "terminated" : "stopped"));
+    }
+    private void setEntitiesInitialLocations(SingleSimulation simulation) {
         simulation.getWorld()
                 .getEntities()
                 .getEntitiesMap()
@@ -239,17 +248,6 @@ public class EngineAPI {
                         changeCoordinateState(simulation, randomCoordinate);
                     });
                 });
-
-        return new ResponseDTO(200, "Set all entities' locations successfully.");
-    }
-    public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) {
-        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
-        if (!simulation.getSimulationState().equals(SimulationState.RUNNING))
-            return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
-                    "Requested simulation is not running");
-
-        simulation.setSimulationState(isFinished ? SimulationState.FINISHED : SimulationState.STOPPED);
-        return new ResponseDTO(200, String.format("Simulation [%s] is [%s]", uuid, isFinished ? "terminated" : "stopped"));
     }
     private boolean isCoordinateTaken(SingleSimulation simulation, Coordinate coordinate) {
         return simulation.getWorld().getGrid().isTaken(coordinate);
