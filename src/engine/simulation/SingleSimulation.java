@@ -9,10 +9,7 @@ import engine.simulation.performers.ActionsPerformer;
 import helpers.SimulationState;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SingleSimulation extends SingleSimulationLog implements Serializable {
@@ -20,8 +17,10 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     protected World world;
     protected long ticks = 0;
     protected String uuid;
+    protected ElapsedTimer elapsedTimer;
 
     public SingleSimulation(World _world) {
+        elapsedTimer = new ElapsedTimer();
         uuid = UUID.randomUUID().toString();
         world = _world;
         simulationState = SimulationState.CREATED;
@@ -45,7 +44,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             }
         }
 
-        return "";
+        return simulationState == SimulationState.FINISHED ? "ByUser" : "";
     }
     public void handleSingleTick() {
         List<Action> actionsToPerform = getActionsToPerform();
@@ -80,34 +79,40 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
+    public void initializeRandomVariables() {
+        world.initAllRandomVars();
+    }
     public void run() throws Exception {
-        if (Objects.isNull(world))
+        if (Objects.isNull(world) || simulationState == SimulationState.ERROR)
             throw new Exception();
 
-        world.initAllRandomVars();
-        setStartTime(new Date());
-        setStartWorldState(world);
+        if (simulationState == SimulationState.CREATED) {
+            setStartWorldState(world);
+            setStartTime(new Date());
+        }
 
-        long startTimeMillis = System.currentTimeMillis();
+        elapsedTimer.startOrResume();
         simulationState = SimulationState.RUNNING;
 
-        while (isSimulationFinished(startTimeMillis).isEmpty() && simulationState != SimulationState.ERROR) {
+        while (isSimulationFinished(elapsedTimer.getElapsedTime()).isEmpty() && simulationState == SimulationState.RUNNING) {
             ticks++;
             handleSingleTick();
             ActionsPerformer.updateStableTimeToAllProps(world);
         }
 
-        if (simulationState != SimulationState.ERROR)
-            EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to [%s] condition reached", uuid, isSimulationFinished(startTimeMillis)));
+        elapsedTimer.pause();
 
-        else
+        if (simulationState == SimulationState.ERROR)
             EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to runtime error", uuid));
 
-        setEndTime(new Date());
-        setFinishWorldState(world);
+        if (simulationState == SimulationState.FINISHED) {
+            setEndTime(new Date());
+            setFinishWorldState(world);
+        }
     }
     public World getWorld() { return world; }
     public SimulationState getSimulationState() { return simulationState; }
+    public void setSimulationState(SimulationState value) { simulationState = value; }
     @Override
     public String toString() {
         return "--------------------------------------\n" +
