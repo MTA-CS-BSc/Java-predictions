@@ -14,13 +14,13 @@ public abstract class ProximityPerformer {
         //TODO: Not implemented
         return true;
     }
-    public static void performAction(World world, ProximityAction action, SingleEntity on) throws Exception {
+    public static void performAction(World world, ProximityAction action, SingleEntity main) throws Exception {
         Entity targetEntity = Utils.findEntityByName(world, action.getBetween().getTargetEntity());
-        int depth = Integer.parseInt(ExpressionParser.evaluateExpression(world, action, action.getDepthExpression(), on));
+        int depth = Integer.parseInt(ExpressionParser.evaluateExpression(world, action.getDepthExpression(), main));
 
         for (SingleEntity singleTargetEntity : targetEntity.getSingleEntities())
-            if (isInDepth(world.getGrid(), on, singleTargetEntity, depth))
+            if (isInDepth(world.getGrid(), main, singleTargetEntity, depth))
                 for (Action actToPerform : action.getActions().getActions())
-                    ActionsPerformer.fireAction(world, actToPerform, on);
+                    ActionsPerformer.fireAction(world, actToPerform, main);
     }
 }

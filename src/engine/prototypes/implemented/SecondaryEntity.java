@@ -10,4 +10,7 @@ public class SecondaryEntity {
         selection = new Selection(_secondaryEntity.getPRDSelection());
         entityName = _secondaryEntity.getEntity();
     }
+
+    public String getEntityName() { return entityName; }
+    public Selection getSelection() { return selection; }
 }

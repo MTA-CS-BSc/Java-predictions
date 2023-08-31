@@ -10,4 +10,7 @@ public class Selection {
         condition = new Condition(_selection.getPRDCondition());
         count = _selection.getCount();
     }
+
+    public Condition getCondition() { return condition; }
+    public String getCount() { return count; }
 }
