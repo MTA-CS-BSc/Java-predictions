@@ -24,15 +24,13 @@ public class Termination implements Serializable {
                     stopConditions.add(new BySecond((PRDBySecond) _stopCondition));
             });
 
-            isStopByUser = false;
+            isStopByUser = !Objects.isNull(_termination.getPRDByUser());
         }
-
-        else
-            isStopByUser = true;
     }
     public List<Object> getStopConditions() {
         return stopConditions;
     }
+    public boolean isStopByUser() { return isStopByUser; }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -47,6 +45,11 @@ public class Termination implements Serializable {
             else if (stopCondition.getClass() == BySecond.class)
                 sb.append("Stop after [").append(((BySecond)stopCondition).getCount()).append("] seconds\n");
         });
+
+        if (isStopByUser) {
+            sb.append("#####Stop Condition######\n");
+            sb.append("Termination by user\n");
+        }
 
         return sb.toString();
     }
