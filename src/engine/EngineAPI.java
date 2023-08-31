@@ -229,6 +229,16 @@ public class EngineAPI {
         simulation.setSimulationState(isFinished ? SimulationState.FINISHED : SimulationState.STOPPED);
         return new ResponseDTO(200, String.format("Simulation [%s] is [%s]", uuid, isFinished ? "terminated" : "stopped"));
     }
+    public ResponseDTO resumeStoppedSimulation(String uuid) {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        if (!simulation.getSimulationState().equals(SimulationState.STOPPED))
+            return new ResponseDTO(400, String.format("Simulation [%s] was not resumed.", uuid),
+                    "Requested simulation is not stopped");
+
+        simulation.setSimulationState(SimulationState.RUNNING);
+        return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
+    }
     private void setEntitiesInitialLocations(SingleSimulation simulation) {
         simulation.getWorld()
                 .getEntities()
