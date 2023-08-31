@@ -10,4 +10,10 @@ public class WorldGrid {
         rows = grid.getRows();
         columns = grid.getColumns();
     }
+    public int getRows() {
+        return rows;
+    }
+    public int getColumns() {
+        return columns;
+    }
 }
