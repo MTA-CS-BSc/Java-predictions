@@ -57,7 +57,7 @@ public abstract class ProximityPerformer {
     }
     private static void handleSingleMainSingleSecondary(World world, ProximityAction action,
                                                         SingleEntity main, SingleEntity secondary) throws Exception {
-        int depth = Integer.parseInt(ExpressionParser.evaluateExpression(world, action.getDepthExpression(), main));
+        int depth = Integer.parseInt(ExpressionParser.evaluateExpression(world, action.getDepthExpression(), main, secondary));
 
         if (isInDepth(world.getGrid(), main, secondary, depth))
             for (Action actToPerform : action.getActions().getActions())

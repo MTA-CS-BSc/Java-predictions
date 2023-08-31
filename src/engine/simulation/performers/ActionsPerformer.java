@@ -101,7 +101,7 @@ public abstract class ActionsPerformer {
         List<SingleEntity> returned = new ArrayList<>();
 
         for (SingleEntity current : secondaryEntity.getSingleEntities())
-            if (ConditionPerformer.evaluateCondition(world, condition, current))
+            if (ConditionPerformer.evaluateCondition(world, condition, current, null))
                 conditionSecondaryEntities.add(current);
 
         if (count.equals(SecondaryEntityCounts.ALL))

@@ -19,15 +19,16 @@ import java.util.Objects;
 public abstract class ConditionPerformer {
     private static boolean evaluateSingleCondition(World world,
                                                    Condition condition,
-                                                   SingleEntity main) throws Exception {
+                                                   SingleEntity main,
+                                                   SingleEntity secondary) throws Exception {
         Property property = Utils.findPropertyByName(main, condition.getProperty());
-        String arg2 = ExpressionParser.evaluateExpression(world, condition.getValue(), main);
+        String arg2 = ExpressionParser.evaluateExpression(world, condition.getValue(), main, secondary);
         String operator = condition.getOperator();
 
         if (!Objects.isNull(property))
             return getConditionResult(property.getValue().getCurrentValue(), arg2, operator);
 
-        String arg1 = ExpressionParser.evaluateExpression(world,condition.getProperty(), main);
+        String arg1 = ExpressionParser.evaluateExpression(world,condition.getProperty(), main, secondary);
         return getConditionResult(arg1, arg2, operator);
 
     }
@@ -58,7 +59,8 @@ public abstract class ConditionPerformer {
     }
     private static boolean evaluateMultipleCondition(World world,
                                                      Condition condition,
-                                                     SingleEntity main) {
+                                                     SingleEntity main,
+                                                     SingleEntity secondary) {
         List<Condition> allConditions = condition.getConditions();
         String logicalOperator = condition.getLogicalOperator();
 
@@ -66,7 +68,7 @@ public abstract class ConditionPerformer {
             return allConditions.stream()
                      .allMatch(current -> {
                          try {
-                             return evaluateCondition(world, current, main);
+                             return evaluateCondition(world, current, main, secondary);
                          } catch (Exception e) {
                              EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
                              return false;
@@ -78,7 +80,7 @@ public abstract class ConditionPerformer {
             return allConditions.stream()
                     .anyMatch(current -> {
                         try {
-                            return evaluateCondition(world, current, main);
+                            return evaluateCondition(world, current, main, secondary);
                         } catch (Exception e) {
                             EngineLoggers.SIMULATION_LOGGER.info(e.getMessage());
                             return false;
@@ -87,29 +89,28 @@ public abstract class ConditionPerformer {
 
         return true;
     }
-    public static boolean evaluateCondition(World world, Condition condition, SingleEntity main) throws Exception {
+    public static boolean evaluateCondition(World world, Condition condition, SingleEntity main, SingleEntity secondary) throws Exception {
         if (condition.getSingularity().equals(ConditionSingularities.SINGLE))
-            return evaluateSingleCondition(world, condition, main);
+            return evaluateSingleCondition(world, condition, main, secondary);
 
-        return evaluateMultipleCondition(world, condition, main);
+        return evaluateMultipleCondition(world, condition, main, secondary);
     }
 
     public static void performAction(World world, ConditionAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         Condition condition = action.getCondition();
         List<Action> thenActions = action.getThen().getActions();
         Else prdElse = action.getElse();
-        SingleEntity on = action.getEntityName().equals(main.getEntityName()) ? main : secondary;
-        boolean conditionResult = evaluateCondition(world, condition, on);
+        boolean conditionResult = evaluateCondition(world, condition, main, secondary);
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Condition result is [%s]," +
                 " evaluating relevant actions...", action.getType(), condition.getEntityName(), conditionResult));
 
         if (conditionResult)
             for (Action actToPerform : thenActions)
-                ActionsPerformer.fireAction(world, actToPerform, on);
+                ActionsPerformer.fireAction(world, actToPerform, main);
 
         else if (!Objects.isNull(prdElse))
             for (Action actToPerform : prdElse.getActions())
-                ActionsPerformer.fireAction(world, actToPerform, on);
+                ActionsPerformer.fireAction(world, actToPerform, main);
     }
 }
