@@ -7,8 +7,10 @@ import engine.consts.PropTypes;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
+import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.parsers.XmlParser;
+import engine.prototypes.implemented.Coordinate;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
@@ -213,6 +215,34 @@ public class EngineAPI {
 
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
+    }
+    public ResponseDTO setEntitiesInitialLocations(String uuid) {
+        historyManager.getPastSimulation(uuid).getWorld()
+                .getEntities()
+                .getEntitiesMap()
+                .values()
+                .forEach(entity -> {
+                    entity.getSingleEntities().forEach(singleEntity -> {
+                        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1),
+                                RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
+
+                        while (isCoordinateTaken(uuid, randomCoordinate)) {
+                            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1));
+                            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
+                        }
+
+                        singleEntity.setCoordinate(randomCoordinate);
+                        changeCoordinateState(uuid, randomCoordinate);
+                    });
+                });
+
+        return new ResponseDTO(200, "Set all entities' locations successfully.");
+    }
+    private boolean isCoordinateTaken(String uuid, Coordinate coordinate) {
+        return historyManager.getPastSimulation(uuid).getWorld().getGrid().isTaken(coordinate);
+    }
+    private void changeCoordinateState(String uuid, Coordinate coordinate) {
+        historyManager.getPastSimulation(uuid).getWorld().getGrid().changeCoordinateState(coordinate);
     }
     private void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);

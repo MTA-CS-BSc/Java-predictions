@@ -31,12 +31,10 @@ public class SingleEntity implements Serializable {
         return properties;
     }
     public Coordinate getCoordinate() { return coordinate; }
-    public void setCoordinate(int x, int y) {
-        //TODO: Add randomized coordinates + check for not same coordinate
-        coordinate.setX(x);
-        coordinate.setY(y);
+    public void setCoordinate(Coordinate other) {
+        coordinate.setX(other.x);
+        coordinate.setY(other.y);
     }
-
     public void initRandomVars() {
         getProperties().getPropsMap().values().forEach(property -> {
             if (!property.getValue().isRandomInitialize()
@@ -49,6 +47,5 @@ public class SingleEntity implements Serializable {
             property.getValue().setCurrentValue(property.getValue().getInit());
         });
     }
-
     public String getEntityName() { return entityName; }
 }
