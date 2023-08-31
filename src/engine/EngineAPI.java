@@ -19,7 +19,10 @@ import helpers.SimulationState;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -199,6 +202,17 @@ public class EngineAPI {
         }
 
         return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
+    }
+    public ResponseDTO setEntityInitialPopulation(String uuid, String entityName, int population) {
+        if (population < 0)
+            return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
+                    uuid, entityName), "Population is negative");
+
+        Utils.findEntityByName(historyManager.getPastSimulation(uuid).getWorld(), entityName)
+                        .initPopulation(population);
+
+        return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
+                uuid, entityName, population));
     }
     private void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);

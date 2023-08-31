@@ -45,7 +45,6 @@ public class Entity implements Serializable {
     }
     public void setSingleEntities(List<SingleEntity> list) { singleEntities = list; }
     public void initPopulation(int _population) {
-        //TODO: Add usage
         setPopulation(_population);
 
         for (int i = 0; i < population; i++)
