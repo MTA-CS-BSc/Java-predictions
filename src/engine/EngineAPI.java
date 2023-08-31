@@ -16,7 +16,6 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
-import helpers.BoolPropValues;
 import helpers.SimulationState;
 
 import javax.xml.bind.JAXBException;
@@ -44,7 +43,7 @@ public class EngineAPI {
         EngineLoggers.formatLogger(EngineLoggers.SIMULATION_ERRORS_LOGGER);
     }
     public ResponseDTO isHistoryEmpty() {
-        return new ResponseDTO(200,  historyManager.isEmpty() ? BoolPropValues.TRUE : BoolPropValues.FALSE);
+        return new ResponseDTO(200, historyManager.isEmpty());
     }
     public ResponseDTO writeHistoryToFile(String filePath) {
         try {
@@ -54,10 +53,10 @@ public class EngineAPI {
             o.close();
             f.close();
             EngineLoggers.API_LOGGER.info("History saved successfully.");
-            return new ResponseDTO(200, BoolPropValues.TRUE);
+            return new ResponseDTO(200, true);
         } catch (Exception e) {
             EngineLoggers.API_LOGGER.info("Could not save history: " + e.getMessage());
-            return new ResponseDTO(200, BoolPropValues.FALSE);
+            return new ResponseDTO(200, false);
         }
     }
     public ResponseDTO loadHistory(String filePath) {
@@ -85,7 +84,7 @@ public class EngineAPI {
         return validateWorldResponse;
     }
     public ResponseDTO isXmlLoaded() {
-        return new ResponseDTO(200, historyManager.isXmlLoaded() ? BoolPropValues.TRUE : BoolPropValues.FALSE);
+        return new ResponseDTO(200, historyManager.isXmlLoaded());
     }
     public ResponseDTO createSimulation() {
         SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
@@ -134,7 +133,7 @@ public class EngineAPI {
         return new ResponseDTO(200, data);
     }
     public ResponseDTO getPastSimulations() {
-        if (isHistoryEmpty().getData().equals(BoolPropValues.TRUE))
+        if (new Gson().fromJson(isHistoryEmpty().getData(), Boolean.class))
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
 
         List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
