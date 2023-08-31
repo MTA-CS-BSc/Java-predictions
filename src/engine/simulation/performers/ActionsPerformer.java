@@ -2,41 +2,47 @@ package engine.simulation.performers;
 
 import engine.consts.ActionTypes;
 import engine.consts.PropTypes;
+import engine.consts.SecondaryEntityCounts;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
 import engine.logs.EngineLoggers;
+import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.*;
 import helpers.TypesUtils;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public abstract class ActionsPerformer {
-    public static void fireAction(World world, Action action, SingleEntity on) throws Exception {
+    public static void fireAction(World world, Action action, SingleEntity main) throws Exception {
         //TODO: Add secondary entity chooser & send to all functions
         switch (action.getType()) {
             case ActionTypes.INCREASE:
-                IncreasePerformer.performAction(world, (IncreaseAction)action, on);
+                IncreasePerformer.performAction(world, (IncreaseAction)action, main);
                 break;
             case ActionTypes.DECREASE:
-                DecreasePerformer.performAction(world, (DecreaseAction)action, on);
+                DecreasePerformer.performAction(world, (DecreaseAction)action, main);
                 break;
             case ActionTypes.CALCULATION:
-                CalculationPerformer.performAction(world, (CalculationAction)action, on);
+                CalculationPerformer.performAction(world, (CalculationAction)action, main);
                 break;
             case ActionTypes.SET:
-                SetPerformer.performAction(world, (SetAction)action, on);
+                SetPerformer.performAction(world, (SetAction)action, main);
                 break;
             case ActionTypes.KILL:
-                KillPerformer.performAction(world, (KillAction)action, on);
+                KillPerformer.performAction(world, (KillAction)action, main);
                 break;
             case ActionTypes.CONDITION:
-                ConditionPerformer.performAction(world, (ConditionAction)action, on);
+                ConditionPerformer.performAction(world, (ConditionAction)action, main);
                 break;
             case ActionTypes.PROXIMITY:
-                ProximityPerformer.performAction(world, (ProximityAction)action, on);
+                ProximityPerformer.performAction(world, (ProximityAction)action, main);
                 break;
             case ActionTypes.REPLACE:
-                ReplacePerformer.performAction(world, (ReplaceAction)action, on);
+                ReplacePerformer.performAction(world, (ReplaceAction)action, main);
                 break;
         }
     }
@@ -71,5 +77,33 @@ public abstract class ActionsPerformer {
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Property [%s]: value changed to [%s]",
                 actionType, entityName, property.getName(), newValue));
+    }
+    public static List<SingleEntity> chooseSecondaryEntities(World world, Action action) throws Exception {
+        Condition condition = action.getSecondaryEntity().getSelection().getCondition();
+        Entity secondaryEntity = Utils.findEntityByName(world, action.getSecondaryEntity().getEntityName());
+        String count = action.getSecondaryEntity().getSelection().getCount();
+        List<SingleEntity> conditionSecondaryEntities = new ArrayList<>();
+        List<SingleEntity> returned = new ArrayList<>();
+
+        for (SingleEntity current : secondaryEntity.getSingleEntities())
+            if (ConditionPerformer.evaluateCondition(world, condition, current))
+                conditionSecondaryEntities.add(current);
+
+        if (count.equals(SecondaryEntityCounts.ALL))
+            return conditionSecondaryEntities;
+
+        else if (TypesUtils.isDecimal(count)) {
+            int amount = Integer.parseInt(count);
+
+            if (amount > conditionSecondaryEntities.size())
+                amount = conditionSecondaryEntities.size();
+
+            for (int i = 0; i < amount; i++)
+                returned.add(conditionSecondaryEntities.get(RandomGenerator.randomizeRandomNumber(0, conditionSecondaryEntities.size())));
+
+            return returned;
+        }
+
+        return Collections.emptyList();
     }
 }
