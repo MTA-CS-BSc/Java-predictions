@@ -10,24 +10,27 @@ import java.util.List;
 import java.util.Objects;
 
 public class Termination implements Serializable {
-    List<Object> stopConditions;
+    protected List<Object> stopConditions;
+    protected boolean isStopByUser;
     public Termination (PRDTermination _termination) {
         stopConditions = new ArrayList<>();
 
         if (!Objects.isNull(_termination)) {
-            _termination.getPRDByTicksOrPRDBySecond().forEach(_stopCondition -> {
+            _termination.getPRDBySecondOrPRDByTicks().forEach(_stopCondition -> {
                 if (_stopCondition.getClass() == PRDByTicks.class)
                     stopConditions.add(new ByTicks((PRDByTicks) _stopCondition));
 
                 else if (_stopCondition.getClass() == PRDBySecond.class)
                     stopConditions.add(new BySecond((PRDBySecond) _stopCondition));
             });
+
+            isStopByUser = !Objects.isNull(_termination.getPRDByUser());
         }
     }
     public List<Object> getStopConditions() {
         return stopConditions;
     }
-
+    public boolean isStopByUser() { return isStopByUser; }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -42,6 +45,11 @@ public class Termination implements Serializable {
             else if (stopCondition.getClass() == BySecond.class)
                 sb.append("Stop after [").append(((BySecond)stopCondition).getCount()).append("] seconds\n");
         });
+
+        if (isStopByUser) {
+            sb.append("#####Stop Condition######\n");
+            sb.append("Termination by user\n");
+        }
 
         return sb.toString();
     }

@@ -17,6 +17,8 @@ import java.util.logging.FileHandler;
 
 public class XmlParserTests {
     public final static String testFilesPath = "/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/tests/files";
+    public final static String ex1TestFilesPath = String.format("%s/ex1", testFilesPath);
+    public final static String ex2TestFilesPath = String.format("%s/ex2", testFilesPath);
 
     public XmlParserTests() throws IOException {
         FileHandler fh = new FileHandler("/home/maya/Desktop/projects/MTA/Java/mta-java-predictions/src/engine/logs/xml_parse_error.log");
@@ -26,7 +28,7 @@ public class XmlParserTests {
     @Test
     @DisplayName("Parse valid XML")
     public void parseValidXmlTest() {
-        String xmlPath = String.format("%s/master-ex1.xml", testFilesPath);
+        String xmlPath = String.format("%s/master-ex1.xml", ex1TestFilesPath);
 
         Assertions.assertDoesNotThrow(() -> {
             XmlParser.parseWorldXml(xmlPath);
@@ -37,9 +39,9 @@ public class XmlParserTests {
     @DisplayName("Parse invalid XML")
     public void parseInvalidXmlTest() {
         List<String> xmlPaths = Arrays.asList(
-                String.format("%s/ex1-error-2.xml", testFilesPath),
-                String.format("%s/ex1-error-4.xml", testFilesPath),
-                String.format("%s/ex1-error-6.xml", testFilesPath));
+                String.format("%s/ex1-error-2.xml", ex1TestFilesPath),
+                String.format("%s/ex1-error-4.xml", ex1TestFilesPath),
+                String.format("%s/ex1-error-6.xml", ex1TestFilesPath));
 
         Assertions.assertAll(
                 () -> Assertions.assertDoesNotThrow(() -> {
@@ -55,31 +57,53 @@ public class XmlParserTests {
     }
 
     @Test
-    @DisplayName("Validations check for valid XML")
-    public void validationsForValidXml() throws JAXBException, FileNotFoundException {
-        String xmlPath = String.format("%s/master-ex1.xml", testFilesPath);
+    @DisplayName("EX 1 Validations check for valid XML")
+    public void ex1ValidationsForValidXml() throws JAXBException, FileNotFoundException {
+        String xmlPath = String.format("%s/master-ex1.xml", ex1TestFilesPath);
         PRDWorld world = XmlParser.parseWorldXml(xmlPath);
-        Assertions.assertTrue(PRDWorldValidators.validateWorld(world));
+        Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
     }
 
     @Test
-    @DisplayName("Validations check for invalid XML")
-    public void validationsForInvalidXml() throws JAXBException, FileNotFoundException {
+    @DisplayName("EX 1 Validations check for invalid XML")
+    public void ex1ValidationsForInvalidXml() throws JAXBException, FileNotFoundException {
         List<String> xmlPaths = Arrays.asList(
-                String.format("%s/err-calculation-args.xml", testFilesPath),
-                String.format("%s/err-condition-args.xml", testFilesPath),
-                String.format("%s/err-entity-not-found.xml", testFilesPath),
-                String.format("%s/err-increase-args.xml", testFilesPath),
-                String.format("%s/err-invalid-range.xml", testFilesPath),
-                String.format("%s/err-negative-population.xml", testFilesPath),
-                String.format("%s/err-property-not-found.xml", testFilesPath),
-                String.format("%s/err-result-prop-not-found.xml", testFilesPath),
-                String.format("%s/err-set-args.xml", testFilesPath),
-                String.format("%s/err-unique-name.xml", testFilesPath));
+                String.format("%s/err-calculation-args.xml", ex1TestFilesPath),
+                String.format("%s/err-condition-args.xml", ex1TestFilesPath),
+                String.format("%s/err-entity-not-found.xml", ex1TestFilesPath),
+                String.format("%s/err-increase-args.xml", ex1TestFilesPath),
+                String.format("%s/err-invalid-range.xml", ex1TestFilesPath),
+                String.format("%s/err-negative-population.xml", ex1TestFilesPath),
+                String.format("%s/err-property-not-found.xml", ex1TestFilesPath),
+                String.format("%s/err-result-prop-not-found.xml", ex1TestFilesPath),
+                String.format("%s/err-set-args.xml", ex1TestFilesPath),
+                String.format("%s/err-unique-name.xml", ex1TestFilesPath));
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> ()
-                        -> Assertions.assertFalse(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element))))
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element)).getErrorDescription()))
         );
     }
+
+    @Test
+    @DisplayName("EX 2 Validations check for valid XML")
+    public void ex2ValidationsForValidXml() throws JAXBException, FileNotFoundException {
+        String xmlPath = String.format("%s\\master-ex2.xml", ex2TestFilesPath);
+        PRDWorld world = XmlParser.parseWorldXml(xmlPath);
+        Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
+    }
+
+    @Test
+    @DisplayName("EX 2 Validations check for invalid XML")
+    public void ex2ValidationsForInvalidXml() throws JAXBException, FileNotFoundException {
+        List<String> xmlPaths = Arrays.asList(
+                String.format("%s/ex2-error-1.xml", ex2TestFilesPath),
+                String.format("%s/ex2-error-3.xml", ex2TestFilesPath));
+
+        Assertions.assertAll(
+                xmlPaths.stream().map(element -> ()
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element)).getErrorDescription()))
+        );
+    }
+
 }

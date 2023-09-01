@@ -31,8 +31,8 @@ public abstract class StringTrimmer {
         });
     }
     private static void trimEnvironment(PRDWorld world) {
-        if (!Objects.isNull(world.getPRDEvironment()))
-            world.getPRDEvironment().getPRDEnvProperty().forEach(property -> {
+        if (!Objects.isNull(world.getPRDEnvironment()))
+            world.getPRDEnvironment().getPRDEnvProperty().forEach(property -> {
                 if (!Objects.isNull(property.getPRDName()))
                     property.setPRDName(property.getPRDName().trim());
 
@@ -70,6 +70,32 @@ public abstract class StringTrimmer {
 
         if (!Objects.isNull(action.getValue()))
             action.setValue(action.getValue().trim());
+
+        if (!Objects.isNull(action.getPRDSecondaryEntity())) {
+            action.getPRDSecondaryEntity().setEntity(action.getPRDSecondaryEntity().getEntity().trim());
+            trimCondition(action.getPRDSecondaryEntity().getPRDSelection().getPRDCondition());
+        }
+
+        if (!Objects.isNull(action.getCreate()))
+            action.setCreate(action.getCreate().trim());
+
+        if (!Objects.isNull(action.getKill()))
+            action.setKill(action.getKill().trim());
+
+        if (!Objects.isNull(action.getPRDBetween())) {
+            action.getPRDBetween().setSourceEntity(action.getPRDBetween().getSourceEntity().trim());
+            action.getPRDBetween().setTargetEntity(action.getPRDBetween().getTargetEntity().trim());
+        }
+
+        if (!Objects.isNull(action.getPRDEnvDepth()))
+            action.getPRDEnvDepth().setOf(action.getPRDEnvDepth().getOf().trim());
+
+        if (!Objects.isNull(action.getPRDActions()))
+            for (PRDAction act : action.getPRDActions().getPRDAction())
+                trimAction(act);
+
+        if (!Objects.isNull(action.getMode()))
+            action.setMode(action.getMode().trim());
 
         trimCondition(action.getPRDCondition());
         trimThen(action.getPRDThen());

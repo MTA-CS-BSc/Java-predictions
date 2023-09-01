@@ -9,7 +9,6 @@ public abstract class PRDEntitiesValidators {
     public static boolean validateEntities(PRDWorld world) throws Exception {
         return validateEntitiesUniqueNames(world)
                 && validateNoWhitespacesInNames(world)
-                && validateEntitiesPopulation(world)
                 && validateEntitiesProperties(world);
     }
     private static boolean validateEntitiesUniqueNames(PRDWorld world) throws UniqueNameException {
@@ -35,13 +34,4 @@ public abstract class PRDEntitiesValidators {
 
         return true;
     }
-    private static boolean validateEntitiesPopulation(PRDWorld world) throws Exception {
-        for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
-            if (entity.getPRDPopulation() <= 0)
-                throw new ValueNotInRangeException(String.format("Entity [%s]: Population must be positive",
-                        entity.getName()));
-
-        return true;
-    }
-
 }

@@ -1,32 +1,40 @@
 package engine;
 
-import dtos.EntityDTO;
-import dtos.Mappers;
-import dtos.PropertyDTO;
-import dtos.SingleSimulationDTO;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import dtos.*;
+import engine.consts.PropTypes;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
+import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.parsers.XmlParser;
+import engine.prototypes.implemented.Coordinate;
+import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.SimulationState;
+import helpers.ThreadPoolManager;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class EngineAPI {
     protected HistoryManager historyManager;
+    protected ThreadPoolManager threadPoolManager;
     public EngineAPI() {
         historyManager = new HistoryManager();
-
+        threadPoolManager = new ThreadPoolManager();
         configureLoggers();
     }
     private void configureLoggers() {
@@ -36,10 +44,10 @@ public class EngineAPI {
         EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
         EngineLoggers.formatLogger(EngineLoggers.SIMULATION_ERRORS_LOGGER);
     }
-    public boolean isHistoryEmpty() {
-        return historyManager.isEmpty();
+    public ResponseDTO isHistoryEmpty() {
+        return new ResponseDTO(200, historyManager.isEmpty());
     }
-    public boolean writeHistoryToFile(String filePath) {
+    public ResponseDTO writeHistoryToFile(String filePath) {
         try {
             FileOutputStream f = new FileOutputStream(filePath);
             ObjectOutputStream o = new ObjectOutputStream(f);
@@ -47,41 +55,243 @@ public class EngineAPI {
             o.close();
             f.close();
             EngineLoggers.API_LOGGER.info("History saved successfully.");
-            return true;
+            return new ResponseDTO(200, true);
         } catch (Exception e) {
             EngineLoggers.API_LOGGER.info("Could not save history: " + e.getMessage());
-            return false;
+            return new ResponseDTO(200, false);
         }
     }
-    public boolean loadHistory(String filePath) {
+    public ResponseDTO loadHistory(String filePath) {
         try {
             FileInputStream fi = new FileInputStream(filePath);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
-            EngineLoggers.API_LOGGER.info("History was loaded successfully");
-            return true;
+            return new ResponseDTO(200);
         }
 
         catch (Exception e) {
-            EngineLoggers.API_LOGGER.info("Attempted to load history but no history file was found");
-            return false;
+            EngineLoggers.API_LOGGER.info(e.getMessage());
+            return new ResponseDTO(500, "Attempted to load history but no history file was found");
         }
     }
-    public boolean loadXml(String xmlPath) throws JAXBException, FileNotFoundException {
+    public ResponseDTO loadXml(String xmlPath) throws JAXBException, FileNotFoundException {
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
+        ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
-        if (PRDWorldValidators.validateWorld(prdWorld)) {
+        if (Objects.isNull(validateWorldResponse.getErrorDescription())) {
             setInitialXmlWorld(new World(prdWorld));
-            return true;
+            threadPoolManager.setThreadsAmount(prdWorld.getPRDThreadCount());
         }
 
-        return false;
+        return validateWorldResponse;
     }
-    public void setInitialXmlWorld(World _initialWorld) {
+    public ResponseDTO isXmlLoaded() {
+        return new ResponseDTO(200, historyManager.isXmlLoaded());
+    }
+    public ResponseDTO createSimulation() {
+        SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
+        historyManager.addPastSimulation(sm);
+        return new ResponseDTO(200, sm.getUUID());
+    }
+    public ResponseDTO getSimulationDetails() {
+        return new ResponseDTO(200, historyManager.getMockSimulationForDetails());
+    }
+    public ResponseDTO setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(400, "UUID", UUIDNotFoundException.class.getSimpleName());
+
+        Property foundProp = Utils.findEnvironmentPropertyByName(historyManager.getPastSimulation(uuid).getWorld(), prop.getName());
+
+        if (!Objects.isNull(foundProp)) {
+            if (!Utils.validateValueInRange(prop, val))
+                return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
+
+            foundProp.getValue().setRandomInitialize(false);
+
+            if (PropTypes.NUMERIC_PROPS.contains(foundProp.getType()))
+                val = Utils.removeExtraZeroes(val);
+
+            foundProp.getValue().setInit(val);
+            foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
+
+            return new ResponseDTO(200, String.format("UUID [%s]: Set environment variable [%s]: Value: [%s]",
+                    uuid, foundProp.getName(), foundProp.getValue().getCurrentValue()));
+        }
+
+        return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()),
+                String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
+    }
+    public ResponseDTO getEnvironmentProperties(String uuid) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(500, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
+
+        List<PropertyDTO> data = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
+                .getEnvVars().values()
+                .stream()
+                .map(Mappers::toDto)
+                .sorted(Comparator.comparing(PropertyDTO::getName))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(200, data);
+    }
+    public ResponseDTO getPastSimulations() {
+        if (new Gson().fromJson(isHistoryEmpty().getData(), Boolean.class))
+            return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
+
+        List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
+                .stream()
+                .map(Mappers::toDto)
+                .sorted(Comparator.comparing(SingleSimulationDTO::getStartTimestamp))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(200, data);
+    }
+    public ResponseDTO findSelectedSimulationDTO(int selection) {
+        List<SingleSimulationDTO> pastSimulations = new Gson().fromJson(getPastSimulations().getData(), new TypeToken<List<SingleSimulationDTO>>(){}.getType());
+        return new ResponseDTO(200, pastSimulations.get(selection - 1));
+    }
+    public ResponseDTO findSelectedEntityDTO(String uuid, int selection) {
+        EntityDTO data = null;
+
+        if (!Objects.isNull(findSimulationDTOByUuid(uuid))) {
+            List<EntityDTO> entities = new Gson().fromJson(getEntities(uuid).getData(), new TypeToken<List<EntityDTO>>(){});
+            data = entities.get(selection - 1);
+        }
+
+        return Objects.isNull(data) ?
+                new ResponseDTO(500, null, "Unknown") : new ResponseDTO(200, data);
+    }
+    public ResponseDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
+        if (Objects.isNull(entity))
+            return new ResponseDTO(500, null, "Entity is null");
+
+        return new ResponseDTO(200, entity.getProperties().get(selection - 1));
+    }
+    public ResponseDTO getEntities(String uuid) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
+
+        List<EntityDTO> data = historyManager.getPastSimulation(uuid).getStartWorldState()
+                .getEntitiesMap().values()
+                .stream()
+                .map(Mappers::toDto)
+                .sorted(Comparator.comparing(EntityDTO::getName))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(200, data);
+    }
+    public ResponseDTO getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+
+        return new ResponseDTO(200, historyManager.getEntitiesBeforeAndAfter(uuid));
+    }
+    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+
+        return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
+    }
+    public ResponseDTO runSimulation(String uuid) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
+
+        //TODO: Check if catch should be ignored
+        threadPoolManager.executeTask(() -> {
+            try {
+                startSimulation(uuid);
+            } catch (Exception ignored) { }
+        });
+
+        return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
+    }
+    public ResponseDTO getCurrentOverallPopulation(String uuid) {
+        int sum = historyManager.getPastSimulation(uuid)
+                .getWorld()
+                .getEntities()
+                .getEntitiesMap()
+                .values()
+                .stream()
+                .mapToInt(Entity::getPopulation)
+                .sum();
+
+        return new ResponseDTO(200, sum);
+    }
+    public ResponseDTO setEntityInitialPopulation(String uuid, String entityName, int population) {
+        if (population < 0)
+            return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
+                    uuid, entityName), "Population is negative");
+
+        Utils.findEntityByName(historyManager.getPastSimulation(uuid).getWorld(), entityName)
+                        .initPopulation(population);
+
+        return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
+                uuid, entityName, population));
+    }
+    public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+        SimulationState simulationState = simulation.getSimulationState();
+
+        if (simulationState.equals(SimulationState.FINISHED) || simulationState.equals(SimulationState.ERROR))
+            return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
+                    String.format("Requested simulation's state is [%s]", simulationState.name()));
+
+        simulation.setSimulationState(isFinished ? SimulationState.FINISHED : SimulationState.STOPPED);
+        return new ResponseDTO(200, String.format("Simulation [%s] is [%s]", uuid, isFinished ? "terminated" : "stopped"));
+    }
+    public ResponseDTO resumeStoppedSimulation(String uuid) {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        if (!simulation.getSimulationState().equals(SimulationState.STOPPED))
+            return new ResponseDTO(400, String.format("Simulation [%s] was not resumed.", uuid),
+                    "Requested simulation is not stopped");
+
+        simulation.setSimulationState(SimulationState.RUNNING);
+        return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
+    }
+    private ResponseDTO startSimulation(String uuid) throws Exception {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        if (simulation.getSimulationState() == SimulationState.CREATED)
+            setEntitiesInitialLocations(simulation);
+
+        simulation.run();
+
+        if (simulation.getSimulationState() == SimulationState.ERROR) {
+            historyManager.getPastSimulations().remove(uuid);
+            return new ResponseDTO(500, String.format("Simulation [%s] was removed", uuid), "Simulation runtime error occurred.");
+        }
+
+        return new ResponseDTO(200, SimulationState.FINISHED);
+    }
+    private void setEntitiesInitialLocations(SingleSimulation simulation) {
+        simulation.getWorld()
+                .getEntities()
+                .getEntitiesMap()
+                .values()
+                .forEach(entity -> {
+                    entity.getSingleEntities().forEach(singleEntity -> {
+                        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1),
+                                RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
+
+                        while (isCoordinateTaken(simulation, randomCoordinate)) {
+                            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1));
+                            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
+                        }
+
+                        singleEntity.setCoordinate(randomCoordinate);
+                        changeCoordinateState(simulation, randomCoordinate);
+                    });
+                });
+    }
+    private boolean isCoordinateTaken(SingleSimulation simulation, Coordinate coordinate) {
+        return simulation.getWorld().getGrid().isTaken(coordinate);
+    }
+    private void changeCoordinateState(SingleSimulation simulation, Coordinate coordinate) {
+        simulation.getWorld().getGrid().changeCoordinateState(coordinate);
+    }
+    private void setInitialXmlWorld(World _initialWorld) {
         historyManager.setInitialXmlWorld(_initialWorld);
-    }
-    public boolean isXmlLoaded() {
-        return historyManager.isXmlLoaded();
     }
     private World getInitialWorldForSimulation() {
         if (!historyManager.isEmpty())
@@ -89,93 +299,10 @@ public class EngineAPI {
 
         return historyManager.getInitialWorld();
     }
-    public String createSimulation() {
-        SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
-        historyManager.addPastSimulation(sm);
-        return sm.getUUID();
-    }
-    public void runSimulation(String uuid) throws Exception {
-        if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
-            historyManager.getPastSimulation(uuid).run();
-
-            if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.ERROR)
-                historyManager.getPastSimulations().remove(uuid);
-        }
-    }
-    public SingleSimulationDTO getSimulationDetails() {
-        return historyManager.getMockSimulationForDetails();
-    }
-    public List<PropertyDTO> getEnvironmentProperties(String uuid) {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return Collections.emptyList();
-
-        return historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
-                .getEnvVars().values()
-                .stream()
-                .map(Mappers::toDto)
-                .sorted(Comparator.comparing(PropertyDTO::getName))
-                .collect(Collectors.toList());
-    }
-    public void setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return;
-
-        Property foundProp = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
-                .getEnvVars().values().stream().filter(envProp -> envProp.getName().equals(prop.getName()))
-                .findFirst().orElse(null);
-
-        if (!Objects.isNull(foundProp)) {
-            foundProp.getValue().setRandomInitialize(false);
-
-            val = Utils.removeExtraZeroes(foundProp, val);
-            foundProp.getValue().setInit(val);
-            foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
-        }
-    }
-    public List<SingleSimulationDTO> getPastSimulations() {
-        if (isHistoryEmpty())
-            return Collections.emptyList();
-
-        return historyManager.getPastSimulations().values()
-                .stream()
-                .map(Mappers::toDto)
-                .sorted(Comparator.comparing(SingleSimulationDTO::getStartTimestamp))
-                .collect(Collectors.toList());
-    }
-    public List<EntityDTO> getEntities(String uuid) {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return Collections.emptyList();
-
-        return historyManager.getPastSimulation(uuid).getStartWorldState()
-                .getEntitiesMap().values()
-                .stream()
-                .map(Mappers::toDto)
-                .sorted(Comparator.comparing(EntityDTO::getName))
-                .collect(Collectors.toList());
-    }
-    public Map<String, Integer[]> getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return null;
-
-        return historyManager.getEntitiesBeforeAndAfter(uuid);
-    }
-    public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return null;
-
-        return historyManager.getEntitiesCountForProp(uuid, entityName, propertyName);
-    }
-    public SingleSimulationDTO findSelectedSimulationDTO(int selection) {
-        return getPastSimulations().get(selection - 1);
-    }
     private SingleSimulationDTO findSimulationDTOByUuid(String uuid) {
-        return getPastSimulations().stream().filter(element -> element.getUuid().equals(uuid))
+        List<SingleSimulationDTO> pastSimulations = new Gson().fromJson(getPastSimulations().getData(), new TypeToken<List<SingleSimulationDTO>>(){}.getType());
+
+        return pastSimulations.stream().filter(element -> element.getUuid().equals(uuid))
                 .findFirst().orElse(null);
-    }
-    public EntityDTO findSelectedEntityDTO(String uuid, int selection) {
-        return !Objects.isNull(findSimulationDTOByUuid(uuid)) ? getEntities(uuid).get(selection - 1) : null;
-    }
-    public PropertyDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
-        return entity.getProperties().get(selection - 1);
     }
 }

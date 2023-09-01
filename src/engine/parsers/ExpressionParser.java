@@ -5,7 +5,6 @@ import engine.exceptions.PropertyNotFoundException;
 import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.modules.ValidatorsUtils;
-import engine.prototypes.implemented.Action;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.SingleEntity;
 import engine.prototypes.implemented.World;
@@ -13,20 +12,21 @@ import engine.prototypes.implemented.World;
 import java.util.Objects;
 
 public abstract class ExpressionParser {
-    public static String evaluateExpression(World world, Action action, String expression, SingleEntity on) throws PropertyNotFoundException {
-        Property expressionEntityProp = Objects.isNull(on) ? Utils.findAnyPropertyByName(world, action.getEntityName(), expression)
-                : Utils.findPropertyByName(on, expression);
+    public static String evaluateExpression(World world, String expression,
+                                            SingleEntity main, SingleEntity secondary) throws PropertyNotFoundException {
+        Property expressionEntityProp = Utils.findPropertyByName(main, expression);
 
         if (ValidatorsUtils.isSystemFunction(expression))
-            return evaluateSystemExpression(world, action, expression, on);
+            return evaluateSystemExpression(world, expression, main, secondary);
 
         else if (!Objects.isNull(expressionEntityProp))
             return expressionEntityProp.getValue().getCurrentValue();
 
         return expression;
     }
-    private static String evaluateSystemExpression(World world, Action action, String expression, SingleEntity on) throws PropertyNotFoundException {
-        String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
+    private static String evaluateSystemExpression(World world, String expression,
+                                                   SingleEntity main, SingleEntity secondary) throws PropertyNotFoundException {
+        String systemFunctionType = Utils.getSystemFunctionType(expression);
         String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1,
                 expression.lastIndexOf(")"));
 
@@ -34,66 +34,63 @@ public abstract class ExpressionParser {
             case SystemFunctions.RANDOM:
                 return evaluateSystemFuncRandom(systemFunctionValue);
             case SystemFunctions.ENVIRONMENT:
-                return evaluateSystemFuncEnv(world, action, systemFunctionValue);
+                return evaluateSystemFuncEnv(world, systemFunctionValue);
             case SystemFunctions.EVALUATE:
-                return evaluateSystemFuncEvaluate(world, action, systemFunctionValue, on);
+                return evaluateSystemFuncEvaluate(systemFunctionValue, main, secondary);
             case SystemFunctions.PERCENT:
-                return evaluateSystemFuncPercent(world, action, systemFunctionValue, on);
+                return evaluateSystemFuncPercent(world, systemFunctionValue, main, secondary);
             case SystemFunctions.TICKS:
-                return evaluateSystemFuncTicks(world, action, systemFunctionValue, on);
+                return evaluateSystemFuncTicks(systemFunctionValue, main, secondary);
         }
 
         return "";
     }
-    private static String evaluateSystemFuncRandom(String bound) {
-        return String.valueOf(RandomGenerator.randomizeRandomNumber(0, Integer.parseInt(bound)));
+    private static String evaluateSystemFuncRandom(String systemFunctionValue) {
+        return String.valueOf(RandomGenerator.randomizeRandomNumber(0, Integer.parseInt(systemFunctionValue)));
     }
-    private static String evaluateSystemFuncEnv(World world, Action action, String propertyName) throws PropertyNotFoundException {
-        Property envProp = world.getEnvironment().getEnvVars().values()
-                .stream()
-                .filter(element -> element.getName().equals(propertyName))
-                .findFirst().orElse(null);
+    private static String evaluateSystemFuncEnv(World world, String systemFunctionValue) throws PropertyNotFoundException {
+        Property envProp = Utils.findEnvironmentPropertyByName(world, systemFunctionValue);
 
         if (Objects.isNull(envProp))
-            throw new PropertyNotFoundException(String.format("Action [%s]: environment(%s) does not exist",
-                    action.getType(), propertyName));
+            throw new PropertyNotFoundException(String.format("environment(%s) does not exist", systemFunctionValue));
 
         return envProp.getValue().getCurrentValue();
     }
-    private static String evaluateSystemFuncEvaluate(World world, Action action, String propName, SingleEntity on) throws PropertyNotFoundException {
-        if (!Objects.isNull(on)) {
-            Property prop = Utils.findPropertyByName(on, propName);
+    private static String evaluateSystemFuncEvaluate(String systemFunctionValue,
+                                                     SingleEntity main,
+                                                     SingleEntity secondary) throws PropertyNotFoundException {
+        String entityName = systemFunctionValue.split("\\.")[0];
+        String propertyName = systemFunctionValue.split("\\.")[1];
+        SingleEntity on = entityName.equals(main.getEntityName()) ? main : secondary;
+        Property property = Utils.findPropertyByName(on, propertyName);
 
-            if (Objects.isNull(prop))
-                throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: Property [%s] not found",
-                        action.getType(), action.getEntityName(), propName));
+        if (Objects.isNull(property))
+            throw new PropertyNotFoundException(String.format("Entity [%s]: Property [%s] not found",
+                    entityName, propertyName));
 
-            return prop.getValue().getCurrentValue();
-        }
-
-        Property anyProp = Utils.findAnyPropertyByName(world, action.getEntityName(), propName);
-
-        if (Objects.isNull(anyProp))
-            throw new PropertyNotFoundException(String.format("Action [%s]: Entity [%s]: System Function Evaluate: Property [%s] not found",
-                    action.getType(), action.getEntityName(), propName));
-
-        return anyProp.getValue().getCurrentValue();
+        return property.getValue().getCurrentValue();
     }
-    private static String evaluateSystemFuncPercent(World world, Action action, String args, SingleEntity on) throws PropertyNotFoundException {
-        String[] splitArgs = args.split(",");
+    private static String evaluateSystemFuncPercent(World world,
+                                                    String systemFunctionValue,
+                                                    SingleEntity main,
+                                                    SingleEntity secondary) throws PropertyNotFoundException {
+        String[] args = systemFunctionValue.split(",");
+        float arg1 = Float.parseFloat(evaluateExpression(world, args[0], main, secondary));
+        float arg2 = Float.parseFloat(evaluateExpression(world, args[1], main, secondary));
 
-        return String.valueOf(Float.parseFloat(evaluateExpression(world, action, splitArgs[0], on)) /
-                Float.parseFloat(evaluateExpression(world, action, splitArgs[1], on)));
+        return Utils.removeExtraZeroes(String.valueOf(arg1 / arg2));
     }
-    private static String evaluateSystemFuncTicks(World world, Action action, String systemFunctionValue,
-                                                  SingleEntity on) throws PropertyNotFoundException {
-        String[] splitArgs = systemFunctionValue.split("\\.");
-        Property ticksProp = !Objects.isNull(on) ? Utils.findPropertyByName(on, splitArgs[1]) :
-                Utils.findAnyPropertyByName(world, splitArgs[0], splitArgs[1]);
+    private static String evaluateSystemFuncTicks(String systemFunctionValue,
+                                                  SingleEntity main,
+                                                  SingleEntity secondary) throws PropertyNotFoundException {
+        String entityName = systemFunctionValue.split("\\.")[0];
+        String propertyName = systemFunctionValue.split("\\.")[1];
+        SingleEntity on = entityName.equals(main.getEntityName()) ? main : secondary;
+        Property ticksProp =  Utils.findPropertyByName(on, propertyName);
 
         if (Objects.isNull(ticksProp))
-            throw new PropertyNotFoundException(String.format("Action [%s]: Ticks system function: can't find property [%s] of entity [%s]",
-                    action.getType(), splitArgs[1], splitArgs[0]));
+            throw new PropertyNotFoundException(String.format("Ticks system function: can't find property [%s] of entity [%s]",
+                    propertyName, entityName));
 
         return String.valueOf(ticksProp.getStableTime());
     }

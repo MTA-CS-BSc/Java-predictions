@@ -5,7 +5,6 @@ import engine.exceptions.InvalidTypeException;
 import engine.exceptions.UniqueNameException;
 import engine.exceptions.WhitespacesFoundException;
 import engine.prototypes.jaxb.PRDEnvProperty;
-import engine.prototypes.jaxb.PRDEvironment;
 import engine.prototypes.jaxb.PRDWorld;
 
 import java.util.List;
@@ -18,8 +17,8 @@ public abstract class PRDEnvironmentValidators {
                 && validateRanges(world) && validateNoWhitespacesInNames(world);
     }
     private static boolean validatePropsUniqueNames(PRDWorld world) throws UniqueNameException {
-        for (PRDEnvProperty property : world.getPRDEvironment().getPRDEnvProperty())
-            if (world.getPRDEvironment().getPRDEnvProperty()
+        for (PRDEnvProperty property : world.getPRDEnvironment().getPRDEnvProperty())
+            if (world.getPRDEnvironment().getPRDEnvProperty()
                     .stream()
                     .filter(element -> element.getPRDName().equals(property.getPRDName()))
                     .count() > 1)
@@ -28,7 +27,7 @@ public abstract class PRDEnvironmentValidators {
         return true;
     }
     private static boolean validatePropsTypes(PRDWorld world) throws InvalidTypeException {
-        for (PRDEnvProperty property : world.getPRDEvironment().getPRDEnvProperty())
+        for (PRDEnvProperty property : world.getPRDEnvironment().getPRDEnvProperty())
             if (!Restrictions.PRD_PROPERTY_ALLOWED_TYPES.contains(property.getType()))
                 throw new InvalidTypeException(String.format("Environment property [%s] has invalid type [%s]",
                         property.getPRDName(), property.getType()));
@@ -36,7 +35,7 @@ public abstract class PRDEnvironmentValidators {
         return true;
     }
     private static boolean validateNoWhitespacesInNames(PRDWorld world) throws WhitespacesFoundException {
-        for (PRDEnvProperty property : world.getPRDEvironment().getPRDEnvProperty())
+        for (PRDEnvProperty property : world.getPRDEnvironment().getPRDEnvProperty())
             if (property.getPRDName().contains(" "))
                 throw new WhitespacesFoundException(String.format("Environment property [%s] has whitespaces in it's name",
                         property.getPRDName()));
@@ -45,7 +44,7 @@ public abstract class PRDEnvironmentValidators {
     }
     private static boolean validateRanges(PRDWorld world) throws Exception {
         List<PRDEnvProperty> propsWithRange =
-                world.getPRDEvironment().getPRDEnvProperty()
+                world.getPRDEnvironment().getPRDEnvProperty()
                         .stream()
                         .filter(element -> !Objects.isNull(element.getPRDRange()))
                         .collect(Collectors.toList());

@@ -8,14 +8,9 @@
 
 package engine.prototypes.jaxb;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElements;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 
 /**
@@ -40,45 +35,72 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "prdByTicksOrPRDBySecond"
+        "prdByUser",
+        "prdBySecondOrPRDByTicks"
 })
 @XmlRootElement(name = "PRD-termination")
 public class PRDTermination {
 
+    @XmlElement(name = "PRD-by-user")
+    protected Object prdByUser;
     @XmlElements({
-        @XmlElement(name = "PRD-by-ticks", type = PRDByTicks.class),
-        @XmlElement(name = "PRD-by-second", type = PRDBySecond.class)
+            @XmlElement(name = "PRD-by-second", type = PRDBySecond.class),
+            @XmlElement(name = "PRD-by-ticks", type = PRDByTicks.class)
     })
-    protected List<Object> prdByTicksOrPRDBySecond;
+    protected List<Object> prdBySecondOrPRDByTicks;
 
     /**
-     * Gets the value of the prdByTicksOrPRDBySecond property.
-     * 
+     * Gets the value of the prdByUser property.
+     *
+     * @return
+     *     possible object is
+     *     {@link Object }
+     *
+     */
+    public Object getPRDByUser() {
+        return prdByUser;
+    }
+
+    /**
+     * Sets the value of the prdByUser property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Object }
+     *
+     */
+    public void setPRDByUser(Object value) {
+        this.prdByUser = value;
+    }
+
+    /**
+     * Gets the value of the prdBySecondOrPRDByTicks property.
+     *
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the prdByTicksOrPRDBySecond property.
-     * 
+     * This is why there is not a <CODE>set</CODE> method for the prdBySecondOrPRDByTicks property.
+     *
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getPRDByTicksOrPRDBySecond().add(newItem);
+     *    getPRDBySecondOrPRDByTicks().add(newItem);
      * </pre>
-     * 
-     * 
+     *
+     *
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link PRDByTicks }
      * {@link PRDBySecond }
-     * 
-     * 
+     * {@link PRDByTicks }
+     *
+     *
      */
-    public List<Object> getPRDByTicksOrPRDBySecond() {
-        if (prdByTicksOrPRDBySecond == null) {
-            prdByTicksOrPRDBySecond = new ArrayList<Object>();
+    public List<Object> getPRDBySecondOrPRDByTicks() {
+        if (prdBySecondOrPRDByTicks == null) {
+            prdBySecondOrPRDByTicks = new ArrayList<Object>();
         }
-        return this.prdByTicksOrPRDBySecond;
+        return this.prdBySecondOrPRDByTicks;
     }
 
 }

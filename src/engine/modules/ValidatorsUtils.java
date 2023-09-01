@@ -35,71 +35,112 @@ public abstract class ValidatorsUtils {
 
         return SystemFunctions.ALL_SYSTEM_FUNCS.contains(expression.substring(0, expression.indexOf("(")));
     }
-    public static String getSystemFunctionType(String expression) {
-        return expression.substring(0, expression.indexOf("("));
+    public static String getExpressionType(PRDWorld world, PRDAction action, String expression) {
+        PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), expression);
+
+        if (ValidatorsUtils.isSystemFunction(expression)) {
+            String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
+
+            switch (Utils.getSystemFunctionType(expression)) {
+                case SystemFunctions.RANDOM:
+                case SystemFunctions.TICKS:
+                case SystemFunctions.PERCENT:
+                    return PropTypes.DECIMAL;
+                case SystemFunctions.ENVIRONMENT:
+                    PRDEnvProperty envProp = world.getPRDEnvironment().getPRDEnvProperty()
+                            .stream()
+                            .filter(element -> element.getPRDName().equals(systemFunctionValue))
+                            .findFirst().orElse(null);
+
+                    assert !Objects.isNull(envProp);
+                    return envProp.getType();
+                case SystemFunctions.EVALUATE:
+                    String entityName = systemFunctionValue.split("\\.")[0];
+                    String propName = systemFunctionValue.split("\\.")[1];
+
+                    PRDProperty property = findPRDPropertyByName(world, entityName, propName);
+
+                    assert !Objects.isNull(property);
+                    return property.getType();
+            }
+        }
+
+        else if (!Objects.isNull(expressionEntityProp))
+            return expressionEntityProp.getType();
+
+        else if (TypesUtils.isDecimal(expression))
+            return PropTypes.DECIMAL;
+
+        else if (TypesUtils.isFloat(expression))
+            return PropTypes.FLOAT;
+
+        else if (TypesUtils.isBoolean(expression))
+            return PropTypes.BOOLEAN;
+
+        return PropTypes.STRING;
     }
-    public static boolean validateExpressionType(PRDWorld world, PRDAction action, PRDProperty property, String expression) {
+    public static boolean validateExpressionType(PRDWorld world, PRDAction action, String expectedType, String expression) {
         PRDProperty expressionEntityProp = ValidatorsUtils.findPRDPropertyByName(world, action.getEntity(), expression);
 
         if (ValidatorsUtils.isSystemFunction(expression))
-            return validateSystemFuncExpressionType(world, action, property, expression);
+            return validateSystemFuncExpressionType(world, action, expectedType, expression);
 
         else if (!Objects.isNull(expressionEntityProp))
-            return expressionEntityProp.getType().equals(property.getType())
+            return expressionEntityProp.getType().equals(expectedType)
                     || (expressionEntityProp.getType().equals(PropTypes.DECIMAL)
-                    && property.getType().equals(PropTypes.FLOAT));
+                    && expectedType.equals(PropTypes.FLOAT));
 
         else {
             if (TypesUtils.isDecimal(expression))
-                return PropTypes.NUMERIC_PROPS.contains(property.getType());
+                return PropTypes.NUMERIC_PROPS.contains(expectedType);
 
             else if (TypesUtils.isFloat(expression)) {
                 if (!expression.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-                    return property.getType().equals(PropTypes.FLOAT);
+                    return expectedType.equals(PropTypes.FLOAT);
 
-                return PropTypes.NUMERIC_PROPS.contains(property.getType());
+                return PropTypes.NUMERIC_PROPS.contains(expectedType);
             }
 
             else if (TypesUtils.isBoolean(expression))
-                return property.getType().equals(PropTypes.BOOLEAN);
+                return expectedType.equals(PropTypes.BOOLEAN);
         }
 
-        return property.getType().equals(PropTypes.STRING);
+        return expectedType.equals(PropTypes.STRING);
     }
-    private static boolean validateSystemFuncRandom(PRDProperty property, String systemFunctionValue) {
-        return property.getType().equals(PropTypes.DECIMAL) && TypesUtils.isDecimal(systemFunctionValue);
+    private static boolean validateSystemFuncRandom(String expectedType, String systemFunctionValue) {
+        return PropTypes.NUMERIC_PROPS.contains(expectedType) && TypesUtils.isDecimal(systemFunctionValue);
     }
     private static boolean validateSystemFuncExpressionType(PRDWorld world, PRDAction action,
-                                                            PRDProperty property, String expression) {
-        String systemFunctionType = ValidatorsUtils.getSystemFunctionType(expression);
+                                                            String expectedType, String expression) {
+        String systemFunctionType = Utils.getSystemFunctionType(expression);
         String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
         switch (systemFunctionType) {
             case SystemFunctions.RANDOM:
-                return validateSystemFuncRandom(property, systemFunctionValue);
+                return validateSystemFuncRandom(expectedType, systemFunctionValue);
             case SystemFunctions.ENVIRONMENT:
-                return validateSystemFuncEnv(world, property, systemFunctionValue);
+                return validateSystemFuncEnv(world, expectedType, systemFunctionValue);
             case SystemFunctions.EVALUATE:
-                return validateSystemFuncEvaluate(world, systemFunctionValue.split("\\.")[0], property, systemFunctionValue.split("\\.")[1]);
+                return validateSystemFuncEvaluate(world, systemFunctionValue.split("\\.")[0], expectedType, systemFunctionValue.split("\\.")[1]);
             case SystemFunctions.PERCENT:
-                return validateSystemFuncPercent(world, action, property, systemFunctionValue);
+                return validateSystemFuncPercent(world, action, expectedType, systemFunctionValue);
             case SystemFunctions.TICKS:
-                return validateSystemFuncTicks(world, property, systemFunctionValue);
+                return validateSystemFuncTicks(world, expectedType, systemFunctionValue);
         }
 
         return false;
     }
-    private static boolean validateSystemFuncEnv(PRDWorld world, PRDProperty property, String systemFunctionValue) {
-        PRDEnvProperty envProp = world.getPRDEvironment().getPRDEnvProperty()
+    private static boolean validateSystemFuncEnv(PRDWorld world, String expectedType, String systemFunctionValue) {
+        PRDEnvProperty envProp = world.getPRDEnvironment().getPRDEnvProperty()
                 .stream()
                 .filter(element -> element.getPRDName().equals(systemFunctionValue))
                 .findFirst().orElse(null);
 
         return (!Objects.isNull(envProp) &&
-                (envProp.getType().equals(property.getType())
-                || (envProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT))));
+                (envProp.getType().equals(expectedType)
+                || (envProp.getType().equals(PropTypes.DECIMAL) && expectedType.equals(PropTypes.FLOAT))));
     }
-    private static boolean validateSystemFuncEvaluate(PRDWorld world, String entityName, PRDProperty property,
+    private static boolean validateSystemFuncEvaluate(PRDWorld world, String entityName, String expectedType,
                                                       String systemFunctionValue) {
         PRDEntity actionEntity = world.getPRDEntities().getPRDEntity()
                 .stream()
@@ -117,19 +158,22 @@ public abstract class ValidatorsUtils {
         if (Objects.isNull(systemFuncProp))
             return false;
 
-        return systemFuncProp.getType().equals(property.getType())
-                || (systemFuncProp.getType().equals(PropTypes.DECIMAL) && property.getType().equals(PropTypes.FLOAT));
+        return systemFuncProp.getType().equals(expectedType)
+                || (systemFuncProp.getType().equals(PropTypes.DECIMAL) && expectedType.equals(PropTypes.FLOAT));
     }
-    private static boolean validateSystemFuncPercent(PRDWorld world, PRDAction action, PRDProperty property, String args) {
+    private static boolean validateSystemFuncPercent(PRDWorld world, PRDAction action, String expectedType, String args) {
         String[] splitArgs = args.split(",");
 
         if (splitArgs.length != 2)
             return false;
 
-        return validateExpressionType(world, action, property, splitArgs[0])
-                && validateExpressionType(world, action, property, splitArgs[1]);
+        String firstArgExpressionType = getExpressionType(world, action, splitArgs[0]);
+        String secondArgExpressionType = getExpressionType(world, action, splitArgs[1]);
+
+        return PropTypes.NUMERIC_PROPS.contains(firstArgExpressionType)
+                && PropTypes.NUMERIC_PROPS.contains(secondArgExpressionType);
     }
-    private static boolean validateSystemFuncTicks(PRDWorld world, PRDProperty property, String args) {
+    private static boolean validateSystemFuncTicks(PRDWorld world, String expectedType, String args) {
         String[] splitArgs = args.split("\\.");
 
         if (splitArgs.length != 2)
@@ -140,6 +184,6 @@ public abstract class ValidatorsUtils {
         if (Objects.isNull(ticksProp))
             return false;
 
-        return PropTypes.NUMERIC_PROPS.contains(property.getType());
+        return PropTypes.NUMERIC_PROPS.contains(expectedType);
     }
 }

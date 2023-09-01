@@ -39,42 +39,23 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "prdPopulation",
-    "prdProperties"
+        "prdProperties"
 })
 @XmlRootElement(name = "PRD-entity")
 public class PRDEntity {
 
-    @XmlElement(name = "PRD-population")
-    protected int prdPopulation;
     @XmlElement(name = "PRD-properties", required = true)
     protected PRDProperties prdProperties;
     @XmlAttribute(name = "name", required = true)
     protected String name;
 
     /**
-     * Gets the value of the prdPopulation property.
-     * 
-     */
-    public int getPRDPopulation() {
-        return prdPopulation;
-    }
-
-    /**
-     * Sets the value of the prdPopulation property.
-     * 
-     */
-    public void setPRDPopulation(int value) {
-        this.prdPopulation = value;
-    }
-
-    /**
      * Gets the value of the prdProperties property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link PRDProperties }
-     *     
+     *
      */
     public PRDProperties getPRDProperties() {
         return prdProperties;
@@ -82,11 +63,11 @@ public class PRDEntity {
 
     /**
      * Sets the value of the prdProperties property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link PRDProperties }
-     *     
+     *
      */
     public void setPRDProperties(PRDProperties value) {
         this.prdProperties = value;
@@ -94,11 +75,11 @@ public class PRDEntity {
 
     /**
      * Gets the value of the name property.
-     * 
+     *
      * @return
      *     possible object is
      *     {@link String }
-     *     
+     *
      */
     public String getName() {
         return name;
@@ -106,11 +87,11 @@ public class PRDEntity {
 
     /**
      * Sets the value of the name property.
-     * 
+     *
      * @param value
      *     allowed object is
      *     {@link String }
-     *     
+     *
      */
     public void setName(String value) {
         this.name = value;

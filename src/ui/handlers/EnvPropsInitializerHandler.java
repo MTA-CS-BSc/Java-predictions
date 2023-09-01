@@ -1,23 +1,28 @@
 package ui.handlers;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import dtos.PropertyDTO;
+import dtos.ResponseDTO;
 import engine.EngineAPI;
 import engine.consts.PropTypes;
-import dtos.PropertyDTO;
-import engine.modules.Utils;
 import ui.consts.Constants;
 import ui.modules.ScanCycles;
 import ui.printers.EnvPropsInitializerPrinter;
 import ui.scanners.EnvPropsInitializerScanner;
+
+import java.util.List;
 
 public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
     public EnvPropsInitializerHandler() {
         super();
     }
     private void handleEnvSetSelection(EngineAPI api, String uuid, int selection) {
+        List<PropertyDTO> props = new Gson().fromJson(api.getEnvironmentProperties(uuid).getData(), new TypeToken<List<PropertyDTO>>(){}.getType());
+        PropertyDTO prop = props.get(selection - 1);
+
         String val = "";
         System.out.println("Enter value:");
-
-        PropertyDTO prop = api.getEnvironmentProperties(uuid).get(selection - 1);
 
         switch (prop.getType()) {
             case PropTypes.BOOLEAN:
@@ -34,16 +39,10 @@ public class EnvPropsInitializerHandler extends EnvPropsInitializerScanner {
                 break;
         }
 
-        if (PropTypes.NUMERIC_PROPS.contains(prop.getType())) {
-            if (Utils.validateValueInRange(prop, val))
-                api.setEnvironmentVariable(uuid, prop, val);
+        ResponseDTO setEnvPropResponse = api.setEnvironmentVariable(uuid, prop, val);
 
-            else
-                System.out.println("Value not in range!");
-        }
-
-        else
-            api.setEnvironmentVariable(uuid, prop, val);
+        if (setEnvPropResponse.getStatus() == 400)
+            System.out.println(setEnvPropResponse.getErrorDescription().getCause());
     }
     public boolean printVarsAndHandleSelectedPropChange(EngineAPI api, String uuid) {
         System.out.println("Available environment variables to set: ");

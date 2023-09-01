@@ -25,6 +25,8 @@ public abstract class Mappers {
                 .map(Mappers::toDto)
                 .collect(Collectors.toList());
 
+        TerminationDTO termination = new TerminationDTO(stopConditions, world.getTermination().isStopByUser());
+
         List<PropertyDTO> envs = world.getEnvironment().getEnvVars().values()
                 .stream()
                 .map(Mappers::toDto)
@@ -37,7 +39,7 @@ public abstract class Mappers {
                 .sorted(Comparator.comparing(RuleDTO::getName))
                 .collect(Collectors.toList());
 
-        return new WorldDTO(entities, stopConditions, rules, envs);
+        return new WorldDTO(entities, termination, rules, envs);
     }
     public static EntityDTO toDto(Entity entity) {
         List<PropertyDTO> entityProps = entity.getInitialProperties().getPropsMap()

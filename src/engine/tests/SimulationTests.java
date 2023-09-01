@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.FileHandler;
 
 public class SimulationTests {
@@ -25,7 +26,7 @@ public class SimulationTests {
         String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
-        if (PRDWorldValidators.validateWorld(prdWorld)) {
+        if (Objects.isNull(PRDWorldValidators.validateWorld(prdWorld).getErrorDescription())) {
             World world = new World(prdWorld);
             SingleSimulation simulation = new SingleSimulation(world);
             simulation.run();
@@ -38,7 +39,7 @@ public class SimulationTests {
         String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
 
-        if (PRDWorldValidators.validateWorld(prdWorld)) {
+        if (Objects.isNull(PRDWorldValidators.validateWorld(prdWorld).getErrorDescription())) {
             HistoryManager historyManager = new HistoryManager();
             World world = new World(prdWorld);
             SingleSimulation simulation = new SingleSimulation(world);
