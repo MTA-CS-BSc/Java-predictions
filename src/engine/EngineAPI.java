@@ -18,6 +18,7 @@ import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.SimulationState;
+import helpers.ThreadPoolManager;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -29,11 +30,11 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class EngineAPI {
-    protected int threadPoolCount;
     protected HistoryManager historyManager;
+    protected ThreadPoolManager threadPoolManager;
     public EngineAPI() {
         historyManager = new HistoryManager();
-
+        threadPoolManager = new ThreadPoolManager();
         configureLoggers();
     }
     private void configureLoggers() {
@@ -79,7 +80,7 @@ public class EngineAPI {
 
         if (Objects.isNull(validateWorldResponse.getErrorDescription())) {
             setInitialXmlWorld(new World(prdWorld));
-            threadPoolCount = prdWorld.getPRDThreadCount();
+            threadPoolManager.setThreadsAmount(prdWorld.getPRDThreadCount());
         }
 
         return validateWorldResponse;
