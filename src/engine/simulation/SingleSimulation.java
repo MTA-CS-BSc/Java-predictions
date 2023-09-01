@@ -78,7 +78,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
-    public void initializeRandomVariables() {
+    private void initializeRandomVariables() {
         world.initAllRandomVars();
     }
     public void run() throws Exception {
