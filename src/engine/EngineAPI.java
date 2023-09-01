@@ -192,24 +192,18 @@ public class EngineAPI {
 
         return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
-    public ResponseDTO runSimulation(String uuid) throws Exception {
-        if (!Objects.isNull(historyManager.getPastSimulation(uuid))) {
-            SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+    public ResponseDTO runSimulation(String uuid) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
 
-            if (simulation.getSimulationState() == SimulationState.CREATED)
-                setEntitiesInitialLocations(simulation);
+        //TODO: Check if catch should be ignored
+        threadPoolManager.executeTask(() -> {
+            try {
+                startSimulation(uuid);
+            } catch (Exception ignored) { }
+        });
 
-            simulation.run();
-
-            if (simulation.getSimulationState() == SimulationState.ERROR) {
-                historyManager.getPastSimulations().remove(uuid);
-                return new ResponseDTO(500, String.format("Simulation [%s] was removed", uuid), "Simulation runtime error occurred.");
-            }
-
-            return new ResponseDTO(200, SimulationState.FINISHED);
-        }
-
-        return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
+        return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
     }
     public ResponseDTO getCurrentOverallPopulation(String uuid) {
         int sum = historyManager.getPastSimulation(uuid)
@@ -255,6 +249,21 @@ public class EngineAPI {
 
         simulation.setSimulationState(SimulationState.RUNNING);
         return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
+    }
+    private ResponseDTO startSimulation(String uuid) throws Exception {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        if (simulation.getSimulationState() == SimulationState.CREATED)
+            setEntitiesInitialLocations(simulation);
+
+        simulation.run();
+
+        if (simulation.getSimulationState() == SimulationState.ERROR) {
+            historyManager.getPastSimulations().remove(uuid);
+            return new ResponseDTO(500, String.format("Simulation [%s] was removed", uuid), "Simulation runtime error occurred.");
+        }
+
+        return new ResponseDTO(200, SimulationState.FINISHED);
     }
     private void setEntitiesInitialLocations(SingleSimulation simulation) {
         simulation.getWorld()
