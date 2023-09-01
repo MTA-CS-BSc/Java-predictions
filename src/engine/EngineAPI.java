@@ -218,7 +218,6 @@ public class EngineAPI {
         return new ResponseDTO(200, sum);
     }
     public ResponseDTO setEntityInitialPopulation(String uuid, String entityName, int population) {
-        //TODO: Check if population exceeds current taken spots on UI
         if (population < 0)
             return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Population is negative");
