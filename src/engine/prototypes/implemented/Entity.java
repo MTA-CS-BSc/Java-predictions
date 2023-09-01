@@ -37,7 +37,6 @@ public class Entity implements Serializable {
         return population;
     }
     public void setPopulation(int population) {
-        //TODO: Check if population exceeds current taken spots on UI
         this.population = population;
     }
     public List<SingleEntity> getSingleEntities() {
