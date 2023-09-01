@@ -29,7 +29,7 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class EngineAPI {
-    protected int threadpoolCount;
+    protected int threadPoolCount;
     protected HistoryManager historyManager;
     public EngineAPI() {
         historyManager = new HistoryManager();
@@ -79,7 +79,7 @@ public class EngineAPI {
 
         if (Objects.isNull(validateWorldResponse.getErrorDescription())) {
             setInitialXmlWorld(new World(prdWorld));
-            threadpoolCount = prdWorld.getPRDThreadCount();
+            threadPoolCount = prdWorld.getPRDThreadCount();
         }
 
         return validateWorldResponse;
