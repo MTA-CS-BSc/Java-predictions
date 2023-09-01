@@ -221,6 +221,7 @@ public class EngineAPI {
                 uuid, entityName, population));
     }
     public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) {
+        //TODO: Add check for simulation pause when paused
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
         if (!simulation.getSimulationState().equals(SimulationState.RUNNING))
             return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
