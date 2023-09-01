@@ -11,6 +11,7 @@ import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.parsers.XmlParser;
 import engine.prototypes.implemented.Coordinate;
+import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
@@ -208,6 +209,18 @@ public class EngineAPI {
         }
 
         return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
+    }
+    public ResponseDTO getCurrentOverallPopulation(String uuid) {
+        int sum = historyManager.getPastSimulation(uuid)
+                .getWorld()
+                .getEntities()
+                .getEntitiesMap()
+                .values()
+                .stream()
+                .mapToInt(Entity::getPopulation)
+                .sum();
+
+        return new ResponseDTO(200, sum);
     }
     public ResponseDTO setEntityInitialPopulation(String uuid, String entityName, int population) {
         //TODO: Check if population exceeds current taken spots on UI
