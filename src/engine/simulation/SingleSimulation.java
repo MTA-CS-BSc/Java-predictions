@@ -71,12 +71,12 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .collect(Collectors.toList());
     }
     private List<Action> getActionsToPerform() {
-        return Utils.getRulesToApply(world, ticks).values()
+        return Utils.getOrderedActionsList(Utils.getRulesToApply(world, ticks).values()
                 .stream()
                 .map(Rule::getActions)
                 .map(Actions::getActions)
                 .flatMap(List::stream)
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
     }
     private void initializeRandomVariables() {
         world.initAllRandomVars();
