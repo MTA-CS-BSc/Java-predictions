@@ -1,10 +1,10 @@
 package dtos.actions;
 
-public class SimpleConditionDTO extends ConditionDTO {
+public class SingleConditionDTO extends ConditionDTO {
     protected String operator;
     protected String property;
     protected String value;
-    public SimpleConditionDTO(String entityName, SecondaryEntityDTO secondaryEntity,
+    public SingleConditionDTO(String entityName, SecondaryEntityDTO secondaryEntity,
                               int thenActionsAmount, int elseActionsAmount,
                               String operator, String property, String value) {
         super(entityName, secondaryEntity, thenActionsAmount, elseActionsAmount);
