@@ -13,4 +13,15 @@ public class ReplaceDTO extends ActionDTO {
         this.create = create;
         this.mode = mode;
     }
+    public String getKill() {
+        return kill;
+    }
+
+    public String getCreate() {
+        return create;
+    }
+
+    public String getMode() {
+        return mode;
+    }
 }
