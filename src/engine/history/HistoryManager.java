@@ -100,7 +100,7 @@ public class HistoryManager implements Serializable {
     }
     public World getInitialWorld() { return initialWorld; }
     public SingleSimulationDTO getMockSimulationForDetails() {
-        if (!Objects.isNull(initialWorld))
+        if (isXmlLoaded())
             return new SingleSimulationDTO(Mappers.toDto(initialWorld));
 
         return null;
