@@ -17,6 +17,9 @@ public class RuleDTO {
         this.actions = actions;
     }
     public int getActionsAmount() { return !Objects.isNull(actions) ? actions.size() : 0; }
+    public List<ActionDTO> getActions() {
+        return actions;
+    }
     public String getName() {
         return name;
     }
