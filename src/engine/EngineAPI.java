@@ -290,8 +290,8 @@ public class EngineAPI {
     private void changeCoordinateState(SingleSimulation simulation, Coordinate coordinate) {
         simulation.getWorld().getGrid().changeCoordinateState(coordinate);
     }
-    private void setInitialXmlWorld(World _initialWorld) {
-        historyManager.setInitialXmlWorld(_initialWorld);
+    private void setInitialXmlWorld(World initialWorld) {
+        historyManager.setInitialXmlWorld(initialWorld);
     }
     private World getInitialWorldForSimulation() {
         if (!historyManager.isEmpty())

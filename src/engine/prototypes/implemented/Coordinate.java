@@ -5,9 +5,9 @@ import java.util.Objects;
 public class Coordinate {
     protected int x;
     protected int y;
-    public Coordinate(int _x, int _y) {
-        x = _x;
-        y = _y;
+    public Coordinate(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
     public Coordinate(Coordinate other) {
         x = other.x;

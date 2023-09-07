@@ -10,11 +10,11 @@ public class Value implements Serializable {
     protected String init;
     protected String currentValue;
 
-    public Value(PRDValue _value) {
-        if (!Objects.isNull(_value)) {
-            isRandomInitialize = _value.isRandomInitialize();
-            init = _value.getInit();
-            currentValue = _value.getInit();
+    public Value(PRDValue value) {
+        if (!Objects.isNull(value)) {
+            isRandomInitialize = value.isRandomInitialize();
+            init = value.getInit();
+            currentValue = value.getInit();
         }
     }
 

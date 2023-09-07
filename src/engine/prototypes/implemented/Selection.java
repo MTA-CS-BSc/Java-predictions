@@ -6,9 +6,9 @@ public class Selection {
     protected Condition condition;
     protected String count;
 
-    public Selection(PRDAction.PRDSecondaryEntity.PRDSelection _selection) {
-        condition = new Condition(_selection.getPRDCondition());
-        count = _selection.getCount();
+    public Selection(PRDAction.PRDSecondaryEntity.PRDSelection selection) {
+        condition = new Condition(selection.getPRDCondition());
+        count = selection.getCount();
     }
 
     public Condition getCondition() { return condition; }

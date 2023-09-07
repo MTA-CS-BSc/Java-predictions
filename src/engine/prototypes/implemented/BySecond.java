@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class BySecond implements Serializable {
     protected int count;
-    public BySecond(PRDBySecond _bySecond) {
-        if (!Objects.isNull(_bySecond))
-            count = _bySecond.getCount();
+    public BySecond(PRDBySecond bySecond) {
+        if (!Objects.isNull(bySecond))
+            count = bySecond.getCount();
     }
 
     public int getCount() { return count; }

@@ -91,9 +91,9 @@ public class HistoryManager implements Serializable {
     public void clearHistory() {
         pastSimulations.clear();
     }
-    public void setInitialXmlWorld(World _initialXmlWorld) {
+    public void setInitialXmlWorld(World initialXmlWorld) {
         clearHistory();
-        initialWorld = _initialXmlWorld;
+        this.initialWorld = initialXmlWorld;
     }
     public boolean isXmlLoaded() {
         return !Objects.isNull(initialWorld);

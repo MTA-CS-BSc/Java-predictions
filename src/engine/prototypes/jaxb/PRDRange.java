@@ -50,9 +50,9 @@ public class PRDRange {
 
     public PRDRange() { }
 
-    public PRDRange(double _from, double _to) {
-        this.to = _to;
-        this.from = _from;
+    public PRDRange(double from, double to) {
+        this.to = to;
+        this.from = from;
     }
     public double getTo() {
         return to;

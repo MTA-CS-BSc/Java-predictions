@@ -5,11 +5,11 @@ public class RuleDTO {
     protected int ticks;
     protected double probability;
     protected int actionsAmount;
-    public RuleDTO(String _name, int _ticks, double _probability, int _actionsAmount) {
-        name = _name;
-        ticks = _ticks;
-        probability = _probability;
-        actionsAmount = _actionsAmount;
+    public RuleDTO(String name, int ticks, double probability, int actionsAmount) {
+        this.name = name;
+        this.ticks = ticks;
+        this.probability = probability;
+        this.actionsAmount = actionsAmount;
     }
     public String getName() {
         return name;

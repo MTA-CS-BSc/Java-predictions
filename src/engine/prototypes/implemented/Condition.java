@@ -16,17 +16,17 @@ public class Condition implements Serializable {
     protected String logicalOperator;
     protected String entityName;
 
-    public Condition(PRDCondition _condition) {
-        if (!Objects.isNull(_condition)) {
+    public Condition(PRDCondition condition) {
+        if (!Objects.isNull(condition)) {
             conditions = new ArrayList<>();
-            value = _condition.getValue();
-            singularity = _condition.getSingularity();
-            operator = _condition.getOperator();
-            property = _condition.getProperty();
-            logicalOperator = _condition.getLogical();
-            entityName = _condition.getEntity();
+            value = condition.getValue();
+            singularity = condition.getSingularity();
+            operator = condition.getOperator();
+            property = condition.getProperty();
+            logicalOperator = condition.getLogical();
+            entityName = condition.getEntity();
 
-            _condition.getPRDCondition().forEach(prdCondition -> conditions.add(new Condition(prdCondition)));
+            condition.getPRDCondition().forEach(prdCondition -> conditions.add(new Condition(prdCondition)));
         }
 
     }

@@ -1,7 +1,6 @@
 package engine.consts;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class ActionTypes {
@@ -14,7 +13,5 @@ public abstract class ActionTypes {
     public static final String REPLACE = "replace";
     public static final String PROXIMITY = "proximity";
     public static List<String> NUMERIC_ACTIONS = Arrays.asList(INCREASE, DECREASE, CALCULATION);
-    public static List<String> BOOLEAN_ACTIONS = Collections.singletonList(CONDITION);
-    public static List<String> ENTITY_MAY_NOT_EXIST_TYPES = Arrays.asList(ActionTypes.PROXIMITY,
-            ActionTypes.REPLACE, ActionTypes.CONDITION);
+    public static List<String> ENTITY_MAY_NOT_EXIST_TYPES = Arrays.asList(ActionTypes.PROXIMITY, ActionTypes.REPLACE, ActionTypes.CONDITION);
 }

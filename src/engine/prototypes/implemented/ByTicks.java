@@ -7,9 +7,9 @@ import java.util.Objects;
 
 public class ByTicks implements Serializable {
     protected int count;
-    public ByTicks(PRDByTicks _byTicks) {
-        if (!Objects.isNull(_byTicks))
-            count = _byTicks.getCount();
+    public ByTicks(PRDByTicks byTicks) {
+        if (!Objects.isNull(byTicks))
+            count = byTicks.getCount();
     }
     public int getCount() { return count; }
 }

@@ -7,12 +7,12 @@ public class WorldDTO {
     protected List<RuleDTO> rules;
     protected TerminationDTO termination;
     protected List<EntityDTO> entities;
-    public WorldDTO(List<EntityDTO> _entities, TerminationDTO _termination,
-                    List<RuleDTO> _rules, List<PropertyDTO> _environment) {
-        environment = _environment;
-        rules = _rules;
-        termination = _termination;
-        entities = _entities;
+    public WorldDTO(List<EntityDTO> entities, TerminationDTO termination,
+                    List<RuleDTO> rules, List<PropertyDTO> environment) {
+        this.environment = environment;
+        this.rules = rules;
+        this.termination = termination;
+        this.entities = entities;
     }
     @Override
     public String toString() {

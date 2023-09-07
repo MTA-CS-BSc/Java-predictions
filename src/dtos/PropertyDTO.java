@@ -11,12 +11,12 @@ public class PropertyDTO {
     protected RangeDTO range;
     protected boolean isRandom;
 
-    public PropertyDTO(String _name, String _type, RangeDTO _range, String _value, boolean _isRandom) {
-        name = _name;
-        type = _type;
-        range = _range;
-        value = _value;
-        isRandom = _isRandom;
+    public PropertyDTO(String name, String type, RangeDTO range, String value, boolean isRandom) {
+        this.name = name;
+        this.type = type;
+        this.range = range;
+        this.value = value;
+        this.isRandom = isRandom;
     }
 
     public String getName() {

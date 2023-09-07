@@ -19,10 +19,10 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     protected String uuid;
     protected ElapsedTimer elapsedTimer;
 
-    public SingleSimulation(World _world) {
+    public SingleSimulation(World world) {
         elapsedTimer = new ElapsedTimer();
         uuid = UUID.randomUUID().toString();
-        world = _world;
+        this.world = world;
         simulationState = SimulationState.CREATED;
     }
     public String getUUID() { return uuid; }

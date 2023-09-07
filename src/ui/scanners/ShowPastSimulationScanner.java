@@ -7,8 +7,8 @@ import java.util.Scanner;
 public abstract class ShowPastSimulationScanner {
     protected Scanner scanner;
     protected EngineAPI api;
-    public ShowPastSimulationScanner(EngineAPI _api) {
+    public ShowPastSimulationScanner(EngineAPI api) {
         scanner = new Scanner(System.in);
-        api = _api;
+        this.api = api;
     }
 }

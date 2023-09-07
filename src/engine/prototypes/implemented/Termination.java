@@ -12,19 +12,19 @@ import java.util.Objects;
 public class Termination implements Serializable {
     protected List<Object> stopConditions;
     protected boolean isStopByUser;
-    public Termination (PRDTermination _termination) {
+    public Termination (PRDTermination termination) {
         stopConditions = new ArrayList<>();
 
-        if (!Objects.isNull(_termination)) {
-            _termination.getPRDBySecondOrPRDByTicks().forEach(_stopCondition -> {
-                if (_stopCondition.getClass() == PRDByTicks.class)
-                    stopConditions.add(new ByTicks((PRDByTicks) _stopCondition));
+        if (!Objects.isNull(termination)) {
+            termination.getPRDBySecondOrPRDByTicks().forEach(stopCondition -> {
+                if (stopCondition.getClass() == PRDByTicks.class)
+                    stopConditions.add(new ByTicks((PRDByTicks) stopCondition));
 
-                else if (_stopCondition.getClass() == PRDBySecond.class)
-                    stopConditions.add(new BySecond((PRDBySecond) _stopCondition));
+                else if (stopCondition.getClass() == PRDBySecond.class)
+                    stopConditions.add(new BySecond((PRDBySecond) stopCondition));
             });
 
-            isStopByUser = !Objects.isNull(_termination.getPRDByUser());
+            isStopByUser = !Objects.isNull(termination.getPRDByUser());
         }
     }
     public List<Object> getStopConditions() {

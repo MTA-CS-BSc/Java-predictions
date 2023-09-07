@@ -6,9 +6,9 @@ public class Between {
     protected String sourceEntity;
     protected String targetEntity;
 
-    public Between(PRDAction.PRDBetween _between) {
-        sourceEntity = _between.getSourceEntity();
-        targetEntity = _between.getTargetEntity();
+    public Between(PRDAction.PRDBetween between) {
+        sourceEntity = between.getSourceEntity();
+        targetEntity = between.getTargetEntity();
     }
 
     public String getSourceEntity() { return sourceEntity; }

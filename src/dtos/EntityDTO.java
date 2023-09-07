@@ -7,10 +7,10 @@ public class EntityDTO {
     protected int population;
     protected List<PropertyDTO> properties;
 
-    public EntityDTO(String _name, int _population, List<PropertyDTO> _properties) {
-        name = _name;
-        properties = _properties;
-        population = _population;
+    public EntityDTO(String name, int population, List<PropertyDTO> properties) {
+        this.name = name;
+        this.properties = properties;
+        this.population = population;
     }
     public String getName() { return name; }
     public List<PropertyDTO> getProperties() { return properties; }

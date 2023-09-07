@@ -5,9 +5,9 @@ public class RangeDTO {
 
     protected double from;
 
-    public RangeDTO(double _from, double _to) {
-        to = _to;
-        from = _from;
+    public RangeDTO(double from, double to) {
+        this.to = to;
+        this.from = from;
     }
 
     public double getTo() {

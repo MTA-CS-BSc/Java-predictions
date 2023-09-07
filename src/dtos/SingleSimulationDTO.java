@@ -5,15 +5,15 @@ public class SingleSimulationDTO {
     protected final String startTimestamp;
     protected final WorldDTO world;
 
-    public SingleSimulationDTO(String _uuid, String _startTimestamp, WorldDTO _world) {
-        uuid = _uuid;
-        startTimestamp = _startTimestamp;
-        world = _world;
+    public SingleSimulationDTO(String uuid, String startTimestamp, WorldDTO world) {
+        this.uuid = uuid;
+        this.startTimestamp = startTimestamp;
+        this.world = world;
     }
-    public SingleSimulationDTO(WorldDTO _world) {
+    public SingleSimulationDTO(WorldDTO world) {
         uuid = "";
         startTimestamp = "";
-        world = _world;
+        this.world = world;
     }
     public String getUuid() { return uuid; }
     public String getStartTimestamp() { return startTimestamp; }
