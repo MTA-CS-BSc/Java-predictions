@@ -14,7 +14,6 @@ public class SetDTO extends ActionDTO {
     public String getPropertyName() {
         return propertyName;
     }
-
     public String getValue() {
         return value;
     }
