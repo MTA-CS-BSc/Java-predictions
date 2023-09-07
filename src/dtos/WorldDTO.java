@@ -35,4 +35,19 @@ public class WorldDTO {
     public String getTerminationDetails() {
         return termination.toString();
     }
+    public List<PropertyDTO> getEnvironment() {
+        return environment;
+    }
+
+    public List<RuleDTO> getRules() {
+        return rules;
+    }
+
+    public TerminationDTO getTermination() {
+        return termination;
+    }
+
+    public List<EntityDTO> getEntities() {
+        return entities;
+    }
 }
