@@ -4,9 +4,11 @@ import com.google.gson.Gson;
 import com.sun.xml.internal.ws.util.StringUtils;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
+import dtos.StopConditionDTO;
 import dtos.WorldDTO;
 import engine.EngineAPI;
 import fx.models.WorldCategoriesTreeView;
+import fx.modules.GuiUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -74,7 +76,7 @@ public class MainScreenController implements Initializable {
             }
         }
     }
-    private void handleShowTreeView() throws Exception {
+    private void handleShowTreeView() {
         if (new Gson().fromJson(engineAPI.isXmlLoaded().getData(), Boolean.class)) {
             handleAddCategories();
             handleShowCategoriesData();
@@ -87,7 +89,7 @@ public class MainScreenController implements Initializable {
         }
 
     }
-    private void handleShowCategoriesData() throws Exception {
+    private void handleShowCategoriesData() {
         SingleSimulationDTO simulation = new Gson().fromJson(engineAPI.getSimulationDetails().getData(),
                 SingleSimulationDTO.class);
 
@@ -96,28 +98,29 @@ public class MainScreenController implements Initializable {
         showEnvironment(world);
         showEntities(world);
         showGrid(world);
+        showTermination(world);
     }
-    private void showEntities(WorldDTO world) throws Exception {
-        TreeItem<String> entities = worldCategoriesTreeView.getRoot().getChildren().stream().filter(element -> element.getValue().equalsIgnoreCase(WorldCategoriesTreeView.ENTITIES.name()))
-                .findFirst().orElseThrow(() -> new Exception("Error"));
+    private void showEntities(WorldDTO world) {
+        TreeItem<String> entities = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.ENTITIES.name());
 
         Collection<TreeItem<String>> entitiesNames = world.getEntities().stream()
                 .map(entity -> new TreeItem<>(entity.getName()))
                 .collect(Collectors.toList());
 
+        assert entities != null;
         entities.getChildren().addAll(entitiesNames);
     }
-    private void showEnvironment(WorldDTO world) throws Exception {
-        TreeItem<String> environment = worldCategoriesTreeView.getRoot().getChildren().stream().filter(element -> element.getValue().equalsIgnoreCase(WorldCategoriesTreeView.ENVIRONMENT.name()))
-                .findFirst().orElseThrow(() -> new Exception("Error"));
+    private void showEnvironment(WorldDTO world) {
+        TreeItem<String> environment = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.ENVIRONMENT.name());
 
         Collection<TreeItem<String>> envVars = world.getEnvironment().stream()
                 .map(property -> new TreeItem<>(property.getName()))
                 .collect(Collectors.toList());
 
+        assert environment != null;
         environment.getChildren().addAll(envVars);
     }
-    private void showGrid(WorldDTO world) throws Exception {
+    private void showGrid(WorldDTO world) {
         TreeItem<String> rows = new TreeItem<>("Rows");
         TreeItem<String> rowsAmount = new TreeItem<>(String.valueOf(world.getGridRows()));
 
@@ -128,11 +131,9 @@ public class MainScreenController implements Initializable {
 
         cols.getChildren().add(columnsAmount);
 
-        TreeItem<String> grid = worldCategoriesTreeView.getRoot().getChildren()
-                .stream()
-                .filter(element -> element.getValue().equalsIgnoreCase(WorldCategoriesTreeView.GRID.name()))
-                .findFirst().orElseThrow(() -> new Exception("Error"));
+        TreeItem<String> grid = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.GRID.name());
 
+        assert grid != null;
         grid.getChildren().add(rows);
         grid.getChildren().add(cols);
     }
@@ -145,6 +146,23 @@ public class MainScreenController implements Initializable {
         root.getChildren().addAll(categories);
 
         worldCategoriesTreeView.setRoot(root);
+    }
+    private void showTermination(WorldDTO world) {
+        TreeItem<String> termination = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.TERMINATION.name());
+
+        assert termination != null;
+
+        if (world.getTermination().isByUser())
+            termination.getChildren().add(new TreeItem<>("By User"));
+
+        else {
+            for (StopConditionDTO stopCondition : world.getTermination().getStopConditions()) {
+                TreeItem<String> byWho = new TreeItem<>(StringUtils.capitalize(stopCondition.getByWho()));
+                byWho.getChildren().add(new TreeItem<>(String.valueOf(stopCondition.getCount())));
+                termination.getChildren().add(byWho);
+            }
+        }
+
     }
     @FXML
     private void handleShowXmlLog(ActionEvent event) {
