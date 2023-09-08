@@ -22,12 +22,12 @@ public abstract class ActionsPerformer {
         if (!Objects.isNull(actToPerform.getSecondaryEntity())) {
             List<SingleEntity> secondaryEntities = ActionsPerformer.chooseSecondaryEntities(world, actToPerform);
 
+            //TODO: Check if should skip action
             if (secondaryEntities.isEmpty())
-                ActionsPerformer.handleAction(world, actToPerform, main, null);
+                return;
 
-            else
-                for (SingleEntity currentSecondary : secondaryEntities)
-                    ActionsPerformer.handleAction(world, actToPerform, main, currentSecondary);
+            for (SingleEntity currentSecondary : secondaryEntities)
+                ActionsPerformer.handleAction(world, actToPerform, main, currentSecondary);
         }
 
         else
