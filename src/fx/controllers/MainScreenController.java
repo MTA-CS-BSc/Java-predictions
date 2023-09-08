@@ -99,6 +99,18 @@ public class MainScreenController implements Initializable {
         showEntities(world);
         showGrid(world);
         showTermination(world);
+        showRules(world);
+    }
+    private void showRules(WorldDTO world) {
+        TreeItem<String> rules = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.RULES.name());
+
+        assert rules != null;
+
+        Collection<TreeItem<String>> rulesNames = world.getRules().stream()
+                .map(rule -> new TreeItem<>(rule.getName()))
+                .collect(Collectors.toList());
+
+        rules.getChildren().addAll(rulesNames);
     }
     private void showEntities(WorldDTO world) {
         TreeItem<String> entities = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.ENTITIES.name());
