@@ -94,7 +94,7 @@ public class EngineAPI {
         return new ResponseDTO(200, sm.getUUID());
     }
     public ResponseDTO getSimulationDetails() {
-        if (historyManager.isXmlLoaded())
+        if (!historyManager.isXmlLoaded())
             return new ResponseDTO(400, "", "No loaded XML");
 
         return new ResponseDTO(200, historyManager.getMockSimulationForDetails());
