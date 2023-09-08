@@ -28,17 +28,17 @@
 }
 
 .log-button {
-    -fx-background-color: transparent; /* Set the background color to transparent */
-    -fx-text-fill: blue; /* Set the text color to blue or your desired link color */
-    -fx-underline: true; /* Underline the text to make it look like a link */
-    -fx-border-width: 0; /* Remove any border */
-    -fx-font-size: 16px; /* Set the font size to your desired value */
-    -fx-cursor: hand; /* Change cursor to hand when hovering over the button */
+    -fx-background-color: transparent;
+    -fx-text-fill: blue;
+    -fx-underline: true;
+    -fx-border-width: 0;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
     -fx-pref-height: 20px;
 }
 
 .log-button:hover {
-    -fx-text-fill: red; /* Change text color on hover if desired */
+    -fx-text-fill: red;
 }
 
 .file-path-text-area .scroll-bar:vertical {
