@@ -47,7 +47,7 @@
           <RowConstraints vgrow="ALWAYS" />
         </rowConstraints>
          <children>
-            <TreeView>
+            <TreeView fx:id="worldCategoriesTreeView">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></TreeView>
