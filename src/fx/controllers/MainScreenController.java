@@ -18,7 +18,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class WelcomeScreenController implements Initializable {
+public class MainScreenController implements Initializable {
     private EngineAPI engineAPI;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
