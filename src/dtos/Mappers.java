@@ -44,7 +44,7 @@ public abstract class Mappers {
                 .sorted(Comparator.comparing(RuleDTO::getName))
                 .collect(Collectors.toList());
 
-        return new WorldDTO(entities, termination, rules, envs);
+        return new WorldDTO(entities, termination, rules, envs, world.getGrid().getRows(), world.getGrid().getColumns());
     }
     public static EntityDTO toDto(Entity entity) {
         List<PropertyDTO> entityProps = entity.getInitialProperties().getPropsMap()

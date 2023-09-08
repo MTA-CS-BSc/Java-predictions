@@ -7,12 +7,16 @@ public class WorldDTO {
     protected List<RuleDTO> rules;
     protected TerminationDTO termination;
     protected List<EntityDTO> entities;
+    protected int gridRows;
+    protected int gridColumns;
     public WorldDTO(List<EntityDTO> entities, TerminationDTO termination,
-                    List<RuleDTO> rules, List<PropertyDTO> environment) {
+                    List<RuleDTO> rules, List<PropertyDTO> environment, int gridRows, int gridColumns) {
         this.environment = environment;
         this.rules = rules;
         this.termination = termination;
         this.entities = entities;
+        this.gridRows = gridRows;
+        this.gridColumns = gridColumns;
     }
     @Override
     public String toString() {
@@ -50,4 +54,7 @@ public class WorldDTO {
     public List<EntityDTO> getEntities() {
         return entities;
     }
+
+    public int getGridRows() { return gridRows; }
+    public int getGridColumns() { return gridColumns; }
 }
