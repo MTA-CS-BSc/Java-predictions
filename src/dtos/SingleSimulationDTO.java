@@ -17,6 +17,9 @@ public class SingleSimulationDTO {
     }
     public String getUuid() { return uuid; }
     public String getStartTimestamp() { return startTimestamp; }
+    public WorldDTO getWorld() {
+        return world;
+    }
     @Override
     public String toString() {
         return "--------------------------------------\n" +
