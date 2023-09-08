@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -20,6 +21,8 @@ import java.util.ResourceBundle;
 
 public class MainScreenController implements Initializable {
     private EngineAPI engineAPI;
+    @FXML
+    private TextArea currentXmlFilePath;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engineAPI = new EngineAPI();
@@ -40,8 +43,10 @@ public class MainScreenController implements Initializable {
                 ResponseDTO response = engineAPI.loadXml(file.getAbsolutePath());
                 TrayNotification tray;
 
-                if (response.getStatus() == 200)
+                if (response.getStatus() == 200) {
                     tray = new TrayNotification("SUCCESS", "XML loaded successfully!", NotificationType.SUCCESS);
+                    currentXmlFilePath.setText(file.getAbsolutePath());
+                }
 
                 else
                     tray = new TrayNotification("FAILURE", "XML was not loaded. History unchanged.", NotificationType.ERROR);
