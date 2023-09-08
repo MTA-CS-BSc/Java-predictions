@@ -40,3 +40,12 @@
 .log-button:hover {
     -fx-text-fill: red; /* Change text color on hover if desired */
 }
+
+.file-path-text-area .scroll-bar:vertical {
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+.file-path-text-area .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+}
