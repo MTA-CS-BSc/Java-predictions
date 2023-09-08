@@ -3,101 +3,72 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.MainScreenController">
+<GridPane alignment="CENTER" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.MainScreenController">
   <children>
-<!--    <MenuBar VBox.vgrow="NEVER">-->
-<!--      <menus>-->
-<!--        <Menu mnemonicParsing="false" text="File">-->
-<!--          <items>-->
-<!--            <MenuItem mnemonicParsing="false" text="New" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Open…" />-->
-<!--            <Menu mnemonicParsing="false" text="Open Recent" />-->
-<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Close" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Save" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Save As…" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Revert" />-->
-<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Preferences…" />-->
-<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Quit" />-->
-<!--          </items>-->
-<!--        </Menu>-->
-<!--        <Menu mnemonicParsing="false" text="Edit">-->
-<!--          <items>-->
-<!--            <MenuItem mnemonicParsing="false" text="Undo" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Redo" />-->
-<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Cut" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Copy" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Paste" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Delete" />-->
-<!--            <SeparatorMenuItem mnemonicParsing="false" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Select All" />-->
-<!--            <MenuItem mnemonicParsing="false" text="Unselect All" />-->
-<!--          </items>-->
-<!--        </Menu>-->
-<!--        <Menu mnemonicParsing="false" text="Help">-->
-<!--          <items>-->
-<!--            <MenuItem mnemonicParsing="false" text="About MyHelloApp" />-->
-<!--          </items>-->
-<!--        </Menu>-->
-<!--      </menus>-->
-<!--    </MenuBar>-->
-    <GridPane alignment="TOP_CENTER" prefHeight="202.0" prefWidth="808.0" VBox.vgrow="ALWAYS">
-         <children>
-            <VBox alignment="TOP_CENTER" prefHeight="166.0" prefWidth="872.0">
+      <BorderPane>
+         <top>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="823.0" spacing="22.0">
                <children>
-                  <BorderPane prefHeight="135.0" prefWidth="802.0">
-                     <top>
-                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="823.0" spacing="22.0">
-                           <children>
-                              <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" styleClass="menu-button" stylesheets="@MainScreen.css" text="Load XML" />
-                              <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="35.0" prefWidth="454.0" promptText="No XML is currently loaded" styleClass="file-path-text-area" stylesheets="@MainScreen.css" wrapText="true">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                                 <font>
-                                    <Font size="12.0" />
-                                 </font></TextArea>
-                              <Button fx:id="queueMgmtButton" alignment="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" stylesheets="@MainScreen.css" text="Queue Management" textAlignment="CENTER">
-                                 <HBox.margin>
-                                    <Insets top="5.0" />
-                                 </HBox.margin>
-                              </Button>
-                           </children>
-                        </HBox>
-                     </top>
-                  </BorderPane>
+                  <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" styleClass="menu-button" stylesheets="@MainScreen.css" text="Load XML" />
+                  <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="35.0" prefWidth="454.0" promptText="No XML is currently loaded" styleClass="file-path-text-area" stylesheets="@MainScreen.css" wrapText="true">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                  </TextArea>
+                  <Button fx:id="queueMgmtButton" alignment="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" stylesheets="@MainScreen.css" text="Queue Management" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Button>
                </children>
-               <GridPane.margin>
-                  <Insets top="5.0" />
-               </GridPane.margin>
-            </VBox>
-         </children>
-         <columnConstraints>
-            <ColumnConstraints />
-         </columnConstraints>
-         <rowConstraints>
-            <RowConstraints />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" />
-         </rowConstraints></GridPane>
-      <VBox alignment="BOTTOM_CENTER" prefHeight="200.0" prefWidth="100.0">
+            </HBox>
+         </top>
+         <GridPane.margin>
+            <Insets top="5.0" />
+         </GridPane.margin>
+      </BorderPane>
+      <GridPane hgap="20.0" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="444.0" minWidth="10.0" prefWidth="288.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="612.0" minWidth="10.0" prefWidth="612.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" vgrow="ALWAYS" />
+        </rowConstraints>
          <children>
-            <BorderPane>
-               <bottom>
-                  <Button mnemonicParsing="false" onAction="#handleShowXmlLog" styleClass="log-button" stylesheets="@MainScreen.css" text="XML log" BorderPane.alignment="BOTTOM_LEFT" fx:id="xmlLogButton" />
-               </bottom>
-            </BorderPane>
+            <TreeView>
+               <GridPane.margin>
+                  <Insets left="5.0" />
+               </GridPane.margin></TreeView>
+            <TreeView prefHeight="157.0" prefWidth="612.0" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets right="5.0" />
+               </GridPane.margin></TreeView>
          </children>
-      </VBox>
+      </GridPane>
+      <BorderPane GridPane.rowIndex="2">
+         <bottom>
+            <Button mnemonicParsing="false" onAction="#handleShowXmlLog" styleClass="log-button" stylesheets="@MainScreen.css" text="XML log" fx:id="xmlLogButton" />
+         </bottom>
+      </BorderPane>
   </children>
-</VBox>
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="200.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="41.0" />
+   </rowConstraints>
+</GridPane>
