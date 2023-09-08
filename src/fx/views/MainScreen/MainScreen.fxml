@@ -49,13 +49,16 @@
          <children>
             <TreeView>
                <GridPane.margin>
-                  <Insets left="5.0" />
+                  <Insets />
                </GridPane.margin></TreeView>
             <TreeView GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets right="5.0" />
+                  <Insets />
                </GridPane.margin></TreeView>
          </children>
+         <GridPane.margin>
+            <Insets left="15.0" right="15.0" />
+         </GridPane.margin>
       </GridPane>
       <BorderPane GridPane.rowIndex="2">
          <bottom>
@@ -68,7 +71,7 @@
    </columnConstraints>
    <rowConstraints>
       <RowConstraints />
-      <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="200.0" vgrow="ALWAYS" />
+      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
       <RowConstraints />
    </rowConstraints>
 </GridPane>
