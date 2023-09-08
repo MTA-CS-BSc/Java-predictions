@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.MainScreenController">
+<VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.MainScreenController">
   <children>
 <!--    <MenuBar VBox.vgrow="NEVER">-->
 <!--      <menus>-->
@@ -52,13 +52,13 @@
 <!--        </Menu>-->
 <!--      </menus>-->
 <!--    </MenuBar>-->
-    <GridPane alignment="CENTER" VBox.vgrow="ALWAYS">
+    <GridPane alignment="TOP_CENTER" prefHeight="202.0" prefWidth="808.0" VBox.vgrow="ALWAYS">
          <children>
-            <VBox alignment="CENTER" prefHeight="168.0" prefWidth="792.0">
+            <VBox alignment="TOP_CENTER" prefHeight="166.0" prefWidth="872.0">
                <children>
-                  <BorderPane prefHeight="172.0" prefWidth="823.0">
+                  <BorderPane prefHeight="135.0" prefWidth="802.0">
                      <top>
-                        <HBox prefHeight="100.0" prefWidth="200.0" spacing="22.0" BorderPane.alignment="CENTER">
+                        <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="823.0" spacing="22.0">
                            <children>
                               <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" styleClass="menu-button" stylesheets="@MainScreen.css" text="Load XML" />
                               <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="35.0" prefWidth="454.0" promptText="No XML is currently loaded" styleClass="file-path-text-area" stylesheets="@MainScreen.css" wrapText="true">
@@ -68,7 +68,7 @@
                                  <font>
                                     <Font size="12.0" />
                                  </font></TextArea>
-                              <Button alignment="CENTER_RIGHT" mnemonicParsing="false" prefHeight="86.0" prefWidth="155.0" text="Queue Management">
+                              <Button fx:id="queueMgmtButton" alignment="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" stylesheets="@MainScreen.css" text="Queue Management" textAlignment="CENTER">
                                  <HBox.margin>
                                     <Insets top="5.0" />
                                  </HBox.margin>
