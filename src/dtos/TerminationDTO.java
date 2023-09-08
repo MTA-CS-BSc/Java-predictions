@@ -4,11 +4,19 @@ import java.util.List;
 
 public class TerminationDTO {
     protected List<StopConditionDTO> stopConditions;
-    protected boolean isByUser;
 
+    protected boolean isByUser;
     public TerminationDTO(List<StopConditionDTO> stopConditions, boolean isByUser) {
         this.stopConditions = stopConditions;
         this.isByUser = isByUser;
+    }
+
+    public boolean isByUser() {
+        return isByUser;
+    }
+
+    public List<StopConditionDTO> getStopConditions() {
+        return stopConditions;
     }
 
     @Override
