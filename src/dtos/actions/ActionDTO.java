@@ -2,7 +2,7 @@ package dtos.actions;
 
 import java.util.Objects;
 
-public abstract class ActionDTO {
+public class ActionDTO {
     protected String type;
     protected String entityName;
     protected SecondaryEntityDTO secondaryEntity;
