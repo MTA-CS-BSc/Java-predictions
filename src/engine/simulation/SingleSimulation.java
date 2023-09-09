@@ -1,7 +1,6 @@
 package engine.simulation;
 
 import engine.consts.TerminationReasons;
-import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.Action;
@@ -95,8 +94,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         simulationState = SimulationState.RUNNING;
 
         while (isSimulationFinished(elapsedTimer.getElapsedTime()).isEmpty()
-                && simulationState != SimulationState.ERROR
-                && simulationState != SimulationState.FINISHED) {
+                && Arrays.asList(SimulationState.STOPPED, SimulationState.RUNNING).contains(simulationState)) {
             if (simulationState == SimulationState.RUNNING) {
                 if (!elapsedTimer.isRunning())
                     elapsedTimer.startOrResume();
@@ -113,10 +111,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         if (elapsedTimer.isRunning())
             elapsedTimer.pause();
 
-        if (simulationState == SimulationState.ERROR)
-            EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation [%s] ended due to runtime error", uuid));
-
-        else if (simulationState == SimulationState.FINISHED) {
+        if (simulationState == SimulationState.FINISHED) {
             setEndTime(new Date());
             setFinishWorldState(world);
         }
