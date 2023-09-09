@@ -7,11 +7,11 @@ import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
 import dtos.StopConditionDTO;
 import dtos.WorldDTO;
-import dtos.actions.*;
 import engine.EngineAPI;
 import fx.models.DetailsScreen.*;
 import fx.models.DetailsScreen.actions.*;
 import fx.models.WorldTreeViewCategories;
+import fx.modules.GuiUtils;
 import helpers.PropTypes;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -80,31 +80,16 @@ public class DetailsScreenController implements Initializable {
         return !objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class)
                 || objectMapper.readValue(engineAPI.isHistoryEmpty().getData(), Boolean.class);
     }
-    private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
-        TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
-
-        if (!Objects.isNull(actionModel.getEntityName()) && !actionModel.getEntityName().isEmpty()) {
-            TreeItem<TreeItemModel> entityNameTreeItem = new TreeItem<>(new TreeItemModel("Entity"));
-            entityNameTreeItem.getChildren().add(new TreeItem<>(new TreeItemModel(actionModel.getEntityName())));
-            actionTreeItem.getChildren().add(entityNameTreeItem);
-        }
-
-        if (!Objects.isNull(actionModel.getSecondaryEntity())) {
-            TreeItem<TreeItemModel> secondaryEntityTreeItem = new TreeItem<>(new TreeItemModel("Secondary Entity"));
-            secondaryEntityTreeItem.getChildren().add(new TreeItem<>(actionModel.getSecondaryEntity()));
-            actionTreeItem.getChildren().add(secondaryEntityTreeItem);
-        }
-
-        addActionProps(actionTreeItem, actionModel);
-
-        return actionTreeItem;
-    }
     private void initializeXmlErrorsAlert() {
         xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
         xmlErrorsAlert.setResizable(true);
         xmlErrorsAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         xmlErrorsAlert.setTitle("Latest loaded XML inspection");
         xmlErrorsAlert.setHeaderText("Validation errors");
+    }
+    @FXML
+    private void handleShowXmlLog() {
+        xmlErrorsAlert.showAndWait();
     }
     @FXML
     private void handleLoadXmlButtonClick(ActionEvent event) {
@@ -145,6 +130,25 @@ public class DetailsScreenController implements Initializable {
             xmlErrorsAlert.setContentText("File not found or corrupted!");
         }
     }
+    private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
+        TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
+
+        if (!Objects.isNull(actionModel.getEntityName()) && !actionModel.getEntityName().isEmpty()) {
+            TreeItem<TreeItemModel> entityNameTreeItem = new TreeItem<>(new TreeItemModel("Entity"));
+            entityNameTreeItem.getChildren().add(new TreeItem<>(new TreeItemModel(actionModel.getEntityName())));
+            actionTreeItem.getChildren().add(entityNameTreeItem);
+        }
+
+        if (!Objects.isNull(actionModel.getSecondaryEntity())) {
+            TreeItem<TreeItemModel> secondaryEntityTreeItem = new TreeItem<>(new TreeItemModel("Secondary Entity"));
+            secondaryEntityTreeItem.getChildren().add(new TreeItem<>(actionModel.getSecondaryEntity()));
+            actionTreeItem.getChildren().add(secondaryEntityTreeItem);
+        }
+
+        addActionProps(actionTreeItem, actionModel);
+
+        return actionTreeItem;
+    }
     public void handleShowSimulationDetails() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -158,19 +162,8 @@ public class DetailsScreenController implements Initializable {
         }
 
     }
-    private void handleShowCategoriesData() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
 
-        WorldDTO world = objectMapper.readValue(engineAPI.getSimulationDetails().getData(),
-                SingleSimulationDTO.class).getWorld();
-
-        showEnvironment(world);
-        showEntities(world);
-        showGrid(world);
-        showTermination(world);
-        showRules(world);
-    }
+    //#region Selected component
     private void showRuleDetails(RuleModel rule) {
         selectedComponentDetailsTreeView.setRoot(new TreeItem<>(rule));
         TreeItem<TreeItemModel> ticks = new TreeItem<>(new TreeItemModel("Ticks"));
@@ -333,6 +326,22 @@ public class DetailsScreenController implements Initializable {
 
         selectedComponentDetailsTreeView.getRoot().getChildren().add(propertiesTreeItem);
     }
+    //#endregion
+
+    //#region World Categories
+    private void handleShowCategoriesData() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
+
+        WorldDTO world = objectMapper.readValue(engineAPI.getSimulationDetails().getData(),
+                SingleSimulationDTO.class).getWorld();
+
+        showEnvironment(world);
+        showEntities(world);
+        showGrid(world);
+        showTermination(world);
+        showRules(world);
+    }
     private void showEntities(WorldDTO world) {
         List<EntityModel> entities = world.getEntities().stream()
                 .map(entity -> {
@@ -411,7 +420,7 @@ public class DetailsScreenController implements Initializable {
         List<RuleModel> rules = world.getRules().stream()
                 .map(rule -> {
                     List<ActionModel> actions = rule.getActions().stream()
-                            .map(this::createActionModel).collect(Collectors.toList());
+                            .map(GuiUtils::createActionModel).collect(Collectors.toList());
                     return new RuleModel(rule.getName(), rule.getTicks(), rule.getProbability(), actions);
                 })
                 .collect(Collectors.toList());
@@ -426,65 +435,6 @@ public class DetailsScreenController implements Initializable {
         worldCategoriesTreeView.getRoot().getChildren().add(rulesTreeItem);
 
     }
-    private ActionModel createActionModel(ActionDTO action) {
-        SecondaryEntityModel secondaryEntityModel = null;
-        String entityName = action.getEntityName();
+    //#endregion
 
-        if (action.isSecondaryEntityExists())
-            secondaryEntityModel = new SecondaryEntityModel(action.getSecondaryEntity().getEntityName());
-
-        if (action instanceof SetDTO) {
-            SetDTO setAction = (SetDTO) action;
-            return new SetModel(entityName, secondaryEntityModel,
-                    setAction.getPropertyName(), setAction.getValue());
-        }
-
-        else if (action instanceof ReplaceDTO) {
-            ReplaceDTO replaceAction = (ReplaceDTO) action;
-            return new ReplaceModel(entityName, secondaryEntityModel,
-                    replaceAction.getKill(), replaceAction.getCreate(), replaceAction.getMode());
-        }
-
-        else if (action instanceof CalculationDTO) {
-            CalculationDTO calcAction = (CalculationDTO)action;
-            return new CalculationModel(entityName, secondaryEntityModel,
-                    calcAction.getOperationType(), calcAction.getArg1(), calcAction.getArg2());
-        }
-
-        else if (action instanceof KillDTO)
-            return new KillModel(entityName, secondaryEntityModel);
-
-        else if (action instanceof ProximityDTO) {
-            ProximityDTO proximityAction = (ProximityDTO) action;
-            return new ProximityModel(secondaryEntityModel, proximityAction.getSourceEntity(),
-                    proximityAction.getTargetEntity(), proximityAction.getDepth(),
-                    proximityAction.getActionsAmount());
-        }
-
-        else if (action instanceof IncreaseDecreaseDTO) {
-            IncreaseDecreaseDTO increaseDecreaseAction = (IncreaseDecreaseDTO) action;
-            return new IncreaseDecreaseModel(action.getType(), entityName,
-                    secondaryEntityModel, increaseDecreaseAction.getPropertyName(), increaseDecreaseAction.getBy());
-        }
-
-        else if (action instanceof SingleConditionDTO) {
-            SingleConditionDTO condition = (SingleConditionDTO) action;
-            return new SingleConditionModel(entityName, secondaryEntityModel,
-                    condition.getThenActionsAmount(), condition.getElseActionsAmount(),
-                    condition.getOperator(), condition.getProperty(), condition.getValue());
-        }
-
-        else if (action instanceof MultipleConditionDTO) {
-            MultipleConditionDTO condition = ((MultipleConditionDTO) action);
-            return new MultipleConditionModel(entityName, secondaryEntityModel,
-                    condition.getThenActionsAmount(), condition.getElseActionsAmount(),
-                    condition.getLogicalOperator(), condition.getConditionsAmount());
-        }
-
-        return null;
-    }
-    @FXML
-    private void handleShowXmlLog() {
-        xmlErrorsAlert.showAndWait();
-    }
 }

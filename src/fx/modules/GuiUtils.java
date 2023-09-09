@@ -1,5 +1,7 @@
 package fx.modules;
 
+import dtos.actions.*;
+import fx.models.DetailsScreen.actions.*;
 import javafx.scene.control.TreeItem;
 
 import java.util.Objects;
@@ -17,5 +19,63 @@ public abstract class GuiUtils {
                         .map(child -> findTreeItemByValue(child, value))
                         .filter(element -> !Objects.isNull(element))
                         .findFirst().orElse(null);
+    }
+
+    public static ActionModel createActionModel(ActionDTO action) {
+        SecondaryEntityModel secondaryEntityModel = null;
+        String entityName = action.getEntityName();
+
+        if (action.isSecondaryEntityExists())
+            secondaryEntityModel = new SecondaryEntityModel(action.getSecondaryEntity().getEntityName());
+
+        if (action instanceof SetDTO) {
+            SetDTO setAction = (SetDTO) action;
+            return new SetModel(entityName, secondaryEntityModel,
+                    setAction.getPropertyName(), setAction.getValue());
+        }
+
+        else if (action instanceof ReplaceDTO) {
+            ReplaceDTO replaceAction = (ReplaceDTO) action;
+            return new ReplaceModel(entityName, secondaryEntityModel,
+                    replaceAction.getKill(), replaceAction.getCreate(), replaceAction.getMode());
+        }
+
+        else if (action instanceof CalculationDTO) {
+            CalculationDTO calcAction = (CalculationDTO)action;
+            return new CalculationModel(entityName, secondaryEntityModel,
+                    calcAction.getOperationType(), calcAction.getArg1(), calcAction.getArg2());
+        }
+
+        else if (action instanceof KillDTO)
+            return new KillModel(entityName, secondaryEntityModel);
+
+        else if (action instanceof ProximityDTO) {
+            ProximityDTO proximityAction = (ProximityDTO) action;
+            return new ProximityModel(secondaryEntityModel, proximityAction.getSourceEntity(),
+                    proximityAction.getTargetEntity(), proximityAction.getDepth(),
+                    proximityAction.getActionsAmount());
+        }
+
+        else if (action instanceof IncreaseDecreaseDTO) {
+            IncreaseDecreaseDTO increaseDecreaseAction = (IncreaseDecreaseDTO) action;
+            return new IncreaseDecreaseModel(action.getType(), entityName,
+                    secondaryEntityModel, increaseDecreaseAction.getPropertyName(), increaseDecreaseAction.getBy());
+        }
+
+        else if (action instanceof SingleConditionDTO) {
+            SingleConditionDTO condition = (SingleConditionDTO) action;
+            return new SingleConditionModel(entityName, secondaryEntityModel,
+                    condition.getThenActionsAmount(), condition.getElseActionsAmount(),
+                    condition.getOperator(), condition.getProperty(), condition.getValue());
+        }
+
+        else if (action instanceof MultipleConditionDTO) {
+            MultipleConditionDTO condition = ((MultipleConditionDTO) action);
+            return new MultipleConditionModel(entityName, secondaryEntityModel,
+                    condition.getThenActionsAmount(), condition.getElseActionsAmount(),
+                    condition.getLogicalOperator(), condition.getConditionsAmount());
+        }
+
+        return null;
     }
 }
