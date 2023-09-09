@@ -14,9 +14,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeView;
+import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -37,9 +36,14 @@ public class MainScreenController implements Initializable {
     private TextArea currentXmlFilePath;
     @FXML
     private TreeView<String> worldCategoriesTreeView;
+    @FXML
+    private Button xmlLogButton;
+    private Alert xmlErrorsAlert;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engineAPI = new EngineAPI();
+        xmlLogButton.setVisible(false);
+        xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
     }
     @FXML
     private void handleLoadXmlButtonClick(ActionEvent event) {
@@ -59,13 +63,14 @@ public class MainScreenController implements Initializable {
                 if (response.getStatus() == 200) {
                     tray = new TrayNotification("SUCCESS", "XML loaded successfully!", NotificationType.SUCCESS);
                     currentXmlFilePath.setText(file.getAbsolutePath());
-
-                    //TODO: move from here
-                    handleShowTreeView();
+                    xmlLogButton.setVisible(false);
                 }
 
-                else
+                else {
                     tray = new TrayNotification("FAILURE", "XML was not loaded. For details, see XML log", NotificationType.ERROR);
+                    xmlLogButton.setVisible(true);
+                    xmlErrorsAlert.setContentText(response.getErrorDescription().getCause());
+                }
 
                 tray.setAnimationType(AnimationType.SLIDE);
                 tray.showAndDismiss(new Duration(2000));
@@ -88,6 +93,16 @@ public class MainScreenController implements Initializable {
             tray.showAndDismiss(new Duration(2000));
         }
 
+    }
+    private void handleAddCategories() {
+        TreeItem<String> root = new TreeItem<>(StringUtils.capitalize(WorldCategoriesTreeView.WORLD.name().toLowerCase()));
+        Collection<TreeItem<String>> categories = Arrays.stream(WorldCategoriesTreeView.values())
+                .filter(element -> element.ordinal() > 0)
+                .map(item -> new TreeItem<>(StringUtils.capitalize(item.name().toLowerCase())))
+                .collect(Collectors.toList());
+        root.getChildren().addAll(categories);
+
+        worldCategoriesTreeView.setRoot(root);
     }
     private void handleShowCategoriesData() {
         SingleSimulationDTO simulation = new Gson().fromJson(engineAPI.getSimulationDetails().getData(),
@@ -149,16 +164,6 @@ public class MainScreenController implements Initializable {
         grid.getChildren().add(rows);
         grid.getChildren().add(cols);
     }
-    private void handleAddCategories() {
-        TreeItem<String> root = new TreeItem<>(StringUtils.capitalize(WorldCategoriesTreeView.WORLD.name().toLowerCase()));
-        Collection<TreeItem<String>> categories = Arrays.stream(WorldCategoriesTreeView.values())
-                .filter(element -> element.ordinal() > 0)
-                .map(item -> new TreeItem<>(StringUtils.capitalize(item.name().toLowerCase())))
-                .collect(Collectors.toList());
-        root.getChildren().addAll(categories);
-
-        worldCategoriesTreeView.setRoot(root);
-    }
     private void showTermination(WorldDTO world) {
         TreeItem<String> termination = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.TERMINATION.name());
 
@@ -178,6 +183,10 @@ public class MainScreenController implements Initializable {
     }
     @FXML
     private void handleShowXmlLog(ActionEvent event) {
-        //TODO: Not implemented
+        xmlErrorsAlert.setResizable(true);
+        xmlErrorsAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        xmlErrorsAlert.setTitle("Latest loaded XML inspection");
+        xmlErrorsAlert.setHeaderText("Validation errors");
+        xmlErrorsAlert.showAndWait();
     }
 }
