@@ -4,9 +4,12 @@ import com.google.gson.Gson;
 import com.sun.xml.internal.ws.util.StringUtils;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
+import dtos.StopConditionDTO;
 import dtos.WorldDTO;
+import dtos.actions.*;
 import engine.EngineAPI;
 import fx.models.DetailsScreen.*;
+import fx.models.DetailsScreen.actions.*;
 import fx.models.WorldTreeViewCategories;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -122,8 +125,8 @@ public class DetailsScreenController implements Initializable {
         showEnvironment(world);
         showEntities(world);
         showGrid(world);
-//        showTermination(world);
-//        showRules(world);
+        showTermination(world);
+        showRules(world);
     }
     private void showEntities(WorldDTO world) {
         List<EntityModel> entities = world.getEntities().stream()
@@ -182,55 +185,101 @@ public class DetailsScreenController implements Initializable {
 
         worldCategoriesTreeView.getRoot().getChildren().add(gridTreeItem);
     }
-//    private void showRules(WorldDTO world) {
-//        TreeItem<String> rules = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.RULES.name());
-//
-//        assert rules != null;
-//
-//        Collection<TreeItem<String>> rulesNames = world.getRules().stream()
-//                .map(rule -> new TreeItem<>(rule.getName()))
-//                .collect(Collectors.toList());
-//
-//        rules.getChildren().addAll(rulesNames);
-//    }
-//    private void showEntities(WorldDTO world) {
-//        TreeItem<String> entities = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.ENTITIES.name());
-//
-//        Collection<TreeItem<String>> entitiesNames = world.getEntities().stream()
-//                .map(entity -> new TreeItem<>(entity.getName()))
-//                .collect(Collectors.toList());
-//
-//        assert entities != null;
-//        entities.getChildren().addAll(entitiesNames);
-//    }
-//    private void showEnvironment(WorldDTO world) {
-//        TreeItem<String> environment = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.ENVIRONMENT.name());
-//
-//        Collection<TreeItem<String>> envVars = world.getEnvironment().stream()
-//                .map(property -> new TreeItem<>(property.getName()))
-//                .collect(Collectors.toList());
-//
-//        assert environment != null;
-//        environment.getChildren().addAll(envVars);
-//    }
+    private void showTermination(WorldDTO world) {
+        TreeItem<TreeItemModel> terminationTreeItem = new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.TERMINATION.name().toLowerCase())));
 
-//    private void showTermination(WorldDTO world) {
-//        TreeItem<String> termination = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.TERMINATION.name());
-//
-//        assert termination != null;
-//
-//        if (world.getTermination().isByUser())
-//            termination.getChildren().add(new TreeItem<>("By User"));
-//
-//        else {
-//            for (StopConditionDTO stopCondition : world.getTermination().getStopConditions()) {
-//                TreeItem<String> byWho = new TreeItem<>(StringUtils.capitalize(stopCondition.getByWho()));
-//                byWho.getChildren().add(new TreeItem<>(String.valueOf(stopCondition.getCount())));
-//                termination.getChildren().add(byWho);
-//            }
-//        }
-//
-//    }
+        if (world.getTermination().isByUser())
+            terminationTreeItem.getChildren().add(new TreeItem<>(new TreeItemModel("By User")));
+
+        else {
+            for (StopConditionDTO stopCondition : world.getTermination().getStopConditions()) {
+                TreeItem<TreeItemModel> byWho = new TreeItem<>(new TreeItemModel(StringUtils.capitalize(stopCondition.getByWho())));
+                byWho.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(stopCondition.getCount()))));
+                terminationTreeItem.getChildren().add(byWho);
+            }
+        }
+
+        worldCategoriesTreeView.getRoot().getChildren().add(terminationTreeItem);
+
+    }
+    private ActionModel createAction(ActionDTO action) {
+        SecondaryEntityModel secondaryEntityModel = null;
+        String entityName = action.getEntityName();
+
+        if (action.isSecondaryEntityExists())
+            secondaryEntityModel = new SecondaryEntityModel(action.getSecondaryEntity().getEntityName());
+
+        if (action instanceof SetDTO) {
+            SetDTO setAction = (SetDTO) action;
+            return new SetModel(entityName, secondaryEntityModel,
+                    setAction.getPropertyName(), setAction.getValue());
+        }
+
+        else if (action instanceof ReplaceDTO) {
+            ReplaceDTO replaceAction = (ReplaceDTO) action;
+            return new ReplaceModel(entityName, secondaryEntityModel,
+                    replaceAction.getKill(), replaceAction.getCreate(), replaceAction.getMode());
+        }
+
+        else if (action instanceof CalculationDTO) {
+            CalculationDTO calcAction = (CalculationDTO)action;
+            return new CalculationModel(entityName, secondaryEntityModel,
+                    calcAction.getOperationType(), calcAction.getArg1(), calcAction.getArg2());
+        }
+
+        else if (action instanceof KillDTO)
+            return new KillModel(entityName, secondaryEntityModel);
+
+        else if (action instanceof ProximityDTO) {
+            ProximityDTO proximityAction = (ProximityDTO) action;
+            return new ProximityModel(secondaryEntityModel, proximityAction.getSourceEntity(),
+                    proximityAction.getTargetEntity(), proximityAction.getDepth(),
+                    proximityAction.getActionsAmount());
+        }
+
+        else if (action instanceof IncreaseDecreaseDTO) {
+            IncreaseDecreaseDTO increaseDecreaseAction = (IncreaseDecreaseDTO) action;
+            return new IncreaseDecreaseModel(action.getType(), entityName,
+                    secondaryEntityModel, increaseDecreaseAction.getPropertyName(), increaseDecreaseAction.getBy());
+        }
+
+        else if (action instanceof ConditionDTO) {
+            if (action instanceof SingleConditionDTO) {
+                SingleConditionDTO condition = (SingleConditionDTO) action;
+                return new SingleConditionModel(entityName, secondaryEntityModel,
+                        condition.getThenActionsAmount(), condition.getElseActionsAmount(),
+                        condition.getOperator(), condition.getProperty(), condition.getValue());
+            }
+
+            else {
+                MultipleConditionDTO condition = ((MultipleConditionDTO) action);
+                return new MultipleConditionModel(entityName, secondaryEntityModel,
+                        condition.getThenActionsAmount(), condition.getElseActionsAmount(),
+                        condition.getLogicalOperator(), condition.getConditionsAmount());
+            }
+        }
+
+        return null;
+    }
+    private void showRules(WorldDTO world) {
+        List<RuleModel> rules = world.getRules().stream()
+                .map(rule -> {
+                    List<ActionModel> actions = rule.getActions().stream()
+                            .map(this::createAction).collect(Collectors.toList());
+                    return new RuleModel(rule.getName(), rule.getTicks(), rule.getProbability(), actions);
+                })
+                .collect(Collectors.toList());
+
+        TreeItem<TreeItemModel> rulesTreeItem = new TreeItem<>(new RulesModel(rules));
+
+        rules.forEach(rule -> {
+            TreeItem<TreeItemModel> propertyTreeItem = new TreeItem<>(rule);
+            rulesTreeItem.getChildren().add(propertyTreeItem);
+        });
+
+        worldCategoriesTreeView.getRoot().getChildren().add(rulesTreeItem);
+
+    }
     @FXML
     private void handleShowXmlLog() {
         xmlErrorsAlert.showAndWait();

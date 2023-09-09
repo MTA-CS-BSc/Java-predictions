@@ -11,6 +11,11 @@ public class SetDTO extends ActionDTO {
         this.propertyName = propertyName;
         this.value = value;
     }
+    public SetDTO(SetDTO other) {
+        super(ActionTypes.SET, other.getEntityName(), new SecondaryEntityDTO(other.getSecondaryEntity()));
+        this.propertyName = other.getPropertyName();
+        this.value = other.getValue();
+    }
     public String getPropertyName() {
         return propertyName;
     }

@@ -11,6 +11,11 @@ public abstract class ConditionDTO extends ActionDTO {
         this.thenActionsAmount = thenActionsAmount;
         this.elseActionsAmount = elseActionsAmount;
     }
+    public ConditionDTO(ConditionDTO other) {
+        super(ActionTypes.CONDITION, other.getEntityName(), new SecondaryEntityDTO(other.getSecondaryEntity()));
+        this.thenActionsAmount = other.getThenActionsAmount();
+        this.elseActionsAmount = other.getElseActionsAmount();
+    }
     public int getThenActionsAmount() {
         return thenActionsAmount;
     }

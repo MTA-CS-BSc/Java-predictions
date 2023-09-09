@@ -1,12 +1,11 @@
 package dtos;
 
 import dtos.actions.*;
-import helpers.ActionTypes;
-import helpers.CalculationTypes;
-import helpers.ConditionSingularities;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.*;
 import engine.simulation.SingleSimulation;
+import helpers.CalculationTypes;
+import helpers.ConditionSingularities;
 
 import java.util.Comparator;
 import java.util.List;
@@ -81,49 +80,56 @@ public abstract class Mappers {
         SecondaryEntityDTO secondaryEntity = toDto(action.getSecondaryEntity());
         String entityName = action.getEntityName();
 
-        switch (action.getType()) {
-            case ActionTypes.SET:
-                return new SetDTO(entityName, secondaryEntity,
-                        ((SetAction)action).getPropertyName(), ((SetAction)action).getValue());
-            case ActionTypes.KILL:
-                return new KillDTO(entityName, secondaryEntity);
-            case ActionTypes.DECREASE:
-                return new IncreaseDecreaseDTO(action.getType(), entityName, secondaryEntity,
-                        ((DecreaseAction)action).getPropertyName(), ((DecreaseAction)action).getBy());
-            case ActionTypes.INCREASE:
-                return new IncreaseDecreaseDTO(action.getType(), entityName, secondaryEntity,
-                        ((IncreaseAction)action).getPropertyName(), ((IncreaseAction)action).getBy());
-            case ActionTypes.REPLACE:
-                return new ReplaceDTO(secondaryEntity,((ReplaceAction)action).getKill(),
-                        ((ReplaceAction)action).getCreate(), ((ReplaceAction)action).getMode());
-            case ActionTypes.PROXIMITY:
-                return new ProximityDTO(secondaryEntity, ((ProximityAction)action).getBetween().getSourceEntity(),
-                        ((ProximityAction)action).getBetween().getTargetEntity(),
-                        ((ProximityAction)action).getDepthExpression(), ((ProximityAction)action).getActions().getActions().size());
-            case ActionTypes.CALCULATION:
-                String arg1 = ((CalculationAction)action).getOperationType().equals(CalculationTypes.MULTIPLY) ?
-                        ((CalculationAction)action).getMultiply().getArg1() : ((CalculationAction)action).getDivide().getArg1();
-                String arg2 = ((CalculationAction)action).getOperationType().equals(CalculationTypes.MULTIPLY) ?
-                        ((CalculationAction)action).getMultiply().getArg2() : ((CalculationAction)action).getDivide().getArg2();
-                return new CalculationDTO(entityName, secondaryEntity,
-                        ((CalculationAction)action).getOperationType(), arg1, arg2);
-            case ActionTypes.CONDITION:
-                boolean elseExists = !Objects.isNull(((ConditionAction)action).getElse());
-                int thenActionsAmount = ((ConditionAction)action).getThen().getActions().size();
-                int elseActionsAmount = elseExists ? ((ConditionAction)action).getElse().getActions().size() : 0;
-                Condition condition = ((ConditionAction)action).getCondition();
+        if (action instanceof SetAction)
+            return new SetDTO(entityName, secondaryEntity,
+                    ((SetAction)action).getPropertyName(), ((SetAction)action).getValue());
 
-                if (((ConditionAction)action).getCondition().getSingularity().equals(ConditionSingularities.SINGLE))
-                    return new SingleConditionDTO(entityName, secondaryEntity,
-                            thenActionsAmount, elseActionsAmount,
-                            condition.getOperator(), condition.getProperty(), condition.getValue());
+        else if (action instanceof KillAction)
+            return new KillDTO(entityName, secondaryEntity);
 
-                return new MultipleConditionDTO(entityName, secondaryEntity,
-                        thenActionsAmount, elseActionsAmount,
-                        condition.getLogicalOperator(), condition.getConditions().size());
-            default:
-                return null;
+        else if (action instanceof DecreaseAction)
+            return new IncreaseDecreaseDTO(action.getType(), entityName, secondaryEntity,
+                    ((DecreaseAction)action).getPropertyName(), ((DecreaseAction)action).getBy());
+
+        else if (action instanceof IncreaseAction)
+            return new IncreaseDecreaseDTO(action.getType(), entityName, secondaryEntity,
+                    ((IncreaseAction)action).getPropertyName(), ((IncreaseAction)action).getBy());
+
+        else if (action instanceof ReplaceAction)
+            return new ReplaceDTO(secondaryEntity,((ReplaceAction)action).getKill(),
+                    ((ReplaceAction)action).getCreate(), ((ReplaceAction)action).getMode());
+
+        else if (action instanceof ProximityAction)
+            return new ProximityDTO(secondaryEntity, ((ProximityAction)action).getBetween().getSourceEntity(),
+                    ((ProximityAction)action).getBetween().getTargetEntity(),
+                    ((ProximityAction)action).getDepthExpression(), ((ProximityAction)action).getActions().getActions().size());
+
+        else if (action instanceof CalculationAction) {
+            String arg1 = ((CalculationAction)action).getOperationType().equals(CalculationTypes.MULTIPLY) ?
+                    ((CalculationAction)action).getMultiply().getArg1() : ((CalculationAction)action).getDivide().getArg1();
+            String arg2 = ((CalculationAction)action).getOperationType().equals(CalculationTypes.MULTIPLY) ?
+                    ((CalculationAction)action).getMultiply().getArg2() : ((CalculationAction)action).getDivide().getArg2();
+            return new CalculationDTO(entityName, secondaryEntity,
+                    ((CalculationAction)action).getOperationType(), arg1, arg2);
         }
+
+        else if (action instanceof ConditionAction) {
+            boolean elseExists = !Objects.isNull(((ConditionAction)action).getElse());
+            int thenActionsAmount = ((ConditionAction)action).getThen().getActions().size();
+            int elseActionsAmount = elseExists ? ((ConditionAction)action).getElse().getActions().size() : 0;
+            Condition condition = ((ConditionAction)action).getCondition();
+
+            if (((ConditionAction)action).getCondition().getSingularity().equals(ConditionSingularities.SINGLE))
+                return new SingleConditionDTO(entityName, secondaryEntity,
+                        thenActionsAmount, elseActionsAmount,
+                        condition.getOperator(), condition.getProperty(), condition.getValue());
+
+            return new MultipleConditionDTO(entityName, secondaryEntity,
+                    thenActionsAmount, elseActionsAmount,
+                    condition.getLogicalOperator(), condition.getConditions().size());
+        }
+
+        return null;
     }
     public static SecondaryEntityDTO toDto(SecondaryEntity secondaryEntity) {
         if (Objects.isNull(secondaryEntity))

@@ -9,6 +9,11 @@ public class IncreaseDecreaseDTO extends ActionDTO {
         this.propertyName = propertyName;
         this.by = by;
     }
+    public IncreaseDecreaseDTO(IncreaseDecreaseDTO other) {
+        super(other.getType(), other.getEntityName(), new SecondaryEntityDTO(other.getSecondaryEntity()));
+        this.propertyName = other.getPropertyName();
+        this.by = other.getBy();
+    }
     public String getPropertyName() {
         return propertyName;
     }
