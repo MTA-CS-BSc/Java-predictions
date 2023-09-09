@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(FilePaths.WELCOME_SCREEN_FXML_PATH)));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(FilePaths.DETAILS_SCREEN_FXML_PATH)));
         Scene scene = new Scene(root);
 
         stage.setTitle(Constants.APP_TITLE);

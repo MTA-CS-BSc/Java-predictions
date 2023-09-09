@@ -31,7 +31,7 @@ import java.util.Collection;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class MainScreenController implements Initializable {
+public class DetailsScreenController implements Initializable {
     private EngineAPI engineAPI;
     @FXML
     private TextArea currentXmlFilePath;
