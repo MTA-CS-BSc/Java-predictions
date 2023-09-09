@@ -9,6 +9,7 @@ import dtos.WorldDTO;
 import engine.EngineAPI;
 import fx.models.WorldCategoriesTreeView;
 import fx.modules.GuiUtils;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,7 +49,14 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engineAPI = new EngineAPI();
+        detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
+        newExecutionButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
+        resultsButton.disableProperty().bind(Bindings.createBooleanBinding(this::isHistoryEmpty));
         initializeXmlErrorsAlert();
+    }
+    private boolean isHistoryEmpty() {
+        return !new Gson().fromJson(engineAPI.isXmlLoaded().getData(), Boolean.class)
+            || new Gson().fromJson(engineAPI.isHistoryEmpty().getData(), Boolean.class);
     }
     private void initializeXmlErrorsAlert() {
         xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
