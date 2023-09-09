@@ -3,8 +3,10 @@ package fx.controllers;
 import com.google.gson.Gson;
 import com.sun.xml.internal.ws.util.StringUtils;
 import dtos.ResponseDTO;
+import dtos.SingleSimulationDTO;
+import dtos.WorldDTO;
 import engine.EngineAPI;
-import fx.models.DetailsScreen.TreeItemModel;
+import fx.models.DetailsScreen.*;
 import fx.models.WorldTreeViewCategories;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -23,7 +25,9 @@ import tray.notification.TrayNotification;
 
 import java.io.File;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class DetailsScreenController implements Initializable {
     private EngineAPI engineAPI;
@@ -101,7 +105,7 @@ public class DetailsScreenController implements Initializable {
     public void handleShowSimulationDetails() {
         if (new Gson().fromJson(engineAPI.isXmlLoaded().getData(), Boolean.class)) {
             worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
-//            handleShowCategoriesData();
+            handleShowCategoriesData();
         }
 
         else {
@@ -111,28 +115,73 @@ public class DetailsScreenController implements Initializable {
         }
 
     }
-//    private void handleAddCategories() {
-//        TreeItem<String> root = new TreeItem<>(StringUtils.capitalize(WorldCategoriesTreeView.WORLD.name().toLowerCase()));
-//        Collection<TreeItem<String>> categories = Arrays.stream(WorldCategoriesTreeView.values())
-//                .filter(element -> element.ordinal() > 0)
-//                .map(item -> new TreeItem<>(StringUtils.capitalize(item.name().toLowerCase())))
-//                .collect(Collectors.toList());
-//        root.getChildren().addAll(categories);
-//
-//        worldCategoriesTreeView.setRoot(root);
-//    }
-//    private void handleShowCategoriesData() {
-//        SingleSimulationDTO simulation = new Gson().fromJson(engineAPI.getSimulationDetails().getData(),
-//                SingleSimulationDTO.class);
-//
-//        WorldDTO world = simulation.getWorld();
-//
-//        showEnvironment(world);
-//        showEntities(world);
-//        showGrid(world);
+    private void handleShowCategoriesData() {
+        WorldDTO world = new Gson().fromJson(engineAPI.getSimulationDetails().getData(),
+                SingleSimulationDTO.class).getWorld();
+
+        showEnvironment(world);
+        showEntities(world);
+        showGrid(world);
 //        showTermination(world);
 //        showRules(world);
-//    }
+    }
+    private void showEntities(WorldDTO world) {
+        List<EntityModel> entities = world.getEntities().stream()
+                .map(entity -> {
+                    List<EntityPropertyModel> props = entity.getProperties().stream()
+                            .map(element -> {
+                                RangeModel range = null;
+
+                                if (!element.hasNoRange())
+                                    range = new RangeModel(element.getRange().getFrom(), element.getRange().getTo());
+
+                                return new EntityPropertyModel(element.getName(), element.getType(), range, element.getValue());
+                            }).collect(Collectors.toList());
+                    return new EntityModel(entity.getName(), props);
+                }).collect(Collectors.toList());
+
+        TreeItem<TreeItemModel> entitiesTreeItem = new TreeItem<>(new EntitiesModel(entities));
+
+        entities.forEach(entity -> {
+            TreeItem<TreeItemModel> entityTreeItem = new TreeItem<>(entity);
+            entitiesTreeItem.getChildren().add(entityTreeItem);
+        });
+
+        worldCategoriesTreeView.getRoot().getChildren().add(entitiesTreeItem);
+    }
+    private void showEnvironment(WorldDTO world) {
+        List<PropertyModel> envVars = world.getEnvironment().stream()
+                .map(property -> {
+                    RangeModel range = null;
+
+                    if (!property.hasNoRange())
+                        range = new RangeModel(property.getRange().getFrom(), property.getRange().getTo());
+
+                    return new PropertyModel(property.getName(), property.getType(), range);
+                }).collect(Collectors.toList());
+
+        TreeItem<TreeItemModel> environmentTreeItem = new TreeItem<>(new EnvironmentModel(envVars));
+
+        envVars.forEach(property -> {
+           TreeItem<TreeItemModel> propertyTreeItem = new TreeItem<>(property);
+           environmentTreeItem.getChildren().add(propertyTreeItem);
+        });
+
+        worldCategoriesTreeView.getRoot().getChildren().add(environmentTreeItem);
+    }
+    private void showGrid(WorldDTO world) {
+        TreeItem<TreeItemModel> rows = new TreeItem<>(new TreeItemModel("Rows"));
+        rows.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(world.getGridRows()))));
+
+        TreeItem<TreeItemModel> cols = new TreeItem<>(new TreeItemModel("Columns"));
+        cols.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(world.getGridColumns()))));
+
+        TreeItem<TreeItemModel> gridTreeItem = new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.GRID.name().toLowerCase())));
+        gridTreeItem.getChildren().add(rows);
+        gridTreeItem.getChildren().add(cols);
+
+        worldCategoriesTreeView.getRoot().getChildren().add(gridTreeItem);
+    }
 //    private void showRules(WorldDTO world) {
 //        TreeItem<String> rules = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.RULES.name());
 //
@@ -164,23 +213,7 @@ public class DetailsScreenController implements Initializable {
 //        assert environment != null;
 //        environment.getChildren().addAll(envVars);
 //    }
-//    private void showGrid(WorldDTO world) {
-//        TreeItem<String> rows = new TreeItem<>("Rows");
-//        TreeItem<String> rowsAmount = new TreeItem<>(String.valueOf(world.getGridRows()));
-//
-//        rows.getChildren().add(rowsAmount);
-//
-//        TreeItem<String> cols = new TreeItem<>("Columns");
-//        TreeItem<String> columnsAmount = new TreeItem<>(String.valueOf(world.getGridColumns()));
-//
-//        cols.getChildren().add(columnsAmount);
-//
-//        TreeItem<String> grid = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.GRID.name());
-//
-//        assert grid != null;
-//        grid.getChildren().add(rows);
-//        grid.getChildren().add(cols);
-//    }
+
 //    private void showTermination(WorldDTO world) {
 //        TreeItem<String> termination = GuiUtils.findTreeItemByValue(worldCategoriesTreeView.getRoot(), WorldCategoriesTreeView.TERMINATION.name());
 //
