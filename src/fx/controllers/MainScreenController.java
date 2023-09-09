@@ -54,30 +54,32 @@ public class MainScreenController implements Initializable {
         fileChooser.setTitle("Choose an XML file");
         File file = fileChooser.showOpenDialog(window);
 
-        if (file != null) {
-            try {
-                ResponseDTO response = engineAPI.loadXml(file.getAbsolutePath());
-                TrayNotification tray;
+        if (file != null)
+            handleNotNullXmlFileEntered(file);
+    }
+    private void handleNotNullXmlFileEntered(File file) {
+        try {
+            ResponseDTO response = engineAPI.loadXml(file.getAbsolutePath());
+            TrayNotification tray;
 
-                if (response.getStatus() == 200) {
-                    tray = new TrayNotification("SUCCESS", "XML loaded successfully!", NotificationType.SUCCESS);
-                    currentXmlFilePath.setText(file.getAbsolutePath());
-                    xmlLogButton.setVisible(false);
-                }
-
-                else {
-                    tray = new TrayNotification("FAILURE", "XML was not loaded. For details, see XML log", NotificationType.ERROR);
-                    xmlLogButton.setVisible(true);
-                    xmlErrorsAlert.setContentText(response.getErrorDescription().getCause());
-                }
-
-                tray.setAnimationType(AnimationType.SLIDE);
-                tray.showAndDismiss(new Duration(2000));
+            if (response.getStatus() == 200) {
+                tray = new TrayNotification("SUCCESS", "XML was loaded successfully!", NotificationType.SUCCESS);
+                currentXmlFilePath.setText(file.getAbsolutePath());
+                xmlLogButton.setVisible(false);
             }
 
-            catch (Exception e) {
-                //TODO: Handle error
+            else {
+                tray = new TrayNotification("FAILURE", "XML was not loaded. For details, see the XML log.", NotificationType.ERROR);
+                xmlLogButton.setVisible(true);
+                xmlErrorsAlert.setContentText(response.getErrorDescription().getCause());
             }
+
+            tray.setAnimationType(AnimationType.SLIDE);
+            tray.showAndDismiss(new Duration(2000));
+        }
+
+        catch (Exception e) {
+            //TODO: Handle error
         }
     }
     private void handleShowTreeView() {
