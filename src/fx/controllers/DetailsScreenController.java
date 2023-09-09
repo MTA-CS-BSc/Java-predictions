@@ -32,6 +32,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -78,6 +79,25 @@ public class DetailsScreenController implements Initializable {
 
         return !objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class)
                 || objectMapper.readValue(engineAPI.isHistoryEmpty().getData(), Boolean.class);
+    }
+    private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
+        TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
+
+        if (!Objects.isNull(actionModel.getEntityName()) && !actionModel.getEntityName().isEmpty()) {
+            TreeItem<TreeItemModel> entityNameTreeItem = new TreeItem<>(new TreeItemModel("Entity"));
+            entityNameTreeItem.getChildren().add(new TreeItem<>(new TreeItemModel(actionModel.getEntityName())));
+            actionTreeItem.getChildren().add(entityNameTreeItem);
+        }
+
+        if (!Objects.isNull(actionModel.getSecondaryEntity())) {
+            TreeItem<TreeItemModel> secondaryEntityTreeItem = new TreeItem<>(new TreeItemModel("Secondary Entity"));
+            secondaryEntityTreeItem.getChildren().add(new TreeItem<>(actionModel.getSecondaryEntity()));
+            actionTreeItem.getChildren().add(secondaryEntityTreeItem);
+        }
+
+        addActionProps(actionTreeItem, actionModel);
+
+        return actionTreeItem;
     }
     private void initializeXmlErrorsAlert() {
         xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -160,12 +180,112 @@ public class DetailsScreenController implements Initializable {
         probability.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(rule.getProbability()))));
 
         TreeItem<TreeItemModel> actions = new TreeItem<>(new TreeItemModel("Actions"));
-        rule.getActions().forEach(actionModel -> {
-            TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
-            actions.getChildren().add(actionTreeItem);
-        });
+        rule.getActions().forEach(actionModel -> actions.getChildren().add(getActionTreeItem(actionModel)));
 
         selectedComponentDetailsTreeView.getRoot().getChildren().addAll(Arrays.asList(ticks, probability, actions));
+    }
+    private void addActionProps(TreeItem<TreeItemModel> actionTreeItem, ActionModel actionModel) {
+        if (actionModel instanceof IncreaseDecreaseModel) {
+            IncreaseDecreaseModel increaseDecreaseModel = (IncreaseDecreaseModel) actionModel;
+
+            TreeItem<TreeItemModel> by = new TreeItem<>(new TreeItemModel("By"));
+            by.getChildren().add(new TreeItem<>(new TreeItemModel(increaseDecreaseModel.getBy())));
+
+            TreeItem<TreeItemModel> property = new TreeItem<>(new TreeItemModel("Property"));
+            property.getChildren().add(new TreeItem<>(new TreeItemModel(increaseDecreaseModel.getPropertyName())));
+
+            actionTreeItem.getChildren().addAll(Arrays.asList(property, by));
+        }
+
+        else if (actionModel instanceof CalculationModel) {
+            CalculationModel calculationModel = (CalculationModel) actionModel;
+
+            TreeItem<TreeItemModel> operationType = new TreeItem<>(new TreeItemModel("Operation type"));
+            operationType.getChildren().add(new TreeItem<>(new TreeItemModel(calculationModel.getOperationType())));
+
+            TreeItem<TreeItemModel> arg1 = new TreeItem<>(new TreeItemModel("Arg1"));
+            arg1.getChildren().add(new TreeItem<>(new TreeItemModel(calculationModel.getArg1())));
+
+            TreeItem<TreeItemModel> arg2 = new TreeItem<>(new TreeItemModel("Arg2"));
+            arg2.getChildren().add(new TreeItem<>(new TreeItemModel(calculationModel.getArg2())));
+
+            actionTreeItem.getChildren().addAll(Arrays.asList(operationType, arg1, arg2));
+        }
+
+        else if (actionModel instanceof ProximityModel) {
+            ProximityModel proximityModel = (ProximityModel) actionModel;
+            TreeItem<TreeItemModel> sourceEntity = new TreeItem<>(new TreeItemModel("Source entity"));
+            TreeItem<TreeItemModel> targetEntity = new TreeItem<>(new TreeItemModel("Target Entity"));
+            TreeItem<TreeItemModel> depth = new TreeItem<>(new TreeItemModel("Depth"));
+            TreeItem<TreeItemModel> actionsAmount = new TreeItem<>(new TreeItemModel("Actions amount"));
+
+            sourceEntity.getChildren().add(new TreeItem<>(new TreeItemModel(proximityModel.getSourceEntity())));
+            targetEntity.getChildren().add(new TreeItem<>(new TreeItemModel(proximityModel.getTargetEntity())));
+            depth.getChildren().add(new TreeItem<>(new TreeItemModel(proximityModel.getDepth())));
+            actionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(proximityModel.getActionsAmount()))));
+
+            actionTreeItem.getChildren().addAll(Arrays.asList(sourceEntity, targetEntity, depth, actionsAmount));
+        }
+
+        else if (actionModel instanceof ReplaceModel) {
+            ReplaceModel replaceModel = (ReplaceModel) actionModel;
+
+            TreeItem<TreeItemModel> kill = new TreeItem<>(new TreeItemModel("Kill"));
+            TreeItem<TreeItemModel> create = new TreeItem<>(new TreeItemModel("Create"));
+            TreeItem<TreeItemModel> mode = new TreeItem<>(new TreeItemModel("Mode"));
+
+            kill.getChildren().add(new TreeItem<>(new TreeItemModel(replaceModel.getKill())));
+            create.getChildren().add(new TreeItem<>(new TreeItemModel(replaceModel.getCreate())));
+            mode.getChildren().add(new TreeItem<>(new TreeItemModel(replaceModel.getMode())));
+
+            actionTreeItem.getChildren().addAll(Arrays.asList(kill, create, mode));
+        }
+
+        else if (actionModel instanceof SetModel) {
+            SetModel setModel = (SetModel) actionModel;
+
+            TreeItem<TreeItemModel> property = new TreeItem<>(new TreeItemModel("Property"));
+            TreeItem<TreeItemModel> value = new TreeItem<>(new TreeItemModel("Value"));
+
+            property.getChildren().add(new TreeItem<>(new TreeItemModel(setModel.getPropertyName())));
+            value.getChildren().add(new TreeItem<>(new TreeItemModel(setModel.getValue())));
+
+            actionTreeItem.getChildren().addAll(Arrays.asList(property, value));
+        }
+
+        else if (actionModel instanceof SingleConditionModel) {
+            SingleConditionModel singleConditionModel = (SingleConditionModel) actionModel;
+
+            TreeItem<TreeItemModel> property = new TreeItem<>(new TreeItemModel("Property"));
+            TreeItem<TreeItemModel> value = new TreeItem<>(new TreeItemModel("Value"));
+            TreeItem<TreeItemModel> operator = new TreeItem<>(new TreeItemModel("Operator"));
+            TreeItem<TreeItemModel> thenActionsAmount = new TreeItem<>(new TreeItemModel("Then actions amount"));
+            TreeItem<TreeItemModel> elseActionsAmount = new TreeItem<>(new TreeItemModel("Else actions amount"));
+
+            property.getChildren().add(new TreeItem<>(new TreeItemModel(singleConditionModel.getProperty())));
+            value.getChildren().add(new TreeItem<>(new TreeItemModel(singleConditionModel.getValue())));
+            operator.getChildren().add(new TreeItem<>(new TreeItemModel(singleConditionModel.getOperator())));
+            thenActionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(singleConditionModel.getThenActionsAmount()))));
+            elseActionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(singleConditionModel.getElseActionsAmount()))));
+
+            actionTreeItem.getChildren().addAll(Arrays.asList(property, operator, value, thenActionsAmount, elseActionsAmount));
+        }
+
+        else if (actionModel instanceof MultipleConditionModel) {
+            MultipleConditionModel multipleConditionModel = (MultipleConditionModel) actionModel;
+
+            TreeItem<TreeItemModel> thenActionsAmount = new TreeItem<>(new TreeItemModel("Then actions amount"));
+            TreeItem<TreeItemModel> elseActionsAmount = new TreeItem<>(new TreeItemModel("Else actions amount"));
+            TreeItem<TreeItemModel> logicalOperator = new TreeItem<>(new TreeItemModel("Logical operator"));
+            TreeItem<TreeItemModel> conditionsAmount = new TreeItem<>(new TreeItemModel("Conditions amount"));
+
+            thenActionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(multipleConditionModel.getThenActionsAmount()))));
+            elseActionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(multipleConditionModel.getElseActionsAmount()))));
+            logicalOperator.getChildren().add(new TreeItem<>(new TreeItemModel(multipleConditionModel.getLogicalOperator())));
+            conditionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(multipleConditionModel.getConditionsAmount()))));
+
+            actionTreeItem.getChildren().addAll(Arrays.asList(logicalOperator, conditionsAmount, thenActionsAmount, elseActionsAmount));
+        }
     }
     private void showEnvVarDetails(PropertyModel envVar) {
         selectedComponentDetailsTreeView.setRoot(new TreeItem<>(envVar));
