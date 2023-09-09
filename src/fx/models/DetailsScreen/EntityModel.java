@@ -2,17 +2,13 @@ package fx.models.DetailsScreen;
 
 import java.util.List;
 
-public class EntityModel {
-    private final String name;
-    private final List<PropertyModel> properties;
-    public EntityModel(String name, List<PropertyModel> properties) {
-        this.name = name;
+public class EntityModel extends TreeItemModel {
+    private final List<EntityPropertyModel> properties;
+    public EntityModel(String name, List<EntityPropertyModel> properties) {
+        super(name);
         this.properties = properties;
     }
-    public String getName() {
-        return name;
-    }
-    public List<PropertyModel> getProperties() {
+    public List<EntityPropertyModel> getProperties() {
         return properties;
     }
 }
