@@ -51,7 +51,7 @@
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></TreeView>
-            <TreeView GridPane.columnIndex="1">
+            <TreeView fx:id="selectedComponentDetailsTreeView" GridPane.columnIndex="1">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></TreeView>
