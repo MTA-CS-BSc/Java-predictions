@@ -34,6 +34,10 @@ public class ElapsedTimer {
         }
     }
 
+    public boolean isRunning() {
+        return isRunning;
+    }
+
     public long getElapsedTime() {
         return elapsedTime;
     }
