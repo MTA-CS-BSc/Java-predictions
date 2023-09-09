@@ -13,12 +13,6 @@ public class ReplaceDTO extends ActionDTO {
         this.create = create;
         this.mode = mode;
     }
-    public ReplaceDTO(ReplaceDTO other) {
-        super(ActionTypes.REPLACE, other.getEntityName(), new SecondaryEntityDTO(other.getSecondaryEntity()));
-        this.kill = other.getKill();
-        this.create = other.getCreate();
-        this.mode = other.getMode();
-    }
     public String getKill() {
         return kill;
     }

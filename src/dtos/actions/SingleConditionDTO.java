@@ -12,13 +12,6 @@ public class SingleConditionDTO extends ConditionDTO {
         this.property = property;
         this.value = value;
     }
-    public SingleConditionDTO(SingleConditionDTO other) {
-        super(other.getEntityName(), new SecondaryEntityDTO(other.getSecondaryEntity()),
-                other.getThenActionsAmount(), other.getElseActionsAmount());
-        this.operator = other.getOperator();
-        this.property = other.getProperty();
-        this.value = other.getValue();
-    }
     public String getOperator() {
         return operator;
     }

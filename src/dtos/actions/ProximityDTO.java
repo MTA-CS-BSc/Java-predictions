@@ -15,13 +15,6 @@ public class ProximityDTO extends ActionDTO {
         this.depth = depth;
         this.actionsAmount = actionsAmount;
     }
-    public ProximityDTO(ProximityDTO other) {
-        super(ActionTypes.PROXIMITY, other.getEntityName(), new SecondaryEntityDTO(other.getSecondaryEntity()));
-        this.sourceEntity = other.getSourceEntity();
-        this.targetEntity = other.getTargetEntity();
-        this.depth = other.getDepth();
-        this.actionsAmount = other.getActionsAmount();
-    }
     public String getSourceEntity() {
         return sourceEntity;
     }

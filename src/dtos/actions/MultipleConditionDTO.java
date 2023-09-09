@@ -10,15 +10,6 @@ public class MultipleConditionDTO extends ConditionDTO {
         this.logicalOperator = logicalOperator;
         this.conditionsAmount = conditionsAmount;
     }
-
-    public MultipleConditionDTO(MultipleConditionDTO other) {
-        super(other.getEntityName(), new SecondaryEntityDTO(other.getSecondaryEntity()),
-                other.getThenActionsAmount(), other.getElseActionsAmount());
-
-        this.logicalOperator = other.getLogicalOperator();
-        this.conditionsAmount = other.getConditionsAmount();
-    }
-
     public String getLogicalOperator() {
         return logicalOperator;
     }
