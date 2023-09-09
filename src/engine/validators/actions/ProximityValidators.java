@@ -1,6 +1,6 @@
 package engine.validators.actions;
 
-import engine.consts.PropTypes;
+import helpers.PropTypes;
 import engine.exceptions.EmptyExpressionException;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.InvalidTypeException;

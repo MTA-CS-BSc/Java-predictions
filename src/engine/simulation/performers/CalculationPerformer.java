@@ -1,6 +1,6 @@
 package engine.simulation.performers;
 
-import engine.consts.ActionTypes;
+import helpers.ActionTypes;
 import engine.exceptions.*;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;

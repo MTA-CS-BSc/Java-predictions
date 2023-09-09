@@ -1,6 +1,6 @@
 package fx.models;
 
-public enum WorldCategoriesTreeView {
+public enum WorldTreeViewCategories {
     WORLD,
     ENVIRONMENT,
     TERMINATION,

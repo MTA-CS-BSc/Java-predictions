@@ -38,6 +38,13 @@
             <Insets top="5.0" />
          </GridPane.margin>
       </BorderPane>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" GridPane.rowIndex="1">
+         <children>
+            <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Details" />
+            <Button fx:id="newExecutionButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="New Execution" />
+            <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Results" />
+         </children>
+      </HBox>
       <GridPane alignment="CENTER" hgap="20.0" GridPane.rowIndex="2">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="444.0" minWidth="10.0" prefWidth="288.0" />
@@ -62,16 +69,9 @@
       </GridPane>
       <BorderPane GridPane.rowIndex="3">
          <bottom>
-            <Button mnemonicParsing="false" onAction="#handleShowXmlLog" styleClass="log-button" stylesheets="@DetailsScreen.css" text="XML log" visible="false" fx:id="xmlLogButton" />
+            <Button mnemonicParsing="false" onAction="#handleShowXmlLog" stylesheets="@DetailsScreen.css" text="XML log" visible="false" fx:id="xmlLogButton" />
          </bottom>
       </BorderPane>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" GridPane.rowIndex="1">
-         <children>
-            <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Details" />
-            <Button fx:id="newExecutionButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="New Execution" />
-            <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Results" />
-         </children>
-      </HBox>
   </children>
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />

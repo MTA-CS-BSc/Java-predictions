@@ -1,8 +1,8 @@
 package engine.modules;
 
 import dtos.PropertyDTO;
-import engine.consts.ActionTypes;
-import engine.consts.PropTypes;
+import helpers.ActionTypes;
+import helpers.PropTypes;
 import engine.consts.SystemFunctions;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.Action;

@@ -1,4 +1,4 @@
-package engine.consts;
+package helpers;
 
 import java.util.Arrays;
 import java.util.Collections;

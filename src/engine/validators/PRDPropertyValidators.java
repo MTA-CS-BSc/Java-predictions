@@ -1,6 +1,6 @@
 package engine.validators;
 
-import engine.consts.PropTypes;
+import helpers.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.*;
 import engine.prototypes.jaxb.PRDEntity;

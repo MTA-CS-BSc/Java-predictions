@@ -1,6 +1,6 @@
 package dtos.actions;
 
-import engine.consts.ActionTypes;
+import helpers.ActionTypes;
 
 public class CalculationDTO extends ActionDTO {
     protected String operationType;

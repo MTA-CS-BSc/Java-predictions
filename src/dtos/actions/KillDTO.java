@@ -1,6 +1,6 @@
 package dtos.actions;
 
-import engine.consts.ActionTypes;
+import helpers.ActionTypes;
 
 public class KillDTO extends ActionDTO {
     public KillDTO(String entityName, SecondaryEntityDTO secondaryEntity) {

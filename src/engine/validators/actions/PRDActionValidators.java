@@ -1,6 +1,6 @@
 package engine.validators.actions;
 
-import engine.consts.ActionTypes;
+import helpers.ActionTypes;
 import engine.consts.SecondaryEntityCounts;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ValueNotInRangeException;

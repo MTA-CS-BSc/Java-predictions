@@ -1,5 +1,7 @@
 package engine.consts;
 
+import helpers.PropTypes;
+
 import java.util.Arrays;
 import java.util.List;
 

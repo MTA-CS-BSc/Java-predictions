@@ -1,4 +1,4 @@
-package engine.consts;
+package helpers;
 
 public abstract class Operators {
     public static final String BT = "bt";

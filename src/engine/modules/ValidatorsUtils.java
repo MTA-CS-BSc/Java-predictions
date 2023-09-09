@@ -1,6 +1,6 @@
 package engine.modules;
 
-import engine.consts.PropTypes;
+import helpers.PropTypes;
 import engine.consts.SystemFunctions;
 import engine.prototypes.jaxb.*;
 import helpers.Constants;

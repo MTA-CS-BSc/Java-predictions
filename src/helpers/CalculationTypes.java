@@ -1,4 +1,4 @@
-package engine.consts;
+package helpers;
 
 public abstract class CalculationTypes {
     public static final String MULTIPLY = "multiply";

@@ -1,4 +1,4 @@
-package engine.consts;
+package helpers;
 
 public abstract class ConditionLogicalOperators {
     public static final String OR = "or";

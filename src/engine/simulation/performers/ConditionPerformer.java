@@ -1,8 +1,8 @@
 package engine.simulation.performers;
 
-import engine.consts.ConditionLogicalOperators;
-import engine.consts.ConditionSingularities;
-import engine.consts.Operators;
+import helpers.ConditionLogicalOperators;
+import helpers.ConditionSingularities;
+import helpers.Operators;
 import engine.exceptions.InvalidTypeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;

@@ -1,9 +1,9 @@
 package dtos;
 
 import dtos.actions.*;
-import engine.consts.ActionTypes;
-import engine.consts.CalculationTypes;
-import engine.consts.ConditionSingularities;
+import helpers.ActionTypes;
+import helpers.CalculationTypes;
+import helpers.ConditionSingularities;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.*;
 import engine.simulation.SingleSimulation;

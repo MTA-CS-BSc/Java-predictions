@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import dtos.PropertyDTO;
 import dtos.ResponseDTO;
 import engine.EngineAPI;
-import engine.consts.PropTypes;
+import helpers.PropTypes;
 import ui.consts.Constants;
 import ui.modules.ScanCycles;
 import ui.printers.EnvPropsInitializerPrinter;

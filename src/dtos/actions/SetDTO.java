@@ -1,6 +1,6 @@
 package dtos.actions;
 
-import engine.consts.ActionTypes;
+import helpers.ActionTypes;
 
 public class SetDTO extends ActionDTO {
     protected String propertyName;

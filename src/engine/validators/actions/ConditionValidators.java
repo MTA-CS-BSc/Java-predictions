@@ -1,10 +1,8 @@
 package engine.validators.actions;
 
-import engine.consts.ConditionSingularities;
-import engine.consts.Operators;
-import engine.consts.PropTypes;
+import helpers.ConditionSingularities;
+import helpers.PropTypes;
 import engine.exceptions.InvalidTypeException;
-import engine.exceptions.PropertyNotFoundException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDCondition;

@@ -1,6 +1,6 @@
 package dtos.actions;
 
-import engine.consts.ActionTypes;
+import helpers.ActionTypes;
 
 public class ProximityDTO extends ActionDTO {
     protected String sourceEntity;

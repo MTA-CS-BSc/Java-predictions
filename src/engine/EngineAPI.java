@@ -3,7 +3,7 @@ package engine;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import dtos.*;
-import engine.consts.PropTypes;
+import helpers.PropTypes;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;

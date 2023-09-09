@@ -1,7 +1,7 @@
 package engine.simulation.performers;
 
-import engine.consts.ActionTypes;
-import engine.consts.PropTypes;
+import helpers.ActionTypes;
+import helpers.PropTypes;
 import engine.consts.SecondaryEntityCounts;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
