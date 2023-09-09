@@ -9,77 +9,85 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.DetailsScreenController">
+<StackPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.DetailsScreenController">
   <children>
-      <BorderPane>
-         <top>
-            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="823.0" spacing="22.0">
+      <GridPane vgap="20.0">
+             <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+             </columnConstraints>
+             <rowConstraints>
+                <RowConstraints />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
+                <RowConstraints />
+             </rowConstraints>
+         <children>
+            <BorderPane>
+               <top>
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="823.0" spacing="22.0">
+                     <children>
+                        <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" stylesheets="@DetailsScreen.css" text="Load XML" />
+                        <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="35.0" prefWidth="454.0" promptText="No XML is currently loaded" styleClass="file-path-text-area" stylesheets="@DetailsScreen.css" wrapText="true">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </TextArea>
+                        <Button fx:id="queueMgmtButton" alignment="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" stylesheets="@DetailsScreen.css" text="Queue Management" textAlignment="CENTER">
+                           <HBox.margin>
+                              <Insets top="5.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+               </top>
+               <GridPane.margin>
+                  <Insets top="5.0" />
+               </GridPane.margin>
+            </BorderPane>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" GridPane.rowIndex="1">
                <children>
-                  <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" stylesheets="@DetailsScreen.css" text="Load XML" />
-                  <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="35.0" prefWidth="454.0" promptText="No XML is currently loaded" styleClass="file-path-text-area" stylesheets="@DetailsScreen.css" wrapText="true">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font size="12.0" />
-                     </font>
-                  </TextArea>
-                  <Button fx:id="queueMgmtButton" alignment="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" stylesheets="@DetailsScreen.css" text="Queue Management" textAlignment="CENTER">
-                     <HBox.margin>
-                        <Insets top="5.0" />
-                     </HBox.margin>
-                  </Button>
+                  <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Details" />
+                  <Button fx:id="newExecutionButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="New Execution" />
+                  <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Results" />
                </children>
             </HBox>
-         </top>
-         <GridPane.margin>
-            <Insets top="5.0" />
-         </GridPane.margin>
-      </BorderPane>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" GridPane.rowIndex="1">
-         <children>
-            <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Details" />
-            <Button fx:id="newExecutionButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="New Execution" />
-            <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@DetailsScreen.css" text="Results" />
-         </children>
-      </HBox>
-      <GridPane alignment="CENTER" hgap="20.0" GridPane.rowIndex="2">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="444.0" minWidth="10.0" prefWidth="288.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="612.0" minWidth="10.0" prefWidth="612.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints vgrow="ALWAYS" />
-        </rowConstraints>
-         <children>
-            <TreeView fx:id="worldCategoriesTreeView">
+            <GridPane alignment="CENTER" hgap="20.0" GridPane.rowIndex="2">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="444.0" minWidth="10.0" prefWidth="288.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="612.0" minWidth="10.0" prefWidth="612.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints vgrow="ALWAYS" />
+              </rowConstraints>
+               <children>
+                  <TreeView fx:id="worldCategoriesTreeView">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TreeView>
+                  <TreeView fx:id="selectedComponentDetailsTreeView" GridPane.columnIndex="1">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </TreeView>
+               </children>
                <GridPane.margin>
-                  <Insets />
-               </GridPane.margin></TreeView>
-            <TreeView fx:id="selectedComponentDetailsTreeView" GridPane.columnIndex="1">
-               <GridPane.margin>
-                  <Insets />
-               </GridPane.margin></TreeView>
+                  <Insets left="15.0" right="15.0" />
+               </GridPane.margin>
+            </GridPane>
+            <BorderPane GridPane.rowIndex="3">
+               <bottom>
+                  <Button mnemonicParsing="false" onAction="#handleShowXmlLog" stylesheets="@DetailsScreen.css" text="XML log" visible="false" fx:id="xmlLogButton" />
+               </bottom>
+            </BorderPane>
          </children>
-         <GridPane.margin>
-            <Insets left="15.0" right="15.0" />
-         </GridPane.margin>
       </GridPane>
-      <BorderPane GridPane.rowIndex="3">
-         <bottom>
-            <Button mnemonicParsing="false" onAction="#handleShowXmlLog" stylesheets="@DetailsScreen.css" text="XML log" visible="false" fx:id="xmlLogButton" />
-         </bottom>
-      </BorderPane>
   </children>
-   <columnConstraints>
-      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
-      <RowConstraints />
-   </rowConstraints>
-</GridPane>
+
+</StackPane>
