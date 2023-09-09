@@ -42,7 +42,14 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engineAPI = new EngineAPI();
+        initializeXmlErrorsAlert();
+    }
+    private void initializeXmlErrorsAlert() {
         xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
+        xmlErrorsAlert.setResizable(true);
+        xmlErrorsAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+        xmlErrorsAlert.setTitle("Latest loaded XML inspection");
+        xmlErrorsAlert.setHeaderText("Validation errors");
     }
     @FXML
     private void handleLoadXmlButtonClick(ActionEvent event) {
@@ -183,11 +190,7 @@ public class MainScreenController implements Initializable {
 
     }
     @FXML
-    private void handleShowXmlLog(ActionEvent event) {
-        xmlErrorsAlert.setResizable(true);
-        xmlErrorsAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        xmlErrorsAlert.setTitle("Latest loaded XML inspection");
-        xmlErrorsAlert.setHeaderText("Validation errors");
+    private void handleShowXmlLog() {
         xmlErrorsAlert.showAndWait();
     }
 }
