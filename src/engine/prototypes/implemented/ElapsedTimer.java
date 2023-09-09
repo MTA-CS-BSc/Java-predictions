@@ -21,7 +21,6 @@ public class ElapsedTimer {
                 @Override
                 public void run() {
                     elapsedTime = System.currentTimeMillis() - startTime;
-                    System.out.println("Elapsed Time: " + elapsedTime + " milliseconds");
                 }
             }, 0, 1000); // Update every 1000 milliseconds (1 second)
         }

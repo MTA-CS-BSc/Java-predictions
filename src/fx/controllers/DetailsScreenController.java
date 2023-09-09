@@ -161,7 +161,6 @@ public class DetailsScreenController implements Initializable {
 
         TreeItem<TreeItemModel> actions = new TreeItem<>(new TreeItemModel("Actions"));
         rule.getActions().forEach(actionModel -> {
-            System.out.println(actionModel);
             TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
             actions.getChildren().add(actionTreeItem);
         });
