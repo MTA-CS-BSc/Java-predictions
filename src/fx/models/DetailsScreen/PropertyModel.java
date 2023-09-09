@@ -1,5 +1,7 @@
 package fx.models.DetailsScreen;
 
+import java.util.Objects;
+
 public class PropertyModel extends TreeItemModel {
     private final String type;
     private final RangeModel range;
@@ -14,4 +16,5 @@ public class PropertyModel extends TreeItemModel {
     public RangeModel getRange() {
         return range;
     }
+    public boolean hasNoRange() { return Objects.isNull(range); }
 }

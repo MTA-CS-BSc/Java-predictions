@@ -134,7 +134,30 @@ public class DetailsScreenController implements Initializable {
         worldCategoriesTreeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             if (newValue.getValue() instanceof EntityModel)
                 showEntityDetails((EntityModel)newValue.getValue());
+
+            else if (newValue.getValue() instanceof PropertyModel)
+                showEnvVarDetails((PropertyModel)newValue.getValue());
+
+            else
+                selectedComponentDetailsTreeView.setRoot(null);
         });
+    }
+    private void showEnvVarDetails(PropertyModel envVar) {
+        selectedComponentDetailsTreeView.setRoot(new TreeItem<>(envVar));
+
+        TreeItem<TreeItemModel> type = new TreeItem<>(new TreeItemModel("Type"));
+        type.getChildren().add(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(envVar.getType()))));
+
+        selectedComponentDetailsTreeView.getRoot().getChildren().add(type);
+
+        if (!envVar.hasNoRange()) {
+            TreeItem<TreeItemModel> range = new TreeItem<>(new TreeItemModel("Range"));
+
+            range.getChildren().add(new TreeItem<>(new TreeItemModel(String.format("[%.2f, %.2f]",
+                    envVar.getRange().getFrom(), envVar.getRange().getTo()))));
+
+            selectedComponentDetailsTreeView.getRoot().getChildren().add(range);
+        }
     }
     private void showEntityDetails(EntityModel entityModel) {
         selectedComponentDetailsTreeView.setRoot(new TreeItem<>(entityModel));
