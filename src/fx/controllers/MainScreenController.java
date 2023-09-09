@@ -39,6 +39,12 @@ public class MainScreenController implements Initializable {
     @FXML
     private Button xmlLogButton;
     private Alert xmlErrorsAlert;
+    @FXML
+    private Button detailsButton;
+    @FXML
+    private Button newExecutionButton;
+    @FXML
+    private Button resultsButton;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engineAPI = new EngineAPI();
@@ -89,7 +95,7 @@ public class MainScreenController implements Initializable {
             //TODO: Handle error
         }
     }
-    private void handleShowTreeView() {
+    private void handleShowSimulationDetails() {
         if (new Gson().fromJson(engineAPI.isXmlLoaded().getData(), Boolean.class)) {
             handleAddCategories();
             handleShowCategoriesData();
