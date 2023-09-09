@@ -17,7 +17,7 @@
          <top>
             <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="823.0" spacing="22.0">
                <children>
-                  <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" styleClass="menu-button" stylesheets="@MainScreen.css" text="Load XML" />
+                  <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" stylesheets="@MainScreen.css" text="Load XML" />
                   <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="35.0" prefWidth="454.0" promptText="No XML is currently loaded" styleClass="file-path-text-area" stylesheets="@MainScreen.css" wrapText="true">
                      <HBox.margin>
                         <Insets top="5.0" />
