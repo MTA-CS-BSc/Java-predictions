@@ -42,7 +42,6 @@ public class MainScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engineAPI = new EngineAPI();
-        xmlLogButton.setVisible(false);
         xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
     }
     @FXML

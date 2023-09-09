@@ -62,7 +62,7 @@
       </GridPane>
       <BorderPane GridPane.rowIndex="2">
          <bottom>
-            <Button mnemonicParsing="false" onAction="#handleShowXmlLog" styleClass="log-button" stylesheets="@MainScreen.css" text="XML log" fx:id="xmlLogButton" />
+            <Button mnemonicParsing="false" onAction="#handleShowXmlLog" styleClass="log-button" stylesheets="@MainScreen.css" text="XML log" visible="false" fx:id="xmlLogButton" />
          </bottom>
       </BorderPane>
   </children>
