@@ -100,7 +100,8 @@ public class MainScreenController implements Initializable {
         }
 
         catch (Exception e) {
-            //TODO: Handle error
+            xmlLogButton.setVisible(true);
+            xmlErrorsAlert.setContentText("File not found or corrupted!");
         }
     }
     public void handleShowSimulationDetails() {
