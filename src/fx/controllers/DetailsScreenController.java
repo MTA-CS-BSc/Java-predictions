@@ -1,6 +1,7 @@
 package fx.controllers;
 
-import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.xml.internal.ws.util.StringUtils;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
@@ -29,6 +30,7 @@ import tray.notification.TrayNotification;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -57,10 +59,25 @@ public class DetailsScreenController implements Initializable {
         newExecutionButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         resultsButton.disableProperty().bind(Bindings.createBooleanBinding(this::isHistoryEmpty));
         initializeXmlErrorsAlert();
+
+        worldCategoriesTreeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
+            if (newValue.getValue() instanceof EntityModel)
+                showEntityDetails((EntityModel)newValue.getValue());
+
+            else if (newValue.getValue() instanceof PropertyModel)
+                showEnvVarDetails((PropertyModel)newValue.getValue());
+
+            else if (newValue.getValue() instanceof RuleModel)
+                showRuleDetails((RuleModel)newValue.getValue());
+            else
+                selectedComponentDetailsTreeView.setRoot(null);
+        });
     }
-    private boolean isHistoryEmpty() {
-        return !new Gson().fromJson(engineAPI.isXmlLoaded().getData(), Boolean.class)
-            || new Gson().fromJson(engineAPI.isHistoryEmpty().getData(), Boolean.class);
+    private boolean isHistoryEmpty() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        return !objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class)
+                || objectMapper.readValue(engineAPI.isHistoryEmpty().getData(), Boolean.class);
     }
     private void initializeXmlErrorsAlert() {
         xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -108,11 +125,11 @@ public class DetailsScreenController implements Initializable {
             xmlErrorsAlert.setContentText("File not found or corrupted!");
         }
     }
-    public void handleShowSimulationDetails() {
-        if (new Gson().fromJson(engineAPI.isXmlLoaded().getData(), Boolean.class)) {
-            worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
+    public void handleShowSimulationDetails() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        if (objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class))
             handleShowCategoriesData();
-        }
 
         else {
             TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
@@ -121,8 +138,11 @@ public class DetailsScreenController implements Initializable {
         }
 
     }
-    private void handleShowCategoriesData() {
-        WorldDTO world = new Gson().fromJson(engineAPI.getSimulationDetails().getData(),
+    private void handleShowCategoriesData() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
+
+        WorldDTO world = objectMapper.readValue(engineAPI.getSimulationDetails().getData(),
                 SingleSimulationDTO.class).getWorld();
 
         showEnvironment(world);
@@ -130,17 +150,23 @@ public class DetailsScreenController implements Initializable {
         showGrid(world);
         showTermination(world);
         showRules(world);
+    }
+    private void showRuleDetails(RuleModel rule) {
+        selectedComponentDetailsTreeView.setRoot(new TreeItem<>(rule));
+        TreeItem<TreeItemModel> ticks = new TreeItem<>(new TreeItemModel("Ticks"));
+        ticks.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(rule.getTicks()))));
 
-        worldCategoriesTreeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
-            if (newValue.getValue() instanceof EntityModel)
-                showEntityDetails((EntityModel)newValue.getValue());
+        TreeItem<TreeItemModel> probability = new TreeItem<>(new TreeItemModel("Probability"));
+        probability.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(rule.getProbability()))));
 
-            else if (newValue.getValue() instanceof PropertyModel)
-                showEnvVarDetails((PropertyModel)newValue.getValue());
-
-            else
-                selectedComponentDetailsTreeView.setRoot(null);
+        TreeItem<TreeItemModel> actions = new TreeItem<>(new TreeItemModel("Actions"));
+        rule.getActions().forEach(actionModel -> {
+            System.out.println(actionModel);
+            TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
+            actions.getChildren().add(actionTreeItem);
         });
+
+        selectedComponentDetailsTreeView.getRoot().getChildren().addAll(Arrays.asList(ticks, probability, actions));
     }
     private void showEnvVarDetails(PropertyModel envVar) {
         selectedComponentDetailsTreeView.setRoot(new TreeItem<>(envVar));
@@ -274,8 +300,8 @@ public class DetailsScreenController implements Initializable {
         TreeItem<TreeItemModel> rulesTreeItem = new TreeItem<>(new RulesModel(rules));
 
         rules.forEach(rule -> {
-            TreeItem<TreeItemModel> propertyTreeItem = new TreeItem<>(rule);
-            rulesTreeItem.getChildren().add(propertyTreeItem);
+            TreeItem<TreeItemModel> ruleTreeItem = new TreeItem<>(rule);
+            rulesTreeItem.getChildren().add(ruleTreeItem);
         });
 
         worldCategoriesTreeView.getRoot().getChildren().add(rulesTreeItem);
@@ -322,20 +348,18 @@ public class DetailsScreenController implements Initializable {
                     secondaryEntityModel, increaseDecreaseAction.getPropertyName(), increaseDecreaseAction.getBy());
         }
 
-        else if (action instanceof ConditionDTO) {
-            if (action instanceof SingleConditionDTO) {
-                SingleConditionDTO condition = (SingleConditionDTO) action;
-                return new SingleConditionModel(entityName, secondaryEntityModel,
-                        condition.getThenActionsAmount(), condition.getElseActionsAmount(),
-                        condition.getOperator(), condition.getProperty(), condition.getValue());
-            }
+        else if (action instanceof SingleConditionDTO) {
+            SingleConditionDTO condition = (SingleConditionDTO) action;
+            return new SingleConditionModel(entityName, secondaryEntityModel,
+                    condition.getThenActionsAmount(), condition.getElseActionsAmount(),
+                    condition.getOperator(), condition.getProperty(), condition.getValue());
+        }
 
-            else {
-                MultipleConditionDTO condition = ((MultipleConditionDTO) action);
-                return new MultipleConditionModel(entityName, secondaryEntityModel,
-                        condition.getThenActionsAmount(), condition.getElseActionsAmount(),
-                        condition.getLogicalOperator(), condition.getConditionsAmount());
-            }
+        else if (action instanceof MultipleConditionDTO) {
+            MultipleConditionDTO condition = ((MultipleConditionDTO) action);
+            return new MultipleConditionModel(entityName, secondaryEntityModel,
+                    condition.getThenActionsAmount(), condition.getElseActionsAmount(),
+                    condition.getLogicalOperator(), condition.getConditionsAmount());
         }
 
         return null;

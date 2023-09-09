@@ -1,12 +1,18 @@
 package dtos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class TerminationDTO {
     protected List<StopConditionDTO> stopConditions;
 
     protected boolean isByUser;
-    public TerminationDTO(List<StopConditionDTO> stopConditions, boolean isByUser) {
+
+    @JsonCreator
+    public TerminationDTO(@JsonProperty("stopConditions") List<StopConditionDTO> stopConditions,
+                          @JsonProperty("byUser") boolean isByUser) {
         this.stopConditions = stopConditions;
         this.isByUser = isByUser;
     }
@@ -17,23 +23,5 @@ public class TerminationDTO {
 
     public List<StopConditionDTO> getStopConditions() {
         return stopConditions;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("###########Termination###########\n");
-
-        stopConditions.forEach(stopCondition -> {
-            sb.append("#####Stop Condition######\n");
-            sb.append(stopCondition);
-        });
-
-        if (isByUser) {
-            sb.append("#####Stop Condition######\n");
-            sb.append("Termination by user\n");
-        }
-
-        return sb.toString();
     }
 }

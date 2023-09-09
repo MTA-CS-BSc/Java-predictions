@@ -1,22 +1,27 @@
 package dtos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import dtos.actions.ActionDTO;
 
 import java.util.List;
-import java.util.Objects;
 
 public class RuleDTO {
     protected String name;
     protected int ticks;
     protected double probability;
     protected List<ActionDTO> actions;
-    public RuleDTO(String name, int ticks, double probability, List<ActionDTO> actions) {
+
+    @JsonCreator
+    public RuleDTO(@JsonProperty("name") String name,
+                   @JsonProperty("ticks") int ticks,
+                   @JsonProperty("probability") double probability,
+                   @JsonProperty("actions") List<ActionDTO> actions) {
         this.name = name;
         this.ticks = ticks;
         this.probability = probability;
         this.actions = actions;
     }
-    public int getActionsAmount() { return !Objects.isNull(actions) ? actions.size() : 0; }
     public List<ActionDTO> getActions() {
         return actions;
     }
@@ -37,16 +42,5 @@ public class RuleDTO {
     }
     public void setProbability(double probability) {
         this.probability = probability;
-    }
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("#####Rule######\n");
-
-        sb.append("Name: ").append(getName()).append("\n");
-        sb.append("Activation ticks: ").append(getTicks()).append("\n");
-        sb.append("Activation probability: ").append(getProbability()).append("\n");
-
-        return sb.toString();
     }
 }

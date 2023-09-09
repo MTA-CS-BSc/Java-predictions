@@ -1,5 +1,8 @@
 package dtos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class WorldDTO {
@@ -9,35 +12,20 @@ public class WorldDTO {
     protected List<EntityDTO> entities;
     protected int gridRows;
     protected int gridColumns;
-    public WorldDTO(List<EntityDTO> entities, TerminationDTO termination,
-                    List<RuleDTO> rules, List<PropertyDTO> environment, int gridRows, int gridColumns) {
+
+    @JsonCreator
+    public WorldDTO(@JsonProperty("entities") List<EntityDTO> entities,
+                    @JsonProperty("termination") TerminationDTO termination,
+                    @JsonProperty("rules") List<RuleDTO> rules,
+                    @JsonProperty("environment") List<PropertyDTO> environment,
+                    @JsonProperty("gridRows") int gridRows,
+                    @JsonProperty("gridColumns") int gridColumns) {
         this.environment = environment;
         this.rules = rules;
         this.termination = termination;
         this.entities = entities;
         this.gridRows = gridRows;
         this.gridColumns = gridColumns;
-    }
-    @Override
-    public String toString() {
-        return getEntitiesDetails() + getRulesDetails() + getTerminationDetails();
-    }
-    public String getEntitiesDetails() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("###########Entities###########\n");
-        entities.forEach(entity -> sb.append(entity.toString()).append("\n"));
-        return sb.toString();
-    }
-    public String getRulesDetails() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("###########Rules###########\n");
-
-        rules.forEach(rule -> sb.append(rule.toString()).append("\n"));
-
-        return sb.toString();
-    }
-    public String getTerminationDetails() {
-        return termination.toString();
     }
     public List<PropertyDTO> getEnvironment() {
         return environment;

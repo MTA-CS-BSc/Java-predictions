@@ -5,6 +5,7 @@ import helpers.ActionTypes;
 public abstract class ConditionDTO extends ActionDTO {
     protected int thenActionsAmount;
     protected int elseActionsAmount;
+
     public ConditionDTO(String entityName, SecondaryEntityDTO secondaryEntity,
                      int thenActionsAmount, int elseActionsAmount) {
         super(ActionTypes.CONDITION, entityName, secondaryEntity);

@@ -1,5 +1,7 @@
 package dtos;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import helpers.Constants;
 
 import java.util.Objects;
@@ -11,7 +13,12 @@ public class PropertyDTO {
     protected RangeDTO range;
     protected boolean isRandom;
 
-    public PropertyDTO(String name, String type, RangeDTO range, String value, boolean isRandom) {
+    @JsonCreator
+    public PropertyDTO(@JsonProperty("name") String name,
+                       @JsonProperty("type") String type,
+                       @JsonProperty("range") RangeDTO range,
+                       @JsonProperty("value") String value,
+                       @JsonProperty("isRandom") boolean isRandom) {
         this.name = name;
         this.type = type;
         this.range = range;
@@ -50,16 +57,5 @@ public class PropertyDTO {
     public boolean hasNoRange() {
         return Objects.isNull(getRange())
                 || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
-    }
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("#####Property#####\n").append("Name: ").append(getName()).append("\n").append("Type: ")
-                .append(getType()).append("\n").append("Is Random initialize: ").append(getIsRandom()).append("\n");
-
-        if (!Objects.isNull(getRange()))
-            sb.append(getRange().toString());
-
-        return sb.toString();
     }
 }

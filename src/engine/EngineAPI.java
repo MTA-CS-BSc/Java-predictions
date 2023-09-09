@@ -1,9 +1,9 @@
 package engine;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.*;
-import helpers.PropTypes;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
@@ -17,6 +17,7 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
+import helpers.PropTypes;
 import helpers.SimulationState;
 import helpers.ThreadPoolManager;
 
@@ -44,10 +45,10 @@ public class EngineAPI {
         EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
         EngineLoggers.formatLogger(EngineLoggers.SIMULATION_ERRORS_LOGGER);
     }
-    public ResponseDTO isHistoryEmpty() {
+    public ResponseDTO isHistoryEmpty() throws JsonProcessingException {
         return new ResponseDTO(200, historyManager.isEmpty());
     }
-    public ResponseDTO writeHistoryToFile(String filePath) {
+    public ResponseDTO writeHistoryToFile(String filePath) throws JsonProcessingException {
         try {
             FileOutputStream f = new FileOutputStream(filePath);
             ObjectOutputStream o = new ObjectOutputStream(f);
@@ -61,7 +62,7 @@ public class EngineAPI {
             return new ResponseDTO(200, false);
         }
     }
-    public ResponseDTO loadHistory(String filePath) {
+    public ResponseDTO loadHistory(String filePath) throws JsonProcessingException {
         try {
             FileInputStream fi = new FileInputStream(filePath);
             ObjectInputStream oi = new ObjectInputStream(fi);
@@ -85,21 +86,21 @@ public class EngineAPI {
 
         return validateWorldResponse;
     }
-    public ResponseDTO isXmlLoaded() {
+    public ResponseDTO isXmlLoaded() throws JsonProcessingException {
         return new ResponseDTO(200, historyManager.isXmlLoaded());
     }
-    public ResponseDTO createSimulation() {
+    public ResponseDTO createSimulation() throws JsonProcessingException {
         SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
         historyManager.addPastSimulation(sm);
         return new ResponseDTO(200, sm.getUUID());
     }
-    public ResponseDTO getSimulationDetails() {
+    public ResponseDTO getSimulationDetails() throws JsonProcessingException {
         if (!historyManager.isXmlLoaded())
             return new ResponseDTO(400, "", "No loaded XML");
 
         return new ResponseDTO(200, historyManager.getMockSimulationForDetails());
     }
-    public ResponseDTO setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
+    public ResponseDTO setEnvironmentVariable(String uuid, PropertyDTO prop, String val) throws JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, "UUID", UUIDNotFoundException.class.getSimpleName());
 
@@ -124,7 +125,7 @@ public class EngineAPI {
         return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()),
                 String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
     }
-    public ResponseDTO getEnvironmentProperties(String uuid) {
+    public ResponseDTO getEnvironmentProperties(String uuid) throws JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
@@ -137,8 +138,10 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
-    public ResponseDTO getPastSimulations() {
-        if (new Gson().fromJson(isHistoryEmpty().getData(), Boolean.class))
+    public ResponseDTO getPastSimulations() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        if (objectMapper.readValue(isHistoryEmpty().getData(), Boolean.class))
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
 
         List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
@@ -149,28 +152,31 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
-    public ResponseDTO findSelectedSimulationDTO(int selection) {
-        List<SingleSimulationDTO> pastSimulations = new Gson().fromJson(getPastSimulations().getData(), new TypeToken<List<SingleSimulationDTO>>(){}.getType());
+    public ResponseDTO findSelectedSimulationDTO(int selection) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<SingleSimulationDTO> pastSimulations = objectMapper.readValue(getPastSimulations().getData(),
+                new TypeReference<List<SingleSimulationDTO>>() {});
         return new ResponseDTO(200, pastSimulations.get(selection - 1));
     }
-    public ResponseDTO findSelectedEntityDTO(String uuid, int selection) {
+    public ResponseDTO findSelectedEntityDTO(String uuid, int selection) throws JsonProcessingException {
         EntityDTO data = null;
 
         if (!Objects.isNull(findSimulationDTOByUuid(uuid))) {
-            List<EntityDTO> entities = new Gson().fromJson(getEntities(uuid).getData(), new TypeToken<List<EntityDTO>>(){});
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<EntityDTO> entities = objectMapper.readValue(getEntities(uuid).getData(), new TypeReference<List<EntityDTO>>(){});
             data = entities.get(selection - 1);
         }
 
         return Objects.isNull(data) ?
                 new ResponseDTO(500, null, "Unknown") : new ResponseDTO(200, data);
     }
-    public ResponseDTO findSelectedPropertyDTO(EntityDTO entity, int selection) {
+    public ResponseDTO findSelectedPropertyDTO(EntityDTO entity, int selection) throws JsonProcessingException {
         if (Objects.isNull(entity))
             return new ResponseDTO(500, null, "Entity is null");
 
         return new ResponseDTO(200, entity.getProperties().get(selection - 1));
     }
-    public ResponseDTO getEntities(String uuid) {
+    public ResponseDTO getEntities(String uuid) throws JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
@@ -183,19 +189,19 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
-    public ResponseDTO getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
+    public ResponseDTO getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException, JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
         return new ResponseDTO(200, historyManager.getEntitiesBeforeAndAfter(uuid));
     }
-    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
+    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException, JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
         return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
-    public ResponseDTO runSimulation(String uuid) {
+    public ResponseDTO runSimulation(String uuid) throws JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
 
@@ -208,7 +214,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
     }
-    public ResponseDTO getCurrentOverallPopulation(String uuid) {
+    public ResponseDTO getCurrentOverallPopulation(String uuid) throws JsonProcessingException {
         int sum = historyManager.getPastSimulation(uuid)
                 .getWorld()
                 .getEntities()
@@ -220,7 +226,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, sum);
     }
-    public ResponseDTO setEntityInitialPopulation(String uuid, String entityName, int population) {
+    public ResponseDTO setEntityInitialPopulation(String uuid, String entityName, int population) throws JsonProcessingException {
         if (population < 0)
             return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Population is negative");
@@ -231,7 +237,7 @@ public class EngineAPI {
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
     }
-    public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) {
+    public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) throws JsonProcessingException {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
         SimulationState simulationState = simulation.getSimulationState();
 
@@ -242,7 +248,7 @@ public class EngineAPI {
         simulation.setSimulationState(isFinished ? SimulationState.FINISHED : SimulationState.STOPPED);
         return new ResponseDTO(200, String.format("Simulation [%s] is [%s]", uuid, isFinished ? "terminated" : "stopped"));
     }
-    public ResponseDTO resumeStoppedSimulation(String uuid) {
+    public ResponseDTO resumeStoppedSimulation(String uuid) throws JsonProcessingException {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
         if (!simulation.getSimulationState().equals(SimulationState.STOPPED))
@@ -302,8 +308,10 @@ public class EngineAPI {
 
         return historyManager.getInitialWorld();
     }
-    private SingleSimulationDTO findSimulationDTOByUuid(String uuid) {
-        List<SingleSimulationDTO> pastSimulations = new Gson().fromJson(getPastSimulations().getData(), new TypeToken<List<SingleSimulationDTO>>(){}.getType());
+    private SingleSimulationDTO findSimulationDTOByUuid(String uuid) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<SingleSimulationDTO> pastSimulations = objectMapper.readValue(getPastSimulations().getData(),
+                new TypeReference<List<SingleSimulationDTO>>() {});
 
         return pastSimulations.stream().filter(element -> element.getUuid().equals(uuid))
                 .findFirst().orElse(null);

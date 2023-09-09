@@ -1,7 +1,8 @@
 package dtos;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-
 public class ResponseDTO {
     protected int status;
     protected ErrorDescriptionDTO errorDescription;
@@ -12,9 +13,11 @@ public class ResponseDTO {
         data = null;
     }
 
-    public ResponseDTO(int status, Object data) {
+    public ResponseDTO(int status, Object data) throws JsonProcessingException {
         this.status = status;
-        this.data = new Gson().toJson(data);
+//        this.data = new Gson().toJson(data);
+        ObjectMapper objectMapper = new ObjectMapper();
+        this.data = objectMapper.writeValueAsString(data);
         errorDescription = null;
     }
 
