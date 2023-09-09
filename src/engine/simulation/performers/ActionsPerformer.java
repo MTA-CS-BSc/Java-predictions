@@ -1,7 +1,5 @@
 package engine.simulation.performers;
 
-import helpers.ActionTypes;
-import helpers.PropTypes;
 import engine.consts.SecondaryEntityCounts;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
@@ -10,6 +8,7 @@ import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.*;
+import helpers.PropTypes;
 import helpers.TypesUtils;
 
 import java.util.ArrayList;
@@ -34,32 +33,29 @@ public abstract class ActionsPerformer {
             ActionsPerformer.handleAction(world, actToPerform, main, null);
     }
     private static void handleAction(World world, Action action, SingleEntity main, SingleEntity secondary) throws Exception {
-        switch (action.getType()) {
-            case ActionTypes.INCREASE:
-                IncreasePerformer.performAction(world, (IncreaseAction)action, main, secondary);
-                break;
-            case ActionTypes.DECREASE:
-                DecreasePerformer.performAction(world, (DecreaseAction)action, main, secondary);
-                break;
-            case ActionTypes.CALCULATION:
-                CalculationPerformer.performAction(world, (CalculationAction)action, main, secondary);
-                break;
-            case ActionTypes.SET:
-                SetPerformer.performAction(world, (SetAction)action, main, secondary);
-                break;
-            case ActionTypes.KILL:
-                KillPerformer.performAction(world, (KillAction)action, main, secondary);
-                break;
-            case ActionTypes.CONDITION:
-                ConditionPerformer.performAction(world, (ConditionAction)action, main, secondary);
-                break;
-            case ActionTypes.PROXIMITY:
-                ProximityPerformer.performAction(world, (ProximityAction)action, main, secondary);
-                break;
-            case ActionTypes.REPLACE:
-                ReplacePerformer.performAction(world, (ReplaceAction)action, main);
-                break;
-        }
+        if (action instanceof IncreaseAction)
+            IncreasePerformer.performAction(world, (IncreaseAction)action, main, secondary);
+
+        else if (action instanceof DecreaseAction)
+            DecreasePerformer.performAction(world, (DecreaseAction)action, main, secondary);
+
+        else if (action instanceof CalculationAction)
+            CalculationPerformer.performAction(world, (CalculationAction)action, main, secondary);
+
+        else if (action instanceof SetAction)
+            SetPerformer.performAction(world, (SetAction)action, main, secondary);
+
+        else if (action instanceof ConditionAction)
+            ConditionPerformer.performAction(world, (ConditionAction)action, main, secondary);
+
+        else if (action instanceof KillAction)
+            KillPerformer.performAction(world, (KillAction)action, main, secondary);
+
+        else if (action instanceof ProximityAction)
+            ProximityPerformer.performAction(world, (ProximityAction)action, main, secondary);
+
+        else if (action instanceof ReplaceAction)
+            ReplacePerformer.performAction(world, (ReplaceAction)action, main);
     }
     public static void updateStableTimeToAllProps(World world) {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
