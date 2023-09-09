@@ -103,7 +103,7 @@ public class MainScreenController implements Initializable {
             //TODO: Handle error
         }
     }
-    private void handleShowSimulationDetails() {
+    public void handleShowSimulationDetails() {
         if (new Gson().fromJson(engineAPI.isXmlLoaded().getData(), Boolean.class)) {
             handleAddCategories();
             handleShowCategoriesData();

@@ -67,7 +67,7 @@
       </BorderPane>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="70.0" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="detailsButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@MainScreen.css" text="Details" />
+            <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" stylesheets="@MainScreen.css" text="Details" />
             <Button fx:id="newExecutionButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@MainScreen.css" text="New Execution" />
             <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" stylesheets="@MainScreen.css" text="Results" />
          </children>
