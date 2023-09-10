@@ -3,7 +3,7 @@ package fx.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
-import engine.EngineAPI;
+import fx.modules.SingletonEngineAPI;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,9 +26,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AppBarController implements Initializable {
-    private EngineAPI engineAPI;
     private Alert xmlErrorsAlert;
-
     @FXML
     private Button detailsButton;
     @FXML
@@ -40,7 +38,6 @@ public class AppBarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        engineAPI = new EngineAPI();
         initializeXmlErrorsAlert();
 
         detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
@@ -59,8 +56,8 @@ public class AppBarController implements Initializable {
     private boolean isHistoryEmpty() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        return !objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class)
-                || objectMapper.readValue(engineAPI.isHistoryEmpty().getData(), Boolean.class);
+        return !objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)
+                || objectMapper.readValue(SingletonEngineAPI.api.isHistoryEmpty().getData(), Boolean.class);
     }
 
     @FXML
@@ -79,7 +76,7 @@ public class AppBarController implements Initializable {
 
     private void handleNotNullXmlFileEntered(File file) {
         try {
-            ResponseDTO response = engineAPI.loadXml(file.getAbsolutePath());
+            ResponseDTO response = SingletonEngineAPI.api.loadXml(file.getAbsolutePath());
             TrayNotification tray;
 
             if (response.getStatus() == 200) {
@@ -106,7 +103,7 @@ public class AppBarController implements Initializable {
     public void handleShowSimulationDetails() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
-        if (objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class))
+        if (objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class))
             System.out.println("Not implemented");
 //            handleShowCategoriesData();
 
@@ -115,9 +112,5 @@ public class AppBarController implements Initializable {
             tray.setAnimationType(AnimationType.FADE);
             tray.showAndDismiss(new Duration(2000));
         }
-    }
-
-    public EngineAPI getEngineAPI() {
-        return engineAPI;
     }
 }

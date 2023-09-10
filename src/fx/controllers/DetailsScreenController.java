@@ -3,32 +3,19 @@ package fx.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.xml.internal.ws.util.StringUtils;
-import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
 import dtos.StopConditionDTO;
 import dtos.WorldDTO;
-import engine.EngineAPI;
 import fx.models.DetailsScreen.*;
 import fx.models.DetailsScreen.actions.*;
-import fx.models.DetailsScreen.WorldTreeViewCategories;
 import fx.modules.GuiUtils;
+import fx.modules.SingletonEngineAPI;
 import helpers.PropTypes;
-import javafx.beans.binding.Bindings;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.Region;
-import javafx.stage.FileChooser;
-import javafx.stage.Window;
-import javafx.util.Duration;
-import tray.animations.AnimationType;
-import tray.notification.NotificationType;
-import tray.notification.TrayNotification;
+import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeView;
 
-import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
@@ -37,31 +24,13 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class DetailsScreenController implements Initializable {
-    private EngineAPI engineAPI;
-    private Alert xmlErrorsAlert;
-    @FXML
-    private TextArea currentXmlFilePath;
     @FXML
     private TreeView<TreeItemModel> worldCategoriesTreeView;
     @FXML
     private TreeView<TreeItemModel> selectedComponentDetailsTreeView;
-    @FXML
-    private Button xmlLogButton;
-    @FXML
-    private Button detailsButton;
-    @FXML
-    private Button newExecutionButton;
-    @FXML
-    private Button resultsButton;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        engineAPI = new EngineAPI();
-        detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
-        newExecutionButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
-        resultsButton.disableProperty().bind(Bindings.createBooleanBinding(this::isHistoryEmpty));
-        initializeXmlErrorsAlert();
-
         worldCategoriesTreeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             if (newValue.getValue() instanceof EntityModel)
                 showEntityDetails((EntityModel)newValue.getValue());
@@ -75,62 +44,7 @@ public class DetailsScreenController implements Initializable {
                 selectedComponentDetailsTreeView.setRoot(null);
         });
     }
-    private boolean isHistoryEmpty() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
 
-        return !objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class)
-                || objectMapper.readValue(engineAPI.isHistoryEmpty().getData(), Boolean.class);
-    }
-    private void initializeXmlErrorsAlert() {
-        xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
-        xmlErrorsAlert.setResizable(true);
-        xmlErrorsAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        xmlErrorsAlert.setTitle("Latest loaded XML inspection");
-        xmlErrorsAlert.setHeaderText("Validation errors");
-    }
-    @FXML
-    private void handleShowXmlLog() {
-        xmlErrorsAlert.showAndWait();
-    }
-    @FXML
-    private void handleLoadXmlButtonClick(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Scene scene = source.getScene();
-        Window window = scene.getWindow();
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose an XML file");
-        File file = fileChooser.showOpenDialog(window);
-
-        if (file != null)
-            handleNotNullXmlFileEntered(file);
-    }
-    private void handleNotNullXmlFileEntered(File file) {
-        try {
-            ResponseDTO response = engineAPI.loadXml(file.getAbsolutePath());
-            TrayNotification tray;
-
-            if (response.getStatus() == 200) {
-                tray = new TrayNotification("SUCCESS", "XML was loaded successfully!", NotificationType.SUCCESS);
-                currentXmlFilePath.setText(file.getAbsolutePath());
-                xmlLogButton.setVisible(false);
-            }
-
-            else {
-                tray = new TrayNotification("FAILURE", "XML was not loaded. For details, see the XML log.", NotificationType.ERROR);
-                xmlLogButton.setVisible(true);
-                xmlErrorsAlert.setContentText(response.getErrorDescription().getCause());
-            }
-
-            tray.setAnimationType(AnimationType.FADE);
-            tray.showAndDismiss(new Duration(2000));
-        }
-
-        catch (Exception e) {
-            xmlLogButton.setVisible(true);
-            xmlErrorsAlert.setContentText("File not found or corrupted!");
-        }
-    }
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
         TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
 
@@ -149,19 +63,6 @@ public class DetailsScreenController implements Initializable {
         addActionProps(actionTreeItem, actionModel);
 
         return actionTreeItem;
-    }
-    public void handleShowSimulationDetails() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        if (objectMapper.readValue(engineAPI.isXmlLoaded().getData(), Boolean.class))
-            handleShowCategoriesData();
-
-        else {
-            TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
-            tray.setAnimationType(AnimationType.FADE);
-            tray.showAndDismiss(new Duration(2000));
-        }
-
     }
 
     //#region Selected component
@@ -334,7 +235,7 @@ public class DetailsScreenController implements Initializable {
         ObjectMapper objectMapper = new ObjectMapper();
         worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
 
-        WorldDTO world = objectMapper.readValue(engineAPI.getSimulationDetails().getData(),
+        WorldDTO world = objectMapper.readValue(SingletonEngineAPI.api.getSimulationDetails().getData(),
                 SingleSimulationDTO.class).getWorld();
 
         showEnvironment(world);
