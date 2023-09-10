@@ -10,7 +10,7 @@ import dtos.WorldDTO;
 import engine.EngineAPI;
 import fx.models.DetailsScreen.*;
 import fx.models.DetailsScreen.actions.*;
-import fx.models.WorldTreeViewCategories;
+import fx.models.DetailsScreen.WorldTreeViewCategories;
 import fx.modules.GuiUtils;
 import helpers.PropTypes;
 import javafx.beans.binding.Bindings;

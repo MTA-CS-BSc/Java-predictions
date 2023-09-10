@@ -1,7 +1,6 @@
 package fx.models.DetailsScreen;
 
 import com.sun.xml.internal.ws.util.StringUtils;
-import fx.models.WorldTreeViewCategories;
 
 import java.util.List;
 

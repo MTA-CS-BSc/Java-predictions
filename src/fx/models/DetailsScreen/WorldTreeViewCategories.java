@@ -1,4 +1,4 @@
-package fx.models;
+package fx.models.DetailsScreen;
 
 public enum WorldTreeViewCategories {
     WORLD,
