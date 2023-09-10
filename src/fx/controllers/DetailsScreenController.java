@@ -28,6 +28,8 @@ public class DetailsScreenController implements Initializable {
     private TreeView<TreeItemModel> worldCategoriesTreeView;
     @FXML
     private TreeView<TreeItemModel> selectedComponentDetailsTreeView;
+    @FXML
+    private AppBarController appBarController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -43,6 +45,7 @@ public class DetailsScreenController implements Initializable {
             else
                 selectedComponentDetailsTreeView.setRoot(null);
         });
+        appBarController.setDetailsScreenController(this);
     }
 
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
@@ -231,7 +234,7 @@ public class DetailsScreenController implements Initializable {
     //#endregion
 
     //#region World Categories
-    private void handleShowCategoriesData() throws JsonProcessingException {
+    public void handleShowCategoriesData() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
 

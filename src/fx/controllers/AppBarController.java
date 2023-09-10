@@ -36,6 +36,8 @@ public class AppBarController implements Initializable {
     @FXML
     private TextArea currentXmlFilePath;
 
+    private DetailsScreenController detailsScreenController;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeXmlErrorsAlert();
@@ -51,6 +53,10 @@ public class AppBarController implements Initializable {
         xmlErrorsAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         xmlErrorsAlert.setTitle("Latest loaded XML inspection");
         xmlErrorsAlert.setHeaderText("Validation errors");
+    }
+
+    public void setDetailsScreenController(DetailsScreenController detailsScreenController) {
+        this.detailsScreenController = detailsScreenController;
     }
 
     private boolean isHistoryEmpty() throws JsonProcessingException {
@@ -104,8 +110,7 @@ public class AppBarController implements Initializable {
         ObjectMapper objectMapper = new ObjectMapper();
 
         if (objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class))
-            System.out.println("Not implemented");
-//            handleShowCategoriesData();
+            detailsScreenController.handleShowCategoriesData();
 
         else {
             TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);

@@ -20,7 +20,7 @@
                 <RowConstraints />
              </rowConstraints>
          <children>
-            <fx:include source="../AppBar/AppBar.fxml" />
+            <fx:include source="../AppBar/AppBar.fxml" fx:id="appBar" />
             <GridPane alignment="CENTER" hgap="20.0" GridPane.rowIndex="1">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="288.0" />
