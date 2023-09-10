@@ -38,6 +38,7 @@ import java.util.stream.Collectors;
 
 public class DetailsScreenController implements Initializable {
     private EngineAPI engineAPI;
+    private Alert xmlErrorsAlert;
     @FXML
     private TextArea currentXmlFilePath;
     @FXML
@@ -46,13 +47,13 @@ public class DetailsScreenController implements Initializable {
     private TreeView<TreeItemModel> selectedComponentDetailsTreeView;
     @FXML
     private Button xmlLogButton;
-    private Alert xmlErrorsAlert;
     @FXML
     private Button detailsButton;
     @FXML
     private Button newExecutionButton;
     @FXML
     private Button resultsButton;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         engineAPI = new EngineAPI();
@@ -121,7 +122,7 @@ public class DetailsScreenController implements Initializable {
                 xmlErrorsAlert.setContentText(response.getErrorDescription().getCause());
             }
 
-            tray.setAnimationType(AnimationType.SLIDE);
+            tray.setAnimationType(AnimationType.FADE);
             tray.showAndDismiss(new Duration(2000));
         }
 
@@ -157,7 +158,7 @@ public class DetailsScreenController implements Initializable {
 
         else {
             TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
-            tray.setAnimationType(AnimationType.SLIDE);
+            tray.setAnimationType(AnimationType.FADE);
             tray.showAndDismiss(new Duration(2000));
         }
 
