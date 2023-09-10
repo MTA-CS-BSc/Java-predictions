@@ -437,5 +437,4 @@ public class DetailsScreenController implements Initializable {
 
     }
     //#endregion
-
 }
