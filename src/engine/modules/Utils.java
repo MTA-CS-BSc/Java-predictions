@@ -35,10 +35,16 @@ public abstract class Utils {
                 property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomBoolean()));
                 break;
             case PropTypes.DECIMAL:
-                property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomNumber((int) range.getFrom(), (int) range.getTo())));
+                int intFrom = Objects.isNull(range) ? Constants.MIN_RANGE : (int)range.getFrom();
+                int intTo = Objects.isNull(range) ? Constants.MAX_RANGE : (int)range.getTo();
+
+                property.getValue().setInit(String.valueOf(RandomGenerator.randomizeRandomNumber(intFrom, intTo)));
                 break;
             case PropTypes.FLOAT:
-                property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat((float) range.getFrom(), (float) range.getTo())));
+                float floatFrom = Objects.isNull(range) ? (float)Constants.MIN_RANGE : (float)range.getFrom();
+                float floatTo = Objects.isNull(range) ? (float)Constants.MAX_RANGE : (float)range.getTo();
+
+                property.getValue().setInit(String.valueOf(RandomGenerator.randomizeFloat(floatFrom, floatTo)));
                 break;
             case PropTypes.STRING:
                 property.getValue().setInit(RandomGenerator.randomizeRandomString());
