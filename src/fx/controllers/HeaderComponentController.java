@@ -121,12 +121,7 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    public void handleNewExecution() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String uuid = objectMapper.readValue(SingletonEngineAPI.api.createSimulation().getData(), String.class);
-        SingletonEngineAPI.api.setEntityInitialPopulation(uuid, "ent-1", 100);
-        SingletonEngineAPI.api.setEntityInitialPopulation(uuid, "ent-2", 100);
-        SingletonEngineAPI.api.runSimulation(uuid);
+    public void handleNewExecution() {
+        //TODO: Not implemented
     }
 }
