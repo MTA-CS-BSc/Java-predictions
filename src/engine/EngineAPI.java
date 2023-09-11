@@ -201,16 +201,18 @@ public class EngineAPI {
 
         return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
-    public ResponseDTO runSimulation(String uuid) throws JsonProcessingException {
+    public ResponseDTO runSimulation(String uuid) throws Exception {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
 
         //TODO: Check if catch should be ignored
-        threadPoolManager.executeTask(() -> {
-            try {
-                startSimulation(uuid);
-            } catch (Exception ignored) { }
-        });
+//        threadPoolManager.executeTask(() -> {
+//            try {
+//                startSimulation(uuid);
+//            } catch (Exception ignored) { }
+//        });
+
+        startSimulation(uuid);
 
         return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
     }
@@ -231,8 +233,7 @@ public class EngineAPI {
             return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Population is negative");
 
-        Utils.findEntityByName(historyManager.getPastSimulation(uuid).getWorld(), entityName)
-                        .initPopulation(population);
+        Utils.findEntityByName(historyManager.getPastSimulation(uuid).getWorld(), entityName).initPopulation(population);
 
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
