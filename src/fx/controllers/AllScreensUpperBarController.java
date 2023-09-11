@@ -21,4 +21,7 @@ public class AllScreensUpperBarController implements Initializable {
     protected void setThemeToAllScenes(String cssPath) {
         appMenuController.setThemeToAllScenes(cssPath);
     }
+    protected void setHeaderDetailsController(DetailsScreenController controller) {
+        headerComponentController.setDetailsScreenController(controller);
+    }
 }

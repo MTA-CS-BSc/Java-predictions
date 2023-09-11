@@ -14,7 +14,9 @@ public class OrchestratorController implements Initializable {
     private AllScreensUpperBarController allScreensUpperBarController;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) { }
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        allScreensUpperBarController.setHeaderDetailsController(detailsScreenController);
+    }
 
     public void setThemeToAllScenes(String cssPath) {
         allScreensUpperBarController.setThemeToAllScenes(cssPath);
