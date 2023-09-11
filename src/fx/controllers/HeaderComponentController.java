@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
 import fx.modules.SingletonEngineAPI;
+import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -37,6 +39,7 @@ public class HeaderComponentController implements Initializable {
     private TextArea currentXmlFilePath;
 
     private DetailsScreenController detailsScreenController;
+    private NewExecutionController newExecutionController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -55,8 +58,12 @@ public class HeaderComponentController implements Initializable {
         xmlErrorsAlert.setHeaderText("Validation errors");
     }
 
-    public void setDetailsScreenController(DetailsScreenController detailsScreenController) {
-        this.detailsScreenController = detailsScreenController;
+    public void setDetailsScreenController(DetailsScreenController controller) {
+        detailsScreenController = controller;
+    }
+
+    public void setNewExecutionController(NewExecutionController controller) {
+        newExecutionController = controller;
     }
 
     private boolean isHistoryEmpty() throws JsonProcessingException {
@@ -122,6 +129,28 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     public void handleNewExecution() {
-        //TODO: Not implemented
+        if (!newExecutionController.getGridPane().isVisible()) {
+            fadeOutAnimation(detailsScreenController.getGridPane());
+            fadeInAnimation(newExecutionController.getGridPane());
+        }
+    }
+
+    private void fadeInAnimation(GridPane root) {
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(1800), root);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+
+        fadeIn.setOnFinished(event -> root.setVisible(true));
+        fadeIn.play();
+    }
+    private void fadeOutAnimation(GridPane root) {
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(1200), root);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+
+        fadeOut.setOnFinished(event -> root.setVisible(false));
+        fadeOut.play();
+
+        root.setVisible(true);
     }
 }
