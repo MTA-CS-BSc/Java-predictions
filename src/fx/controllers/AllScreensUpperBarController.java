@@ -15,19 +15,10 @@ public class AllScreensUpperBarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }
-
-    public AppMenuController getAppMenuController() {
-        return appMenuController;
-    }
-
-    public HeaderComponentController getHeaderComponentController() {
-        return headerComponentController;
-    }
-
-    public void addScene(Scene scene) {
+    protected void addScene(Scene scene) {
         appMenuController.addScene(scene);
     }
-    public void setThemeToAllScenes(String cssPath) {
+    protected void setThemeToAllScenes(String cssPath) {
         appMenuController.setThemeToAllScenes(cssPath);
     }
 }
