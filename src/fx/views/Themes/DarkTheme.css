@@ -5,6 +5,7 @@
 /* Set the text color to a light shade of gray */
 .text {
     -fx-fill: #CCCCCC;
+    -fx-font-family: "Liberation Mono";
 }
 
 .button {
@@ -92,6 +93,12 @@
 .list-view, .table-view {
     -fx-background-color: #444444;
     -fx-text-fill: #CCCCCC;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1d1c1c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 /* TabPane styles */
