@@ -27,7 +27,7 @@ public abstract class ExpressionParser {
     private static String evaluateSystemExpression(World world, String expression,
                                                    SingleEntity main, SingleEntity secondary) throws PropertyNotFoundException {
         String systemFunctionType = Utils.getSystemFunctionType(expression);
-        String systemFunctionValue = expression.substring(expression.lastIndexOf("(") + 1,
+        String systemFunctionValue = expression.substring(expression.indexOf("(") + 1,
                 expression.lastIndexOf(")"));
 
         switch (systemFunctionType) {
