@@ -147,3 +147,15 @@
 .progress-indicator {
     -fx-progress-color: #0078d4;
 }
+
+.menu-bar {
+    -fx-background-color: transparent;
+}
+
+.menu .label, .menu-item .label {
+    -fx-text-fill: black;
+}
+
+.menu:hover, .menu:showing, .menu-item:focused {
+    -fx-background-color: rgba(148, 148, 148, 0.2);
+}
