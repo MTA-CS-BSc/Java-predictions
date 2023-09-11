@@ -44,6 +44,10 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
         return simulationState == SimulationState.FINISHED ? "ByUser" : "";
     }
+    private void moveEntity(SingleEntity singleEntity) {
+        //TODO: Not implemented
+    }
+
     public void handleSingleTick() {
         List<Action> actionsToPerform = getActionsToPerform();
         List<SingleEntity> allEntities = getAllSingleEntities();
@@ -60,6 +64,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                   } catch (Exception e) { simulationState = SimulationState.ERROR; }
               }
            });
+           moveEntity(singleEntity);
         });
     }
     private List<SingleEntity> getAllSingleEntities() {
