@@ -67,7 +67,7 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    private void handleLoadXmlButtonClick(ActionEvent event) {
+    private void handleLoadXml(ActionEvent event) {
         Node source = (Node) event.getSource();
         Scene scene = source.getScene();
         Window window = scene.getWindow();
