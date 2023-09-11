@@ -8,13 +8,13 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.NewExecutionController">
+<VBox fx:id="container" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.NewExecutionController">
    <children>
       <HBox spacing="50.0">
          <children>
             <TableView fx:id="populationTable">
               <columns>
-                <TableColumn fx:id="entityColumn" prefWidth="100.0" text="Entity Name" />
+                <TableColumn fx:id="entityNameColumn" prefWidth="100.0" text="Entity Name" />
                 <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population" />
               </columns>
             </TableView>

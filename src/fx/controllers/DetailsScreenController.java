@@ -1,7 +1,6 @@
 package fx.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.xml.internal.ws.util.StringUtils;
 import dtos.SingleSimulationDTO;
 import dtos.StopConditionDTO;
@@ -11,6 +10,7 @@ import fx.models.DetailsScreen.actions.*;
 import fx.modules.GuiUtils;
 import fx.modules.SingletonEngineAPI;
 import helpers.PropTypes;
+import helpers.SingletonObjectMapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
@@ -30,7 +30,7 @@ public class DetailsScreenController implements Initializable {
     @FXML
     private TreeView<TreeItemModel> selectedComponentDetailsTreeView;
     @FXML
-    private GridPane detailsGridPane;
+    private GridPane container;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,8 +48,8 @@ public class DetailsScreenController implements Initializable {
         });
     }
 
-    public GridPane getGridPane() {
-        return detailsGridPane;
+    public GridPane getContainer() {
+        return container;
     }
 
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
@@ -239,10 +239,9 @@ public class DetailsScreenController implements Initializable {
 
     //#region World Categories
     public void handleShowCategoriesData() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
         worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
 
-        WorldDTO world = objectMapper.readValue(SingletonEngineAPI.api.getSimulationDetails().getData(),
+        WorldDTO world = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.getSimulationDetails().getData(),
                 SingleSimulationDTO.class).getWorld();
 
         showEnvironment(world);

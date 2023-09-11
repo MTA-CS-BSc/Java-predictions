@@ -32,6 +32,6 @@ public class OrchestratorController implements Initializable {
     }
 
     private void initializeScreen() {
-        newExecutionController.getGridPane().setVisible(false);
+        newExecutionController.getContainer().setVisible(false);
     }
 }
