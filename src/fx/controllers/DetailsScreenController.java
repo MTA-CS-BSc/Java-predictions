@@ -29,7 +29,7 @@ public class DetailsScreenController implements Initializable {
     @FXML
     private TreeView<TreeItemModel> selectedComponentDetailsTreeView;
     @FXML
-    private AppBarController appBarController;
+    private AllScreensUpperBarController allScreensUpperBarController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,7 +45,8 @@ public class DetailsScreenController implements Initializable {
             else
                 selectedComponentDetailsTreeView.setRoot(null);
         });
-        appBarController.setDetailsScreenController(this);
+
+        allScreensUpperBarController.getAppBarController().setDetailsScreenController(this);
     }
 
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
