@@ -12,13 +12,11 @@ import javafx.stage.Stage;
 public class Main extends Application {
     private Scene createMainScene() throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(FilePaths.DETAILS_SCREEN_FXML_PATH));
-        DetailsScreenController detailsScreenController = loader.getController();
         Scene mainScene = new Scene(loader.load());
+        DetailsScreenController detailsScreenController = loader.getController();
 
-        detailsScreenController.getAllScreensUpperBarController()
-                .getAppMenuController().addScene(mainScene);
-        detailsScreenController.getAllScreensUpperBarController()
-                .getAppMenuController().setTheme(mainScene, StyleSheetsPaths.DEFAULT_THEME_CSS);
+        detailsScreenController.getAllScreensUpperBarController().addScene(mainScene);
+        detailsScreenController.getAllScreensUpperBarController().setThemeToAllScenes(StyleSheetsPaths.DEFAULT_THEME_CSS);
 
         return mainScene;
     }

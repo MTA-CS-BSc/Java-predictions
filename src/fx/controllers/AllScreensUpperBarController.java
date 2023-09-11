@@ -2,6 +2,7 @@ package fx.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,5 +22,12 @@ public class AllScreensUpperBarController implements Initializable {
 
     public HeaderComponentController getHeaderComponentController() {
         return headerComponentController;
+    }
+
+    public void addScene(Scene scene) {
+        appMenuController.addScene(scene);
+    }
+    public void setThemeToAllScenes(String cssPath) {
+        appMenuController.setThemeToAllScenes(cssPath);
     }
 }

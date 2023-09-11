@@ -46,7 +46,7 @@ public class DetailsScreenController implements Initializable {
                 selectedComponentDetailsTreeView.setRoot(null);
         });
 
-        allScreensUpperBarController.getAppBarController().setDetailsScreenController(this);
+        allScreensUpperBarController.getHeaderComponentController().setDetailsScreenController(this);
     }
 
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
@@ -67,6 +67,10 @@ public class DetailsScreenController implements Initializable {
         addActionProps(actionTreeItem, actionModel);
 
         return actionTreeItem;
+    }
+
+    public AllScreensUpperBarController getAllScreensUpperBarController() {
+        return allScreensUpperBarController;
     }
 
     //#region Selected component
