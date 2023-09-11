@@ -85,18 +85,15 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
-    private void initializeRandomVariables() {
+    public void initializeRandomVariables() {
         world.initAllRandomVars();
     }
     public void run() throws Exception {
         if (Objects.isNull(world) || simulationState == SimulationState.ERROR)
             throw new Exception();
 
-        if (simulationState == SimulationState.CREATED) {
-            initializeRandomVariables();
-            setStartWorldState(world);
+        if (simulationState == SimulationState.CREATED)
             setStartTime(new Date());
-        }
 
         elapsedTimer.startOrResume();
         simulationState = SimulationState.RUNNING;
