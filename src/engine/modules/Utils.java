@@ -1,15 +1,14 @@
 package engine.modules;
 
 import dtos.PropertyDTO;
-import helpers.ActionTypes;
-import helpers.PropTypes;
 import engine.consts.SystemFunctions;
 import engine.prototypes.implemented.*;
-import engine.prototypes.implemented.actions.Action;
 import helpers.Constants;
+import helpers.PropTypes;
 import helpers.TypesUtils;
 
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class Utils {
@@ -126,21 +125,5 @@ public abstract class Utils {
             return PropTypes.BOOLEAN;
 
         return PropTypes.STRING;
-    }
-    public static List<Action> getOrderedActionsList(List<Action> actions) {
-        List<Action> result = new ArrayList<>();
-        List<Action> killActions = new ArrayList<>();
-
-        for (Action action : actions) {
-            if (!action.getType().equals(ActionTypes.REPLACE) && !action.getType().equals(ActionTypes.KILL))
-                result.add(action);
-
-            else
-                killActions.add(action);
-
-        }
-
-        result.addAll(killActions);
-        return result;
     }
 }
