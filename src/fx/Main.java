@@ -3,7 +3,7 @@ package fx;
 import fx.consts.Constants;
 import fx.consts.FilePaths;
 import fx.consts.StyleSheetsPaths;
-import fx.controllers.DetailsScreenController;
+import fx.controllers.OrchestratorController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,12 +11,12 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     private Scene createMainScene() throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(FilePaths.DETAILS_SCREEN_FXML_PATH));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(FilePaths.ORCHESTRATOR_FXML_PATH));
         Scene mainScene = new Scene(loader.load());
-        DetailsScreenController detailsScreenController = loader.getController();
+        OrchestratorController controller = loader.getController();
 
-        detailsScreenController.getAllScreensUpperBarController().addScene(mainScene);
-        detailsScreenController.getAllScreensUpperBarController().setThemeToAllScenes(StyleSheetsPaths.DEFAULT_THEME_CSS);
+        controller.addScene(mainScene);
+        controller.setThemeToAllScenes(StyleSheetsPaths.DEFAULT_THEME_CSS);
 
         return mainScene;
     }
