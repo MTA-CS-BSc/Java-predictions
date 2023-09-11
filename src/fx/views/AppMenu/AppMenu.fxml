@@ -14,7 +14,8 @@
                  <MenuItem text="Default" />
                  <MenuItem text="Dark" />
                  <MenuItem text="Windows 7" />
-               </items></Menu>
+               </items>
+          </Menu>
         </menus>
       </MenuBar>
   </children>

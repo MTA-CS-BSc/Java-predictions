@@ -25,9 +25,6 @@
                     </HBox.margin>
                 </Button>
             </children>
-      <GridPane.margin>
-         <Insets />
-      </GridPane.margin>
         </HBox>
         <HBox alignment="CENTER" spacing="70.0" GridPane.rowIndex="2">
             <children>
@@ -35,8 +32,5 @@
                 <Button fx:id="newExecutionButton" mnemonicParsing="false" onAction="#handleNewExecution" styleClass="simulation-button" text="New Execution" />
                 <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" text="Results" />
             </children>
-      <GridPane.margin>
-         <Insets />
-      </GridPane.margin>
         </HBox>
 </GridPane>
