@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 public class AllScreensUpperBarController implements Initializable {
     @FXML
     private AppMenuController appMenuController;
+
     @FXML
     private HeaderComponentController headerComponentController;
 
@@ -23,5 +24,8 @@ public class AllScreensUpperBarController implements Initializable {
     }
     protected void setHeaderDetailsController(DetailsScreenController controller) {
         headerComponentController.setDetailsScreenController(controller);
+    }
+    protected void setHeaderNewExecutionController(NewExecutionController controller) {
+        headerComponentController.setNewExecutionController(controller);
     }
 }
