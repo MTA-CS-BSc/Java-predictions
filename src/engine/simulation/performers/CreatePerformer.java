@@ -11,11 +11,7 @@ import java.util.Objects;
 
 public class CreatePerformer {
     public static SingleEntity scratch(Entity entity) {
-        SingleEntity created = new SingleEntity(entity.getName(), entity.getInitialProperties());
-        entity.getSingleEntities().add(created);
-        entity.setPopulation(entity.getPopulation() + 1);
-
-        return created;
+        return new SingleEntity(entity.getName(), entity.getInitialProperties());
     }
     public static SingleEntity derived(Entity create, Entity from, SingleEntity singleFrom) {
         SingleEntity created = scratch(create);
