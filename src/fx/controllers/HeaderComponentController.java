@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
 import fx.modules.SingletonEngineAPI;
+import helpers.SingletonObjectMapper;
 import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -14,7 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
@@ -67,7 +68,7 @@ public class HeaderComponentController implements Initializable {
     }
 
     private boolean isHistoryEmpty() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = SingletonObjectMapper.objectMapper;
 
         return !objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)
                 || objectMapper.readValue(SingletonEngineAPI.api.isHistoryEmpty().getData(), Boolean.class);
@@ -115,9 +116,7 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     private void handleShowSimulationDetails() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        if (objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class))
+        if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class))
             detailsScreenController.handleShowCategoriesData();
 
         else {
@@ -128,14 +127,22 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    private void handleNewExecution() {
-        if (!newExecutionController.getGridPane().isVisible()) {
-            fadeOutAnimation(detailsScreenController.getGridPane());
-            fadeInAnimation(newExecutionController.getGridPane());
+    private void handleNewExecution() throws Exception {
+        if (!newExecutionController.getContainer().isVisible()) {
+            fadeOutAnimation(detailsScreenController.getContainer());
+            prepareSimulation();
+            fadeInAnimation(newExecutionController.getContainer());
         }
     }
 
-    private void fadeInAnimation(GridPane root) {
+    private void prepareSimulation() throws Exception {
+        String uuid = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.createSimulation().getData(),
+                String.class);
+
+        newExecutionController.initializeEntitiesTable(uuid);
+    }
+
+    private void fadeInAnimation(Pane root) {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(1800), root);
         fadeIn.setFromValue(0.0);
         fadeIn.setToValue(1.0);
@@ -143,7 +150,7 @@ public class HeaderComponentController implements Initializable {
         fadeIn.setOnFinished(event -> root.setVisible(true));
         fadeIn.play();
     }
-    private void fadeOutAnimation(GridPane root) {
+    private void fadeOutAnimation(Pane root) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(1200), root);
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
