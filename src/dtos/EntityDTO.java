@@ -19,5 +19,6 @@ public class EntityDTO {
         this.population = population;
     }
     public String getName() { return name; }
+    public int getPopulation() { return population; }
     public List<PropertyDTO> getProperties() { return properties; }
 }
