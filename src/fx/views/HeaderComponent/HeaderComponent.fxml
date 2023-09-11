@@ -3,17 +3,15 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" fx:id="appBarGridPane" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.AppBarController">
-        <HBox spacing="22.0">
+<GridPane alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.HeaderComponentController">
+        <HBox spacing="22.0" GridPane.rowIndex="1">
             <children>
                 <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXmlButtonClick" prefHeight="35.0" prefWidth="120.0" text="Load XML" />
-                <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="40.0" prefWidth="454.0" promptText="No XML is currently loaded"  wrapText="true">
+                <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="40.0" prefWidth="454.0" promptText="No XML is currently loaded" wrapText="true">
                     <HBox.margin>
                         <Insets top="5.0" />
                     </HBox.margin>
@@ -31,7 +29,7 @@
          <Insets />
       </GridPane.margin>
         </HBox>
-        <HBox alignment="CENTER" spacing="70.0" GridPane.rowIndex="1">
+        <HBox alignment="CENTER" spacing="70.0" GridPane.rowIndex="2">
             <children>
                 <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" text="Details" />
                 <Button fx:id="newExecutionButton" mnemonicParsing="false" styleClass="simulation-button" text="New Execution" />
@@ -41,11 +39,4 @@
          <Insets />
       </GridPane.margin>
         </HBox>
-   <columnConstraints>
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
 </GridPane>

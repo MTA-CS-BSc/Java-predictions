@@ -25,7 +25,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AppBarController implements Initializable {
+public class HeaderComponentController implements Initializable {
     private Alert xmlErrorsAlert;
     @FXML
     private Button detailsButton;
