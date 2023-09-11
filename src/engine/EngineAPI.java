@@ -2,7 +2,6 @@ package engine;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.*;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
@@ -19,6 +18,7 @@ import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.PropTypes;
 import helpers.SimulationState;
+import helpers.SingletonObjectMapper;
 import helpers.ThreadPoolManager;
 
 import javax.xml.bind.JAXBException;
@@ -91,6 +91,10 @@ public class EngineAPI {
     }
     public ResponseDTO createSimulation() throws JsonProcessingException {
         SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
+
+        sm.initializeRandomVariables();
+        sm.setStartWorldState(sm.getWorld());
+
         historyManager.addPastSimulation(sm);
         return new ResponseDTO(200, sm.getUUID());
     }
@@ -139,9 +143,7 @@ public class EngineAPI {
         return new ResponseDTO(200, data);
     }
     public ResponseDTO getPastSimulations() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        if (objectMapper.readValue(isHistoryEmpty().getData(), Boolean.class))
+        if (SingletonObjectMapper.objectMapper.readValue(isHistoryEmpty().getData(), Boolean.class))
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
 
         List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
@@ -153,8 +155,7 @@ public class EngineAPI {
         return new ResponseDTO(200, data);
     }
     public ResponseDTO findSelectedSimulationDTO(int selection) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<SingleSimulationDTO> pastSimulations = objectMapper.readValue(getPastSimulations().getData(),
+        List<SingleSimulationDTO> pastSimulations = SingletonObjectMapper.objectMapper.readValue(getPastSimulations().getData(),
                 new TypeReference<List<SingleSimulationDTO>>() {});
         return new ResponseDTO(200, pastSimulations.get(selection - 1));
     }
@@ -162,8 +163,7 @@ public class EngineAPI {
         EntityDTO data = null;
 
         if (!Objects.isNull(findSimulationDTOByUuid(uuid))) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<EntityDTO> entities = objectMapper.readValue(getEntities(uuid).getData(), new TypeReference<List<EntityDTO>>(){});
+            List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(getEntities(uuid).getData(), new TypeReference<List<EntityDTO>>(){});
             data = entities.get(selection - 1);
         }
 
@@ -180,8 +180,10 @@ public class EngineAPI {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
-        List<EntityDTO> data = historyManager.getPastSimulation(uuid).getStartWorldState()
-                .getEntitiesMap().values()
+        List<EntityDTO> data = historyManager.getPastSimulation(uuid)
+                .getStartWorldState()
+                .getEntitiesMap()
+                .values()
                 .stream()
                 .map(Mappers::toDto)
                 .sorted(Comparator.comparing(EntityDTO::getName))
@@ -308,8 +310,7 @@ public class EngineAPI {
         return historyManager.getInitialWorld();
     }
     private SingleSimulationDTO findSimulationDTOByUuid(String uuid) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<SingleSimulationDTO> pastSimulations = objectMapper.readValue(getPastSimulations().getData(),
+        List<SingleSimulationDTO> pastSimulations = SingletonObjectMapper.objectMapper.readValue(getPastSimulations().getData(),
                 new TypeReference<List<SingleSimulationDTO>>() {});
 
         return pastSimulations.stream().filter(element -> element.getUuid().equals(uuid))
