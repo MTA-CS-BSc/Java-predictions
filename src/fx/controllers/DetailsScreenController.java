@@ -28,8 +28,6 @@ public class DetailsScreenController implements Initializable {
     private TreeView<TreeItemModel> worldCategoriesTreeView;
     @FXML
     private TreeView<TreeItemModel> selectedComponentDetailsTreeView;
-    @FXML
-    private AllScreensUpperBarController allScreensUpperBarController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -45,8 +43,6 @@ public class DetailsScreenController implements Initializable {
             else
                 selectedComponentDetailsTreeView.setRoot(null);
         });
-
-        allScreensUpperBarController.getHeaderComponentController().setDetailsScreenController(this);
     }
 
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
@@ -67,10 +63,6 @@ public class DetailsScreenController implements Initializable {
         addActionProps(actionTreeItem, actionModel);
 
         return actionTreeItem;
-    }
-
-    public AllScreensUpperBarController getAllScreensUpperBarController() {
-        return allScreensUpperBarController;
     }
 
     //#region Selected component
