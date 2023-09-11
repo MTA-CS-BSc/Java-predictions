@@ -7,6 +7,7 @@
     <fx:include source="../AllScreensUpperBar/AllScreensUpperBar.fxml" fx:id="allScreensUpperBar" />
 
     <StackPane>
+        <fx:include source="../NewExecution/NewExecution.fxml" fx:id="newExecution"/>
         <fx:include source="../DetailsScreen/DetailsScreen.fxml" fx:id="detailsScreen"/>
     </StackPane>
 </VBox>
