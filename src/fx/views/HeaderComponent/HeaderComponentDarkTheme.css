@@ -72,19 +72,20 @@
     -fx-background-color: #444444;
 }
 
-/* MenuBar styles */
 .menu-bar {
-    -fx-background-color: #444444;
+    -fx-background-color: transparent;
 }
 
-/* Menu styles */
-.menu {
-    -fx-background-color: #444444;
+.menu .label, .menu-item .label {
+    -fx-text-fill: #eee;
 }
 
-/* MenuItem styles */
-.menu-item {
-    -fx-text-fill: #CCCCCC;
+.menu:hover, .menu:showing, .menu-item:focused {
+    -fx-background-color: rgba(148, 148, 148, 0.2);
+}
+
+.context-menu {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
 }
 
 /* ListView and TableView styles */
