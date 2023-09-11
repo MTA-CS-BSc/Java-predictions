@@ -50,6 +50,11 @@
     -fx-text-fill: black;
 }
 
+.tree-cell:selected {
+    -fx-background-color: #97c7ff;
+    -fx-fill: black;
+}
+
 .text-area .content, .text-field .content {
     -fx-background-color: white;
 }
