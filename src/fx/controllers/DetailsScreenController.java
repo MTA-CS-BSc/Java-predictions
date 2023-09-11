@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.util.Arrays;
@@ -28,6 +29,8 @@ public class DetailsScreenController implements Initializable {
     private TreeView<TreeItemModel> worldCategoriesTreeView;
     @FXML
     private TreeView<TreeItemModel> selectedComponentDetailsTreeView;
+    @FXML
+    private GridPane detailsGridPane;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -43,6 +46,10 @@ public class DetailsScreenController implements Initializable {
             else
                 selectedComponentDetailsTreeView.setRoot(null);
         });
+    }
+
+    public GridPane getGridPane() {
+        return detailsGridPane;
     }
 
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {

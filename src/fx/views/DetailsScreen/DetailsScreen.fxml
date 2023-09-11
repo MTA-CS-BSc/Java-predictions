@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="CENTER" vgap="15.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.DetailsScreenController">
+<GridPane fx:id="detailsGridPane" alignment="CENTER" vgap="15.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.DetailsScreenController">
     <columnConstraints>
         <ColumnConstraints hgrow="ALWAYS" />
     </columnConstraints>
