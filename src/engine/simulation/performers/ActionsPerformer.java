@@ -1,6 +1,7 @@
 package engine.simulation.performers;
 
 import engine.consts.SecondaryEntityCounts;
+import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
 import engine.logs.EngineLoggers;
@@ -8,6 +9,7 @@ import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.*;
+import engine.simulation.KillReplaceSaver;
 import helpers.PropTypes;
 import helpers.TypesUtils;
 
@@ -49,13 +51,22 @@ public abstract class ActionsPerformer {
             ConditionPerformer.performAction(world, (ConditionAction)action, main, secondary);
 
         else if (action instanceof KillAction)
-            KillPerformer.performAction(world, (KillAction)action, main, secondary);
+            KillReplaceSaver.storage.add(() -> {
+                try {
+                    KillPerformer.performAction(world, (KillAction)action, main, secondary);
+                } catch (EntityNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            });
 
         else if (action instanceof ProximityAction)
             ProximityPerformer.performAction(world, (ProximityAction)action, main, secondary);
 
         else if (action instanceof ReplaceAction)
-            ReplacePerformer.performAction(world, (ReplaceAction)action, main);
+            KillReplaceSaver.storage.add(() -> {
+                ReplacePerformer.performAction(world, (ReplaceAction)action, main);
+            });
+
     }
     public static void updateStableTimeToAllProps(World world) {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
