@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" fx:controller="fx.controllers.OrchestratorController">
+    <fx:include source="../AllScreensUpperBar/AllScreensUpperBar.fxml" fx:id="allScreensUpperBar" />
+
+    <StackPane>
+        <fx:include source="../DetailsScreen/DetailsScreen.fxml" fx:id="detailsScreen"/>
+    </StackPane>
+</VBox>
