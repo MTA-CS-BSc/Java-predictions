@@ -12,10 +12,15 @@ public class OrchestratorController implements Initializable {
     private DetailsScreenController detailsScreenController;
     @FXML
     private AllScreensUpperBarController allScreensUpperBarController;
+    @FXML
+    private NewExecutionController newExecutionController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allScreensUpperBarController.setHeaderDetailsController(detailsScreenController);
+        allScreensUpperBarController.setHeaderNewExecutionController(newExecutionController);
+
+        initializeScreen();
     }
 
     public void setThemeToAllScenes(String cssPath) {
@@ -24,5 +29,9 @@ public class OrchestratorController implements Initializable {
 
     public void addScene(Scene scene) {
         allScreensUpperBarController.addScene(scene);
+    }
+
+    private void initializeScreen() {
+        newExecutionController.getGridPane().setVisible(false);
     }
 }
