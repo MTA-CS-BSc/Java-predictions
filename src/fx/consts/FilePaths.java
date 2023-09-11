@@ -1,5 +1,5 @@
 package fx.consts;
 
 public abstract class FilePaths {
-    public static final String DETAILS_SCREEN_FXML_PATH = "views/DetailsScreen/DetailsScreen.fxml";
+    public static final String ORCHESTRATOR_FXML_PATH = "views/Orchestrator/Orchestrator.fxml";
 }
