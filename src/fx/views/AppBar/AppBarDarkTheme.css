@@ -1,0 +1,126 @@
+.root {
+    -fx-background-color: radial-gradient(radius 100%, #000000, #333333, #666666);
+}
+
+/* Set the text color to a light shade of gray */
+.text {
+    -fx-fill: #CCCCCC;
+}
+
+.button {
+    -fx-text-fill: #FFFFFF; /* White text color */
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px; /* Add padding to the button */
+    -fx-border-color: #333333; /* Border color */
+    -fx-border-width: 0px; /* Border width */
+    -fx-cursor: hand; /* Change cursor on hover */
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 10, 0, 0, 0); /* Add a shadow on hover */
+    -fx-background-insets: 0, 1, 2; /* Inner shadows to mimic button depth */
+    -fx-background-radius: 20px, 19px, 18px; /* Different radii for inner shadows */
+    -fx-background-color:
+            linear-gradient(to bottom, #555555 0%, #444444 100%),
+            #444444,
+            #333333;
+}
+
+.button:hover {
+    -fx-background-color: #525252; /* Slightly darker gray on hover */
+}
+
+/* TextField and TextArea styles */
+.text-field, .text-area {
+    -fx-text-fill: white; /* White text color */
+    -fx-border-color: transparent;
+}
+
+.text-area .content, .text-field .content {
+    -fx-background-color: #434343;
+}
+
+.text-area .scroll-bar:vertical {
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+.text-area .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+}
+
+.tree-view, .tree-cell {
+    -fx-background-color: #434343;
+    -fx-text-fill: white;
+}
+
+.tree-cell:selected {
+    -fx-background-color: #747474;
+    -fx-fill: white;
+}
+
+/* Label styles */
+.label {
+    -fx-text-fill: #CCCCCC; /* Light gray text color */
+}
+
+/* ComboBox styles */
+.combo-box {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+    -fx-text-fill: #CCCCCC; /* Light gray text color */
+}
+
+/* ScrollPane styles */
+.scroll-pane {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+}
+
+/* MenuBar styles */
+.menu-bar {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+}
+
+/* Menu styles */
+.menu {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+}
+
+/* MenuItem styles */
+.menu-item {
+    -fx-text-fill: #CCCCCC; /* Light gray text color */
+}
+
+/* ListView and TableView styles */
+.list-view, .table-view {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+    -fx-text-fill: #CCCCCC; /* Light gray text color */
+}
+
+/* TabPane styles */
+.tab-pane {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+}
+
+/* Tab styles */
+.tab {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+    -fx-text-fill: #CCCCCC; /* Light gray text color */
+}
+
+/* Separator styles */
+.separator {
+    -fx-background-color: #444444; /* Slightly darker gray color */
+}
+
+/* ProgressIndicator styles */
+.progress-indicator {
+    -fx-progress-color: #666666; /* Primary gray color for the progress bar */
+}
+
+/* Slider styles */
+.slider {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+}
+
+/* Tooltip styles */
+.tooltip {
+    -fx-background-color: #444444; /* Slightly darker gray background color */
+    -fx-text-fill: #CCCCCC; /* Light gray text color */
+}
