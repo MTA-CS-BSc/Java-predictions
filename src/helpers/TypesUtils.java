@@ -3,7 +3,7 @@ package helpers;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TypesUtils {
+public abstract class TypesUtils {
 
     public static boolean isDecimal(String str) {
         String newStr = str;
