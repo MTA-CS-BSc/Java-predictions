@@ -106,6 +106,7 @@ public class HeaderComponentController implements Initializable {
         }
     }
 
+    @FXML
     public void handleShowSimulationDetails() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -117,5 +118,15 @@ public class HeaderComponentController implements Initializable {
             tray.setAnimationType(AnimationType.FADE);
             tray.showAndDismiss(new Duration(2000));
         }
+    }
+
+    @FXML
+    public void handleNewExecution() throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        String uuid = objectMapper.readValue(SingletonEngineAPI.api.createSimulation().getData(), String.class);
+        SingletonEngineAPI.api.setEntityInitialPopulation(uuid, "ent-1", 100);
+        SingletonEngineAPI.api.setEntityInitialPopulation(uuid, "ent-2", 100);
+        SingletonEngineAPI.api.runSimulation(uuid);
     }
 }
