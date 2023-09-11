@@ -114,7 +114,7 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    public void handleShowSimulationDetails() throws JsonProcessingException {
+    private void handleShowSimulationDetails() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
 
         if (objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class))
@@ -128,7 +128,7 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    public void handleNewExecution() {
+    private void handleNewExecution() {
         if (!newExecutionController.getGridPane().isVisible()) {
             fadeOutAnimation(detailsScreenController.getGridPane());
             fadeInAnimation(newExecutionController.getGridPane());
