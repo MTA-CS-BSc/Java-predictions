@@ -32,7 +32,7 @@
         <HBox alignment="CENTER" spacing="70.0" GridPane.rowIndex="2">
             <children>
                 <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" text="Details" />
-                <Button fx:id="newExecutionButton" mnemonicParsing="false" styleClass="simulation-button" text="New Execution" />
+                <Button fx:id="newExecutionButton" mnemonicParsing="false" onAction="#handleNewExecution" styleClass="simulation-button" text="New Execution" />
                 <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" text="Results" />
             </children>
       <GridPane.margin>
