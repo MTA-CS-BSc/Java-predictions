@@ -32,7 +32,7 @@ public abstract class ActionsPerformer {
         else
             ActionsPerformer.handleAction(world, actToPerform, main, null);
     }
-    private static void handleAction(World world, Action action, SingleEntity main, SingleEntity secondary) throws Exception {
+    public static void handleAction(World world, Action action, SingleEntity main, SingleEntity secondary) throws Exception {
         if (action instanceof IncreaseAction)
             IncreasePerformer.performAction(world, (IncreaseAction)action, main, secondary);
 

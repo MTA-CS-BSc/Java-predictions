@@ -61,7 +61,7 @@ public abstract class ProximityPerformer {
 
         if (isInDepth(world.getGrid(), main, secondary, depth))
             for (Action actToPerform : Utils.getOrderedActionsList(action.getActions().getActions()))
-                ActionsPerformer.fireAction(world, actToPerform, main);
+                ActionsPerformer.handleAction(world, actToPerform, main, secondary);
     }
     public static void performAction(World world, ProximityAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         Entity targetEntity = Utils.findEntityByName(world, action.getBetween().getTargetEntity());
