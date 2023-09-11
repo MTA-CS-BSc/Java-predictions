@@ -106,11 +106,11 @@ public abstract class ConditionPerformer {
                 " evaluating relevant actions...", action.getType(), condition.getEntityName(), conditionResult));
 
         if (conditionResult)
-            for (Action actToPerform : Utils.getOrderedActionsList(thenActions))
+            for (Action actToPerform : thenActions)
                 ActionsPerformer.handleAction(world, actToPerform, main, secondary);
 
         else if (!Objects.isNull(prdElse))
-            for (Action actToPerform : Utils.getOrderedActionsList(prdElse.getActions()))
+            for (Action actToPerform : prdElse.getActions())
                 ActionsPerformer.handleAction(world, actToPerform, main, secondary);
     }
 }
