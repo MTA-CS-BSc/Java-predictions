@@ -77,7 +77,7 @@
 }
 
 .menu .label, .menu-item .label {
-    -fx-text-fill: #eee;
+    -fx-text-fill: white;
 }
 
 .menu:hover, .menu:showing, .menu-item:focused {
