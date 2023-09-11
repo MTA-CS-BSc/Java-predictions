@@ -3,27 +3,37 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<GridPane fx:id="newExecutionGridPane" hgap="50.0" vgap="50.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.NewExecutionController">
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
-   <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
+
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.NewExecutionController">
    <children>
-      <Button fx:id="clearButton" mnemonicParsing="false" text="CLEAR" GridPane.rowIndex="1" />
-      <Button fx:id="runButton" alignment="CENTER_RIGHT" mnemonicParsing="false" text="RUN" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <TableView fx:id="populationTable">
-        <columns>
-          <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" text="Entity Name" />
-            <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="100.0" text="Population" />
-        </columns>
-      </TableView>
+      <HBox spacing="50.0">
+         <children>
+            <TableView fx:id="populationTable">
+              <columns>
+                <TableColumn fx:id="entityColumn" prefWidth="100.0" text="Entity Name" />
+                <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population" />
+              </columns>
+            </TableView>
+            <TableView>
+              <columns>
+                <TableColumn prefWidth="150.0" text="Property Name" />
+                <TableColumn text="Type" />
+                  <TableColumn prefWidth="75.0" text="Range" />
+                  <TableColumn prefWidth="250.0" text="Value" />
+              </columns>
+            </TableView>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" text="CLEAR" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="RUN" />
+         </children>
+      </HBox>
    </children>
-</GridPane>
+</VBox>
