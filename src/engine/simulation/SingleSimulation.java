@@ -47,7 +47,6 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     private void moveEntity(SingleEntity singleEntity) {
         //TODO: Not implemented
     }
-
     public void handleSingleTick() {
         List<Action> actionsToPerform = getActionsToPerform();
         List<SingleEntity> allEntities = getAllSingleEntities();
@@ -64,8 +63,12 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                   } catch (Exception e) { simulationState = SimulationState.ERROR; }
               }
            });
+
            moveEntity(singleEntity);
         });
+
+        KillReplaceSaver.storage.forEach(Runnable::run);
+        KillReplaceSaver.storage.clear();
     }
     private List<SingleEntity> getAllSingleEntities() {
         return world.getEntities().getEntitiesMap().values()
@@ -75,12 +78,12 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .collect(Collectors.toList());
     }
     private List<Action> getActionsToPerform() {
-        return Utils.getOrderedActionsList(Utils.getRulesToApply(world, ticks).values()
+        return Utils.getRulesToApply(world, ticks).values()
                 .stream()
                 .map(Rule::getActions)
                 .map(Actions::getActions)
                 .flatMap(List::stream)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList());
     }
     private void initializeRandomVariables() {
         world.initAllRandomVars();
