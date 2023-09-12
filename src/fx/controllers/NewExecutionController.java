@@ -103,24 +103,27 @@ public class NewExecutionController implements Initializable {
         populationColumn.setOnEditCommit(event -> {
             EntityDTO editedEntity = event.getRowValue();
 
-            ResponseDTO response = SingletonEngineAPI.api
-                    .setEntityInitialPopulation(simulationUuid, editedEntity.getName(), event.getNewValue());
+            try {
+                ResponseDTO response = SingletonEngineAPI.api
+                        .setEntityInitialPopulation(simulationUuid, editedEntity.getName(), event.getNewValue());
 
-            if (response.getStatus() != 200) {
-                Alerts.showAlert("Validation failed", "Population is invalid",
-                        response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
+                if (response.getStatus() != 200) {
+                    Alerts.showAlert("Validation failed", "Population is invalid",
+                            response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
 
-                editedEntity.setPopulation(event.getOldValue());
-                populationTable.refresh();
-            }
+                    editedEntity.setPopulation(event.getOldValue());
+                    populationTable.refresh();
+                }
 
-            else
-                editedEntity.setPopulation(event.getNewValue());
+                else
+                    editedEntity.setPopulation(event.getNewValue());
+
+            } catch (Exception ignored) { }
         });
     }
 
     protected void addInitEntitiesDataToTable() throws Exception {
-        //TODO: Add UI exception
+        //TODO: Add alert
         if (isUuidEmpty())
             return;
 
@@ -129,6 +132,7 @@ public class NewExecutionController implements Initializable {
     }
 
     protected void addInitEnvPropsDataToTable() throws Exception {
+        //TODO: Add alert
         if (isUuidEmpty())
             return;
 
@@ -144,6 +148,7 @@ public class NewExecutionController implements Initializable {
         populationTable.getItems().clear();
         populationTable.getItems().addAll(entities);
     }
+
     private void addEnvPropsFromAPI() throws Exception {
         List<PropertyDTO> envProps = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
                         .getEnvironmentProperties(simulationUuid).getData(),
@@ -162,9 +167,8 @@ public class NewExecutionController implements Initializable {
     }
 
     private void clearPopulationTable() throws Exception {
-        populationTable.getItems().forEach(entity -> {
+        for (EntityDTO entity : populationTable.getItems())
             SingletonEngineAPI.api.setEntityInitialPopulation(simulationUuid, entity.getName(), 0);
-        });
 
         addPopulationsFromAPI();
     }
@@ -179,10 +183,18 @@ public class NewExecutionController implements Initializable {
 
     @FXML
     private void handleClear() throws Exception {
+        //TODO: Add alert
         if (isUuidEmpty())
             return;
 
         clearPopulationTable();
         clearEnvPropsTable();
+    }
+
+    @FXML
+    private void handleRun() throws Exception {
+        //TODO: Add alert
+        if (isUuidEmpty())
+            return;
     }
 }

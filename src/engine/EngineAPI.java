@@ -244,8 +244,15 @@ public class EngineAPI {
             return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Population is negative");
 
-        //TODO: Add check for overall + current population exceeds grid amount
-        Utils.findEntityByName(historyManager.getPastSimulation(uuid).getWorld(), entityName).initPopulation(population);
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+        Entity entity = Utils.findEntityByName(simulation.getWorld(), entityName);
+
+        if (simulation.getOverallPopulation() - entity.getPopulation() + population
+                > simulation.getMaxEntitiesAmount())
+            return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
+                    uuid, entityName), "Overall population exceeds board!");
+
+        entity.initPopulation(population);
 
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
@@ -319,10 +326,6 @@ public class EngineAPI {
         historyManager.setInitialXmlWorld(initialWorld);
     }
     private World getInitialWorld() {
-        //TODO: Might be needed
-//        if (!historyManager.isEmpty())
-//            return historyManager.getLatestWorldObject();
-
         return historyManager.getInitialWorld();
     }
     private SingleSimulationDTO findSimulationDTOByUuid(String uuid) throws JsonProcessingException {

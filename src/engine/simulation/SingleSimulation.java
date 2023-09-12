@@ -127,6 +127,18 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     public World getWorld() { return world; }
     public SimulationState getSimulationState() { return simulationState; }
     public void setSimulationState(SimulationState value) { simulationState = value; }
+    public int getOverallPopulation() {
+        return world.getEntities()
+                .getEntitiesMap()
+                .values()
+                .stream()
+                .mapToInt(Entity::getPopulation)
+                .sum();
+    }
+    public WorldGrid getGrid() { return world.getGrid(); }
+    public int getMaxEntitiesAmount() {
+        return world.getGrid().getColumns() * world.getGrid().getRows();
+    }
     @Override
     public String toString() {
         return "--------------------------------------\n" +
