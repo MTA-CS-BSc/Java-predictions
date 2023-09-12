@@ -45,6 +45,7 @@ public class Entity implements Serializable {
     public void setSingleEntities(List<SingleEntity> list) { singleEntities = list; }
     public void initPopulation(int population) {
         setPopulation(population);
+        singleEntities.clear();
 
         for (int i = 0; i < population; i++)
             singleEntities.add(new SingleEntity(name, getInitialProperties()));
