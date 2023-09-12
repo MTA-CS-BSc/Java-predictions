@@ -69,7 +69,7 @@ public class NewExecutionController implements Initializable {
         initEnvPropsTable();
     }
 
-    public void setSimulationUuid(String value) throws Exception{
+    public void setSimulationUuid(String value) throws Exception {
         simulationUuid = value;
 
         addInitEntitiesDataToTable();

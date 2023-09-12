@@ -1,7 +1,6 @@
 package fx.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
 import fx.modules.Alerts;
 import fx.modules.GuiUtils;
@@ -58,13 +57,6 @@ public class HeaderComponentController implements Initializable {
 
     public void setResultsScreenController(ResultsScreenController controller) { resultsScreenController = controller; }
 
-    private boolean isHistoryEmpty() throws JsonProcessingException {
-        ObjectMapper objectMapper = SingletonObjectMapper.objectMapper;
-
-        return !objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)
-                || objectMapper.readValue(SingletonEngineAPI.api.isHistoryEmpty().getData(), Boolean.class);
-    }
-
     @FXML
     private void handleLoadXml(ActionEvent event) {
         Window window = ((Node)event.getSource()).getScene().getWindow();
@@ -85,6 +77,7 @@ public class HeaderComponentController implements Initializable {
             if (response.getStatus() == Constants.API_RESPONSE_OK) {
                 tray = new TrayNotification("SUCCESS", "XML was loaded successfully!", NotificationType.SUCCESS);
                 currentXmlFilePath.setText(file.getAbsolutePath());
+                detailsScreenController.handleShowCategoriesData();
             }
 
             else {
@@ -105,24 +98,36 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     private void showSimulationDetailsScreen() throws JsonProcessingException {
-        if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class))
-            detailsScreenController.handleShowCategoriesData();
+        if (!detailsScreenController.getContainer().isVisible()) {
+            if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
+                Platform.runLater(() -> {
+                    try {
+                        hideVisible();
+                        GuiUtils.fadeInAnimation(detailsScreenController.getContainer());
+                        detailsScreenController.handleShowCategoriesData();
+                    }
 
-        else {
-            TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
-            tray.setAnimationType(AnimationType.FADE);
-            Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+                    catch (Exception ignored) { }
+                });
+            }
+
+            else {
+                TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
+                tray.setAnimationType(AnimationType.FADE);
+                Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+            }
         }
     }
 
     @FXML
-    private void showNewExecutionScreen() throws Exception {
+    private void showNewExecutionScreen() {
         if (!newExecutionController.getContainer().isVisible()) {
-            prepareSimulation();
-
             Platform.runLater(() -> {
-                hideVisible();
-                GuiUtils.fadeInAnimation(newExecutionController.getContainer());
+                try {
+                    hideVisible();
+                    prepareSimulation();
+                    GuiUtils.fadeInAnimation(newExecutionController.getContainer());
+                } catch (Exception ignored) { }
             });
         }
     }
@@ -142,10 +147,12 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     public void showResultsScreen() {
-        Platform.runLater(() -> {
-            hideVisible();
-            GuiUtils.fadeInAnimation(resultsScreenController.getContainer());
-        });
+        if (!resultsScreenController.getContainer().isVisible()) {
+            Platform.runLater(() -> {
+                hideVisible();
+                GuiUtils.fadeInAnimation(resultsScreenController.getContainer());
+            });
+        }
     }
 
     private void prepareSimulation() throws Exception {
