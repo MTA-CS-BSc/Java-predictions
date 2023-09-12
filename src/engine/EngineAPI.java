@@ -215,12 +215,7 @@ public class EngineAPI {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
 
-        //TODO: Check if catch should be ignored
-        threadPoolManager.executeTask(() -> {
-            try {
-                startSimulation(uuid);
-            } catch (Exception ignored) { }
-        });
+        threadPoolManager.executeTask(() -> startSimulation(uuid));
 
         return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
     }
@@ -275,7 +270,7 @@ public class EngineAPI {
         simulation.setSimulationState(SimulationState.RUNNING);
         return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
     }
-    private ResponseDTO startSimulation(String uuid) throws Exception {
+    private ResponseDTO startSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
         if (simulation.getSimulationState() == SimulationState.CREATED)
