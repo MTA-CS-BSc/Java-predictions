@@ -27,15 +27,6 @@
     -fx-effect: dropshadow( gaussian , #a30000 , 0,0,0,2 );
 }
 
-.text-area .scroll-bar:vertical {
-    -fx-pref-width: 1;
-    -fx-opacity: 0;
-}
-.text-area .scroll-bar:horizontal {
-    -fx-pref-height: 1;
-    -fx-opacity: 0;
-}
-
 #queueMgmtButton {
     -fx-background-color:
             #ecebe9,
@@ -51,6 +42,7 @@
     -fx-text-fill: #311c09;
     -fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);
 }
+
 #queueMgmtButton Text {
     -fx-effect: dropshadow( one-pass-box , rgba(255,255,255,0.5) , 0, 0.0 , 0 , 1);
 }
@@ -67,10 +59,38 @@
     -fx-text-fill: white;
     -fx-font-size: 12px;
 }
+
 .simulation-button Text {
     -fx-effect: dropshadow( one-pass-box , rgba(0,0,0,0.8) , 0, 0.0 , 0 , 1);
 }
 
+.new-execution-screen-button {
+    -fx-background-color:
+            linear-gradient(#f0ff35, #a9ff00),
+            radial-gradient(center 50% -40%, radius 200%, #b8ee36 45%, #80c800 50%);
+    -fx-background-radius: 6, 5;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.4) , 5, 0.0 , 0 , 1 );
+    -fx-text-fill: #395306;
+    -fx-min-height: 20px;
+}
+
+.new-execution-screen-button:hover {
+    -fx-background-color:
+            linear-gradient(#a9ff00, #f0ff35),
+            radial-gradient(center 50% -40%, radius 200%, #80c800 45%, #b8ee36 50%);
+-fx-font-weight: bold; /* Change text color on hover */
+-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0.0, 0, 2);
+}
+
+.text-area .scroll-bar:vertical {
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+.text-area .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+}
 .table-column {
     -fx-alignment: center;
 }
