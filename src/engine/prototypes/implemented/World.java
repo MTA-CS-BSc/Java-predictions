@@ -1,10 +1,8 @@
 package engine.prototypes.implemented;
 
-import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDWorld;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class World implements Serializable {
     protected Environment environment;
@@ -27,17 +25,7 @@ public class World implements Serializable {
     public WorldGrid getGrid() { return grid; }
     public void initAllRandomVars() {
         entities.initRandomVars();
-
-        environment.getEnvVars().values().forEach(property -> {
-            if (!property.getValue().isRandomInitialize()
-                    && Objects.isNull(property.getValue().getInit()))
-                property.getValue().setRandomInitialize(true);
-
-            if (property.getValue().isRandomInitialize())
-                Utils.setPropRandomInit(property, property.getRange());
-
-            property.getValue().setCurrentValue(property.getValue().getInit());
-        });
+        environment.initRandomVars();
     }
     @Override
     public String toString() {
