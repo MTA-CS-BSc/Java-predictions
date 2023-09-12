@@ -10,4 +10,9 @@ public class RangeModel extends TreeItemModel {
     }
     public double getFrom() { return from; }
     public double getTo() { return to; }
+
+    @Override
+    public String toString() {
+        return String.format("[%.2f, %.2f]", from, to);
+    }
 }
