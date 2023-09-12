@@ -126,7 +126,6 @@ public class NewExecutionController implements Initializable {
     }
 
     protected void addInitEntitiesDataToTable() throws Exception {
-        //TODO: Add alert
         if (isUuidEmpty())
             return;
 
@@ -135,7 +134,6 @@ public class NewExecutionController implements Initializable {
     }
 
     protected void addInitEnvPropsDataToTable() throws Exception {
-        //TODO: Add alert
         if (isUuidEmpty())
             return;
 
@@ -186,7 +184,6 @@ public class NewExecutionController implements Initializable {
 
     @FXML
     private void handleClear() throws Exception {
-        //TODO: Add alert
         if (isUuidEmpty())
             return;
 
@@ -202,7 +199,6 @@ public class NewExecutionController implements Initializable {
 
     @FXML
     private void handleRun() throws Exception {
-        //TODO: Add alert
         if (isUuidEmpty())
             return;
 
