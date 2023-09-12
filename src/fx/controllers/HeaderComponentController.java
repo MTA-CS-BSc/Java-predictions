@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
 import fx.modules.Alerts;
+import fx.modules.GuiUtils;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
-import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
@@ -17,10 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import javafx.util.Duration;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -47,7 +45,7 @@ public class HeaderComponentController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         newExecutionButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
-        resultsButton.disableProperty().bind(Bindings.createBooleanBinding(this::isHistoryEmpty));
+        resultsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
     }
 
     public void setDetailsScreenController(DetailsScreenController controller) {
@@ -56,6 +54,7 @@ public class HeaderComponentController implements Initializable {
 
     public void setNewExecutionController(NewExecutionController controller) {
         newExecutionController = controller;
+        newExecutionController.setHeaderComponentController(this);
     }
 
     public void setResultsScreenController(ResultsScreenController controller) { resultsScreenController = controller; }
@@ -106,7 +105,7 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    private void handleShowSimulationDetails() throws JsonProcessingException {
+    private void showSimulationDetailsScreen() throws JsonProcessingException {
         if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class))
             detailsScreenController.handleShowCategoriesData();
 
@@ -118,15 +117,36 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    private void handleNewExecution() throws Exception {
+    private void showNewExecutionScreen() throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
             prepareSimulation();
 
             Platform.runLater(() -> {
-                fadeOutAnimation(detailsScreenController.getContainer());
-                fadeInAnimation(newExecutionController.getContainer());
+                hideVisible();
+                GuiUtils.fadeInAnimation(newExecutionController.getContainer());
             });
         }
+    }
+
+    private void hideVisible() {
+        Platform.runLater(() -> {
+            if (detailsScreenController.getContainer().isVisible())
+                GuiUtils.fadeOutAnimation(detailsScreenController.getContainer());
+
+            else if (resultsScreenController.getContainer().isVisible())
+                GuiUtils.fadeOutAnimation(resultsScreenController.getContainer());
+
+            else if (newExecutionController.getContainer().isVisible())
+                GuiUtils.fadeOutAnimation(newExecutionController.getContainer());
+        });
+    }
+
+    @FXML
+    public void showResultsScreen() {
+        Platform.runLater(() -> {
+            hideVisible();
+            GuiUtils.fadeInAnimation(resultsScreenController.getContainer());
+        });
     }
 
     private void prepareSimulation() throws Exception {
@@ -134,22 +154,4 @@ public class HeaderComponentController implements Initializable {
         newExecutionController.setSimulationUuid(uuid);
     }
 
-    private void fadeInAnimation(Pane root) {
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(1800), root);
-        fadeIn.setFromValue(0.0);
-        fadeIn.setToValue(1.0);
-
-        fadeIn.setOnFinished(event -> root.setVisible(true));
-        fadeIn.play();
-    }
-    private void fadeOutAnimation(Pane root) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(1200), root);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
-
-        fadeOut.setOnFinished(event -> root.setVisible(false));
-        fadeOut.play();
-
-        root.setVisible(true);
-    }
 }
