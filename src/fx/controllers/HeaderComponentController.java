@@ -128,8 +128,9 @@ public class HeaderComponentController implements Initializable {
         String uuid = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.createSimulation().getData(),
                 String.class);
 
-        newExecutionController.addInitEntitiesDataToTable(uuid);
-        newExecutionController.addInitEnvPropsDataToTable(uuid);
+        newExecutionController.setSimulationUuid(uuid);
+        newExecutionController.addInitEntitiesDataToTable();
+        newExecutionController.addInitEnvPropsDataToTable();
     }
 
     private void fadeInAnimation(Pane root) {
