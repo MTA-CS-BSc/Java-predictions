@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
+import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
@@ -94,7 +95,7 @@ public class HeaderComponentController implements Initializable {
             }
 
             tray.setAnimationType(AnimationType.FADE);
-            tray.showAndDismiss(new Duration(2000));
+            tray.showAndDismiss(Constants.ANIMATION_DURATION);
         }
 
         catch (Exception e) {
@@ -111,7 +112,7 @@ public class HeaderComponentController implements Initializable {
         else {
             TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
             tray.setAnimationType(AnimationType.FADE);
-            tray.showAndDismiss(new Duration(2000));
+            tray.showAndDismiss(Constants.ANIMATION_DURATION);
         }
     }
 

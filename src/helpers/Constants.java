@@ -1,6 +1,8 @@
 package helpers;
 
 import com.google.gson.Gson;
+import javafx.util.Duration;
+
 
 public class Constants {
     public static Gson GSON_UTIL = new Gson();
@@ -12,4 +14,5 @@ public class Constants {
     public final static int NOT_SET = -1;
     public final static String STRING_ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?,-.()0123456789 ";
     public final static int MAX_RANDOM_STRING_LENGTH = 50;
+    public final static Duration ANIMATION_DURATION = new javafx.util.Duration(2000);
 }
