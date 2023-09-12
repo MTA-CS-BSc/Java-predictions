@@ -18,12 +18,14 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     protected long ticks = 0;
     protected String uuid;
     protected ElapsedTimer elapsedTimer;
+    protected ByStep byStep;
 
     public SingleSimulation(World world) {
         elapsedTimer = new ElapsedTimer();
         uuid = UUID.randomUUID().toString();
         this.world = world;
         simulationState = SimulationState.CREATED;
+        byStep = ByStep.NOT_BY_STEP;
     }
     public String getUUID() { return uuid; }
     public String isSimulationFinished(long startTimeMillis) {
@@ -45,6 +47,10 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
         return simulationState == SimulationState.FINISHED ? "ByUser" : "";
     }
+    public void setByStep(ByStep value) {
+        byStep = value;
+    }
+    public ByStep getByStep() { return byStep; }
     private void moveEntity(SingleEntity singleEntity) {
         //TODO: Not implemented
     }
@@ -110,6 +116,9 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 ticks++;
                 handleSingleTick();
                 ActionsPerformer.updateStableTimeToAllProps(world);
+
+                if (byStep == ByStep.FUTURE)
+                    simulationState = SimulationState.STOPPED;
             }
 
             else if (elapsedTimer.isRunning())
