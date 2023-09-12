@@ -92,6 +92,11 @@ public class EngineAPI {
         historyManager.addPastSimulation(sm);
         return new ResponseDTO(200, sm.getUUID());
     }
+    public ResponseDTO cloneSimulation(String uuid) {
+        SingleSimulation cloned = new SingleSimulation(historyManager.getPastSimulation(uuid));
+        historyManager.addPastSimulation(cloned);
+        return new ResponseDTO(200, cloned.getUUID());
+    }
     public ResponseDTO getSimulationDetails() {
         if (!historyManager.isXmlLoaded())
             return new ResponseDTO(400, "", "No loaded XML");
