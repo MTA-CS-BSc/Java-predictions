@@ -15,17 +15,25 @@ import java.util.stream.Collectors;
 public class SingleSimulation extends SingleSimulationLog implements Serializable {
     protected SimulationState simulationState;
     protected World world;
-    protected long ticks = 0;
+    protected long ticks;
     protected String uuid;
     protected ElapsedTimer elapsedTimer;
     protected ByStep byStep;
 
-    public SingleSimulation(World world) {
-        elapsedTimer = new ElapsedTimer();
+    public SingleSimulation() {
         uuid = UUID.randomUUID().toString();
-        this.world = world;
-        simulationState = SimulationState.CREATED;
+        ticks = 0;
+        elapsedTimer = new ElapsedTimer();
         byStep = ByStep.NOT_BY_STEP;
+        simulationState = SimulationState.CREATED;
+    }
+    public SingleSimulation(World world) {
+        this();
+        this.world = world;
+    }
+    public SingleSimulation(SingleSimulation other) {
+        this();
+        this.world = new World(other.world.getTermination(), other.world.getRules(), other.getStartWorldState());
     }
     public String getUUID() { return uuid; }
     public String isSimulationFinished(long startTimeMillis) {
