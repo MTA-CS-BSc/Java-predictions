@@ -28,6 +28,9 @@ public class World implements Serializable {
         termination = new Termination(world.getPRDTermination());
         grid = new WorldGrid(world.getPRDGrid());
     }
+    public World(World other) {
+        this(other.getTermination(), other.getRules(), new WorldState(other));
+    }
     public Environment getEnvironment() { return environment; }
     public Entities getEntities() { return entities; }
     public Termination getTermination() { return termination; }
