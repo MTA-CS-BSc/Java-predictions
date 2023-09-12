@@ -129,6 +129,7 @@ public class HeaderComponentController implements Initializable {
                 String.class);
 
         newExecutionController.addInitEntitiesDataToTable(uuid);
+        newExecutionController.addInitEnvPropsDataToTable(uuid);
     }
 
     private void fadeInAnimation(Pane root) {
