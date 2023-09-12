@@ -3,6 +3,7 @@ package fx.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
+import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.modules.SingletonObjectMapper;
 import javafx.animation.FadeTransition;
@@ -16,7 +17,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Duration;
@@ -29,7 +29,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class HeaderComponentController implements Initializable {
-    private Alert xmlErrorsAlert;
     @FXML
     private Button detailsButton;
     @FXML
@@ -44,19 +43,9 @@ public class HeaderComponentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        initializeXmlErrorsAlert();
-
         detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         newExecutionButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         resultsButton.disableProperty().bind(Bindings.createBooleanBinding(this::isHistoryEmpty));
-    }
-
-    private void initializeXmlErrorsAlert() {
-        xmlErrorsAlert = new Alert(Alert.AlertType.INFORMATION);
-        xmlErrorsAlert.setResizable(true);
-        xmlErrorsAlert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        xmlErrorsAlert.setTitle("Latest loaded XML inspection");
-        xmlErrorsAlert.setHeaderText("Validation errors");
     }
 
     public void setDetailsScreenController(DetailsScreenController controller) {
@@ -99,9 +88,9 @@ public class HeaderComponentController implements Initializable {
             }
 
             else {
-                tray = new TrayNotification("FAILURE", "XML was not loaded. For details, see the XML log.", NotificationType.ERROR);
-                xmlErrorsAlert.setContentText(response.getErrorDescription().getCause());
-                xmlErrorsAlert.showAndWait();
+                tray = new TrayNotification("FAILURE", "XML was not loaded.", NotificationType.ERROR);
+                Alerts.showAlert("XML was not loaded", "Validation error",
+                        response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
             }
 
             tray.setAnimationType(AnimationType.FADE);
@@ -109,8 +98,8 @@ public class HeaderComponentController implements Initializable {
         }
 
         catch (Exception e) {
-            xmlErrorsAlert.setContentText("File not found or corrupted!");
-            xmlErrorsAlert.showAndWait();
+            Alerts.showAlert("XML was not loaded", "Validation error",
+                    "File not found, not supported or corrupted", Alert.AlertType.ERROR);
         }
     }
 
