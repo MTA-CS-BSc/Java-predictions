@@ -89,6 +89,9 @@ public class NewExecutionController implements Initializable {
                 editedProperty.setValue(event.getOldValue());
                 envPropsTable.refresh();
             }
+
+            else
+                editedProperty.setValue(event.getNewValue());
         });
     }
 
@@ -106,6 +109,9 @@ public class NewExecutionController implements Initializable {
                 editedEntity.setPopulation(event.getOldValue());
                 populationTable.refresh();
             }
+
+            else
+                editedEntity.setPopulation(event.getNewValue());
         });
     }
 
