@@ -233,6 +233,7 @@ public class EngineAPI {
             return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Population is negative");
 
+        //TODO: Add check for overall + current population exceeds grid amount
         Utils.findEntityByName(historyManager.getPastSimulation(uuid).getWorld(), entityName).initPopulation(population);
 
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
