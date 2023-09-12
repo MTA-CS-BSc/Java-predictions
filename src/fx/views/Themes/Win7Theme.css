@@ -15,6 +15,7 @@
     -fx-padding: 3 30 3 30;
     -fx-text-fill: black;
     -fx-font-size: 12px;
+    -fx-min-height: 35px;
 }
 
 .button:hover {
