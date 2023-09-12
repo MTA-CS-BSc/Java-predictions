@@ -7,41 +7,38 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="container" alignment="CENTER" vgap="15.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.DetailsScreenController">
+<GridPane fx:id="container" alignment="CENTER" vgap="15.0" xmlns="http://javafx.com/javafx/8.0.171"
+          xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.DetailsScreenController">
     <columnConstraints>
-        <ColumnConstraints hgrow="ALWAYS" />
+        <ColumnConstraints hgrow="ALWAYS"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints />
-        <RowConstraints vgrow="ALWAYS" />
-        <RowConstraints />
+        <RowConstraints/>
+        <RowConstraints vgrow="ALWAYS"/>
+        <RowConstraints/>
     </rowConstraints>
-    <children>
-        <GridPane alignment="CENTER" hgap="20.0" GridPane.rowIndex="1">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="288.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="612.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints vgrow="ALWAYS" />
-            </rowConstraints>
-            <children>
-                <TreeView fx:id="worldCategoriesTreeView">
-                    <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin>
-                </TreeView>
-                <TreeView fx:id="selectedComponentDetailsTreeView" GridPane.columnIndex="1">
-                    <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin>
-                </TreeView>
-            </children>
+    <GridPane alignment="CENTER" hgap="20.0" GridPane.rowIndex="1">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="288.0"/>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="612.0"/>
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints vgrow="ALWAYS"/>
+        </rowConstraints>
+        <GridPane.margin>
+            <Insets left="15.0" right="15.0"/>
+        </GridPane.margin>
+        <TreeView fx:id="worldCategoriesTreeView">
             <GridPane.margin>
-                <Insets left="15.0" right="15.0" />
+                <Insets/>
             </GridPane.margin>
-        </GridPane>
-        <BorderPane GridPane.rowIndex="2">
-        </BorderPane>
-    </children>
+        </TreeView>
+        <TreeView fx:id="selectedComponentDetailsTreeView" GridPane.columnIndex="1">
+            <GridPane.margin>
+                <Insets/>
+            </GridPane.margin>
+        </TreeView>
+    </GridPane>
+    <BorderPane GridPane.rowIndex="2">
+    </BorderPane>
 </GridPane>

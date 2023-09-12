@@ -8,35 +8,30 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="container" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.NewExecutionController">
-   <children>
-      <HBox spacing="50.0">
-         <children>
-            <TableView fx:id="populationTable">
-              <columns>
-                <TableColumn fx:id="entityNameColumn" prefWidth="100.0" text="Entity Name" />
-                <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population" />
-              </columns>
-            </TableView>
-            <TableView>
-              <columns>
-                <TableColumn prefWidth="150.0" text="Property Name" />
-                <TableColumn text="Type" />
-                  <TableColumn prefWidth="75.0" text="Range" />
-                  <TableColumn prefWidth="250.0" text="Value" />
-              </columns>
-            </TableView>
-         </children>
-      </HBox>
-      <HBox>
-         <children>
-            <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" text="CLEAR" />
-            <Region HBox.hgrow="ALWAYS" />
-            <Button alignment="TOP_LEFT" mnemonicParsing="false" text="RUN" />
-         </children>
-      </HBox>
-   </children>
-   <padding>
-      <Insets left="20.0" right="20.0" top="20.0" bottom="20.0" />
-   </padding>
+<VBox fx:id="container" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fx.controllers.NewExecutionController">
+    <padding>
+        <Insets left="20.0" right="20.0" top="20.0" bottom="20.0"/>
+    </padding>
+    <HBox spacing="50.0">
+        <TableView fx:id="populationTable">
+            <columns>
+                <TableColumn fx:id="entityNameColumn" prefWidth="100.0" text="Entity Name"/>
+                <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population"/>
+            </columns>
+        </TableView>
+        <TableView>
+            <columns>
+                <TableColumn prefWidth="150.0" text="Property Name"/>
+                <TableColumn text="Type"/>
+                <TableColumn prefWidth="75.0" text="Range"/>
+                <TableColumn prefWidth="250.0" text="Value"/>
+            </columns>
+        </TableView>
+    </HBox>
+    <HBox>
+        <Button alignment="BOTTOM_RIGHT" mnemonicParsing="false" text="CLEAR"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button alignment="TOP_LEFT" mnemonicParsing="false" text="RUN"/>
+    </HBox>
 </VBox>

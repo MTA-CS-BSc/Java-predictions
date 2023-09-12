@@ -8,29 +8,30 @@
 <?import javafx.scene.text.Font?>
 
 <GridPane alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.HeaderComponentController">
-        <HBox spacing="22.0" GridPane.rowIndex="1">
-            <children>
-                <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXml" prefHeight="35.0" prefWidth="120.0" text="Load XML" />
-                <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5" prefHeight="40.0" prefWidth="454.0" promptText="No XML is currently loaded" wrapText="true">
-                    <HBox.margin>
-                        <Insets top="5.0" />
-                    </HBox.margin>
-                    <font>
-                        <Font size="12.0" />
-                    </font>
-                </TextArea>
-                <Button fx:id="queueMgmtButton" alignment="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0" text="Queue Management" textAlignment="CENTER">
-                    <HBox.margin>
-                        <Insets top="5.0" />
-                    </HBox.margin>
-                </Button>
-            </children>
-        </HBox>
-        <HBox alignment="CENTER" spacing="70.0" GridPane.rowIndex="2">
-            <children>
-                <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails" styleClass="simulation-button" text="Details" />
-                <Button fx:id="newExecutionButton" mnemonicParsing="false" onAction="#handleNewExecution" styleClass="simulation-button" text="New Execution" />
-                <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" text="Results" />
-            </children>
-        </HBox>
+    <HBox spacing="22.0" GridPane.rowIndex="1">
+        <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXml" prefHeight="35.0"
+                prefWidth="120.0" text="Load XML"/>
+        <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5"
+                  prefHeight="40.0" prefWidth="454.0" promptText="No XML is currently loaded" wrapText="true">
+            <HBox.margin>
+                <Insets top="5.0"/>
+            </HBox.margin>
+            <font>
+                <Font size="12.0"/>
+            </font>
+        </TextArea>
+        <Button fx:id="queueMgmtButton" alignment="CENTER" mnemonicParsing="false" prefHeight="75.0" prefWidth="240.0"
+                text="Queue Management" textAlignment="CENTER">
+            <HBox.margin>
+                <Insets top="5.0"/>
+            </HBox.margin>
+        </Button>
+    </HBox>
+    <HBox alignment="CENTER" spacing="70.0" GridPane.rowIndex="2">
+        <Button fx:id="detailsButton" mnemonicParsing="false" onAction="#handleShowSimulationDetails"
+                styleClass="simulation-button" text="Details"/>
+        <Button fx:id="newExecutionButton" mnemonicParsing="false" onAction="#handleNewExecution"
+                styleClass="simulation-button" text="New Execution"/>
+        <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" text="Results"/>
+    </HBox>
 </GridPane>
