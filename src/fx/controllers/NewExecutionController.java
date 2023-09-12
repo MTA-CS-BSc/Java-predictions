@@ -2,6 +2,7 @@ package fx.controllers;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.EntityDTO;
+import dtos.PropertyDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.modules.SingletonObjectMapper;
@@ -24,6 +25,7 @@ public class NewExecutionController implements Initializable {
     @FXML
     private VBox container;
 
+    //#region Population Table
     @FXML
     private TableView<EntityDTO> populationTable;
 
@@ -32,9 +34,19 @@ public class NewExecutionController implements Initializable {
 
     @FXML
     private TableColumn<EntityDTO, Integer> populationColumn;
+    //#endregion
+
+    @FXML
+    private TableView<PropertyDTO> envPropsTable;
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        initPopulationTable();
+    }
+
+    private void initPopulationTable() {
         entityNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         populationColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
         populationColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPopulation()).asObject());
@@ -54,11 +66,12 @@ public class NewExecutionController implements Initializable {
                 return;
             }
 
+            //TODO: Do that in the end to enable clearing.
             SingletonEngineAPI.api.setEntityInitialPopulation(uuid, editedEntity.getName(), editedEntity.getPopulation());
         });
     }
 
-    protected void initializeEntitiesTable(String uuid) throws Exception {
+    protected void addInitEntitiesDataToTable(String uuid) throws Exception {
         //TODO: Add UI exception
         if (uuid.isEmpty() || SingletonEngineAPI.api.getEntities(uuid).getStatus() != 200)
             return;
