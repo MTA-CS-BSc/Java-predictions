@@ -195,9 +195,9 @@ public class NewExecutionController implements Initializable {
     }
 
     private boolean validateAllInitialized() {
-        return populationTable.getItems().stream()
-                .mapToInt(EntityDTO::getPopulation)
-                .sum() > 0;
+        return populationTable.getItems()
+                .stream()
+                .anyMatch(entity -> entity.getPopulation() > 0);
     }
 
     @FXML
@@ -207,13 +207,20 @@ public class NewExecutionController implements Initializable {
             return;
 
         if (validateAllInitialized()) {
-            if (SingletonEngineAPI.api.runSimulation(simulationUuid).getStatus() == 200) {
+            ResponseDTO response = SingletonEngineAPI.api.runSimulation(simulationUuid);
+
+            if (response.getStatus() == 200) {
                 TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
                 tray.showAndDismiss(Constants.ANIMATION_DURATION);
             }
 
             else
-                Alerts.showAlert("FAILURE", "Simulation [%s] was not added to queue", "Cause: [%s]", Alert.AlertType.ERROR);
+                Alerts.showAlert("FAILURE", String.format("Simulation [%s] was not added to queue", simulationUuid),
+                        String.format("Cause: %s", response.getErrorDescription().getCause()), Alert.AlertType.ERROR);
         }
+
+        else
+            Alerts.showAlert("FAILURE", String.format("Simulation [%s] was not added to queue", simulationUuid),
+                    "Cause: Please initialize at least one of the entities population to be positive", Alert.AlertType.ERROR);
     }
 }
