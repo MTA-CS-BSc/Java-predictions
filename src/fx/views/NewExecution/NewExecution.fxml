@@ -24,8 +24,8 @@
             <columns>
                 <TableColumn fx:id="propertyNameColumn" editable="false" prefWidth="150.0" text="Property Name"/>
                 <TableColumn fx:id="propertyTypeColumn" editable="false" text="Type"/>
-                <TableColumn fx:id="propertyRangeColumn" editable="false" prefWidth="75.0" text="Range"/>
-                <TableColumn fx:id="propertyValueColumn" prefWidth="250.0" text="Value"/>
+                <TableColumn fx:id="propertyRangeColumn" editable="false" prefWidth="170.0" text="Range"/>
+                <TableColumn fx:id="propertyValueColumn" prefWidth="150.0" text="Value"/>
             </columns>
         </TableView>
     </HBox>
