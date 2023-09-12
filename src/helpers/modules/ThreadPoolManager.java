@@ -1,7 +1,5 @@
 package helpers.modules;
 
-import helpers.Constants;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -10,7 +8,7 @@ public class ThreadPoolManager {
     protected int threadsAmount;
 
     public ThreadPoolManager() {
-        threadsAmount = Constants.NOT_SET;
+        this(1);
     }
     public ThreadPoolManager(int threadsAmount) {
         setThreadsAmount(threadsAmount);
