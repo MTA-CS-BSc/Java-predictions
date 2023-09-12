@@ -90,7 +90,7 @@ public class EngineAPI {
         return new ResponseDTO(200, historyManager.isXmlLoaded());
     }
     public ResponseDTO createSimulation() {
-        SingleSimulation sm = new SingleSimulation(getInitialWorldForSimulation());
+        SingleSimulation sm = new SingleSimulation(getInitialWorld());
 
         sm.initializeRandomVariables();
         sm.setStartWorldState(sm.getWorld());
@@ -274,6 +274,9 @@ public class EngineAPI {
 
         return new ResponseDTO(200, SimulationState.FINISHED);
     }
+    public ResponseDTO getGrid() {
+        return new ResponseDTO(200, getInitialWorld().getGrid());
+    }
     private void setEntitiesInitialLocations(SingleSimulation simulation) {
         simulation.getWorld()
                 .getEntities()
@@ -281,12 +284,12 @@ public class EngineAPI {
                 .values()
                 .forEach(entity -> {
                     entity.getSingleEntities().forEach(singleEntity -> {
-                        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1),
-                                RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
+                        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getColumns() - 1),
+                                RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getRows() - 1));
 
                         while (isCoordinateTaken(simulation, randomCoordinate)) {
-                            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getColumns() - 1));
-                            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, getInitialWorldForSimulation().getGrid().getRows() - 1));
+                            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getColumns() - 1));
+                            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getRows() - 1));
                         }
 
                         singleEntity.setCoordinate(randomCoordinate);
@@ -303,9 +306,10 @@ public class EngineAPI {
     private void setInitialXmlWorld(World initialWorld) {
         historyManager.setInitialXmlWorld(initialWorld);
     }
-    private World getInitialWorldForSimulation() {
-        if (!historyManager.isEmpty())
-            return historyManager.getLatestWorldObject();
+    private World getInitialWorld() {
+        //TODO: Might be needed
+//        if (!historyManager.isEmpty())
+//            return historyManager.getLatestWorldObject();
 
         return historyManager.getInitialWorld();
     }
