@@ -105,8 +105,18 @@
     -fx-background-color: #444444;
 }
 
+.table-column {
+    -fx-alignment: center;
+}
+
 .table-view .cell:focused {
     -fx-background-color: #333333;
+}
+
+.table-view .cell:selected {
+    -fx-border-color: #717171;
+    -fx-background-color: #717171;
+    -fx-fill: black;
 }
 /* TabPane styles */
 .tab-pane {
