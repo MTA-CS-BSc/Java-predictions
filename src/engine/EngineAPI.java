@@ -111,17 +111,25 @@ public class EngineAPI {
         Property foundProp = Utils.findEnvironmentPropertyByName(historyManager.getPastSimulation(uuid).getWorld(), prop.getName());
 
         if (!Objects.isNull(foundProp)) {
+            if (val == null) {
+                // UI clear button reset
+                foundProp.getValue().setRandomInitialize(true);
+                foundProp.getValue().setInit(null);
+                foundProp.getValue().setCurrentValue(null);
+                return new ResponseDTO(200, String.format("UUID [%s]: Reset environment variable [%s]",
+                        uuid, foundProp.getName()));
+            }
+
             if (!Utils.validateValueInRange(prop, val))
                 return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
 
             else if (!TypesUtils.validateType(prop, val))
                 return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Incorrect type");
 
-            foundProp.getValue().setRandomInitialize(false);
-
             if (PropTypes.NUMERIC_PROPS.contains(foundProp.getType()))
                 val = TypesUtils.removeExtraZeroes(val);
 
+            foundProp.getValue().setRandomInitialize(false);
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
 
