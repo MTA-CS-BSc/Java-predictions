@@ -9,6 +9,7 @@ import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -213,7 +214,7 @@ public class NewExecutionController implements Initializable {
 
             if (response.getStatus() == Constants.API_RESPONSE_OK) {
                 TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
-                tray.showAndDismiss(Constants.ANIMATION_DURATION);
+                Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
 
                 //TODO: Redirect to third screen
             }

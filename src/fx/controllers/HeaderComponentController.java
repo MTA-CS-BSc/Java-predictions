@@ -8,6 +8,7 @@ import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -95,7 +96,7 @@ public class HeaderComponentController implements Initializable {
             }
 
             tray.setAnimationType(AnimationType.FADE);
-            tray.showAndDismiss(Constants.ANIMATION_DURATION);
+            Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
         }
 
         catch (Exception e) {
@@ -112,16 +113,19 @@ public class HeaderComponentController implements Initializable {
         else {
             TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
             tray.setAnimationType(AnimationType.FADE);
-            tray.showAndDismiss(Constants.ANIMATION_DURATION);
+            Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
         }
     }
 
     @FXML
     private void handleNewExecution() throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
-            fadeOutAnimation(detailsScreenController.getContainer());
             prepareSimulation();
-            fadeInAnimation(newExecutionController.getContainer());
+
+            Platform.runLater(() -> {
+                fadeOutAnimation(detailsScreenController.getContainer());
+                fadeInAnimation(newExecutionController.getContainer());
+            });
         }
     }
 
