@@ -186,7 +186,8 @@ public class EngineAPI {
             return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
         List<EntityDTO> data = historyManager.getPastSimulation(uuid)
-                .getStartWorldState()
+                .getWorld()
+                .getEntities()
                 .getEntitiesMap()
                 .values()
                 .stream()
