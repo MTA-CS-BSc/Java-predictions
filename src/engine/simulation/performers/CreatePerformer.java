@@ -1,6 +1,6 @@
 package engine.simulation.performers;
 
-import helpers.PropTypes;
+import helpers.types.PropTypes;
 import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.SingleEntity;

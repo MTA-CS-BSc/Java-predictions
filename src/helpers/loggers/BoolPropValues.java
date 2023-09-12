@@ -1,4 +1,4 @@
-package helpers;
+package helpers.loggers;
 
 public abstract class BoolPropValues {
     public static final String TRUE = "true";

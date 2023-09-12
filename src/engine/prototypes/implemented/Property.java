@@ -1,6 +1,6 @@
 package engine.prototypes.implemented;
 
-import helpers.PropTypes;
+import helpers.types.PropTypes;
 import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;

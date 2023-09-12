@@ -2,7 +2,7 @@ package dtos;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
-import helpers.SingletonObjectMapper;
+import helpers.modules.SingletonObjectMapper;
 
 public class ResponseDTO {
     protected int status;

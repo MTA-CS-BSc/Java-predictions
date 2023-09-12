@@ -1,4 +1,4 @@
-package helpers;
+package helpers.loggers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

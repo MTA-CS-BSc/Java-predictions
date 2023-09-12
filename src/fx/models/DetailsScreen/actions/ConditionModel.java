@@ -1,6 +1,6 @@
 package fx.models.DetailsScreen.actions;
 
-import helpers.ActionTypes;
+import helpers.types.ActionTypes;
 
 public class ConditionModel extends ActionModel {
     private final int thenActionsAmount;

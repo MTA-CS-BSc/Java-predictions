@@ -1,6 +1,6 @@
 package engine.validators.actions;
 
-import helpers.PropTypes;
+import helpers.types.PropTypes;
 import engine.exceptions.EmptyExpressionException;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.InvalidTypeException;

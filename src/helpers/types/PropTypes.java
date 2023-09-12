@@ -1,4 +1,4 @@
-package helpers;
+package helpers.types;
 
 import java.util.Arrays;
 import java.util.Collections;

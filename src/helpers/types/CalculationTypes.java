@@ -1,4 +1,4 @@
-package helpers;
+package helpers.types;
 
 public abstract class CalculationTypes {
     public static final String MULTIPLY = "multiply";

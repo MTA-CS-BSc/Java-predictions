@@ -5,7 +5,7 @@ import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.Action;
 import engine.prototypes.implemented.actions.ProximityAction;
-import helpers.Bounds;
+import helpers.types.Bounds;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
 package engine.prototypes.implemented.actions;
 
-import helpers.CalculationTypes;
+import helpers.types.CalculationTypes;
 import engine.prototypes.implemented.Divide;
 import engine.prototypes.implemented.Multiply;
 import engine.prototypes.jaxb.PRDAction;

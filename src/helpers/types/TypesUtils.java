@@ -1,4 +1,7 @@
-package helpers;
+package helpers.types;
+
+import helpers.loggers.BoolPropValues;
+import helpers.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

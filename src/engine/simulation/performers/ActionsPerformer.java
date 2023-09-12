@@ -10,8 +10,8 @@ import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.*;
 import engine.simulation.KillReplaceSaver;
-import helpers.PropTypes;
-import helpers.TypesUtils;
+import helpers.types.PropTypes;
+import helpers.types.TypesUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

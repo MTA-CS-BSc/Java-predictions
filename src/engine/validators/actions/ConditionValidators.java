@@ -1,7 +1,7 @@
 package engine.validators.actions;
 
-import helpers.ConditionSingularities;
-import helpers.PropTypes;
+import helpers.loggers.ConditionSingularities;
+import helpers.types.PropTypes;
 import engine.exceptions.InvalidTypeException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;

@@ -1,6 +1,6 @@
 package engine.validators.actions;
 
-import helpers.PropTypes;
+import helpers.types.PropTypes;
 import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.modules.ValidatorsUtils;

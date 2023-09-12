@@ -1,8 +1,8 @@
 package engine.simulation.performers;
 
-import helpers.ConditionLogicalOperators;
-import helpers.ConditionSingularities;
-import helpers.Operators;
+import helpers.loggers.ConditionLogicalOperators;
+import helpers.loggers.ConditionSingularities;
+import helpers.loggers.Operators;
 import engine.exceptions.InvalidTypeException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
@@ -11,7 +11,7 @@ import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.Action;
 import engine.prototypes.implemented.actions.ConditionAction;
 import helpers.Constants;
-import helpers.TypesUtils;
+import helpers.types.TypesUtils;
 
 import java.util.List;
 import java.util.Objects;

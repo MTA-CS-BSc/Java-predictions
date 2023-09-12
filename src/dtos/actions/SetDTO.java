@@ -2,7 +2,7 @@ package dtos.actions;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import helpers.ActionTypes;
+import helpers.types.ActionTypes;
 
 @JsonTypeName(ActionTypes.SET)
 public class SetDTO extends ActionDTO {

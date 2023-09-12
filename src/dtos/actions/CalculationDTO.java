@@ -3,7 +3,7 @@ package dtos.actions;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import helpers.ActionTypes;
+import helpers.types.ActionTypes;
 
 @JsonTypeName(ActionTypes.CALCULATION)
 public class CalculationDTO extends ActionDTO {

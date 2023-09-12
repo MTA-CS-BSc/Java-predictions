@@ -1,10 +1,10 @@
 package engine.modules;
 
-import helpers.PropTypes;
+import helpers.types.PropTypes;
 import engine.consts.SystemFunctions;
 import engine.prototypes.jaxb.*;
 import helpers.Constants;
-import helpers.TypesUtils;
+import helpers.types.TypesUtils;
 
 import java.util.Objects;
 import java.util.regex.Pattern;

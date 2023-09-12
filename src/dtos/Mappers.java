@@ -4,8 +4,8 @@ import dtos.actions.*;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.*;
 import engine.simulation.SingleSimulation;
-import helpers.CalculationTypes;
-import helpers.ConditionSingularities;
+import helpers.types.CalculationTypes;
+import helpers.loggers.ConditionSingularities;
 
 import java.util.Comparator;
 import java.util.List;

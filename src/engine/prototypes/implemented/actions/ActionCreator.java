@@ -1,6 +1,6 @@
 package engine.prototypes.implemented.actions;
 
-import helpers.ActionTypes;
+import helpers.types.ActionTypes;
 import engine.prototypes.jaxb.PRDAction;
 
 public abstract class ActionCreator {

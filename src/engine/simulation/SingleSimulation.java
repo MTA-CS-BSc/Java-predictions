@@ -5,7 +5,8 @@ import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.Action;
 import engine.simulation.performers.ActionsPerformer;
-import helpers.SimulationState;
+import helpers.modules.ElapsedTimer;
+import helpers.types.SimulationState;
 
 import java.io.Serializable;
 import java.util.*;

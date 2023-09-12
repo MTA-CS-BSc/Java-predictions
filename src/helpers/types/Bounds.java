@@ -1,4 +1,6 @@
-package helpers;
+package helpers.types;
+
+import helpers.Constants;
 
 public class Bounds {
     public int rowMDepth, rowPDepth, colMDepth, colPDepth;

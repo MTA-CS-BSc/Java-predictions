@@ -1,13 +1,13 @@
 package engine.validators.actions;
 
-import helpers.ActionTypes;
+import helpers.types.ActionTypes;
 import engine.consts.SecondaryEntityCounts;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDWorld;
-import helpers.TypesUtils;
+import helpers.types.TypesUtils;
 
 import java.util.Objects;
 

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dtos.ResponseDTO;
 import fx.modules.SingletonEngineAPI;
-import helpers.SingletonObjectMapper;
+import helpers.modules.SingletonObjectMapper;
 import javafx.animation.FadeTransition;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;

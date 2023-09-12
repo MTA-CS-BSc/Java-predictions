@@ -1,6 +1,6 @@
 package dtos.actions;
 
-import helpers.ActionTypes;
+import helpers.types.ActionTypes;
 
 public abstract class ConditionDTO extends ActionDTO {
     protected int thenActionsAmount;

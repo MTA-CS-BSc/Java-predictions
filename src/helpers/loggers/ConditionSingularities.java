@@ -1,4 +1,4 @@
-package helpers;
+package helpers.loggers;
 
 public abstract class ConditionSingularities {
     public static final String SINGLE = "single";

@@ -1,6 +1,6 @@
 package engine.simulation.performers;
 
-import helpers.ActionTypes;
+import helpers.types.ActionTypes;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.PropertyNotFoundException;
 import engine.modules.Utils;

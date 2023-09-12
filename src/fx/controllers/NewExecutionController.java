@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.EntityDTO;
 import fx.modules.SingletonEngineAPI;
-import helpers.SingletonObjectMapper;
+import helpers.modules.SingletonObjectMapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;

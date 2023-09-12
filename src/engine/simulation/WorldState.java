@@ -1,4 +1,8 @@
-package engine.prototypes.implemented;
+package engine.simulation;
+
+import engine.prototypes.implemented.Entity;
+import engine.prototypes.implemented.Property;
+import engine.prototypes.implemented.World;
 
 import java.io.Serializable;
 import java.util.HashMap;

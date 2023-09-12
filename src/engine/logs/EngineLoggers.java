@@ -3,7 +3,7 @@ package engine.logs;
 import engine.EngineAPI;
 import engine.parsers.XmlParser;
 import engine.simulation.SingleSimulation;
-import helpers.CustomConsoleHandler;
+import helpers.loggers.CustomConsoleHandler;
 
 import java.util.logging.Logger;
 

@@ -16,10 +16,10 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
-import helpers.PropTypes;
-import helpers.SimulationState;
-import helpers.SingletonObjectMapper;
-import helpers.ThreadPoolManager;
+import helpers.types.PropTypes;
+import helpers.types.SimulationState;
+import helpers.modules.SingletonObjectMapper;
+import helpers.modules.ThreadPoolManager;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;

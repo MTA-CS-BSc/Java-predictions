@@ -4,8 +4,8 @@ import dtos.PropertyDTO;
 import engine.consts.SystemFunctions;
 import engine.prototypes.implemented.*;
 import helpers.Constants;
-import helpers.PropTypes;
-import helpers.TypesUtils;
+import helpers.types.PropTypes;
+import helpers.types.TypesUtils;
 
 import java.util.Map;
 import java.util.Objects;

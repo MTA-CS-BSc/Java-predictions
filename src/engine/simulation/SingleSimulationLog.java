@@ -1,8 +1,7 @@
 package engine.simulation;
 
 import engine.prototypes.implemented.World;
-import engine.prototypes.implemented.WorldState;
-import helpers.TypesUtils;
+import helpers.types.TypesUtils;
 
 import java.io.Serializable;
 import java.util.Date;

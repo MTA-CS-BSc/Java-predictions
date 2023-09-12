@@ -1,12 +1,12 @@
 package engine.validators;
 
-import helpers.PropTypes;
+import helpers.types.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.*;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;
-import helpers.TypesUtils;
+import helpers.types.TypesUtils;
 
 import java.util.List;
 import java.util.Objects;
