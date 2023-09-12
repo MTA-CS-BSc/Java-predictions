@@ -56,11 +56,15 @@ public class NewExecutionController implements Initializable {
     private TableColumn<PropertyDTO, String> propertyValueColumn;
     //#endregion
 
+    private String simulationUuid;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initPopulationTable();
         initEnvPropsTable();
     }
+
+    public void setSimulationUuid(String value) { simulationUuid = value; }
 
     private void initEnvPropsTable() {
         propertyNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
@@ -95,12 +99,12 @@ public class NewExecutionController implements Initializable {
         });
     }
 
-    private void addPopulationEditCommit(String uuid) {
+    private void addPopulationEditCommit() {
         populationColumn.setOnEditCommit(event -> {
             EntityDTO editedEntity = event.getRowValue();
 
             ResponseDTO response = SingletonEngineAPI.api
-                    .setEntityInitialPopulation(uuid, editedEntity.getName(), event.getNewValue());
+                    .setEntityInitialPopulation(simulationUuid, editedEntity.getName(), event.getNewValue());
 
             if (response.getStatus() != 200) {
                 Alerts.showAlert("Validation failed", "Population is invalid",
@@ -115,30 +119,60 @@ public class NewExecutionController implements Initializable {
         });
     }
 
-    protected void addInitEntitiesDataToTable(String uuid) throws Exception {
+    protected void addInitEntitiesDataToTable() throws Exception {
         //TODO: Add UI exception
-        if (uuid.isEmpty() || SingletonEngineAPI.api.getEntities(uuid).getStatus() != 200)
+        if (isUuidEmpty())
             return;
 
-        List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.getEntities(uuid).getData(),
-                    new TypeReference<List<EntityDTO>>() {});
-
-        populationTable.getItems().addAll(entities);
-        addPopulationEditCommit(uuid);
+        addPopulationsFromAPI();
+        addPopulationEditCommit();
     }
 
-    protected void addInitEnvPropsDataToTable(String uuid) throws Exception {
-        if (uuid.isEmpty() || SingletonEngineAPI.api.getEntities(uuid).getStatus() != 200)
+    protected void addInitEnvPropsDataToTable() throws Exception {
+        if (isUuidEmpty())
             return;
 
-        List<PropertyDTO> envProps = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.getEnvironmentProperties(uuid).getData(),
+        addEnvPropsFromAPI();
+        addValueEditCommit(simulationUuid);
+    }
+
+    private void addPopulationsFromAPI() throws Exception {
+        List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
+                        .getEntities(simulationUuid).getData(),
+                new TypeReference<List<EntityDTO>>() {});
+
+        populationTable.getItems().clear();
+        populationTable.getItems().addAll(entities);
+    }
+    private void addEnvPropsFromAPI() throws Exception {
+        List<PropertyDTO> envProps = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
+                        .getEnvironmentProperties(simulationUuid).getData(),
                 new TypeReference<List<PropertyDTO>>() {});
 
+        envPropsTable.getItems().clear();
         envPropsTable.getItems().addAll(envProps);
-        addValueEditCommit(uuid);
     }
 
     public VBox getContainer() {
         return container;
+    }
+
+    private boolean isUuidEmpty() throws Exception {
+        return simulationUuid.isEmpty() || SingletonEngineAPI.api.getEntities(simulationUuid).getStatus() != 200;
+    }
+
+    private void clearPopulationTable() throws Exception {
+        populationTable.getItems().forEach(entity -> {
+            SingletonEngineAPI.api.setEntityInitialPopulation(simulationUuid, entity.getName(), 0);
+        });
+
+        addPopulationsFromAPI();
+    }
+    @FXML
+    private void handleClear() throws Exception {
+        if (isUuidEmpty())
+            return;
+
+        clearPopulationTable();
     }
 }

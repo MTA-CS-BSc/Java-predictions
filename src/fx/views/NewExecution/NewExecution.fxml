@@ -30,7 +30,7 @@
         </TableView>
     </HBox>
     <HBox>
-        <Button alignment="BOTTOM_RIGHT" styleClass="simulation-button" mnemonicParsing="false" text="CLEAR"/>
+        <Button alignment="BOTTOM_RIGHT" styleClass="simulation-button" onAction="#handleClear" mnemonicParsing="false" text="CLEAR"/>
         <Region HBox.hgrow="ALWAYS"/>
         <Button alignment="TOP_LEFT" styleClass="simulation-button" mnemonicParsing="false" text="RUN"/>
     </HBox>
