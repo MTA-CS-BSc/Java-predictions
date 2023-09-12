@@ -8,6 +8,7 @@ import engine.modules.ValidatorsUtils;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.SingleEntity;
 import engine.prototypes.implemented.World;
+import helpers.types.TypesUtils;
 
 import java.util.Objects;
 
@@ -26,7 +27,7 @@ public abstract class ExpressionParser {
     }
     private static String evaluateSystemExpression(World world, String expression,
                                                    SingleEntity main, SingleEntity secondary) throws PropertyNotFoundException {
-        String systemFunctionType = Utils.getSystemFunctionType(expression);
+        String systemFunctionType = TypesUtils.getSystemFunctionType(expression);
         String systemFunctionValue = expression.substring(expression.indexOf("(") + 1,
                 expression.lastIndexOf(")"));
 
@@ -78,7 +79,7 @@ public abstract class ExpressionParser {
         float arg1 = Float.parseFloat(evaluateExpression(world, args[0], main, secondary));
         float arg2 = Float.parseFloat(evaluateExpression(world, args[1], main, secondary));
 
-        return Utils.removeExtraZeroes(String.valueOf(arg1 / arg2));
+        return TypesUtils.removeExtraZeroes(String.valueOf(arg1 / arg2));
     }
     private static String evaluateSystemFuncTicks(String systemFunctionValue,
                                                   SingleEntity main,

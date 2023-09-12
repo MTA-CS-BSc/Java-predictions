@@ -1,11 +1,9 @@
 package engine.modules;
 
 import dtos.PropertyDTO;
-import engine.consts.SystemFunctions;
 import engine.prototypes.implemented.*;
 import helpers.Constants;
 import helpers.types.PropTypes;
-import helpers.types.TypesUtils;
 
 import java.util.Map;
 import java.util.Objects;
@@ -84,46 +82,5 @@ public abstract class Utils {
                         rule -> rule
                 ));
 
-    }
-    public static String removeExtraZeroes(String value) {
-        return value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? value.split("\\.")[0] : value;
-    }
-    public static String getSystemFunctionType(String expression) {
-        return expression.substring(0, expression.indexOf("("));
-    }
-    public static String getExpressionType(World world, String entityName, String expression) {
-        Property expressionEntityProp = findAnyPropertyByName(world, entityName, expression);
-
-        if (ValidatorsUtils.isSystemFunction(expression)) {
-            String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
-
-            switch (getSystemFunctionType(expression)) {
-                case SystemFunctions.RANDOM:
-                case SystemFunctions.TICKS:
-                    return PropTypes.DECIMAL;
-                case SystemFunctions.PERCENT:
-                    return PropTypes.FLOAT;
-                case SystemFunctions.ENVIRONMENT:
-                    return findEnvironmentPropertyByName(world, systemFunctionValue).getType();
-                case SystemFunctions.EVALUATE:
-                    String evaluateEntityName = systemFunctionValue.split("\\.")[0];
-                    String evaluatePropName = systemFunctionValue.split("\\.")[1];
-                    return findAnyPropertyByName(world, evaluateEntityName, evaluatePropName).getType();
-            }
-        }
-
-        else if (!Objects.isNull(expressionEntityProp))
-            return expressionEntityProp.getType();
-
-        else if (TypesUtils.isDecimal(expression))
-            return PropTypes.DECIMAL;
-
-        else if (TypesUtils.isFloat(expression))
-            return PropTypes.FLOAT;
-
-        else if (TypesUtils.isBoolean(expression))
-            return PropTypes.BOOLEAN;
-
-        return PropTypes.STRING;
     }
 }

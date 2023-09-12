@@ -41,7 +41,7 @@ public abstract class ValidatorsUtils {
         if (ValidatorsUtils.isSystemFunction(expression)) {
             String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
-            switch (Utils.getSystemFunctionType(expression)) {
+            switch (TypesUtils.getSystemFunctionType(expression)) {
                 case SystemFunctions.RANDOM:
                 case SystemFunctions.TICKS:
                 case SystemFunctions.PERCENT:
@@ -112,7 +112,7 @@ public abstract class ValidatorsUtils {
     }
     private static boolean validateSystemFuncExpressionType(PRDWorld world, PRDAction action,
                                                             String expectedType, String expression) {
-        String systemFunctionType = Utils.getSystemFunctionType(expression);
+        String systemFunctionType = TypesUtils.getSystemFunctionType(expression);
         String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
 
         switch (systemFunctionType) {

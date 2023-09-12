@@ -16,10 +16,11 @@ import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
-import helpers.types.PropTypes;
-import helpers.types.SimulationState;
 import helpers.modules.SingletonObjectMapper;
 import helpers.modules.ThreadPoolManager;
+import helpers.types.PropTypes;
+import helpers.types.SimulationState;
+import helpers.types.TypesUtils;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -114,10 +115,13 @@ public class EngineAPI {
             if (!Utils.validateValueInRange(prop, val))
                 return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
 
+            else if (!TypesUtils.validateType(prop, val))
+                return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Incorrect type");
+
             foundProp.getValue().setRandomInitialize(false);
 
             if (PropTypes.NUMERIC_PROPS.contains(foundProp.getType()))
-                val = Utils.removeExtraZeroes(val);
+                val = TypesUtils.removeExtraZeroes(val);
 
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());

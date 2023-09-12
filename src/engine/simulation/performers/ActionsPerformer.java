@@ -80,7 +80,7 @@ public abstract class ActionsPerformer {
     public static void setPropertyValue(String actionType, String entityName,
                                          Property property, String newValue) throws Exception {
         if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
-            newValue = Utils.removeExtraZeroes(newValue);
+            newValue = TypesUtils.removeExtraZeroes(newValue);
 
         if (TypesUtils.isFloat(newValue) && !TypesUtils.isDecimal(newValue) && property.getType().equals(PropTypes.DECIMAL))
             throw new InvalidTypeException(String.format("Action [%s]: Entity: [%s]: Property [%s]: [%s] is not decimal and therefore is not set",

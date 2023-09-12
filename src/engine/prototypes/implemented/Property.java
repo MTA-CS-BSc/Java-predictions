@@ -6,6 +6,7 @@ import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDValue;
 import helpers.Constants;
+import helpers.types.TypesUtils;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -77,7 +78,7 @@ public class Property implements Serializable {
 
         else {
             if (PropTypes.NUMERIC_PROPS.contains(type))
-                property.getPRDValue().setInit(Utils.removeExtraZeroes(property.getPRDValue().getInit()));
+                property.getPRDValue().setInit(TypesUtils.removeExtraZeroes(property.getPRDValue().getInit()));
 
             value.setInit(property.getPRDValue().getInit());
         }

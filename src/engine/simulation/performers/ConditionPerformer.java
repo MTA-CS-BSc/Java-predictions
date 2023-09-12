@@ -36,7 +36,7 @@ public abstract class ConditionPerformer {
         boolean isNumeric = TypesUtils.isDecimal(arg1) || TypesUtils.isFloat(arg1);
 
         if (isNumeric && arg2.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
-            arg2 = Utils.removeExtraZeroes(arg2);
+            arg2 = TypesUtils.removeExtraZeroes(arg2);
 
         switch (operator) {
             case Operators.BT:
