@@ -5,23 +5,21 @@ import helpers.types.TypesUtils;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 
 public abstract class SingleSimulationLog implements Serializable {
     protected String start;
     protected String finished;
-    protected WorldState startWorldState;
-    protected WorldState finishWorldState;
+    protected LinkedList<WorldState> worldStatesByTicks;
+
+    public SingleSimulationLog() {
+        worldStatesByTicks = new LinkedList<>();
+    }
     public void setStartTime(Date start) {
         this.start = TypesUtils.formatDate(start);
     }
     public void setEndTime(Date finished) {
         this.finished = TypesUtils.formatDate(finished);
-    }
-    public void setStartWorldState(World startWorld) {
-        this.startWorldState = new WorldState(startWorld);
-    }
-    public void setFinishWorldState(World finishWorld) {
-        this.finishWorldState = new WorldState(finishWorld);
     }
     public String getStartTimestamp() {
         return start;
@@ -30,9 +28,18 @@ public abstract class SingleSimulationLog implements Serializable {
         return finished;
     }
     public WorldState getStartWorldState() {
-        return startWorldState;
+        return worldStatesByTicks.getFirst();
     }
-    public WorldState getFinishWorldState() {
-        return finishWorldState;
+    public WorldState getLastWorldState() { return worldStatesByTicks.getLast(); }
+    public void pushWorldState(WorldState worldState) {
+        worldStatesByTicks.addLast(worldState);
+    }
+    public void pushWorldState(World world) {
+        pushWorldState(new WorldState(world));
+    }
+    public void enqueueWorldState(WorldState worldState) { worldStatesByTicks.addFirst(worldState); }
+    public void enqueueWorldState(World world) { enqueueWorldState(new WorldState(world));}
+    public WorldState popWorldState() {
+        return worldStatesByTicks.removeLast();
     }
 }

@@ -116,6 +116,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 ticks++;
                 handleSingleTick();
                 ActionsPerformer.updateStableTimeToAllProps(world);
+                pushWorldState(world);
 
                 if (byStep == ByStep.FUTURE)
                     simulationState = SimulationState.STOPPED;
@@ -128,10 +129,8 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         if (elapsedTimer.isRunning())
             elapsedTimer.pause();
 
-        if (simulationState == SimulationState.FINISHED) {
+        if (simulationState == SimulationState.FINISHED)
             setEndTime(new Date());
-            setFinishWorldState(world);
-        }
     }
     public World getWorld() { return world; }
     public SimulationState getSimulationState() { return simulationState; }

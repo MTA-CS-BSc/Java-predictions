@@ -35,7 +35,7 @@ public class HistoryManager implements Serializable {
     }
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
                                                   String entityName, String propertyName) {
-        Entity mainEntity = singleSimulation.getFinishWorldState().getEntitiesMap().get(entityName);
+        Entity mainEntity = singleSimulation.getLastWorldState().getEntitiesMap().get(entityName);
 
         if (Objects.isNull(mainEntity))
             return null;
@@ -67,7 +67,7 @@ public class HistoryManager implements Serializable {
         getSimulationDetails(uuid, simulation);
 
         simulation.getStartWorldState().getEntitiesMap().forEach((key, entity) -> {
-            Entity finishEntity = simulation.getFinishWorldState().getEntitiesMap().get(key);
+            Entity finishEntity = simulation.getLastWorldState().getEntitiesMap().get(key);
             int finishAmount =  Objects.isNull(finishEntity) ? 0 : finishEntity.getPopulation();
             Integer[] array = { entity.getPopulation(), finishAmount };
 
