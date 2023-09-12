@@ -107,9 +107,9 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     public void initializeRandomVariables() {
         world.initAllRandomVars();
     }
-    public void run() throws Exception {
+    public void run() {
         if (Objects.isNull(world) || simulationState == SimulationState.ERROR)
-            throw new Exception();
+            return;
 
         if (simulationState == SimulationState.CREATED) {
             initializeRandomVariables();
