@@ -101,6 +101,13 @@
     -fx-font-weight: bold;
 }
 
+.table-view .cell {
+    -fx-background-color: #444444;
+}
+
+.table-view .cell:focused {
+    -fx-background-color: #333333;
+}
 /* TabPane styles */
 .tab-pane {
     -fx-background-color: #444444;
