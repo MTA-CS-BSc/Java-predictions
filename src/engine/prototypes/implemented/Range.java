@@ -22,8 +22,15 @@ public class Range implements Serializable {
         }
     }
     public Range (Range other) {
-        this.to = other.to;
-        this.from = other.from;
+        if (!Objects.isNull(other)) {
+            to = other.getTo();
+            from = other.getFrom();
+        }
+
+        else {
+            to = Constants.MAX_RANGE;
+            from = Constants.MIN_RANGE;
+        }
     }
     public double getTo() { return to; }
     public double getFrom() { return from; }
