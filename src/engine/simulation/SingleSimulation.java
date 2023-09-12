@@ -54,28 +54,40 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     private void moveEntity(SingleEntity singleEntity) {
         //TODO: Not implemented
     }
-    public void handleSingleTick() {
+    private void performAllPossibleActions() {
         List<Action> actionsToPerform = getActionsToPerform();
         List<SingleEntity> allEntities = getAllSingleEntities();
 
         allEntities.forEach(singleEntity -> {
-           actionsToPerform.forEach(action -> {
-              if (!action.getEntityName().isEmpty() && !action.getEntityName().equals(singleEntity.getEntityName())) {
-                  // Skip action
-              }
+            actionsToPerform.forEach(action -> {
+                if (!action.getEntityName().isEmpty() && !action.getEntityName().equals(singleEntity.getEntityName())) {
+                    // Skip action
+                }
 
-              else if (action.getEntityName().isEmpty() || action.getEntityName().equals(singleEntity.getEntityName())) {
-                  try {
-                      ActionsPerformer.fireAction(world, action, singleEntity);
-                  } catch (Exception e) { simulationState = SimulationState.ERROR; }
-              }
-           });
+                else if (action.getEntityName().isEmpty() || action.getEntityName().equals(singleEntity.getEntityName())) {
+                    try {
+                        ActionsPerformer.fireAction(world, action, singleEntity);
+                    } catch (Exception e) { simulationState = SimulationState.ERROR; }
+                }
+            });
 
-           moveEntity(singleEntity);
+            moveEntity(singleEntity);
+            KillReplaceSaver.storage.forEach(Runnable::run);
+            KillReplaceSaver.storage.clear();
         });
+    }
+    public void handleSingleTick() {
+        if (byStep != ByStep.PAST) {
+            ticks++;
+            ActionsPerformer.updateStableTimeToAllProps(world);
+            performAllPossibleActions();
+            pushWorldState(world);
+        }
 
-        KillReplaceSaver.storage.forEach(Runnable::run);
-        KillReplaceSaver.storage.clear();
+        else {
+            ticks--;
+            world.setByWorldState(popWorldState());
+        }
     }
     private List<SingleEntity> getAllSingleEntities() {
         return world.getEntities().getEntitiesMap().values()
@@ -113,12 +125,9 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 if (!elapsedTimer.isRunning())
                     elapsedTimer.startOrResume();
 
-                ticks++;
                 handleSingleTick();
-                ActionsPerformer.updateStableTimeToAllProps(world);
-                pushWorldState(world);
 
-                if (byStep == ByStep.FUTURE)
+                if (byStep != ByStep.NOT_BY_STEP)
                     simulationState = SimulationState.STOPPED;
             }
 

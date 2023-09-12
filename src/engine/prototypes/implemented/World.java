@@ -1,8 +1,10 @@
 package engine.prototypes.implemented;
 
 import engine.prototypes.jaxb.PRDWorld;
+import engine.simulation.WorldState;
 
 import java.io.Serializable;
+import java.util.Map;
 
 public class World implements Serializable {
     protected Environment environment;
@@ -26,6 +28,26 @@ public class World implements Serializable {
     public void initAllRandomVars() {
         entities.initRandomVars();
         environment.initRandomVars();
+    }
+    private void setEnvironmentByWorldState(Map<String, Property> envMap) {
+        environment.getEnvVars().clear();
+
+        envMap.forEach((key, value) -> {
+            environment.getEnvVars().put(key, value);
+        });
+    }
+    private void setEntitiesByWorldState(Map<String, Entity> entitiesMap) {
+        entities.getEntitiesMap().clear();
+
+        entitiesMap.forEach((key, value) -> {
+            entities.getEntitiesMap().put(key, value);
+        });
+    }
+    public void setByWorldState(WorldState worldState) {
+        setEnvironmentByWorldState(worldState.getEnvironmentMap());
+        setEntitiesByWorldState(worldState.getEntitiesMap());
+
+        //TODO: Update grid
     }
     @Override
     public String toString() {
