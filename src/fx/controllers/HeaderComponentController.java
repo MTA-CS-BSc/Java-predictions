@@ -72,7 +72,7 @@ public class HeaderComponentController implements Initializable {
         Window window = scene.getWindow();
 
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose an XML file");
+        fileChooser.setTitle("Choose a XML file");
         File file = fileChooser.showOpenDialog(window);
 
         if (file != null)
