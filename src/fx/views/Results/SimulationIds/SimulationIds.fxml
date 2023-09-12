@@ -11,7 +11,7 @@
     <TableView fx:id="simulationsTable">
         <columns>
             <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>
-            <TableColumn fx:id="startTimestampColumn" prefWidth="150" text="Timestamp"/>
+            <TableColumn fx:id="startTimestampColumn" prefWidth="200" text="Timestamp"/>
         </columns>
     </TableView>
 </Pane>
