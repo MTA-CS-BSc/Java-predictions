@@ -1,12 +1,10 @@
 package engine.prototypes.implemented;
 
-import helpers.types.PropTypes;
-import engine.modules.Utils;
 import engine.prototypes.jaxb.PRDEnvProperty;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDValue;
 import helpers.Constants;
-import helpers.types.TypesUtils;
+import helpers.types.PropTypes;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -72,17 +70,7 @@ public class Property implements Serializable {
             range = new Range(property.getPRDRange());
 
         value.setRandomInitialize(property.getPRDValue().isRandomInitialize());
-
-        if (value.isRandomInitialize())
-            Utils.setPropRandomInit(this, range);
-
-        else {
-            if (PropTypes.NUMERIC_PROPS.contains(type))
-                property.getPRDValue().setInit(TypesUtils.removeExtraZeroes(property.getPRDValue().getInit()));
-
-            value.setInit(property.getPRDValue().getInit());
-        }
-
+        value.setInit(property.getPRDValue().getInit());
         value.setCurrentValue(value.getInit());
     }
 
