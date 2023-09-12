@@ -168,11 +168,21 @@ public class NewExecutionController implements Initializable {
 
         addPopulationsFromAPI();
     }
+
+    private void clearEnvPropsTable() throws Exception {
+        envPropsTable.getItems().forEach(property -> {
+            SingletonEngineAPI.api.setEnvironmentVariable(simulationUuid, property, null);
+        });
+
+        addEnvPropsFromAPI();
+    }
+
     @FXML
     private void handleClear() throws Exception {
         if (isUuidEmpty())
             return;
 
         clearPopulationTable();
+        clearEnvPropsTable();
     }
 }
