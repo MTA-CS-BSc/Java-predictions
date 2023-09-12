@@ -41,6 +41,7 @@ public class HeaderComponentController implements Initializable {
 
     private DetailsScreenController detailsScreenController;
     private NewExecutionController newExecutionController;
+    private ResultsScreenController resultsScreenController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -56,6 +57,8 @@ public class HeaderComponentController implements Initializable {
     public void setNewExecutionController(NewExecutionController controller) {
         newExecutionController = controller;
     }
+
+    public void setResultsScreenController(ResultsScreenController controller) { resultsScreenController = controller; }
 
     private boolean isHistoryEmpty() throws JsonProcessingException {
         ObjectMapper objectMapper = SingletonObjectMapper.objectMapper;

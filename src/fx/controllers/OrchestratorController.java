@@ -14,12 +14,14 @@ public class OrchestratorController implements Initializable {
     private AllScreensUpperBarController allScreensUpperBarController;
     @FXML
     private NewExecutionController newExecutionController;
+    @FXML
+    private ResultsScreenController resultsScreenController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         allScreensUpperBarController.setHeaderDetailsController(detailsScreenController);
         allScreensUpperBarController.setHeaderNewExecutionController(newExecutionController);
-
+        allScreensUpperBarController.setHeaderResultsScreenController(resultsScreenController);
         initializeScreen();
     }
 
@@ -33,5 +35,6 @@ public class OrchestratorController implements Initializable {
 
     private void initializeScreen() {
         newExecutionController.getContainer().setVisible(false);
+        resultsScreenController.getContainer().setVisible(false);
     }
 }

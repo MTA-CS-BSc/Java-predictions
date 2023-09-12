@@ -9,5 +9,6 @@
     <StackPane>
         <fx:include source="../NewExecution/NewExecution.fxml" fx:id="newExecution"/>
         <fx:include source="../DetailsScreen/DetailsScreen.fxml" fx:id="detailsScreen"/>
+        <fx:include source="../Results/ResultsScreen.fxml" fx:id="resultsScreen"/>
     </StackPane>
 </VBox>

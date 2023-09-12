@@ -28,4 +28,7 @@ public class AllScreensUpperBarController implements Initializable {
     protected void setHeaderNewExecutionController(NewExecutionController controller) {
         headerComponentController.setNewExecutionController(controller);
     }
+    protected void setHeaderResultsScreenController(ResultsScreenController controller) {
+        headerComponentController.setResultsScreenController(controller);
+    }
 }
