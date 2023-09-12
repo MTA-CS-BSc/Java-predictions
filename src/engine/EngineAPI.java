@@ -93,7 +93,6 @@ public class EngineAPI {
     public ResponseDTO createSimulation() {
         SingleSimulation sm = new SingleSimulation(getInitialWorld());
 
-        sm.initializeRandomVariables();
         sm.setStartWorldState(sm.getWorld());
 
         historyManager.addPastSimulation(sm);
@@ -207,7 +206,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
-    public ResponseDTO runSimulation(String uuid) throws Exception {
+    public ResponseDTO runSimulation(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
 

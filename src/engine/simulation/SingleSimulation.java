@@ -93,8 +93,10 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         if (Objects.isNull(world) || simulationState == SimulationState.ERROR)
             throw new Exception();
 
-        if (simulationState == SimulationState.CREATED)
+        if (simulationState == SimulationState.CREATED) {
+            initializeRandomVariables();
             setStartTime(new Date());
+        }
 
         elapsedTimer.startOrResume();
         simulationState = SimulationState.RUNNING;
