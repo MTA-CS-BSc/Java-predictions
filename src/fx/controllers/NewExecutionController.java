@@ -89,7 +89,7 @@ public class NewExecutionController implements Initializable {
             ResponseDTO response = SingletonEngineAPI.api
                     .setEnvironmentVariable(uuid, editedProperty, event.getNewValue());
 
-            if (response.getStatus() != 200) {
+            if (response.getStatus() != Constants.API_RESPONSE_OK) {
                 Alerts.showAlert("Validation failed", "Value is invalid",
                         response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
 
@@ -110,7 +110,7 @@ public class NewExecutionController implements Initializable {
                 ResponseDTO response = SingletonEngineAPI.api
                         .setEntityInitialPopulation(simulationUuid, editedEntity.getName(), event.getNewValue());
 
-                if (response.getStatus() != 200) {
+                if (response.getStatus() != Constants.API_RESPONSE_OK) {
                     Alerts.showAlert("Validation failed", "Population is invalid",
                             response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
 
@@ -164,7 +164,8 @@ public class NewExecutionController implements Initializable {
     }
 
     private boolean isUuidEmpty() throws Exception {
-        return simulationUuid.isEmpty() || SingletonEngineAPI.api.getEntities(simulationUuid).getStatus() != 200;
+        return simulationUuid.isEmpty() ||
+                SingletonEngineAPI.api.getEntities(simulationUuid).getStatus() != Constants.API_RESPONSE_OK;
     }
 
     private void clearPopulationTable() throws Exception {
@@ -205,7 +206,7 @@ public class NewExecutionController implements Initializable {
         if (validateAllInitialized()) {
             ResponseDTO response = SingletonEngineAPI.api.runSimulation(simulationUuid);
 
-            if (response.getStatus() == 200) {
+            if (response.getStatus() == Constants.API_RESPONSE_OK) {
                 TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
                 tray.showAndDismiss(Constants.ANIMATION_DURATION);
 

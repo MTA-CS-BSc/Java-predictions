@@ -83,7 +83,7 @@ public class HeaderComponentController implements Initializable {
             ResponseDTO response = SingletonEngineAPI.api.loadXml(file.getAbsolutePath());
             TrayNotification tray;
 
-            if (response.getStatus() == 200) {
+            if (response.getStatus() == Constants.API_RESPONSE_OK) {
                 tray = new TrayNotification("SUCCESS", "XML was loaded successfully!", NotificationType.SUCCESS);
                 currentXmlFilePath.setText(file.getAbsolutePath());
             }
