@@ -200,8 +200,7 @@ public class DetailsScreenController implements Initializable {
         if (!envVar.hasNoRange()) {
             TreeItem<TreeItemModel> range = new TreeItem<>(new TreeItemModel("Range"));
 
-            range.getChildren().add(new TreeItem<>(new TreeItemModel(String.format("[%.2f, %.2f]",
-                    envVar.getRange().getFrom(), envVar.getRange().getTo()))));
+            range.getChildren().add(new TreeItem<>(envVar.getRange()));
 
             selectedComponentDetailsTreeView.getRoot().getChildren().add(range);
         }
@@ -220,8 +219,7 @@ public class DetailsScreenController implements Initializable {
             if (PropTypes.NUMERIC_PROPS.contains(property.getType())) {
                 TreeItem<TreeItemModel> range = new TreeItem<>(new TreeItemModel("Range"));
 
-                range.getChildren().add(new TreeItem<>(new TreeItemModel(String.format("[%.2f, %.2f]",
-                        property.getRange().getFrom(), property.getRange().getTo()))));
+                range.getChildren().add(new TreeItem<>(property.getRange()));
 
                 propertyTreeItem.getChildren().add(range);
             }
