@@ -54,7 +54,6 @@ public class HeaderComponentController implements Initializable {
 
     public void setNewExecutionController(NewExecutionController controller) {
         newExecutionController = controller;
-        newExecutionController.setHeaderComponentController(this);
     }
 
     public void setResultsScreenController(ResultsScreenController controller) { resultsScreenController = controller; }

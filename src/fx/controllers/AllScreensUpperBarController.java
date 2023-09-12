@@ -31,4 +31,5 @@ public class AllScreensUpperBarController implements Initializable {
     protected void setHeaderResultsScreenController(ResultsScreenController controller) {
         headerComponentController.setResultsScreenController(controller);
     }
+    public HeaderComponentController getHeaderComponentController() { return headerComponentController; }
 }

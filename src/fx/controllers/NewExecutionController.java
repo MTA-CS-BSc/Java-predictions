@@ -61,6 +61,7 @@ public class NewExecutionController implements Initializable {
     //#endregion
 
     private String simulationUuid;
+    private HeaderComponentController headerComponentController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -73,6 +74,10 @@ public class NewExecutionController implements Initializable {
 
         addInitEntitiesDataToTable();
         addInitEnvPropsDataToTable();
+    }
+
+    public void setHeaderComponentController(HeaderComponentController controller) {
+        headerComponentController = controller;
     }
 
     private void initEnvPropsTable() {
@@ -215,8 +220,7 @@ public class NewExecutionController implements Initializable {
             if (response.getStatus() == Constants.API_RESPONSE_OK) {
                 TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
                 Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
-
-                //TODO: Redirect to third screen
+                headerComponentController.showResultsScreen();
             }
 
             else
