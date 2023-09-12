@@ -14,7 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -67,9 +66,7 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     private void handleLoadXml(ActionEvent event) {
-        Node source = (Node) event.getSource();
-        Scene scene = source.getScene();
-        Window window = scene.getWindow();
+        Window window = ((Node)event.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a XML file");
