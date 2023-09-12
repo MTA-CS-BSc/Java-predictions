@@ -273,6 +273,18 @@ public class EngineAPI {
         simulation.setSimulationState(SimulationState.RUNNING);
         return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
     }
+    public ResponseDTO getGrid() {
+        return new ResponseDTO(200, getInitialWorld().getGrid());
+    }
+    public ResponseDTO removeSimulationIfUnused(String uuid) {
+        if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.CREATED)
+            removeSimulationFromHistory(uuid);
+
+        return new ResponseDTO(200, "");
+    }
+    private void removeSimulationFromHistory(String uuid) {
+        historyManager.getPastSimulations().remove(uuid);
+    }
     private ResponseDTO startSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
@@ -287,9 +299,6 @@ public class EngineAPI {
         }
 
         return new ResponseDTO(200, SimulationState.FINISHED);
-    }
-    public ResponseDTO getGrid() {
-        return new ResponseDTO(200, getInitialWorld().getGrid());
     }
     private void setEntitiesInitialLocations(SingleSimulation simulation) {
         simulation.getWorld()

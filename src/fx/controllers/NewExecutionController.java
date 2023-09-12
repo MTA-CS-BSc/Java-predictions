@@ -72,9 +72,13 @@ public class NewExecutionController implements Initializable {
     public void setSimulationUuid(String value) throws Exception {
         simulationUuid = value;
 
-        addInitEntitiesDataToTable();
-        addInitEnvPropsDataToTable();
+        if (!value.isEmpty()) {
+            addInitEntitiesDataToTable();
+            addInitEnvPropsDataToTable();
+        }
     }
+
+    public String getSimulationUuid() { return simulationUuid; }
 
     public void setHeaderComponentController(HeaderComponentController controller) {
         headerComponentController = controller;

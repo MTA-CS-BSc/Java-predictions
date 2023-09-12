@@ -140,11 +140,12 @@ public class HeaderComponentController implements Initializable {
             else if (resultsScreenController.getContainer().isVisible())
                 GuiUtils.fadeOutAnimation(resultsScreenController.getContainer());
 
-            else if (newExecutionController.getContainer().isVisible())
+            else if (newExecutionController.getContainer().isVisible()) {
                 GuiUtils.fadeOutAnimation(newExecutionController.getContainer());
+                SingletonEngineAPI.api.removeSimulationIfUnused(newExecutionController.getSimulationUuid());
+            }
         });
     }
-
     @FXML
     public void showResultsScreen() {
         if (!resultsScreenController.getContainer().isVisible()) {
