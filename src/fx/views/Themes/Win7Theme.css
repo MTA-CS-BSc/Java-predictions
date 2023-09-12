@@ -101,6 +101,10 @@
     -fx-text-fill: white;
 }
 
+.text-field-table-cell .text-field {
+    -fx-padding: 1;
+    -fx-alignment: center;
+}
 /* Progress Bar */
 .progress-bar .bar {
     -fx-background-color: #0078d4;

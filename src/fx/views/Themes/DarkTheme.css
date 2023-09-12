@@ -105,19 +105,26 @@
     -fx-background-color: #444444;
 }
 
+.text-field-table-cell .text-field {
+    -fx-padding: 1;
+    -fx-border-color:black;
+    -fx-background-color: #9d9d9d;
+    -fx-alignment: center;
+}
+
+.table-cell:focused {
+    -fx-padding: 0;
+}
 .table-column {
     -fx-alignment: center;
 }
 
-.table-view .cell:focused {
-    -fx-background-color: #333333;
-}
+/*.table-view .cell:focused {*/
+/*    -fx-background-color: #333333;*/
+/*}*/
 
-.table-view .cell:selected {
-    -fx-border-color: #717171;
-    -fx-background-color: #717171;
-    -fx-fill: black;
-}
+
+
 /* TabPane styles */
 .tab-pane {
     -fx-background-color: #444444;

@@ -94,3 +94,8 @@
 .table-column {
     -fx-alignment: center;
 }
+
+.text-field-table-cell .text-field {
+    -fx-padding: 1;
+    -fx-alignment: center;
+}
