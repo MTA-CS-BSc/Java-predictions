@@ -7,6 +7,7 @@ import dtos.RangeDTO;
 import dtos.ResponseDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
+import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -19,6 +20,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
 import javafx.util.converter.IntegerStringConverter;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 
 import java.net.URL;
 import java.util.List;
@@ -191,10 +194,26 @@ public class NewExecutionController implements Initializable {
         clearEnvPropsTable();
     }
 
+    private boolean validateAllInitialized() {
+        return populationTable.getItems().stream()
+                .mapToInt(EntityDTO::getPopulation)
+                .sum() > 0;
+    }
+
     @FXML
     private void handleRun() throws Exception {
         //TODO: Add alert
         if (isUuidEmpty())
             return;
+
+        if (validateAllInitialized()) {
+            if (SingletonEngineAPI.api.runSimulation(simulationUuid).getStatus() == 200) {
+                TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
+                tray.showAndDismiss(Constants.ANIMATION_DURATION);
+            }
+
+            else
+                Alerts.showAlert("FAILURE", "Simulation [%s] was not added to queue", "Cause: [%s]", Alert.AlertType.ERROR);
+        }
     }
 }
