@@ -17,15 +17,15 @@
         <TableView fx:id="populationTable" editable="true">
             <columns>
                 <TableColumn editable="false" fx:id="entityNameColumn" prefWidth="150.0" text="Entity Name"/>
-                <TableColumn editable="true" fx:id="populationColumn" prefWidth="100.0" text="Population"/>
+                <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population"/>
             </columns>
         </TableView>
-        <TableView>
+        <TableView fx:id="envPropsTable" editable="true">
             <columns>
-                <TableColumn prefWidth="150.0" text="Property Name"/>
-                <TableColumn text="Type"/>
-                <TableColumn prefWidth="75.0" text="Range"/>
-                <TableColumn prefWidth="250.0" text="Value"/>
+                <TableColumn fx:id="propertyNameColumn" editable="false" prefWidth="150.0" text="Property Name"/>
+                <TableColumn fx:id="propertyTypeColumn" editable="false" text="Type"/>
+                <TableColumn fx:id="propertyRangeColumn" editable="false" prefWidth="75.0" text="Range"/>
+                <TableColumn fx:id="propertyValueColumn" prefWidth="250.0" text="Value"/>
             </columns>
         </TableView>
     </HBox>
