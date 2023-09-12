@@ -1,10 +1,7 @@
 package engine.simulation.performers;
 
+import engine.prototypes.implemented.*;
 import helpers.types.PropTypes;
-import engine.prototypes.implemented.Entity;
-import engine.prototypes.implemented.Property;
-import engine.prototypes.implemented.SingleEntity;
-import engine.prototypes.implemented.Value;
 import helpers.Constants;
 
 import java.util.Objects;
@@ -23,6 +20,9 @@ public class CreatePerformer {
                     Property fromProperty = Objects.isNull(singleFrom) ?
                             from.getInitialProperties().getPropsMap().get(property.getName())
                             : singleFrom.getProperties().getPropsMap().get(property.getName());
+
+                    if (!fromProperty.hasNoRange())
+                        property.setRange(new Range(fromProperty.getRange()));
 
                     if (property.getType().equals(fromProperty.getType())
                             || (property.getType().equals(PropTypes.FLOAT) && fromProperty.getType().equals(PropTypes.DECIMAL)))
