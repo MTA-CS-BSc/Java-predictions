@@ -92,6 +92,7 @@ public abstract class TypesUtils {
         return PropTypes.STRING;
     }
     public static boolean validateType(PropertyDTO property, String value) {
+        //TODO: Check if should validate length & charset
         if (property.getType().equals(PropTypes.STRING))
             return true;
 
