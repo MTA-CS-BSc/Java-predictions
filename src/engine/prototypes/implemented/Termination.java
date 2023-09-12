@@ -15,17 +15,29 @@ public class Termination implements Serializable {
     public Termination (PRDTermination termination) {
         stopConditions = new ArrayList<>();
 
-        if (!Objects.isNull(termination)) {
-            termination.getPRDBySecondOrPRDByTicks().forEach(stopCondition -> {
-                if (stopCondition.getClass() == PRDByTicks.class)
-                    stopConditions.add(new ByTicks((PRDByTicks) stopCondition));
+        termination.getPRDBySecondOrPRDByTicks().forEach(stopCondition -> {
+            if (stopCondition.getClass() == PRDByTicks.class)
+                stopConditions.add(new ByTicks((PRDByTicks) stopCondition));
 
-                else if (stopCondition.getClass() == PRDBySecond.class)
-                    stopConditions.add(new BySecond((PRDBySecond) stopCondition));
-            });
+            else if (stopCondition.getClass() == PRDBySecond.class)
+                stopConditions.add(new BySecond((PRDBySecond) stopCondition));
+        });
 
-            isStopByUser = !Objects.isNull(termination.getPRDByUser());
-        }
+        isStopByUser = !Objects.isNull(termination.getPRDByUser());
+    }
+
+    public Termination(Termination other) {
+        stopConditions = new ArrayList<>();
+
+        other.getStopConditions().forEach(stopCondition -> {
+            if (stopCondition.getClass() == ByTicks.class)
+                stopConditions.add(new ByTicks((ByTicks)stopCondition));
+
+            else if (stopCondition.getClass() == BySecond.class)
+                stopConditions.add(new BySecond((BySecond)stopCondition));
+        });
+
+        isStopByUser = other.isStopByUser();
     }
     public List<Object> getStopConditions() {
         return stopConditions;

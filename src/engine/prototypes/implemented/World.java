@@ -13,6 +13,14 @@ public class World implements Serializable {
     protected Rules rules;
     protected WorldGrid grid;
 
+    public World(Termination termination, Rules rules, WorldState worldState) {
+        this.termination = new Termination(termination);
+        this.rules = new Rules(rules);
+        environment = new Environment();
+        entities = new Entities();
+        grid = new WorldGrid(worldState.getGrid());
+        setByWorldState(worldState);
+    }
     public World(PRDWorld world) {
         rules = new Rules(world.getPRDRules().getPRDRule());
         entities = new Entities(world.getPRDEntities().getPRDEntity());
@@ -43,11 +51,18 @@ public class World implements Serializable {
             entities.getEntitiesMap().put(key, value);
         });
     }
+    private void setGridByWorldState(Map<String, Entity> entitiesMap) {
+        for (Entity entity : entitiesMap.values()) {
+            for (SingleEntity singleEntity : entity.getSingleEntities()) {
+                Coordinate current = singleEntity.getCoordinate();
+                grid.getTaken()[current.getX()][current.getY()] = true;
+            }
+        }
+    }
     public void setByWorldState(WorldState worldState) {
         setEnvironmentByWorldState(worldState.getEnvironmentMap());
         setEntitiesByWorldState(worldState.getEntitiesMap());
-
-        //TODO: Update grid
+        setGridByWorldState(worldState.getEntitiesMap());
     }
     @Override
     public String toString() {

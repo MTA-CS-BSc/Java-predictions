@@ -15,6 +15,12 @@ public class Rules implements Serializable {
         for (PRDRule rule : list)
             rulesMap.put(rule.getName(), new Rule(rule));
     }
+
+    public Rules(Rules other) {
+        rulesMap = new HashMap<>();
+
+        other.getRulesMap().forEach((key, value) -> rulesMap.put(key, new Rule(value)));
+    }
     public Map<String, Rule> getRulesMap() { return rulesMap; }
     @Override
     public String toString() {

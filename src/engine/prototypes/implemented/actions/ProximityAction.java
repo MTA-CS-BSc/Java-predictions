@@ -15,6 +15,14 @@ public class ProximityAction extends Action {
         between = new Between(action.getPRDBetween());
         actions = new Actions(action.getPRDActions().getPRDAction());
     }
+
+    public ProximityAction(ProximityAction other) {
+        super(other);
+
+        depthExpression = other.getDepthExpression();
+        actions = new Actions(other.getActions());
+        between = new Between(other.getBetween());
+    }
     public Between getBetween() {
         return between;
     }

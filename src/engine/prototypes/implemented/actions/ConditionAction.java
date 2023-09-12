@@ -17,6 +17,14 @@ public class ConditionAction extends Action {
         prdThen = new Then(action.getPRDThen());
         prdElse = new Else(action.getPRDElse());
     }
+
+    public ConditionAction(ConditionAction other) {
+        super(other);
+
+        condition = new Condition(other.getCondition());
+        prdThen = new Then(other.getThen());
+        prdElse = new Else(other.getElse());
+    }
     public Condition getCondition() {
         return condition;
     }

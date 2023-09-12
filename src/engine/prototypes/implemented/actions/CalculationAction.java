@@ -12,6 +12,7 @@ public class CalculationAction extends Action {
     protected Divide divide;
     protected String resultPropertyName;
     protected String operationType;
+
     public CalculationAction(PRDAction action) {
         super(action);
 
@@ -24,6 +25,22 @@ public class CalculationAction extends Action {
 
         if (!Objects.isNull(action.getPRDDivide())) {
             divide = new Divide(action.getPRDDivide());
+            operationType = CalculationTypes.DIVIDE;
+        }
+    }
+
+    public CalculationAction(CalculationAction other) {
+        super(other);
+
+        resultPropertyName = other.getResultPropertyName();
+
+        if (!Objects.isNull(other.getMultiply())) {
+            multiply = new Multiply(other.getMultiply());
+            operationType = CalculationTypes.MULTIPLY;
+        }
+
+        if (!Objects.isNull(other.getDivide())) {
+            divide = new Divide(other.getDivide());
             operationType = CalculationTypes.DIVIDE;
         }
     }

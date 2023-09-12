@@ -11,8 +11,11 @@ import java.util.Objects;
 
 public class Environment implements Serializable {
     protected Map<String, Property> envMap;
-    public Environment(List<PRDEnvProperty> list) {
+    public Environment() {
         envMap = new HashMap<>();
+    }
+    public Environment(List<PRDEnvProperty> list) {
+        this();
 
         for (PRDEnvProperty property : list)
             envMap.put(property.getPRDName(), new Property(property));

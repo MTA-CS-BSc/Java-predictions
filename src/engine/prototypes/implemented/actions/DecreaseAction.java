@@ -11,6 +11,12 @@ public class DecreaseAction extends Action {
         propertyName = action.getProperty();
         by = action.getBy();
     }
+    public DecreaseAction(DecreaseAction other) {
+        super(other);
+
+        propertyName = other.getPropertyName();
+        by = other.getBy();
+    }
     public String getPropertyName() {
         return propertyName;
     }

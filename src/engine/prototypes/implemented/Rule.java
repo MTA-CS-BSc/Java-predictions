@@ -3,7 +3,6 @@ package engine.prototypes.implemented;
 import engine.prototypes.jaxb.PRDRule;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Rule implements Serializable {
     protected String name;
@@ -11,11 +10,15 @@ public class Rule implements Serializable {
     protected Activation activation;
 
     public Rule(PRDRule rule) {
-        if (!Objects.isNull(rule)) {
-            name = rule.getName();
-            actions = new Actions(rule.getPRDActions().getPRDAction());
-            activation = new Activation(rule.getPRDActivation());
-        }
+        name = rule.getName();
+        actions = new Actions(rule.getPRDActions().getPRDAction());
+        activation = new Activation(rule.getPRDActivation());
+    }
+
+    public Rule(Rule other) {
+        name = other.getName();
+        actions = new Actions(other.getActions());
+        activation = new Activation(other.getActivation());
     }
 
     public Actions getActions() {

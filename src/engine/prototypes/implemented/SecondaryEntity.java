@@ -11,6 +11,11 @@ public class SecondaryEntity {
         entityName = secondaryEntity.getEntity();
     }
 
+    public SecondaryEntity(SecondaryEntity other) {
+        entityName = other.getEntityName();
+        selection = new Selection(other.getSelection());
+    }
+
     public String getEntityName() { return entityName; }
     public Selection getSelection() { return selection; }
 }

@@ -11,6 +11,13 @@ public class SetAction extends Action {
         propertyName = action.getProperty();
         value = action.getValue();
     }
+
+    public SetAction(SetAction other) {
+        super(other);
+
+        propertyName = other.getPropertyName();
+        value = other.getValue();
+    }
     public String getPropertyName() {
         return propertyName;
     }

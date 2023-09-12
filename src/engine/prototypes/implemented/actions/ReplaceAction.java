@@ -13,6 +13,14 @@ public class ReplaceAction extends Action {
         create = action.getCreate();
         mode = action.getMode();
     }
+
+    public ReplaceAction(ReplaceAction other) {
+        super(other);
+
+        kill = other.getKill();
+        create = other.getCreate();
+        mode = other.getMode();
+    }
     public String getKill() {
         return kill;
     }

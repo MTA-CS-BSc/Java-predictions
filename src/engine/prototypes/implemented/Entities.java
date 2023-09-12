@@ -9,8 +9,11 @@ import java.util.Map;
 
 public class Entities implements Serializable {
     protected Map<String, Entity> entitiesMap;
-    public Entities(List<PRDEntity> list) {
+    public Entities() {
         entitiesMap = new HashMap<>();
+    }
+    public Entities(List<PRDEntity> list) {
+        this();
 
         for (PRDEntity entity : list)
             entitiesMap.put(entity.getName(), new Entity(entity));

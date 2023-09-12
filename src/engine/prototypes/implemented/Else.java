@@ -24,5 +24,17 @@ public class Else implements Serializable {
             });
     }
 
+    public Else(Else other) {
+        actions = new ArrayList<>();
+
+        if (!Objects.isNull(other))
+            other.getActions().forEach(action -> {
+                Action created = ActionCreator.createAction(action);
+
+                if (!Objects.isNull(created))
+                    actions.add(created);
+            });
+    }
+
     public List<Action> getActions() { return actions; }
 }

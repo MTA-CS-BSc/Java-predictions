@@ -8,8 +8,23 @@ public class WorldGrid {
     protected boolean[][] taken;
 
     public WorldGrid(PRDWorld.PRDGrid grid) {
-        rows = grid.getRows();
-        columns = grid.getColumns();
+        this(grid.getRows(), grid.getColumns());
+
+    }
+    public WorldGrid (WorldGrid other) {
+        this.rows = other.getRows();
+        this.columns = other.getColumns();
+
+        taken = new boolean[rows][columns];
+
+        for (int i = 0 ; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                taken[i][j] = other.getTaken()[i][j];
+    }
+    public WorldGrid(int rows, int columns) {
+        this.rows = rows;
+        this.columns = columns;
+
         taken = new boolean[rows][columns];
 
         for (int i = 0 ; i < rows; i++)
@@ -22,6 +37,7 @@ public class WorldGrid {
     public int getColumns() {
         return columns;
     }
+    public boolean[][] getTaken() { return taken; }
     public boolean isTaken(Coordinate coordinate) {
         return taken[coordinate.getX()][coordinate.getY()];
     }

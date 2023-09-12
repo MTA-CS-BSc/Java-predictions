@@ -3,22 +3,19 @@ package engine.prototypes.implemented;
 import engine.prototypes.jaxb.PRDDivide;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Divide implements Serializable {
     protected String arg1;
     protected String arg2;
 
     public Divide(PRDDivide divide) {
-        if (Objects.isNull(divide)) {
-            arg1 = "";
-            arg2 = "";
-        }
+        arg1 = divide.getArg1();
+        arg2 = divide.getArg2();
+    }
 
-        else {
-            arg1 = divide.getArg1();
-            arg2 = divide.getArg2();
-        }
+    public Divide(Divide other) {
+        arg1 = other.getArg1();
+        arg2 = other.getArg2();
     }
 
     public String getArg1() { return arg1; }
