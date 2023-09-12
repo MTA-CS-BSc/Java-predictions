@@ -66,6 +66,7 @@ public class NewExecutionController implements Initializable {
         propertyNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         propertyTypeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getType()));
         propertyRangeColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getRange()));
+        propertyValueColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         propertyValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
     }
 
@@ -86,8 +87,11 @@ public class NewExecutionController implements Initializable {
                         response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
 
                 editedProperty.setValue(event.getOldValue());
-                populationTable.refresh();
+                envPropsTable.refresh();
             }
+
+            else
+                editedProperty.setValue(event.getNewValue());
         });
     }
 
@@ -105,6 +109,9 @@ public class NewExecutionController implements Initializable {
                 editedEntity.setPopulation(event.getOldValue());
                 populationTable.refresh();
             }
+
+            else
+                editedEntity.setPopulation(event.getNewValue());
         });
     }
 
