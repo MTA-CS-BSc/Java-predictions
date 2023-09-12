@@ -210,7 +210,7 @@ public class NewExecutionController implements Initializable {
                 TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
                 tray.showAndDismiss(Constants.ANIMATION_DURATION);
 
-                //TODO: Move to third screen
+                //TODO: Redirect to third screen
             }
 
             else
