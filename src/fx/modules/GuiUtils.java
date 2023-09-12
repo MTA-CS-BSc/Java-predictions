@@ -2,7 +2,10 @@ package fx.modules;
 
 import dtos.actions.*;
 import fx.models.DetailsScreen.actions.*;
+import javafx.animation.FadeTransition;
 import javafx.scene.control.TreeItem;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.util.Objects;
 
@@ -77,5 +80,23 @@ public abstract class GuiUtils {
         }
 
         return null;
+    }
+
+
+    public static void fadeInAnimation(Pane root) {
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(1800), root);
+        fadeIn.setFromValue(0.0);
+        fadeIn.setToValue(1.0);
+
+        fadeIn.setOnFinished(event -> root.setVisible(true));
+        fadeIn.play();
+    }
+    public static void fadeOutAnimation(Pane root) {
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(1200), root);
+        fadeOut.setFromValue(1.0);
+        fadeOut.setToValue(0.0);
+
+        fadeOut.setOnFinished(event -> root.setVisible(false));
+        fadeOut.play();
     }
 }
