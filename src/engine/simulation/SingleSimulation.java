@@ -113,6 +113,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
         if (simulationState == SimulationState.CREATED) {
             initializeRandomVariables();
+            enqueueWorldState(world);
             setStartTime(new Date());
         }
 

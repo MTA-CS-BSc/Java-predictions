@@ -89,9 +89,6 @@ public class EngineAPI {
     }
     public ResponseDTO createSimulation() {
         SingleSimulation sm = new SingleSimulation(getInitialWorld());
-
-        sm.enqueueWorldState(sm.getWorld());
-
         historyManager.addPastSimulation(sm);
         return new ResponseDTO(200, sm.getUUID());
     }
