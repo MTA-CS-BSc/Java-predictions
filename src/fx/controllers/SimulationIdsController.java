@@ -13,6 +13,8 @@ import javafx.scene.control.TableView;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class SimulationIdsController implements Initializable {
     @FXML
@@ -28,6 +30,13 @@ public class SimulationIdsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
         startTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTimestamp()));
+
+        //TODO: Add thread manager
+        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> {
+            try {
+                addSimulationsFromAPI();
+            } catch (Exception ignored) {}
+        }, 0, 5, TimeUnit.SECONDS);
     }
 
     private void addSimulationsFromAPI() throws Exception {
