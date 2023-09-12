@@ -14,10 +14,10 @@
         <Insets left="20.0" right="20.0" top="20.0" bottom="20.0"/>
     </padding>
     <HBox spacing="50.0">
-        <TableView fx:id="populationTable">
+        <TableView fx:id="populationTable" editable="true">
             <columns>
-                <TableColumn fx:id="entityNameColumn" prefWidth="100.0" text="Entity Name"/>
-                <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population"/>
+                <TableColumn editable="false" fx:id="entityNameColumn" prefWidth="150.0" text="Entity Name"/>
+                <TableColumn editable="true" fx:id="populationColumn" prefWidth="100.0" text="Population"/>
             </columns>
         </TableView>
         <TableView>
