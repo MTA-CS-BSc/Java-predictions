@@ -67,7 +67,12 @@ public class NewExecutionController implements Initializable {
         initEnvPropsTable();
     }
 
-    public void setSimulationUuid(String value) { simulationUuid = value; }
+    public void setSimulationUuid(String value) throws Exception{
+        simulationUuid = value;
+
+        addInitEntitiesDataToTable();
+        addInitEnvPropsDataToTable();
+    }
 
     private void initEnvPropsTable() {
         propertyNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
