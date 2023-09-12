@@ -3,7 +3,6 @@ package engine.prototypes.implemented;
 import engine.prototypes.jaxb.PRDValue;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Value implements Serializable {
     protected boolean isRandomInitialize;
@@ -11,19 +10,15 @@ public class Value implements Serializable {
     protected String currentValue;
 
     public Value(PRDValue value) {
-        if (!Objects.isNull(value)) {
-            isRandomInitialize = value.isRandomInitialize();
-            init = value.getInit();
-            currentValue = value.getInit();
-        }
+        isRandomInitialize = value.isRandomInitialize();
+        init = value.getInit();
+        currentValue = value.getInit();
     }
 
     public Value(Value other) {
-        if (!Objects.isNull(other)) {
-            isRandomInitialize = other.isRandomInitialize();
-            init = other.getInit();
-            currentValue = other.getCurrentValue();
-        }
+        isRandomInitialize = other.isRandomInitialize();
+        init = other.getInit();
+        currentValue = other.getCurrentValue();
     }
 
     public boolean isRandomInitialize() {

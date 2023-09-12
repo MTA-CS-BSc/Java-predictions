@@ -16,6 +16,34 @@ public class Property implements Serializable {
     protected Value value;
     protected String type;
 
+    public Property(PRDProperty property) {
+        name = property.getPRDName();
+        type = property.getType();
+        value = new Value(property.getPRDValue());
+
+        if (PropTypes.NUMERIC_PROPS.contains(type))
+            range = new Range(property.getPRDRange());
+    }
+
+    public Property(PRDEnvProperty envProperty) {
+        name = envProperty.getPRDName();
+        type = envProperty.getType();
+        value = new Value(new PRDValue());
+        value.setRandomInitialize(true);
+
+        if (PropTypes.NUMERIC_PROPS.contains(envProperty.getType()))
+            range = new Range(envProperty.getPRDRange());
+    }
+
+    public Property(Property other) {
+        name = other.getName();
+        type = other.getType();
+        value = new Value(other.getValue());
+
+        if (PropTypes.NUMERIC_PROPS.contains(other.getType()))
+            range = new Range(other.getRange());
+    }
+
     public String getName() {
         return name;
     }
@@ -59,44 +87,6 @@ public class Property implements Serializable {
     public boolean hasNoRange() {
         return Objects.isNull(getRange())
                 || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
-    }
-
-    public Property(PRDProperty property) {
-        name = property.getPRDName();
-        type = property.getType();
-        value = new Value(property.getPRDValue());
-
-        if (PropTypes.NUMERIC_PROPS.contains(type))
-            range = new Range(property.getPRDRange());
-
-        value.setRandomInitialize(property.getPRDValue().isRandomInitialize());
-        value.setInit(property.getPRDValue().getInit());
-        value.setCurrentValue(value.getInit());
-    }
-
-    public Property(PRDEnvProperty envProperty) {
-        name = envProperty.getPRDName();
-
-        if (PropTypes.NUMERIC_PROPS.contains(envProperty.getType()))
-            range = new Range(envProperty.getPRDRange());
-
-        type = envProperty.getType();
-        value = new Value(new PRDValue());
-        value.setRandomInitialize(true);
-    }
-
-    public Property(Property other) {
-        name = other.getName();
-        type = other.getType();
-        value = new Value(other.getValue());
-
-        value.setRandomInitialize(true);
-
-        if (!Objects.isNull(other.getValue())) {
-            value.setRandomInitialize(other.getValue().isRandomInitialize());
-            value.setInit(other.getValue().getInit());
-            value.setCurrentValue(other.getValue().getCurrentValue());
-        }
     }
 
     @Override

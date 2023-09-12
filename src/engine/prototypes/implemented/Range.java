@@ -21,7 +21,10 @@ public class Range implements Serializable {
             from = Constants.MIN_RANGE;
         }
     }
-
+    public Range (Range other) {
+        this.to = other.to;
+        this.from = other.from;
+    }
     public double getTo() { return to; }
     public double getFrom() { return from; }
     @Override
