@@ -100,15 +100,9 @@ public class HeaderComponentController implements Initializable {
     private void showSimulationDetailsScreen() throws JsonProcessingException {
         if (!detailsScreenController.getContainer().isVisible()) {
             if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
-                Platform.runLater(() -> {
-                    try {
-                        hideVisible();
-                        GuiUtils.fadeInAnimation(detailsScreenController.getContainer());
-                        detailsScreenController.handleShowCategoriesData();
-                    }
-
-                    catch (Exception ignored) { }
-                });
+                hideVisible();
+                detailsScreenController.handleShowCategoriesData();
+                Platform.runLater(() ->  GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
             }
 
             else {
@@ -120,15 +114,11 @@ public class HeaderComponentController implements Initializable {
     }
 
     @FXML
-    private void showNewExecutionScreen() {
+    private void showNewExecutionScreen() throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
-            Platform.runLater(() -> {
-                try {
-                    hideVisible();
-                    prepareSimulation();
-                    GuiUtils.fadeInAnimation(newExecutionController.getContainer());
-                } catch (Exception ignored) { }
-            });
+            hideVisible();
+            prepareSimulation();
+            Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
         }
     }
 
