@@ -128,7 +128,7 @@ public class HeaderComponentController implements Initializable {
         String uuid = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.createSimulation().getData(),
                 String.class);
 
-        newExecutionController.initializeEntitiesTable(uuid);
+        newExecutionController.addInitEntitiesDataToTable(uuid);
     }
 
     private void fadeInAnimation(Pane root) {
