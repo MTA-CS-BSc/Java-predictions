@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml" fx:controller="fx.controllers.OrchestratorController">
-    <fx:include source="../AllScreensUpperBar/AllScreensUpperBar.fxml" fx:id="allScreensUpperBar" />
+<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.OrchestratorController">
+    <fx:include fx:id="allScreensUpperBar" source="../AllScreensUpperBar/AllScreensUpperBar.fxml" />
 
     <StackPane>
-        <fx:include source="../NewExecution/NewExecution.fxml" fx:id="newExecution"/>
-        <fx:include source="../DetailsScreen/DetailsScreen.fxml" fx:id="detailsScreen"/>
-        <fx:include source="../Results/ResultsScreen.fxml" fx:id="resultsScreen"/>
+        <fx:include fx:id="newExecution" source="../NewExecution/NewExecution.fxml" />
+        <fx:include fx:id="detailsScreen" source="../DetailsScreen/DetailsScreen.fxml" />
+        <fx:include fx:id="resultsScreen" source="../Results/ResultsScreen.fxml" />
+      <padding>
+         <Insets left="20.0" right="20.0" />
+      </padding>
     </StackPane>
 </VBox>
