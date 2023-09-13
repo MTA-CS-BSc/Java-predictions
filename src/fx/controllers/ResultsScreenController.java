@@ -36,20 +36,22 @@ public class ResultsScreenController implements Initializable {
         startTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTimestamp()));
 
         //TODO: Add thread manager
-        Executors.newScheduledThreadPool(1).scheduleAtFixedRate(() -> {
-            try {
-                addSimulationsFromAPI();
-            } catch (Exception ignored) {}
-        }, 0, Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+        Executors.newScheduledThreadPool(1)
+                .scheduleAtFixedRate(this::addSimulationsFromAPI, 0,
+                        Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
-    private void addSimulationsFromAPI() throws Exception {
-        List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
-                        .getPastSimulations().getData(),
-                new TypeReference<List<SingleSimulationDTO>>() {});
+    private void addSimulationsFromAPI() {
+        try {
+            List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
+                            .getPastSimulations().getData(),
+                    new TypeReference<List<SingleSimulationDTO>>() {});
 
-        simulationsTable.getItems().clear();
-        simulationsTable.getItems().addAll(simulations);
+            simulationsTable.getItems().clear();
+            simulationsTable.getItems().addAll(simulations);
+        }
+
+        catch (Exception ignored) {}
     }
 
     public GridPane getContainer() {
