@@ -43,6 +43,9 @@ public class ResultsScreenController implements Initializable {
 
     @FXML
     private TableColumn<SingleSimulationDTO, Long> ticksColumn;
+
+    @FXML
+    private TableColumn<SingleSimulationDTO, Long> elapsedTimeColumn;
     //#endregion
 
     @FXML
@@ -52,10 +55,7 @@ public class ResultsScreenController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
-        createdTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedTimestamp()));
-        stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSimulationState()));
-        ticksColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
+        initColumns();
 
         //TODO: Add thread manager
         Executors.newScheduledThreadPool(1)
@@ -68,6 +68,13 @@ public class ResultsScreenController implements Initializable {
         });
     }
 
+    private void initColumns() {
+        idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
+        createdTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedTimestamp()));
+        stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSimulationState()));
+        ticksColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getTicks()).asObject());
+        elapsedTimeColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
+    }
     private void addSimulationsFromAPI() {
         try {
             List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
@@ -91,6 +98,8 @@ public class ResultsScreenController implements Initializable {
                 .findFirst().orElse(null);
 
         simulationsTable.getSelectionModel().select(newlySelectedSimulation);
+        populationTableController.setSelectedSimulation(newlySelectedSimulation);
+        populationTableController.refreshTable();
     }
 
     @FXML
