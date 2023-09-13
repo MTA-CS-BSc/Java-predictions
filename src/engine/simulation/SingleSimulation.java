@@ -164,6 +164,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     public int getMaxEntitiesAmount() {
         return world.getGrid().getColumns() * world.getGrid().getRows();
     }
+    public long getTicks() { return ticks; }
     @Override
     public String toString() {
         return "--------------------------------------\n" +

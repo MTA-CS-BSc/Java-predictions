@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public abstract class Mappers {
     public static SingleSimulationDTO toDto(SingleSimulation simulation) {
         return new SingleSimulationDTO(simulation.getUUID(), simulation.getStartTimestamp(),
-                toDto(simulation.getWorld()), simulation.getSimulationState());
+                toDto(simulation.getWorld()), simulation.getSimulationState(), simulation.getTicks());
     }
     public static WorldDTO toDto(World world) {
         List<EntityDTO> entities = world.getEntities().getEntitiesMap().values()
