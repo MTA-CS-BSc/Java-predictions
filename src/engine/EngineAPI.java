@@ -295,8 +295,10 @@ public class EngineAPI {
     private ResponseDTO startSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
-        if (simulation.getSimulationState() == SimulationState.CREATED)
+        if (simulation.getSimulationState() == SimulationState.CREATED) {
             setEntitiesInitialLocations(simulation);
+            simulation.setStartTime(new Date());
+        }
 
         simulation.run();
 
