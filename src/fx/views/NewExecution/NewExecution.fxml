@@ -14,12 +14,7 @@
         <Insets top="20.0" bottom="20.0"/>
     </padding>
     <HBox alignment="CENTER" spacing="50.0">
-        <TableView fx:id="populationTable" editable="true">
-            <columns>
-                <TableColumn editable="false" fx:id="entityNameColumn" prefWidth="150.0" text="Entity Name"/>
-                <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population"/>
-            </columns>
-        </TableView>
+        <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>
         <TableView fx:id="envPropsTable" editable="true">
             <columns>
                 <TableColumn fx:id="propertyNameColumn" editable="false" prefWidth="150.0" text="Property Name"/>

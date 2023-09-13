@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit;
 public class ResultsScreenController implements Initializable {
     @FXML
     private VBox container;
+
+    //#region Simulations
     @FXML
     private TableView<SingleSimulationDTO> simulationsTable;
 
@@ -29,6 +31,7 @@ public class ResultsScreenController implements Initializable {
 
     @FXML
     private TableColumn<SingleSimulationDTO, String> startTimestampColumn;
+    //#endregion
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

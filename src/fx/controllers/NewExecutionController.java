@@ -10,7 +10,6 @@ import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -20,7 +19,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.VBox;
-import javafx.util.converter.IntegerStringConverter;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
@@ -32,16 +30,8 @@ public class NewExecutionController implements Initializable {
     @FXML
     private VBox container;
 
-    //#region Population Table
     @FXML
-    private TableView<EntityDTO> populationTable;
-
-    @FXML
-    private TableColumn<EntityDTO, String> entityNameColumn;
-
-    @FXML
-    private TableColumn<EntityDTO, Integer> populationColumn;
-    //#endregion
+    private PopulationTableController populationTableController;
 
     //#region Environment Variables Table
     @FXML
@@ -67,12 +57,14 @@ public class NewExecutionController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         isInitial = true;
-        initPopulationTable();
+        simulationUuid = "";
         initEnvPropsTable();
     }
 
     public void setSimulationUuid(String value) throws Exception {
         simulationUuid = value;
+        populationTableController.setSimulationUuid(simulationUuid);
+        populationTableController.setIsInitial(isInitial);
 
         if (!value.isEmpty()) {
             addInitEntitiesDataToTable();
@@ -94,12 +86,6 @@ public class NewExecutionController implements Initializable {
         propertyValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
     }
 
-    private void initPopulationTable() {
-        entityNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
-        populationColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-        populationColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPopulation()).asObject());
-    }
-
     private void addValueEditCommit(String uuid) {
         propertyValueColumn.setOnEditCommit(event -> {
             PropertyDTO editedProperty = event.getRowValue();
@@ -119,35 +105,16 @@ public class NewExecutionController implements Initializable {
         });
     }
 
-    private void addPopulationEditCommit() {
-        populationColumn.setOnEditCommit(event -> {
-            EntityDTO editedEntity = event.getRowValue();
-
-            try {
-                ResponseDTO response = SingletonEngineAPI.api
-                        .setEntityInitialPopulation(simulationUuid, editedEntity.getName(), event.getNewValue());
-
-                if (response.getStatus() != Constants.API_RESPONSE_OK) {
-                    Alerts.showAlert("Validation failed", "Population is invalid",
-                            response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
-
-                    editedEntity.setPopulation(event.getOldValue());
-                    populationTable.refresh();
-                }
-
-                else
-                    editedEntity.setPopulation(event.getNewValue());
-
-            } catch (Exception ignored) { }
-        });
-    }
-
     protected void addInitEntitiesDataToTable() throws Exception {
         if (isUuidEmpty())
             return;
 
-        addPopulationsFromAPI();
-        addPopulationEditCommit();
+        List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
+                        .getEntities(simulationUuid, isInitial).getData(),
+                new TypeReference<List<EntityDTO>>() {});
+
+        populationTableController.addPopulationsFromEntitiesList(entities);
+        populationTableController.addPopulationEditCommit();
     }
 
     protected void addInitEnvPropsDataToTable() throws Exception {
@@ -156,15 +123,6 @@ public class NewExecutionController implements Initializable {
 
         addEnvPropsFromAPI();
         addValueEditCommit(simulationUuid);
-    }
-
-    private void addPopulationsFromAPI() throws Exception {
-        List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
-                        .getEntities(simulationUuid, isInitial).getData(),
-                new TypeReference<List<EntityDTO>>() {});
-
-        populationTable.getItems().clear();
-        populationTable.getItems().addAll(entities);
     }
 
     private void addEnvPropsFromAPI() throws Exception {
@@ -184,14 +142,6 @@ public class NewExecutionController implements Initializable {
         return simulationUuid.isEmpty() ||
                 SingletonEngineAPI.api.getEntities(simulationUuid, isInitial).getStatus() != Constants.API_RESPONSE_OK;
     }
-
-    private void clearPopulationTable() throws Exception {
-        for (EntityDTO entity : populationTable.getItems())
-            SingletonEngineAPI.api.setEntityInitialPopulation(simulationUuid, entity.getName(), 0);
-
-        addPopulationsFromAPI();
-    }
-
     private void clearEnvPropsTable() throws Exception {
         envPropsTable.getItems().forEach(property -> {
             SingletonEngineAPI.api.setEnvironmentVariable(simulationUuid, property, null);
@@ -205,14 +155,8 @@ public class NewExecutionController implements Initializable {
         if (isUuidEmpty())
             return;
 
-        clearPopulationTable();
+        populationTableController.clearPopulationTable();
         clearEnvPropsTable();
-    }
-
-    private boolean validateAllInitialized() {
-        return populationTable.getItems()
-                .stream()
-                .anyMatch(entity -> entity.getPopulation() > 0);
     }
 
     @FXML
@@ -220,7 +164,7 @@ public class NewExecutionController implements Initializable {
         if (isUuidEmpty())
             return;
 
-        if (validateAllInitialized()) {
+        if (populationTableController.validateAllInitialized()) {
             ResponseDTO response = SingletonEngineAPI.api.runSimulation(simulationUuid);
 
             if (response.getStatus() == Constants.API_RESPONSE_OK) {
