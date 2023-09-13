@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 
 public class ResultsScreenController implements Initializable {
     @FXML
-    private GridPane container;
+    private VBox container;
     @FXML
     private TableView<SingleSimulationDTO> simulationsTable;
 
@@ -54,7 +54,7 @@ public class ResultsScreenController implements Initializable {
         catch (Exception ignored) {}
     }
 
-    public GridPane getContainer() {
+    public VBox getContainer() {
         return container;
     }
 }
