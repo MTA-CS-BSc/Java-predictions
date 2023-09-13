@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -70,7 +71,9 @@ public class ResultsScreenController implements Initializable {
 
             simulationsTable.getItems().clear();
             simulationsTable.getItems().addAll(simulations);
-            selectPreviouslySelectedSimulation();
+
+            if (!Objects.isNull(selectedSimulation.getValue()))
+                selectPreviouslySelectedSimulation();
         }
 
         catch (Exception ignored) {}
