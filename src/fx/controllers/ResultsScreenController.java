@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -61,6 +62,17 @@ public class ResultsScreenController implements Initializable {
         }
 
         catch (Exception ignored) {}
+    }
+
+    @FXML
+    private void handleSelectedSimulation(MouseEvent event) {
+        if (event.getClickCount() == 1) {
+            SingleSimulationDTO selectedSimulation = simulationsTable.getSelectionModel().getSelectedItem();
+
+            if (selectedSimulation != null) {
+                //TODO: Not implemented
+            }
+        }
     }
 
     public VBox getContainer() {
