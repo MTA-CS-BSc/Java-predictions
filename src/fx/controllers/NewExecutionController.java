@@ -62,9 +62,11 @@ public class NewExecutionController implements Initializable {
 
     private String simulationUuid;
     private HeaderComponentController headerComponentController;
+    private boolean isInitial;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isInitial = true;
         initPopulationTable();
         initEnvPropsTable();
     }
@@ -158,7 +160,7 @@ public class NewExecutionController implements Initializable {
 
     private void addPopulationsFromAPI() throws Exception {
         List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
-                        .getEntities(simulationUuid).getData(),
+                        .getEntities(simulationUuid, isInitial).getData(),
                 new TypeReference<List<EntityDTO>>() {});
 
         populationTable.getItems().clear();
@@ -180,7 +182,7 @@ public class NewExecutionController implements Initializable {
 
     private boolean isUuidEmpty() throws Exception {
         return simulationUuid.isEmpty() ||
-                SingletonEngineAPI.api.getEntities(simulationUuid).getStatus() != Constants.API_RESPONSE_OK;
+                SingletonEngineAPI.api.getEntities(simulationUuid, isInitial).getStatus() != Constants.API_RESPONSE_OK;
     }
 
     private void clearPopulationTable() throws Exception {
