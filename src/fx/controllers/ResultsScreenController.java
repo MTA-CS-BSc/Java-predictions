@@ -33,8 +33,14 @@ public class ResultsScreenController implements Initializable {
     private TableColumn<SingleSimulationDTO, String> startTimestampColumn;
     //#endregion
 
+    @FXML
+    private PopulationTableController populationTableController;
+
+    private boolean isInitial;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isInitial = false;
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
         startTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTimestamp()));
 
