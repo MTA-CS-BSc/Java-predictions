@@ -3,12 +3,16 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
-<GridPane fx:id="container" alignment="CENTER" vgap="15.0" xmlns="http://javafx.com/javafx/8.0.171"
-          xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.ResultsScreenController">
-    <TableView fx:id="simulationsTable">
-        <columns>
-            <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>
-            <TableColumn fx:id="startTimestampColumn" prefWidth="200" text="Timestamp"/>
-        </columns>
-    </TableView>
-</GridPane>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<VBox fx:id="container" alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/8.0.171"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.ResultsScreenController">
+    <HBox>
+        <TableView fx:id="simulationsTable">
+            <columns>
+                <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>
+                <TableColumn fx:id="startTimestampColumn" prefWidth="200" text="Timestamp"/>
+            </columns>
+        </TableView>
+    </HBox>
+</VBox>
