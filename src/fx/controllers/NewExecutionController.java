@@ -148,7 +148,7 @@ public class NewExecutionController implements Initializable {
         String simulationUuid = currentSimulation.getValue().getUuid();
 
         if (populationTableController.validateAllInitialized()) {
-            ResponseDTO response = SingletonEngineAPI.api.runSimulation(simulationUuid);
+            ResponseDTO response = SingletonEngineAPI.api.enqueueSimulation(simulationUuid);
 
             if (response.getStatus() == Constants.API_RESPONSE_OK) {
                 TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
