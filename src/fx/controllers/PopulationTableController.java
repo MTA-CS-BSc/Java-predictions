@@ -54,7 +54,9 @@ public class PopulationTableController implements Initializable {
             }
         });
     }
+
     public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
+
     public void addPopulationEditCommit() {
         if (Objects.isNull(selectedSimulation.getValue()))
             return;
@@ -82,11 +84,13 @@ public class PopulationTableController implements Initializable {
             } catch (Exception ignored) { }
         });
     }
+
     public boolean validateAllInitialized() {
         return populationTable.getItems()
                 .stream()
                 .anyMatch(entity -> entity.getPopulation() > 0);
     }
+
     public void clearPopulationTable() {
         if (Objects.isNull(selectedSimulation.getValue()))
             return;
@@ -95,6 +99,7 @@ public class PopulationTableController implements Initializable {
             SingletonEngineAPI.api.setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
                     entity, 0);
     }
+
     public void refreshTable() {
         populationTable.refresh();
     }

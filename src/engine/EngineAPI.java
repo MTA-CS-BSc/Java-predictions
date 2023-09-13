@@ -264,21 +264,32 @@ public class EngineAPI {
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
     }
-    public ResponseDTO stopRunningSimulation(String uuid, boolean isFinished) {
+    public ResponseDTO stopSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
         SimulationState simulationState = simulation.getSimulationState();
 
-        if (simulationState.equals(SimulationState.FINISHED) || simulationState.equals(SimulationState.ERROR))
+        if (!simulationState.equals(SimulationState.RUNNING) &&
+                !simulationState.equals(SimulationState.PAUSED))
             return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
                     String.format("Requested simulation's state is [%s]", simulationState.name()));
 
-        simulation.setSimulationState(isFinished ? SimulationState.FINISHED : SimulationState.STOPPED);
-        return new ResponseDTO(200, String.format("Simulation [%s] is [%s]", uuid, isFinished ? "terminated" : "stopped"));
+        simulation.setSimulationState(SimulationState.STOPPED);
+        return new ResponseDTO(200, String.format("Simulation [%s] is stopped", uuid));
     }
-    public ResponseDTO resumeStoppedSimulation(String uuid) {
+    public ResponseDTO pauseSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
-        if (!simulation.getSimulationState().equals(SimulationState.STOPPED))
+        if (!simulation.getSimulationState().equals(SimulationState.RUNNING))
+            return new ResponseDTO(400, String.format("Simulation [%s] was not stopped", uuid),
+                    "Simulation is not running");
+
+        simulation.setSimulationState(SimulationState.PAUSED);
+        return new ResponseDTO(200, String.format("Simulation [%s] was paused", uuid));
+    }
+    public ResponseDTO resumeSimulation(String uuid) {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        if (!simulation.getSimulationState().equals(SimulationState.PAUSED))
             return new ResponseDTO(400, String.format("Simulation [%s] was not resumed.", uuid),
                     "Requested simulation is not stopped");
 

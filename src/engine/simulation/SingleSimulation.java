@@ -130,7 +130,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         simulationState = SimulationState.RUNNING;
 
         while (isSimulationFinished(elapsedTimer.getElapsedTime()).isEmpty()
-                && Arrays.asList(SimulationState.STOPPED, SimulationState.RUNNING).contains(simulationState)) {
+                && Arrays.asList(SimulationState.PAUSED, SimulationState.RUNNING).contains(simulationState)) {
             if (simulationState == SimulationState.RUNNING) {
                 if (!elapsedTimer.isRunning())
                     elapsedTimer.startOrResume();
@@ -138,7 +138,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 handleSingleTick();
 
                 if (byStep != ByStep.NOT_BY_STEP)
-                    simulationState = SimulationState.STOPPED;
+                    simulationState = SimulationState.PAUSED;
             }
 
             else if (elapsedTimer.isRunning())
