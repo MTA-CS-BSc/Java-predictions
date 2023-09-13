@@ -1,15 +1,15 @@
 package fx.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import dtos.EntityDTO;
 import dtos.PropertyDTO;
 import dtos.RangeDTO;
 import dtos.ResponseDTO;
+import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
-import helpers.modules.SingletonObjectMapper;
+import helpers.types.SimulationState;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -23,7 +23,7 @@ import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class NewExecutionController implements Initializable {
@@ -50,29 +50,28 @@ public class NewExecutionController implements Initializable {
     private TableColumn<PropertyDTO, String> propertyValueColumn;
     //#endregion
 
-    private String simulationUuid;
     private HeaderComponentController headerComponentController;
     private boolean isInitial;
+    private ObjectProperty<SingleSimulationDTO> currentSimulation;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         isInitial = true;
-        simulationUuid = "";
+        currentSimulation = new SimpleObjectProperty<>();
         initEnvPropsTable();
+
+        currentSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
+            populationTableController.setSelectedSimulation(currentSimulation.getValue());
+
+            if (t1.getSimulationState() == SimulationState.CREATED)
+                addValueEditCommit();
+
+            envPropsTable.getItems().clear();
+            envPropsTable.getItems().addAll(t1.getWorld().getEnvironment());
+        });
     }
 
-    public void setSimulationUuid(String value) throws Exception {
-        simulationUuid = value;
-        populationTableController.setSimulationUuid(simulationUuid);
-        populationTableController.setIsInitial(isInitial);
-
-        if (!value.isEmpty()) {
-            addInitEntitiesDataToTable();
-            addInitEnvPropsDataToTable();
-        }
-    }
-
-    public String getSimulationUuid() { return simulationUuid; }
+    public void setCurrentSimulation(SingleSimulationDTO simulation) { currentSimulation.set(simulation); }
 
     public void setHeaderComponentController(HeaderComponentController controller) {
         headerComponentController = controller;
@@ -86,11 +85,12 @@ public class NewExecutionController implements Initializable {
         propertyValueColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getValue()));
     }
 
-    private void addValueEditCommit(String uuid) {
+    private void addValueEditCommit() {
         propertyValueColumn.setOnEditCommit(event -> {
             PropertyDTO editedProperty = event.getRowValue();
             ResponseDTO response = SingletonEngineAPI.api
-                    .setEnvironmentVariable(uuid, editedProperty, event.getNewValue());
+                    .setEnvironmentVariable(currentSimulation.getValue().getUuid(),
+                            editedProperty, event.getNewValue());
 
             if (response.getStatus() != Constants.API_RESPONSE_OK) {
                 Alerts.showAlert("Validation failed", "Value is invalid",
@@ -105,55 +105,28 @@ public class NewExecutionController implements Initializable {
         });
     }
 
-    protected void addInitEntitiesDataToTable() throws Exception {
-        if (isUuidEmpty())
-            return;
-
-        List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
-                        .getEntities(simulationUuid, isInitial).getData(),
-                new TypeReference<List<EntityDTO>>() {});
-
-        populationTableController.addPopulationsFromEntitiesList(entities);
-        populationTableController.addPopulationEditCommit();
-    }
-
-    protected void addInitEnvPropsDataToTable() throws Exception {
-        if (isUuidEmpty())
-            return;
-
-        addEnvPropsFromAPI();
-        addValueEditCommit(simulationUuid);
-    }
-
-    private void addEnvPropsFromAPI() throws Exception {
-        List<PropertyDTO> envProps = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
-                        .getEnvironmentProperties(simulationUuid).getData(),
-                new TypeReference<List<PropertyDTO>>() {});
-
-        envPropsTable.getItems().clear();
-        envPropsTable.getItems().addAll(envProps);
-    }
-
     public VBox getContainer() {
         return container;
     }
 
-    private boolean isUuidEmpty() throws Exception {
-        return simulationUuid.isEmpty() ||
-                SingletonEngineAPI.api.getEntities(simulationUuid, isInitial).getStatus() != Constants.API_RESPONSE_OK;
+    public SingleSimulationDTO getCurrentSimulation() {
+        return currentSimulation.getValue();
     }
 
-    private void clearEnvPropsTable() throws Exception {
-        envPropsTable.getItems().forEach(property -> {
-            SingletonEngineAPI.api.setEnvironmentVariable(simulationUuid, property, null);
-        });
+    public boolean isSimulationEmpty() {
+        return Objects.isNull(currentSimulation.getValue()) ||
+                SingletonEngineAPI.api.getEntities(currentSimulation.getValue().getUuid(), isInitial).getStatus() != Constants.API_RESPONSE_OK;
+    }
 
-        addEnvPropsFromAPI();
+    private void clearEnvPropsTable() {
+        envPropsTable.getItems().forEach(property -> {
+            SingletonEngineAPI.api.setEnvironmentVariable(currentSimulation.getValue().getUuid(), property, null);
+        });
     }
 
     @FXML
-    private void handleClear() throws Exception {
-        if (isUuidEmpty())
+    private void handleClear() {
+        if (isSimulationEmpty())
             return;
 
         populationTableController.clearPopulationTable();
@@ -161,9 +134,11 @@ public class NewExecutionController implements Initializable {
     }
 
     @FXML
-    private void handleRun() throws Exception {
-        if (isUuidEmpty())
+    private void handleRun() {
+        if (isSimulationEmpty())
             return;
+
+        String simulationUuid = currentSimulation.getValue().getUuid();
 
         if (populationTableController.validateAllInitialized()) {
             ResponseDTO response = SingletonEngineAPI.api.runSimulation(simulationUuid);

@@ -5,6 +5,9 @@ import dtos.SingleSimulationDTO;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
+import helpers.types.SimulationState;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -32,23 +35,31 @@ public class ResultsScreenController implements Initializable {
 
     @FXML
     private TableColumn<SingleSimulationDTO, String> startTimestampColumn;
+
+    @FXML
+    private TableColumn<SingleSimulationDTO, SimulationState> stateColumn;
     //#endregion
 
     @FXML
     private PopulationTableController populationTableController;
 
-    private boolean isInitial;
+    private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        isInitial = false;
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
         startTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTimestamp()));
+        stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSimulationState()));
 
         //TODO: Add thread manager
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::addSimulationsFromAPI, 0,
                         Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+
+        selectedSimulation = new SimpleObjectProperty<>();
+        selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
+            populationTableController.setSelectedSimulation(t1);
+        });
     }
 
     private void addSimulationsFromAPI() {
@@ -69,9 +80,8 @@ public class ResultsScreenController implements Initializable {
         if (event.getClickCount() == 1) {
             SingleSimulationDTO selectedSimulation = simulationsTable.getSelectionModel().getSelectedItem();
 
-            if (selectedSimulation != null) {
-                //TODO: Not implemented
-            }
+            if (selectedSimulation != null)
+                this.selectedSimulation.set(selectedSimulation);
         }
     }
 

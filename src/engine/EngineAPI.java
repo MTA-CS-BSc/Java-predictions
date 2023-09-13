@@ -152,8 +152,8 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
-    public ResponseDTO getPastSimulations() throws JsonProcessingException {
-        if (SingletonObjectMapper.objectMapper.readValue(isHistoryEmpty().getData(), Boolean.class))
+    public ResponseDTO getPastSimulations() {
+        if (historyManager.isEmpty())
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
 
         List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
@@ -163,6 +163,12 @@ public class EngineAPI {
                 .collect(Collectors.toList());
 
         return new ResponseDTO(200, data);
+    }
+    public ResponseDTO getPastSimulation(String uuid) {
+        if (historyManager.isEmpty())
+            return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
+
+        return new ResponseDTO(200, Mappers.toDto(historyManager.getPastSimulation(uuid)));
     }
     public ResponseDTO findSelectedSimulationDTO(int selection) throws Exception {
         List<SingleSimulationDTO> pastSimulations = SingletonObjectMapper.objectMapper.readValue(getPastSimulations().getData(),
@@ -186,7 +192,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, entity.getProperties().get(selection - 1));
     }
-    public ResponseDTO getEntities(String uuid, boolean isInitial) throws JsonProcessingException {
+    public ResponseDTO getEntities(String uuid, boolean isInitial) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 

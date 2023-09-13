@@ -1,13 +1,15 @@
 package fx.controllers;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.EntityDTO;
 import dtos.ResponseDTO;
+import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
-import helpers.modules.SingletonObjectMapper;
+import helpers.types.SimulationState;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,12 +20,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.util.converter.IntegerStringConverter;
 
 import java.net.URL;
-import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class PopulationTableController implements Initializable {
-    private boolean isInitial;
-
     @FXML
     private TableView<EntityDTO> populationTable;
 
@@ -33,36 +33,36 @@ public class PopulationTableController implements Initializable {
     @FXML
     private TableColumn<EntityDTO, Integer> populationColumn;
 
-    private String simulationUuid;
+    private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        simulationUuid = "";
         entityNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
         populationColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPopulation()).asObject());
+
+        selectedSimulation = new SimpleObjectProperty<>();
+        selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
+            if (t1.getSimulationState() == SimulationState.CREATED)
+                addPopulationEditCommit();
+
+            populationTable.getItems().clear();
+            populationTable.getItems().addAll(t1.getWorld().getEntities());
+        });
     }
-
-    public void setIsInitial(boolean value) { isInitial = value; }
-
-    public void setSimulationUuid(String value) { simulationUuid = value; }
-
-    public void addPopulationsFromEntitiesList(List<EntityDTO> entities) {
-        populationTable.getItems().clear();
-        populationTable.getItems().addAll(entities);
-    }
+    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.set(simulation); }
 
     public void addPopulationEditCommit() {
-        if (simulationUuid.isEmpty())
+        if (Objects.isNull(selectedSimulation.getValue()))
             return;
 
         populationColumn.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-
         populationColumn.setOnEditCommit(event -> {
             EntityDTO editedEntity = event.getRowValue();
 
             try {
                 ResponseDTO response = SingletonEngineAPI.api
-                        .setEntityInitialPopulation(simulationUuid, editedEntity.getName(), event.getNewValue());
+                        .setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
+                                editedEntity.getName(), event.getNewValue());
 
                 if (response.getStatus() != Constants.API_RESPONSE_OK) {
                     Alerts.showAlert("Validation failed", "Population is invalid",
@@ -85,17 +85,12 @@ public class PopulationTableController implements Initializable {
                 .anyMatch(entity -> entity.getPopulation() > 0);
     }
 
-    public void clearPopulationTable() throws Exception {
-        if (simulationUuid.isEmpty())
+    public void clearPopulationTable() {
+        if (Objects.isNull(selectedSimulation.getValue()))
             return;
 
         for (EntityDTO entity : populationTable.getItems())
-            SingletonEngineAPI.api.setEntityInitialPopulation(simulationUuid, entity.getName(), 0);
-
-        List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
-                        .getEntities(simulationUuid, isInitial).getData(),
-                new TypeReference<List<EntityDTO>>() {});
-
-        addPopulationsFromEntitiesList(entities);
+            SingletonEngineAPI.api.setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
+                    entity.getName(), 0);
     }
 }

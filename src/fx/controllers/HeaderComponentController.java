@@ -2,6 +2,7 @@ package fx.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dtos.ResponseDTO;
+import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.GuiUtils;
 import fx.modules.SingletonEngineAPI;
@@ -132,10 +133,13 @@ public class HeaderComponentController implements Initializable {
 
             else if (newExecutionController.getContainer().isVisible()) {
                 GuiUtils.fadeOutAnimation(newExecutionController.getContainer());
-                SingletonEngineAPI.api.removeSimulationIfUnused(newExecutionController.getSimulationUuid());
+
+                if (!newExecutionController.isSimulationEmpty())
+                    SingletonEngineAPI.api.removeSimulationIfUnused(newExecutionController.getCurrentSimulation().getUuid());
             }
         });
     }
+
     @FXML
     public void showResultsScreen() {
         if (!resultsScreenController.getContainer().isVisible()) {
@@ -148,7 +152,11 @@ public class HeaderComponentController implements Initializable {
 
     private void prepareSimulation() throws Exception {
         String uuid = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.createSimulation().getData(), String.class);
-        newExecutionController.setSimulationUuid(uuid);
-    }
 
+        SingleSimulationDTO simulation = SingletonObjectMapper.objectMapper.readValue(
+                SingletonEngineAPI.api.getPastSimulation(uuid).getData(),
+                SingleSimulationDTO.class);
+
+        newExecutionController.setCurrentSimulation(simulation);
+    }
 }
