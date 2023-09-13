@@ -13,10 +13,9 @@
                 <TableColumn fx:id="startTimestampColumn" prefWidth="200" text="Timestamp"/>
             </columns>
         </TableView>
-    </HBox>
-    <HBox>
-       <VBox>
-           <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>
-       </VBox>
+
+        <VBox>
+            <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>
+        </VBox>
     </HBox>
 </VBox>
