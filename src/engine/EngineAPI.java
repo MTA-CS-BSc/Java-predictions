@@ -115,6 +115,7 @@ public class EngineAPI {
                 foundProp.getValue().setRandomInitialize(true);
                 foundProp.getValue().setInit(null);
                 foundProp.getValue().setCurrentValue(null);
+                prop.setValue(val);
                 return new ResponseDTO(200, String.format("UUID [%s]: Reset environment variable [%s]",
                         uuid, foundProp.getName()));
             }
@@ -131,6 +132,7 @@ public class EngineAPI {
             foundProp.getValue().setRandomInitialize(false);
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
+            prop.setValue(val);
 
             return new ResponseDTO(200, String.format("UUID [%s]: Set environment variable [%s]: Value: [%s]",
                     uuid, foundProp.getName(), foundProp.getValue().getCurrentValue()));
@@ -241,7 +243,9 @@ public class EngineAPI {
 
         return new ResponseDTO(200, sum);
     }
-    public ResponseDTO setEntityInitialPopulation(String uuid, String entityName, int population) {
+    public ResponseDTO setEntityInitialPopulation(String uuid, EntityDTO entityDTO, int population) {
+        String entityName = entityDTO.getName();
+
         if (population < 0)
             return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Population is negative");
@@ -255,6 +259,7 @@ public class EngineAPI {
                     uuid, entityName), "Overall population exceeds board!");
 
         entity.initPopulation(population);
+        entityDTO.setPopulation(population);
 
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
