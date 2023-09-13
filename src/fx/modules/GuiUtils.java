@@ -1,13 +1,17 @@
 package fx.modules;
 
+import dtos.WorldDTO;
 import dtos.actions.*;
+import fx.models.DetailsScreen.*;
 import fx.models.DetailsScreen.actions.*;
 import javafx.animation.FadeTransition;
 import javafx.scene.control.TreeItem;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public abstract class GuiUtils {
     public static TreeItem<String> findTreeItemByValue(TreeItem<String> root, String value) {
@@ -98,5 +102,43 @@ public abstract class GuiUtils {
 
         fadeOut.setOnFinished(event -> root.setVisible(false));
         fadeOut.play();
+    }
+
+
+
+    public static List<EntityModel> getEntities(WorldDTO world) {
+        return world.getEntities().stream()
+                .map(entity -> {
+                    List<EntityPropertyModel> props = entity.getProperties().stream()
+                            .map(element -> {
+                                RangeModel range = null;
+
+                                if (!element.hasNoRange())
+                                    range = new RangeModel(element.getRange().getFrom(), element.getRange().getTo());
+
+                                return new EntityPropertyModel(element.getName(), element.getType(), range, element.getValue());
+                            }).collect(Collectors.toList());
+                    return new EntityModel(entity.getName(), props);
+                }).collect(Collectors.toList());
+    }
+    public static List<PropertyModel> getEnvironmentVars(WorldDTO world) {
+        return world.getEnvironment().stream()
+                .map(property -> {
+                    RangeModel range = null;
+
+                    if (!property.hasNoRange())
+                        range = new RangeModel(property.getRange().getFrom(), property.getRange().getTo());
+
+                    return new PropertyModel(property.getName(), property.getType(), range);
+                }).collect(Collectors.toList());
+    }
+    public static List<RuleModel> getRules(WorldDTO world) {
+        return world.getRules().stream()
+                .map(rule -> {
+                    List<ActionModel> actions = rule.getActions().stream()
+                            .map(GuiUtils::createActionModel).collect(Collectors.toList());
+                    return new RuleModel(rule.getName(), rule.getTicks(), rule.getProbability(), actions);
+                })
+                .collect(Collectors.toList());
     }
 }

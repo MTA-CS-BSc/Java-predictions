@@ -9,8 +9,8 @@ import fx.models.DetailsScreen.*;
 import fx.models.DetailsScreen.actions.*;
 import fx.modules.GuiUtils;
 import fx.modules.SingletonEngineAPI;
-import helpers.types.PropTypes;
 import helpers.modules.SingletonObjectMapper;
+import helpers.types.PropTypes;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class DetailsScreenController implements Initializable {
     @FXML
@@ -248,7 +247,7 @@ public class DetailsScreenController implements Initializable {
         showRules(world);
     }
     private void showEntities(WorldDTO world) {
-        List<EntityModel> entities = getEntities(world);
+        List<EntityModel> entities = GuiUtils.getEntities(world);
         TreeItem<TreeItemModel> entitiesTreeItem = new TreeItem<>(new EntitiesModel(entities));
 
         entities.forEach(entity -> {
@@ -259,7 +258,7 @@ public class DetailsScreenController implements Initializable {
         worldCategoriesTreeView.getRoot().getChildren().add(entitiesTreeItem);
     }
     private void showEnvironment(WorldDTO world) {
-        List<PropertyModel> envVars = getEnvironmentVars(world);
+        List<PropertyModel> envVars = GuiUtils.getEnvironmentVars(world);
         TreeItem<TreeItemModel> environmentTreeItem = new TreeItem<>(new EnvironmentModel(envVars));
 
         envVars.forEach(property -> {
@@ -300,7 +299,7 @@ public class DetailsScreenController implements Initializable {
 
     }
     private void showRules(WorldDTO world) {
-        List<RuleModel> rules = getRules(world);
+        List<RuleModel> rules = GuiUtils.getRules(world);
         TreeItem<TreeItemModel> rulesTreeItem = new TreeItem<>(new RulesModel(rules));
 
         rules.forEach(rule -> {
@@ -309,42 +308,6 @@ public class DetailsScreenController implements Initializable {
         });
 
         worldCategoriesTreeView.getRoot().getChildren().add(rulesTreeItem);
-    }
-
-    private List<EntityModel> getEntities(WorldDTO world) {
-        return world.getEntities().stream()
-                .map(entity -> {
-                    List<EntityPropertyModel> props = entity.getProperties().stream()
-                            .map(element -> {
-                                RangeModel range = null;
-
-                                if (!element.hasNoRange())
-                                    range = new RangeModel(element.getRange().getFrom(), element.getRange().getTo());
-
-                                return new EntityPropertyModel(element.getName(), element.getType(), range, element.getValue());
-                            }).collect(Collectors.toList());
-                    return new EntityModel(entity.getName(), props);
-                }).collect(Collectors.toList());
-    }
-    private List<PropertyModel> getEnvironmentVars(WorldDTO world) {
-        return world.getEnvironment().stream()
-                .map(property -> {
-                    RangeModel range = null;
-
-                    if (!property.hasNoRange())
-                        range = new RangeModel(property.getRange().getFrom(), property.getRange().getTo());
-
-                    return new PropertyModel(property.getName(), property.getType(), range);
-                }).collect(Collectors.toList());
-    }
-    private List<RuleModel> getRules(WorldDTO world) {
-        return world.getRules().stream()
-                .map(rule -> {
-                    List<ActionModel> actions = rule.getActions().stream()
-                            .map(GuiUtils::createActionModel).collect(Collectors.toList());
-                    return new RuleModel(rule.getName(), rule.getTicks(), rule.getProbability(), actions);
-                })
-                .collect(Collectors.toList());
     }
     //#endregion
 }
