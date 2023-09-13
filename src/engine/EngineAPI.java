@@ -169,11 +169,11 @@ public class EngineAPI {
                 new TypeReference<List<SingleSimulationDTO>>() {});
         return new ResponseDTO(200, pastSimulations.get(selection - 1));
     }
-    public ResponseDTO findSelectedEntityDTO(String uuid, int selection) throws JsonProcessingException {
+    public ResponseDTO findSelectedEntityDTO(String uuid, int selection, boolean isInitial) throws JsonProcessingException {
         EntityDTO data = null;
 
         if (!Objects.isNull(findSimulationDTOByUuid(uuid))) {
-            List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(getEntities(uuid).getData(), new TypeReference<List<EntityDTO>>(){});
+            List<EntityDTO> entities = SingletonObjectMapper.objectMapper.readValue(getEntities(uuid, isInitial).getData(), new TypeReference<List<EntityDTO>>(){});
             data = entities.get(selection - 1);
         }
 
@@ -186,12 +186,13 @@ public class EngineAPI {
 
         return new ResponseDTO(200, entity.getProperties().get(selection - 1));
     }
-    public ResponseDTO getEntities(String uuid) throws JsonProcessingException {
+    public ResponseDTO getEntities(String uuid, boolean isInitial) throws JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
-        List<EntityDTO> data = historyManager.getPastSimulation(uuid)
-                .getWorld()
+        World relevantWorld = isInitial ? getInitialWorld() : historyManager.getPastSimulation(uuid).getWorld();
+
+        List<EntityDTO> data = relevantWorld
                 .getEntities()
                 .getEntitiesMap()
                 .values()
