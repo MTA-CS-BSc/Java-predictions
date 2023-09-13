@@ -102,5 +102,5 @@ public class ResultsScreenController implements Initializable {
         return container;
     }
 
-    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.set(simulation); }
+    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
 }

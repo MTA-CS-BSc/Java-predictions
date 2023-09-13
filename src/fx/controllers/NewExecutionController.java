@@ -7,7 +7,6 @@ import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
-import helpers.modules.SingletonObjectMapper;
 import helpers.types.SimulationState;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -77,7 +76,7 @@ public class NewExecutionController implements Initializable {
         });
     }
 
-    public void setCurrentSimulation(SingleSimulationDTO simulation) { currentSimulation.set(simulation); }
+    public void setCurrentSimulation(SingleSimulationDTO simulation) { currentSimulation.setValue(simulation); }
 
     public void setHeaderComponentController(HeaderComponentController controller) {
         headerComponentController = controller;
@@ -128,22 +127,17 @@ public class NewExecutionController implements Initializable {
         envPropsTable.getItems().forEach(property -> {
             SingletonEngineAPI.api.setEnvironmentVariable(currentSimulation.getValue().getUuid(), property, null);
         });
+
+        envPropsTable.refresh();
     }
 
     @FXML
-    private void handleClear() throws Exception {
+    private void handleClear() {
         if (isSimulationEmpty())
             return;
 
         populationTableController.clearPopulationTable();
         clearEnvPropsTable();
-
-        SingleSimulationDTO updatedSimulationDTO = SingletonObjectMapper.objectMapper.readValue(
-                SingletonEngineAPI.api.getPastSimulation(currentSimulation.getValue().getUuid()).getData(),
-                SingleSimulationDTO.class
-        );
-
-        setCurrentSimulation(updatedSimulationDTO);
     }
 
     @FXML

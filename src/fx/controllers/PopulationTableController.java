@@ -55,8 +55,7 @@ public class PopulationTableController implements Initializable {
 
         });
     }
-    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.set(simulation); }
-
+    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
     public void addPopulationEditCommit() {
         if (Objects.isNull(selectedSimulation.getValue()))
             return;
@@ -68,7 +67,7 @@ public class PopulationTableController implements Initializable {
             try {
                 ResponseDTO response = SingletonEngineAPI.api
                         .setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
-                                editedEntity.getName(), event.getNewValue());
+                                editedEntity, event.getNewValue());
 
                 if (response.getStatus() != Constants.API_RESPONSE_OK) {
                     Alerts.showAlert("Validation failed", "Population is invalid",
@@ -84,19 +83,19 @@ public class PopulationTableController implements Initializable {
             } catch (Exception ignored) { }
         });
     }
-
     public boolean validateAllInitialized() {
         return populationTable.getItems()
                 .stream()
                 .anyMatch(entity -> entity.getPopulation() > 0);
     }
-
     public void clearPopulationTable() {
         if (Objects.isNull(selectedSimulation.getValue()))
             return;
 
         for (EntityDTO entity : populationTable.getItems())
             SingletonEngineAPI.api.setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
-                    entity.getName(), 0);
+                    entity, 0);
+
+        populationTable.refresh();
     }
 }
