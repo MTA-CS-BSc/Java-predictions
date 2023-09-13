@@ -45,7 +45,7 @@ public abstract class TypesUtils {
         }
     }
     public static String formatDate(Date date) {
-        return new SimpleDateFormat("dd-MM-yyyy | hh.mm.ss").format(date);
+        return new SimpleDateFormat("dd-MM-yyyy | HH:mm:ss").format(date);
     }
     public static boolean isBoolean(String str) {
         return str.equalsIgnoreCase(BoolPropValues.TRUE) || str.equalsIgnoreCase(BoolPropValues.FALSE);

@@ -7,6 +7,7 @@ import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import helpers.types.SimulationState;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -35,10 +36,13 @@ public class ResultsScreenController implements Initializable {
     private TableColumn<SingleSimulationDTO, String> idColumn;
 
     @FXML
-    private TableColumn<SingleSimulationDTO, String> startTimestampColumn;
+    private TableColumn<SingleSimulationDTO, String> createdTimestampColumn;
 
     @FXML
     private TableColumn<SingleSimulationDTO, SimulationState> stateColumn;
+
+    @FXML
+    private TableColumn<SingleSimulationDTO, Long> ticksColumn;
     //#endregion
 
     @FXML
@@ -49,8 +53,9 @@ public class ResultsScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
-        startTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStartTimestamp()));
+        createdTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedTimestamp()));
         stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSimulationState()));
+        ticksColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
 
         //TODO: Add thread manager
         Executors.newScheduledThreadPool(1)

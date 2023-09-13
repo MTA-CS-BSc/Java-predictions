@@ -17,6 +17,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import tray.animations.AnimationType;
@@ -26,6 +28,7 @@ import tray.notification.TrayNotification;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class HeaderComponentController implements Initializable {
     @FXML
@@ -46,6 +49,24 @@ public class HeaderComponentController implements Initializable {
         detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         newExecutionButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         resultsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
+
+        highlightButtonText(detailsButton);
+    }
+
+    private void highlightButtonText(Button button) {
+        Stream.of(detailsButton, newExecutionButton, resultsButton)
+                .filter(element -> element != button)
+                .forEach(this::unHighlightButtonText);
+
+        button.setStyle(button.getStyle() + " -fx-font-weight: bold");
+    }
+
+    private void unHighlightButtonText(Button button) {
+        Font existingFont = button.getFont();
+        Font newFont = Font.font(existingFont.getFamily(), FontWeight.NORMAL, existingFont.getSize());
+        button.setFont(newFont);
+
+        button.setStyle(button.getStyle().replace(" -fx-font-weight: bold", ""));
     }
 
     public void setDetailsScreenController(DetailsScreenController controller) {
@@ -101,6 +122,7 @@ public class HeaderComponentController implements Initializable {
     private void showSimulationDetailsScreen() throws JsonProcessingException {
         if (!detailsScreenController.getContainer().isVisible()) {
             if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
+                highlightButtonText(detailsButton);
                 hideVisible();
                 detailsScreenController.handleShowCategoriesData();
                 Platform.runLater(() ->  GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
@@ -117,6 +139,7 @@ public class HeaderComponentController implements Initializable {
     @FXML
     private void showNewExecutionScreen() throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
+            highlightButtonText(newExecutionButton);
             hideVisible();
             prepareSimulation();
             Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
@@ -146,6 +169,7 @@ public class HeaderComponentController implements Initializable {
     public void showResultsScreen() {
         if (!resultsScreenController.getContainer().isVisible()) {
             Platform.runLater(() -> {
+                highlightButtonText(resultsButton);
                 hideVisible();
                 GuiUtils.fadeInAnimation(resultsScreenController.getContainer());
             });

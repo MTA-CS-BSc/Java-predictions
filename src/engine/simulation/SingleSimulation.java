@@ -30,6 +30,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     public SingleSimulation(World world) {
         this();
         this.world = world;
+        setCreatedTime(new Date());
     }
     public SingleSimulation(SingleSimulation other) {
         this();
@@ -125,6 +126,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         }
 
         elapsedTimer.startOrResume();
+        setStartTime(new Date());
         simulationState = SimulationState.RUNNING;
 
         while (isSimulationFinished(elapsedTimer.getElapsedTime()).isEmpty()
@@ -165,6 +167,9 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         return world.getGrid().getColumns() * world.getGrid().getRows();
     }
     public long getTicks() { return ticks; }
+    public long getElapsedTime() {
+        return elapsedTimer.getElapsedTime();
+    }
     @Override
     public String toString() {
         return "--------------------------------------\n" +

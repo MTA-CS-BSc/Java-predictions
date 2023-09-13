@@ -31,7 +31,7 @@ public class HistoryManager implements Serializable {
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
 
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
-        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation start time:  [%s]%n", simulation.getStartTimestamp()));
+        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation start time: [%s]%n", simulation.getCreatedTimestamp()));
     }
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
                                                   String entityName, String propertyName) {

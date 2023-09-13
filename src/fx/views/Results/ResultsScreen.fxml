@@ -10,7 +10,8 @@
         <TableView fx:id="simulationsTable" onMouseClicked="#handleSelectedSimulation">
             <columns>
                 <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>
-                <TableColumn fx:id="startTimestampColumn" prefWidth="200" text="Timestamp"/>
+                <TableColumn fx:id="createdTimestampColumn" prefWidth="200" text="Created at"/>
+                <TableColumn fx:id="ticksColumn" prefWidth="100" text="Ticks"/>
                 <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
             </columns>
         </TableView>

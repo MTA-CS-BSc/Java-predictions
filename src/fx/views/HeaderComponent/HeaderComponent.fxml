@@ -32,6 +32,7 @@
                 styleClass="simulation-button" text="Details"/>
         <Button fx:id="newExecutionButton" mnemonicParsing="false" onAction="#showNewExecutionScreen"
                 styleClass="simulation-button" text="New Execution"/>
-        <Button fx:id="resultsButton" mnemonicParsing="false" styleClass="simulation-button" onAction="#showResultsScreen" text="Results"/>
+        <Button fx:id="resultsButton" mnemonicParsing="false" onAction="#showResultsScreen"
+                styleClass="simulation-button" text="Results"/>
     </HBox>
 </GridPane>

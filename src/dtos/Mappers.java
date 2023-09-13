@@ -6,6 +6,7 @@ import engine.prototypes.implemented.actions.*;
 import engine.simulation.SingleSimulation;
 import helpers.types.CalculationTypes;
 import helpers.loggers.ConditionSingularities;
+import helpers.types.TypesUtils;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,8 +15,8 @@ import java.util.stream.Collectors;
 
 public abstract class Mappers {
     public static SingleSimulationDTO toDto(SingleSimulation simulation) {
-        return new SingleSimulationDTO(simulation.getUUID(), simulation.getStartTimestamp(),
-                toDto(simulation.getWorld()), simulation.getSimulationState(), simulation.getTicks());
+        return new SingleSimulationDTO(simulation.getUUID(), TypesUtils.formatDate(simulation.getCreatedTimestamp()),
+                toDto(simulation.getWorld()), simulation.getSimulationState(), simulation.getTicks(), simulation.getElapsedTime());
     }
     public static WorldDTO toDto(World world) {
         List<EntityDTO> entities = world.getEntities().getEntitiesMap().values()

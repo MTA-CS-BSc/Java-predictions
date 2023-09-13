@@ -161,7 +161,7 @@ public class EngineAPI {
         List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
                 .stream()
                 .map(Mappers::toDto)
-                .sorted(Comparator.comparing(SingleSimulationDTO::getStartTimestamp))
+                .sorted(Comparator.comparing(SingleSimulationDTO::getCreatedTimestamp))
                 .collect(Collectors.toList());
 
         return new ResponseDTO(200, data);
@@ -302,10 +302,8 @@ public class EngineAPI {
     private ResponseDTO startSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
-        if (simulation.getSimulationState() == SimulationState.CREATED) {
+        if (simulation.getSimulationState() == SimulationState.CREATED)
             setEntitiesInitialLocations(simulation);
-            simulation.setStartTime(new Date());
-        }
 
         simulation.run();
 
