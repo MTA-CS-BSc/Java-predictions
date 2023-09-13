@@ -1,7 +1,6 @@
 package engine.simulation.performers;
 
 import engine.consts.SecondaryEntityCounts;
-import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.InvalidTypeException;
 import engine.logs.EngineLoggers;
@@ -52,11 +51,7 @@ public abstract class ActionsPerformer {
 
         else if (action instanceof KillAction)
             KillReplaceSaver.storage.add(() -> {
-                try {
-                    KillPerformer.performAction(world, (KillAction)action, main, secondary);
-                } catch (EntityNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
+                KillPerformer.performAction(world, (KillAction)action, main, secondary);
             });
 
         else if (action instanceof ProximityAction)

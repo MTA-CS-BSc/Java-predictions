@@ -1,6 +1,5 @@
 package engine.simulation.performers;
 
-import engine.exceptions.EntityNotFoundException;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.prototypes.implemented.Entity;
@@ -17,6 +16,9 @@ public abstract class KillPerformer {
     public static boolean handle(World world, String entityName, SingleEntity kill) {
         Entity mainEntity = Utils.findEntityByName(world, entityName);
 
+        if (Objects.isNull(mainEntity))
+            return false;
+
         List<SingleEntity> updatedList = mainEntity.getSingleEntities()
                 .stream()
                 .filter(element -> !element.equals(kill))
@@ -31,10 +33,7 @@ public abstract class KillPerformer {
 
         return false;
     }
-    public static void performAction(World world, KillAction action, SingleEntity main, SingleEntity secondary) throws EntityNotFoundException {
-        if (Objects.isNull(Utils.findEntityByName(world, action.getEntityName())))
-            throw new EntityNotFoundException(String.format("Action [%s]: Entity [%s] does not exist", action.getType(), action.getEntityName()));
-
+    public static void performAction(World world, KillAction action, SingleEntity main, SingleEntity secondary) {
         handle(world, action.getEntityName(), action.getEntityName().equals(main.getEntityName()) ? main : secondary);
     }
 }
