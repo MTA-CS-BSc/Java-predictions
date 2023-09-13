@@ -142,6 +142,7 @@ public class NewExecutionController implements Initializable {
         return simulationUuid.isEmpty() ||
                 SingletonEngineAPI.api.getEntities(simulationUuid, isInitial).getStatus() != Constants.API_RESPONSE_OK;
     }
+
     private void clearEnvPropsTable() throws Exception {
         envPropsTable.getItems().forEach(property -> {
             SingletonEngineAPI.api.setEnvironmentVariable(simulationUuid, property, null);
