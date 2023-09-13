@@ -52,7 +52,6 @@ public class PopulationTableController implements Initializable {
                 populationTable.getItems().clear();
                 populationTable.getItems().addAll(t1.getWorld().getEntities());
             }
-
         });
     }
     public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
@@ -95,7 +94,8 @@ public class PopulationTableController implements Initializable {
         for (EntityDTO entity : populationTable.getItems())
             SingletonEngineAPI.api.setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
                     entity, 0);
-
+    }
+    public void refreshTable() {
         populationTable.refresh();
     }
 }
