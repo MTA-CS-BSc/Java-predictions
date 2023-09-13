@@ -70,9 +70,19 @@ public class ResultsScreenController implements Initializable {
 
             simulationsTable.getItems().clear();
             simulationsTable.getItems().addAll(simulations);
+            selectPreviouslySelectedSimulation();
         }
 
         catch (Exception ignored) {}
+    }
+
+    private void selectPreviouslySelectedSimulation() {
+        SingleSimulationDTO newlySelectedSimulation = simulationsTable.getItems()
+                .stream()
+                .filter(element -> element.getUuid().equals(selectedSimulation.getValue().getUuid()))
+                .findFirst().orElse(null);
+
+        simulationsTable.getSelectionModel().select(newlySelectedSimulation);
     }
 
     @FXML
@@ -81,11 +91,13 @@ public class ResultsScreenController implements Initializable {
             SingleSimulationDTO selectedSimulation = simulationsTable.getSelectionModel().getSelectedItem();
 
             if (selectedSimulation != null)
-                this.selectedSimulation.set(selectedSimulation);
+                setSelectedSimulation(selectedSimulation);
         }
     }
 
     public VBox getContainer() {
         return container;
     }
+
+    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.set(simulation); }
 }

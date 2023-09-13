@@ -7,6 +7,7 @@ import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
+import helpers.modules.SingletonObjectMapper;
 import helpers.types.SimulationState;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -51,8 +52,8 @@ public class NewExecutionController implements Initializable {
     //#endregion
 
     private HeaderComponentController headerComponentController;
-    private boolean isInitial;
     private ObjectProperty<SingleSimulationDTO> currentSimulation;
+    private boolean isInitial;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -63,11 +64,16 @@ public class NewExecutionController implements Initializable {
         currentSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
             populationTableController.setSelectedSimulation(currentSimulation.getValue());
 
-            if (t1.getSimulationState() == SimulationState.CREATED)
-                addValueEditCommit();
+            if (Objects.isNull(t1))
+                envPropsTable.getItems().clear();
 
-            envPropsTable.getItems().clear();
-            envPropsTable.getItems().addAll(t1.getWorld().getEnvironment());
+            else {
+                if (t1.getSimulationState() == SimulationState.CREATED)
+                    addValueEditCommit();
+
+                envPropsTable.getItems().clear();
+                envPropsTable.getItems().addAll(t1.getWorld().getEnvironment());
+            }
         });
     }
 
@@ -125,12 +131,19 @@ public class NewExecutionController implements Initializable {
     }
 
     @FXML
-    private void handleClear() {
+    private void handleClear() throws Exception {
         if (isSimulationEmpty())
             return;
 
         populationTableController.clearPopulationTable();
         clearEnvPropsTable();
+
+        SingleSimulationDTO updatedSimulationDTO = SingletonObjectMapper.objectMapper.readValue(
+                SingletonEngineAPI.api.getPastSimulation(currentSimulation.getValue().getUuid()).getData(),
+                SingleSimulationDTO.class
+        );
+
+        setCurrentSimulation(updatedSimulationDTO);
     }
 
     @FXML

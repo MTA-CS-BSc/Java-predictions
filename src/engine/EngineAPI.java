@@ -284,10 +284,12 @@ public class EngineAPI {
         return new ResponseDTO(200, getInitialWorld().getGrid());
     }
     public ResponseDTO removeSimulationIfUnused(String uuid) {
-        if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.CREATED)
+        if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.CREATED) {
             removeSimulationFromHistory(uuid);
+            return new ResponseDTO(200, true);
+        }
 
-        return new ResponseDTO(200, "");
+        return new ResponseDTO(200, false);
     }
     private void removeSimulationFromHistory(String uuid) {
         historyManager.getPastSimulations().remove(uuid);

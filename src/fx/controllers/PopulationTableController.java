@@ -42,11 +42,17 @@ public class PopulationTableController implements Initializable {
 
         selectedSimulation = new SimpleObjectProperty<>();
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
-            if (t1.getSimulationState() == SimulationState.CREATED)
-                addPopulationEditCommit();
+            if (Objects.isNull(t1))
+                populationTable.getItems().clear();
 
-            populationTable.getItems().clear();
-            populationTable.getItems().addAll(t1.getWorld().getEntities());
+            else {
+                if (t1.getSimulationState() == SimulationState.CREATED)
+                    addPopulationEditCommit();
+
+                populationTable.getItems().clear();
+                populationTable.getItems().addAll(t1.getWorld().getEntities());
+            }
+
         });
     }
     public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.set(simulation); }

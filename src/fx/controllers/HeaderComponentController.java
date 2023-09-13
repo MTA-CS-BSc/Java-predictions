@@ -128,8 +128,10 @@ public class HeaderComponentController implements Initializable {
             if (detailsScreenController.getContainer().isVisible())
                 GuiUtils.fadeOutAnimation(detailsScreenController.getContainer());
 
-            else if (resultsScreenController.getContainer().isVisible())
+            else if (resultsScreenController.getContainer().isVisible()) {
                 GuiUtils.fadeOutAnimation(resultsScreenController.getContainer());
+                resultsScreenController.setSelectedSimulation(null);
+            }
 
             else if (newExecutionController.getContainer().isVisible()) {
                 GuiUtils.fadeOutAnimation(newExecutionController.getContainer());
