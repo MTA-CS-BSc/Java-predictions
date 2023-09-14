@@ -139,10 +139,18 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     private void showNewExecutionScreen() throws Exception {
+        String uuid = SingletonObjectMapper.objectMapper.readValue(
+                SingletonEngineAPI.api.createSimulation().getData(),
+                String.class);
+
+        showNewExecutionScreenFromUuid(uuid);
+    }
+
+    public void showNewExecutionScreenFromUuid(String uuid) throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
             highlightButtonText(newExecutionButton);
             hideVisible();
-            prepareSimulation();
+            prepareSimulation(uuid);
             Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
         }
     }
@@ -177,9 +185,7 @@ public class HeaderComponentController implements Initializable {
         }
     }
 
-    private void prepareSimulation() throws Exception {
-        String uuid = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.createSimulation().getData(), String.class);
-
+    private void prepareSimulation(String uuid) throws Exception {
         SingleSimulationDTO simulation = SingletonObjectMapper.objectMapper.readValue(
                 SingletonEngineAPI.api.getPastSimulation(uuid).getData(),
                 SingleSimulationDTO.class);
