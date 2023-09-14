@@ -123,9 +123,9 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         if (simulationState == SimulationState.CREATED) {
             initializeRandomVariables();
             enqueueWorldState(world);
+            elapsedTimer.start();
         }
 
-        elapsedTimer.startOrResume();
         setStartTime(new Date());
         simulationState = SimulationState.RUNNING;
 
@@ -133,7 +133,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 && Arrays.asList(SimulationState.PAUSED, SimulationState.RUNNING).contains(simulationState)) {
             if (simulationState == SimulationState.RUNNING) {
                 if (!elapsedTimer.isRunning())
-                    elapsedTimer.startOrResume();
+                    elapsedTimer.resume();
 
                 handleSingleTick();
 

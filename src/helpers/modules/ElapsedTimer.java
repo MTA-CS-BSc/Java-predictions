@@ -1,44 +1,40 @@
 package helpers.modules;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import javax.swing.*;
 
 public class ElapsedTimer {
-    private Timer timer;
-    private long startTime;
-    private long elapsedTime;
+    private final Timer timer;
     private boolean isRunning;
+    private long elapsedTime;
 
     public ElapsedTimer() {
-        timer = new Timer();
         isRunning = false;
-    }
-    public void startOrResume() {
-        if (!isRunning) {
-            isRunning = true;
-            startTime = System.currentTimeMillis();
-            timer.scheduleAtFixedRate(new TimerTask() {
-                @Override
-                public void run() {
-                    elapsedTime = System.currentTimeMillis() - startTime;
-                }
-            }, 0, 1000); // Update every 1000 milliseconds (1 second)
-        }
-    }
+        elapsedTime = 0;
 
-    public void pause() {
-        if (isRunning) {
-            timer.cancel();
-            elapsedTime = System.currentTimeMillis() - startTime;
-            isRunning = false;
-        }
-    }
-
-    public boolean isRunning() {
-        return isRunning;
+        timer = new Timer(1, e -> {
+            elapsedTime++;
+        });
     }
 
     public long getElapsedTime() {
         return elapsedTime;
+    }
+
+    public void start() {
+        isRunning = true;
+        timer.start();
+    }
+
+    public void pause() {
+        isRunning = false;
+        timer.stop();
+    }
+
+    public void resume() {
+        start();
+    }
+
+    public boolean isRunning() {
+        return isRunning;
     }
 }
