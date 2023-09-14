@@ -151,18 +151,18 @@ public class NewExecutionController implements Initializable {
             ResponseDTO response = SingletonEngineAPI.api.enqueueSimulation(simulationUuid);
 
             if (response.getStatus() == Constants.API_RESPONSE_OK) {
-                TrayNotification tray = new TrayNotification("SUCCESS", String.format("Simulation [%s] was added to queue manager", simulationUuid), NotificationType.SUCCESS);
+                TrayNotification tray = new TrayNotification("SUCCESS", "Simulation was added to queue manager", NotificationType.SUCCESS);
                 Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
                 headerComponentController.showResultsScreen();
             }
 
             else
-                Alerts.showAlert("FAILURE", String.format("Simulation [%s] was not added to queue", simulationUuid),
+                Alerts.showAlert("FAILURE", "Simulation was not added to queue",
                         String.format("Cause: %s", response.getErrorDescription().getCause()), Alert.AlertType.ERROR);
         }
 
         else
-            Alerts.showAlert("FAILURE", String.format("Simulation [%s] was not added to queue", simulationUuid),
+            Alerts.showAlert("FAILURE", "Simulation was not added to queue",
                     "Cause: Please initialize at least one of the entities population to be positive", Alert.AlertType.ERROR);
     }
 }
