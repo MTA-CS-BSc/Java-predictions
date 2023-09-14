@@ -151,10 +151,13 @@ public class EngineAPI {
 
         return new ResponseDTO(200, false);
     }
-    public ResponseDTO removeUnusedSimulations(String uuid) {
-        historyManager.getPastSimulations().values()
-                .stream().filter(element -> !element.getUUID().equals(uuid))
-                .forEach(simulation -> removeSimulationIfUnused(simulation.getUUID()));
+    public ResponseDTO removeUnusedSimulations() {
+        List<SingleSimulation> toRemove = historyManager.getPastSimulations().values()
+                .stream()
+                .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED)
+                .collect(Collectors.toList());
+
+        toRemove.forEach(simulation -> removeSimulationIfUnused(simulation.getUUID()));
 
         return new ResponseDTO(200, "");
     }

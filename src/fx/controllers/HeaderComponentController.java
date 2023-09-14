@@ -142,10 +142,6 @@ public class HeaderComponentController implements Initializable {
             highlightButtonText(newExecutionButton);
             hideVisible();
             prepareSimulation();
-
-            if (!newExecutionController.isSimulationEmpty())
-                SingletonEngineAPI.api.removeUnusedSimulations(newExecutionController.getCurrentSimulation().getUuid());
-
             Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
         }
     }
@@ -171,6 +167,10 @@ public class HeaderComponentController implements Initializable {
             Platform.runLater(() -> {
                 highlightButtonText(resultsButton);
                 hideVisible();
+
+                if (!newExecutionController.isSimulationEmpty())
+                    SingletonEngineAPI.api.removeUnusedSimulations();
+
                 GuiUtils.fadeInAnimation(resultsScreenController.getContainer());
             });
         }
