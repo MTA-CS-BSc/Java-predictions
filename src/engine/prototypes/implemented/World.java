@@ -44,14 +44,14 @@ public class World implements Serializable {
         environment.getEnvVars().clear();
 
         envMap.forEach((key, value) -> {
-            environment.getEnvVars().put(key, value);
+            environment.getEnvVars().put(key, new Property(value));
         });
     }
     private void setEntitiesByWorldState(Map<String, Entity> entitiesMap) {
         entities.getEntitiesMap().clear();
 
         entitiesMap.forEach((key, value) -> {
-            entities.getEntitiesMap().put(key, value);
+            entities.getEntitiesMap().put(key, new Entity(value));
         });
     }
     private void setGridByWorldState(Map<String, Entity> entitiesMap) {
