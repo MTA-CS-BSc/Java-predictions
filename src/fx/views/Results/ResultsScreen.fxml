@@ -7,19 +7,7 @@
 <VBox fx:id="container" alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/8.0.171"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.ResultsScreenController">
     <HBox alignment="CENTER" spacing="20">
-        <TableView fx:id="simulationsTable" onMouseClicked="#handleSelectedSimulation">
-            <columns>
-                <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>
-                <TableColumn fx:id="createdTimestampColumn" prefWidth="200" text="Created at"/>
-                <TableColumn fx:id="ticksColumn" prefWidth="100" text="Ticks"/>
-                <TableColumn fx:id="elapsedTimeColumn" prefWidth="200" text="Elapsed time (millis)"/>
-                <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
-                <TableColumn fx:id="pauseButtonColumn" prefWidth="100" text="Pause"/>
-                <TableColumn fx:id="resumeButtonColumn" prefWidth="100" text="Resume"/>
-                <TableColumn fx:id="stopButtonColumn" prefWidth="100" text="Stop"/>
-                <TableColumn fx:id="restartButtonColumn" prefWidth="100" text="Re-run"/>
-            </columns>
-        </TableView>
+        <fx:include source="../SimulationsTable/SimulationsTable.fxml" fx:id="simulationsTable"/>
 
         <VBox>
             <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>

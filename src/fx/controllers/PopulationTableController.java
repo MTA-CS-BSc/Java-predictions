@@ -51,6 +51,7 @@ public class PopulationTableController implements Initializable {
 
                 populationTable.getItems().clear();
                 populationTable.getItems().addAll(t1.getWorld().getEntities());
+                populationTable.refresh();
             }
         });
     }
