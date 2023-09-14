@@ -80,7 +80,7 @@ public class HeaderComponentController implements Initializable {
     public void setResultsScreenController(ResultsScreenController controller) { resultsScreenController = controller; }
 
     @FXML
-    private void handleLoadXml(ActionEvent event) {
+    private void handleLoadXml(ActionEvent event) throws JsonProcessingException {
         Window window = ((Node)event.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
@@ -110,6 +110,7 @@ public class HeaderComponentController implements Initializable {
 
             tray.setAnimationType(AnimationType.FADE);
             Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+            showSimulationDetailsScreen();
         }
 
         catch (Exception e) {
@@ -171,7 +172,7 @@ public class HeaderComponentController implements Initializable {
                 if (!newExecutionController.isSimulationEmpty())
                     SingletonEngineAPI.api.removeUnusedSimulations();
 
-                GuiUtils.fadeInAnimation(resultsScreenController.getContainer());
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsScreenController.getContainer()));
             });
         }
     }
