@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class SimulationsTableController implements Initializable {
     //#region Simulations
@@ -130,6 +131,9 @@ public class SimulationsTableController implements Initializable {
         resumeButtonColumn.setCellFactory(cellData -> new ResumeSimulationTableCell(simulationsTable));
         stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
         restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable, this));
+
+        Stream.of(pauseButtonColumn, resumeButtonColumn, stopButtonColumn, resumeButtonColumn)
+                .forEach(column -> column.setSortable(false));
     }
 
     public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
