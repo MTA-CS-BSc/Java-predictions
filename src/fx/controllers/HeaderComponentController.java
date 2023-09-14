@@ -58,7 +58,8 @@ public class HeaderComponentController implements Initializable {
                 .filter(element -> element != button)
                 .forEach(this::unHighlightButtonText);
 
-        button.setStyle(button.getStyle() + " -fx-font-weight: bold");
+        if (!button.getStyle().contains(" -fx-font-weight: bold"))
+            button.setStyle(button.getStyle() + " -fx-font-weight: bold");
     }
 
     private void unHighlightButtonText(Button button) {
@@ -66,7 +67,8 @@ public class HeaderComponentController implements Initializable {
         Font newFont = Font.font(existingFont.getFamily(), FontWeight.NORMAL, existingFont.getSize());
         button.setFont(newFont);
 
-        button.setStyle(button.getStyle().replace(" -fx-font-weight: bold", ""));
+        if (button.getStyle().contains(" -fx-font-weight: bold"))
+            button.setStyle(button.getStyle().replace(" -fx-font-weight: bold", ""));
     }
 
     public void setDetailsScreenController(DetailsScreenController controller) {
