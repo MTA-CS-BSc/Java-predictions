@@ -18,7 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
@@ -79,14 +78,7 @@ public class ResultsScreenController implements Initializable {
         stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSimulationState()));
         ticksColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getTicks()).asObject());
         elapsedTimeColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
-
-        pauseButtonColumn.setCellFactory(personBooleanTableColumn -> {
-            try {
-                return new PauseSimulationTableCell(simulationsTable);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        pauseButtonColumn.setCellFactory(personBooleanTableColumn -> new PauseSimulationTableCell(simulationsTable));
     }
 
     private void addSimulationsFromAPI() {
