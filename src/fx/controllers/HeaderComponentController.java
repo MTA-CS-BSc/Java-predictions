@@ -150,9 +150,9 @@ public class HeaderComponentController implements Initializable {
 
     public void showNewExecutionScreenFromUuid(String uuid) throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
+            prepareSimulation(uuid);
             highlightButtonText(newExecutionButton);
             hideVisible();
-            prepareSimulation(uuid);
             Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
         }
     }
