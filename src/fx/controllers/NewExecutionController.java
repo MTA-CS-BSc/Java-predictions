@@ -61,7 +61,7 @@ public class NewExecutionController implements Initializable {
         initEnvPropsTable();
 
         currentSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
-            populationTableController.setSelectedSimulation(currentSimulation.getValue());
+            populationTableController.setSelectedSimulation(t1);
 
             if (Objects.isNull(t1))
                 envPropsTable.getItems().clear();
