@@ -5,4 +5,5 @@ public abstract class FilePaths {
     public static final String PAUSE_SIMULATION_ICON_PATH = "../../views/Resources/pause-button.png";
     public static final String RESUME_SIMULATION_ICON_PATH = "../../views/Resources/play-button.png";
     public static final String STOP_SIMULATION_ICON_PATH = "../../views/Resources/stop-button.png";
+    public static final String RESTART_SIMULATION_ICON_PATH = "../../views/Resources/restart-button.png";
 }
