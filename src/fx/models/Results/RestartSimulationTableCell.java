@@ -1,8 +1,8 @@
 package fx.models.Results;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import dtos.SingleSimulationDTO;
 import fx.consts.FilePaths;
+import fx.controllers.SimulationsTableController;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.modules.SingletonObjectMapper;
@@ -14,8 +14,9 @@ import javafx.scene.layout.StackPane;
 public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, Boolean> implements SimulationControlButton {
     final Button restartButton;
     final StackPane paddedButton;
-
-    public RestartSimulationTableCell(final TableView<SingleSimulationDTO> table) {
+    final SimulationsTableController controller;
+    public RestartSimulationTableCell(final TableView<SingleSimulationDTO> table, SimulationsTableController controller) {
+        this.controller = controller;
         restartButton = new Button();
         paddedButton = new StackPane();
         paddedButton.setPadding(new Insets(3));
@@ -34,8 +35,8 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
                         SingletonEngineAPI.api.cloneSimulation(fromUuid).getData(),
                         String.class);
 
-                //TODO: Not implemented
-            } catch (JsonProcessingException e) {
+                controller.getHeaderController().showNewExecutionScreenFromUuid(clonedUuid);
+            } catch (Exception e) {
                 Alerts.showAlert("ERROR", "Simulation can not be restarted",
                         "Selected simulation could not be cloned", Alert.AlertType.ERROR);
             }

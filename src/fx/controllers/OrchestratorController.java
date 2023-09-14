@@ -23,6 +23,7 @@ public class OrchestratorController implements Initializable {
         allScreensUpperBarController.setHeaderNewExecutionController(newExecutionController);
         allScreensUpperBarController.setHeaderResultsScreenController(resultsScreenController);
         newExecutionController.setHeaderComponentController(allScreensUpperBarController.getHeaderComponentController());
+        resultsScreenController.setHeaderController(allScreensUpperBarController.getHeaderComponentController());
         initializeScreen();
     }
 

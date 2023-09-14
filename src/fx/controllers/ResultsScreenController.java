@@ -29,6 +29,10 @@ public class ResultsScreenController implements Initializable {
         simulationsTableController.selectedSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> populationTableController.setSelectedSimulation(t1));
     }
 
+    public void setHeaderController(HeaderComponentController controller) {
+        simulationsTableController.setHeaderController(controller);
+    }
+
     public VBox getContainer() {
         return container;
     }

@@ -62,6 +62,8 @@ public class SimulationsTableController implements Initializable {
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
+    private HeaderComponentController headerController;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initColumns();
@@ -71,6 +73,14 @@ public class SimulationsTableController implements Initializable {
                         Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
 
         selectedSimulation = new SimpleObjectProperty<>();
+    }
+
+    public HeaderComponentController getHeaderController() {
+        return headerController;
+    }
+
+    public void setHeaderController(HeaderComponentController headerController) {
+        this.headerController = headerController;
     }
 
     private void addSimulationsFromAPI() {
@@ -118,7 +128,7 @@ public class SimulationsTableController implements Initializable {
         pauseButtonColumn.setCellFactory(cellData -> new PauseSimulationTableCell(simulationsTable));
         resumeButtonColumn.setCellFactory(cellData -> new ResumeSimulationTableCell(simulationsTable));
         stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
-        restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable));
+        restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable, this));
     }
 
     public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
