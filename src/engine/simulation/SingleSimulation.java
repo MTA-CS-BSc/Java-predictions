@@ -35,6 +35,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     public SingleSimulation(SingleSimulation other) {
         this();
         this.world = new World(other.world.getTermination(), other.world.getRules(), other.getStartWorldState());
+        setCreatedTime(new Date());
     }
     public String getUUID() { return uuid; }
     public String isSimulationFinished(long startTimeMillis) {
