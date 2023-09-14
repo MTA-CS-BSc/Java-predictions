@@ -16,6 +16,7 @@
                 <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
                 <TableColumn fx:id="pauseButtonColumn" prefWidth="100" text="Pause"/>
                 <TableColumn fx:id="resumeButtonColumn" prefWidth="100" text="Resume"/>
+                <TableColumn fx:id="stopButtonColumn" prefWidth="100" text="Stop"/>
             </columns>
         </TableView>
 

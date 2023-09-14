@@ -108,7 +108,7 @@ public class EngineAPI {
             return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
                     String.format("Requested simulation's state is [%s]", simulationState.name()));
 
-        simulation.setSimulationState(SimulationState.STOPPED);
+        simulation.setSimulationState(SimulationState.FINISHED);
         return new ResponseDTO(200, String.format("Simulation [%s] is stopped", uuid));
     }
     public ResponseDTO pauseSimulation(String uuid) {

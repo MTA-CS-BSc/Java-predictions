@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.SingleSimulationDTO;
 import fx.models.Results.PauseSimulationTableCell;
 import fx.models.Results.ResumeSimulationTableCell;
+import fx.models.Results.StopSimulationTableCell;
 import fx.modules.SingletonEngineAPI;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
@@ -54,6 +55,9 @@ public class ResultsScreenController implements Initializable {
 
     @FXML
     private TableColumn<SingleSimulationDTO, Boolean> resumeButtonColumn;
+
+    @FXML
+    private TableColumn<SingleSimulationDTO, Boolean> stopButtonColumn;
     //#endregion
 
     @FXML
@@ -84,6 +88,7 @@ public class ResultsScreenController implements Initializable {
         elapsedTimeColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
         pauseButtonColumn.setCellFactory(cellData -> new PauseSimulationTableCell(simulationsTable));
         resumeButtonColumn.setCellFactory(cellData -> new ResumeSimulationTableCell(simulationsTable));
+        stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
     }
 
     private void addSimulationsFromAPI() {
