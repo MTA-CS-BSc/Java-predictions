@@ -1,11 +1,13 @@
-package fx.controllers;
+package fx.views.NewExecution;
 
 import dtos.PropertyDTO;
 import dtos.RangeDTO;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
+import fx.views.PopulationTable.PopulationTableController;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
+import fx.views.HeaderComponent.HeaderComponentController;
 import helpers.Constants;
 import helpers.types.SimulationState;
 import javafx.application.Platform;

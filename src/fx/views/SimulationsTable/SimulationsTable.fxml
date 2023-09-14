@@ -8,7 +8,7 @@
 
 <TableView xmlns="http://javafx.com/javafx"
                xmlns:fx="http://javafx.com/fxml"
-               fx:controller="fx.controllers.SimulationsTableController"
+               fx:controller="fx.views.SimulationsTable.SimulationsTableController"
                fx:id="simulationsTable" onMouseClicked="#handleSelectedSimulation">
         <columns>
             <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>

@@ -1,4 +1,4 @@
-package fx.controllers;
+package fx.views.DetailsScreen;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.xml.internal.ws.util.StringUtils;

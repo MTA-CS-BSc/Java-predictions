@@ -1,4 +1,4 @@
-package fx.controllers;
+package fx.views.AppMenu;
 
 import fx.consts.ThemeNames;
 import fx.consts.StyleSheetsPaths;

@@ -1,5 +1,10 @@
-package fx.controllers;
+package fx.views.AllScreensUpperBar;
 
+import fx.views.DetailsScreen.DetailsScreenController;
+import fx.views.HeaderComponent.HeaderComponentController;
+import fx.views.NewExecution.NewExecutionController;
+import fx.views.Results.ResultsScreenController;
+import fx.views.AppMenu.AppMenuController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
@@ -16,19 +21,19 @@ public class AllScreensUpperBarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }
-    protected void addScene(Scene scene) {
+    public void addScene(Scene scene) {
         appMenuController.addScene(scene);
     }
-    protected void setThemeToAllScenes(String cssPath) {
+    public void setThemeToAllScenes(String cssPath) {
         appMenuController.setThemeToAllScenes(cssPath);
     }
-    protected void setHeaderDetailsController(DetailsScreenController controller) {
+    public void setHeaderDetailsController(DetailsScreenController controller) {
         headerComponentController.setDetailsScreenController(controller);
     }
-    protected void setHeaderNewExecutionController(NewExecutionController controller) {
+    public void setHeaderNewExecutionController(NewExecutionController controller) {
         headerComponentController.setNewExecutionController(controller);
     }
-    protected void setHeaderResultsScreenController(ResultsScreenController controller) {
+    public void setHeaderResultsScreenController(ResultsScreenController controller) {
         headerComponentController.setResultsScreenController(controller);
     }
     public HeaderComponentController getHeaderComponentController() { return headerComponentController; }

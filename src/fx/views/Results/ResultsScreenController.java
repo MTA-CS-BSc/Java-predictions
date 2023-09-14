@@ -1,6 +1,9 @@
-package fx.controllers;
+package fx.views.Results;
 
 import dtos.SingleSimulationDTO;
+import fx.views.PopulationTable.PopulationTableController;
+import fx.views.HeaderComponent.HeaderComponentController;
+import fx.views.SimulationsTable.SimulationsTableController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;

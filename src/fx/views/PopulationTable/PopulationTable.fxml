@@ -9,7 +9,7 @@
 <TableView fx:id="populationTable" editable="true"
            xmlns="http://javafx.com/javafx"
            xmlns:fx="http://javafx.com/fxml"
-           fx:controller="fx.controllers.PopulationTableController">
+           fx:controller="fx.views.PopulationTable.PopulationTableController">
 <columns>
     <TableColumn editable="false" fx:id="entityNameColumn" prefWidth="150.0" text="Entity Name"/>
     <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population"/>

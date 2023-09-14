@@ -3,7 +3,7 @@ package fx;
 import fx.consts.Constants;
 import fx.consts.FilePaths;
 import fx.consts.StyleSheetsPaths;
-import fx.controllers.OrchestratorController;
+import fx.views.Orchestrator.OrchestratorController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

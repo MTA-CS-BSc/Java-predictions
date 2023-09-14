@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.controllers.HeaderComponentController">
+<GridPane alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.views.HeaderComponent.HeaderComponentController">
     <HBox spacing="22.0" GridPane.rowIndex="1">
         <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXml" prefHeight="35.0"
                 prefWidth="120.0" text="Load XML"/>

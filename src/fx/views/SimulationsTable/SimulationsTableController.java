@@ -1,4 +1,4 @@
-package fx.controllers;
+package fx.views.SimulationsTable;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.SingleSimulationDTO;
@@ -7,6 +7,7 @@ import fx.models.Results.RestartSimulationTableCell;
 import fx.models.Results.ResumeSimulationTableCell;
 import fx.models.Results.StopSimulationTableCell;
 import fx.modules.SingletonEngineAPI;
+import fx.views.HeaderComponent.HeaderComponentController;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import helpers.types.SimulationState;

@@ -1,11 +1,14 @@
-package fx.controllers;
+package fx.views.HeaderComponent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
+import fx.views.NewExecution.NewExecutionController;
+import fx.views.Results.ResultsScreenController;
 import fx.modules.Alerts;
 import fx.modules.GuiUtils;
 import fx.modules.SingletonEngineAPI;
+import fx.views.DetailsScreen.DetailsScreenController;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import javafx.application.Platform;

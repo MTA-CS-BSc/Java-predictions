@@ -2,7 +2,7 @@ package fx.models.Results;
 
 import dtos.SingleSimulationDTO;
 import fx.consts.FilePaths;
-import fx.controllers.SimulationsTableController;
+import fx.views.SimulationsTable.SimulationsTableController;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.modules.SingletonObjectMapper;

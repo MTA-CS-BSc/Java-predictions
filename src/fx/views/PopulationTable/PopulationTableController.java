@@ -1,4 +1,4 @@
-package fx.controllers;
+package fx.views.PopulationTable;
 
 import dtos.EntityDTO;
 import dtos.ResponseDTO;
