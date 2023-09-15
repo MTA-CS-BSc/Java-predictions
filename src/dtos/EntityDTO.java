@@ -22,4 +22,8 @@ public class EntityDTO {
     public int getPopulation() { return population; }
     public void setPopulation(int value) { population = value; }
     public List<PropertyDTO> getProperties() { return properties; }
+    @Override
+    public String toString() {
+        return name;
+    }
 }
