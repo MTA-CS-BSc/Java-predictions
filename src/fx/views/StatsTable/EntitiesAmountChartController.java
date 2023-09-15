@@ -21,16 +21,13 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class EntitiesAmountChartController implements Initializable {
-
     @FXML
     private LineChart<Integer, Integer> entitiesAmountChart;
 
     @FXML
     private NumberAxis ticksAxis;
 
-
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -78,5 +75,9 @@ public class EntitiesAmountChartController implements Initializable {
 
     public void setSelectedSimulation(SingleSimulationDTO simulation) {
         selectedSimulation.setValue(simulation);
+    }
+
+    public void toggleVisible() {
+        entitiesAmountChart.setVisible(entitiesAmountChart.isVisible());
     }
 }
