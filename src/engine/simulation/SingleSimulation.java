@@ -171,6 +171,12 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     public long getElapsedTime() {
         return elapsedTimer.getElapsedTime();
     }
+    public int getEntityAmountForTick(String entityName, int tick) {
+        if (Objects.isNull(worldStatesByTicks.get(tick)))
+            return 0;
+
+        return worldStatesByTicks.get(tick).getEntitiesMap().get(entityName).getPopulation();
+    }
     @Override
     public String toString() {
         return "--------------------------------------\n" +

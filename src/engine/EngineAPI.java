@@ -22,10 +22,7 @@ import helpers.types.TypesUtils;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -259,17 +256,18 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
-    public ResponseDTO getEntitiesBeforeAndAfterSimulation(String uuid) throws UUIDNotFoundException {
+    public ResponseDTO getEnvironmentProperties(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+            return new ResponseDTO(500, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
-        return new ResponseDTO(200, historyManager.getEntitiesBeforeAndAfter(uuid));
-    }
-    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException, JsonProcessingException {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+        List<PropertyDTO> data = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
+                .getEnvVars().values()
+                .stream()
+                .map(Mappers::toDto)
+                .sorted(Comparator.comparing(PropertyDTO::getName))
+                .collect(Collectors.toList());
 
-        return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
+        return new ResponseDTO(200, data);
     }
     public ResponseDTO setEntityInitialPopulation(String uuid, EntityDTO entityDTO, int population) {
         String entityName = entityDTO.getName();
@@ -330,18 +328,32 @@ public class EngineAPI {
         return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()),
                 String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
     }
-    public ResponseDTO getEnvironmentProperties(String uuid) {
+    public ResponseDTO getEntitiesAmountsPerTick(String uuid) {
+        if (historyManager.isEmpty())
+            return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
+
+        else if (historyManager.getPastSimulation(uuid).getSimulationState() != SimulationState.FINISHED)
+            return new ResponseDTO(400, 0, "Simulation is not finished!");
+
+        Map<String, List<Integer>> entitiesAmount = new HashMap<>();
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        for (Entity entity : simulation.getWorld().getEntities().getEntitiesMap().values()) {
+            List<Integer> amounts = new ArrayList<>();
+
+            for (int i = 0; i < simulation.getTicks(); i++)
+                amounts.add(simulation.getEntityAmountForTick(entity.getName(), i));
+
+            entitiesAmount.put(entity.getName(), amounts);
+        }
+
+        return new ResponseDTO(200, entitiesAmount);
+    }
+    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException, JsonProcessingException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(500, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
+            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
-        List<PropertyDTO> data = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
-                .getEnvVars().values()
-                .stream()
-                .map(Mappers::toDto)
-                .sorted(Comparator.comparing(PropertyDTO::getName))
-                .collect(Collectors.toList());
-
-        return new ResponseDTO(200, data);
+        return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
     //#endregion
 }
