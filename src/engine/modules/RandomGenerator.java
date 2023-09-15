@@ -17,7 +17,7 @@ public abstract class RandomGenerator {
         return new Random().nextFloat();
     }
     public static float randomizeFloat(float min, float max) {
-        return min + new Random().nextFloat() * (max - min);
+        return (new Random().nextFloat() * (max - min)) + min;
     }
     public static String randomizeRandomString() {
         int randomLength = randomizeRandomNumber(1, Constants.MAX_RANDOM_STRING_LENGTH);
