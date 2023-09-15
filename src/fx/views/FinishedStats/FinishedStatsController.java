@@ -37,6 +37,9 @@ public class FinishedStatsController implements Initializable {
                         .addListener((observableValue, s, t1) -> {
                             entitiesAmountChartController.toggleVisibility();
                             propertyStatsController.toggleVisibility();
+
+                            if (!propertyStatsController.getVisible())
+                                propertyStatsController.reset();
                         });
 
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
