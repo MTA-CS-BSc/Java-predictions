@@ -15,5 +15,8 @@
             <TableColumn fx:id="resumeButtonColumn" prefWidth="100" text="Resume" />
             <TableColumn fx:id="stopButtonColumn" prefWidth="100" text="Stop" />
             <TableColumn fx:id="restartButtonColumn" prefWidth="100" text="Rerun" />
+            <TableColumn fx:id="pastStepButtonColumn" prefWidth="100" text="Travel: Past"/>
+            <TableColumn fx:id="futureStepButtonColumn" prefWidth="100" text="Travel: Future"/>
+
         </columns>
 </TableView>

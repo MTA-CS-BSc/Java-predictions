@@ -2,10 +2,8 @@ package fx.views.SimulationsTable;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.SingleSimulationDTO;
-import fx.models.Results.PauseSimulationTableCell;
-import fx.models.Results.RestartSimulationTableCell;
-import fx.models.Results.ResumeSimulationTableCell;
-import fx.models.Results.StopSimulationTableCell;
+import engine.simulation.ByStep;
+import fx.models.Results.*;
 import fx.modules.SingletonEngineAPI;
 import fx.views.HeaderComponent.HeaderComponentController;
 import helpers.Constants;
@@ -60,6 +58,12 @@ public class SimulationsTableController implements Initializable {
 
     @FXML
     private TableColumn<SingleSimulationDTO, Boolean> restartButtonColumn;
+
+    @FXML
+    private TableColumn<SingleSimulationDTO, Boolean> pastStepButtonColumn;
+
+    @FXML
+    private TableColumn<SingleSimulationDTO, Boolean> futureStepButtonColumn;
     //#endregion
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
@@ -132,8 +136,11 @@ public class SimulationsTableController implements Initializable {
         resumeButtonColumn.setCellFactory(cellData -> new ResumeSimulationTableCell(simulationsTable));
         stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
         restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable, this));
+        pastStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.PAST));
+        futureStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.FUTURE));
 
-        Stream.of(pauseButtonColumn, resumeButtonColumn, stopButtonColumn, restartButtonColumn)
+        Stream.of(pauseButtonColumn, resumeButtonColumn, stopButtonColumn,
+                        restartButtonColumn, pastStepButtonColumn, futureStepButtonColumn)
                 .forEach(column -> column.setSortable(false));
     }
 
