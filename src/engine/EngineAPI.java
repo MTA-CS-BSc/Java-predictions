@@ -5,7 +5,6 @@ import dtos.*;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
-import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.parsers.XmlParser;
 import engine.prototypes.implemented.Coordinate;
@@ -76,10 +75,7 @@ public class EngineAPI {
     }
     private void runSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
-
-        if (simulation.getSimulationState() == SimulationState.CREATED)
-            setEntitiesInitialLocations(simulation);
-
+        
         simulation.run();
 
         if (simulation.getSimulationState() == SimulationState.ERROR)
@@ -197,19 +193,19 @@ public class EngineAPI {
     private World getInitialWorld() {
         return historyManager.getInitialWorld();
     }
-    private void setEntitiesInitialLocations(SingleSimulation simulation) {
-        simulation.getWorld()
-                .getEntities()
-                .getEntitiesMap()
-                .values()
-                .forEach(entity -> {
-                    entity.getSingleEntities().forEach(singleEntity -> {
-                        Coordinate randomCoordinate = RandomGenerator.randomizeRandomCoordinate(simulation.getGrid());
-                        singleEntity.setCoordinate(randomCoordinate);
-                        changeCoordinateState(simulation, randomCoordinate);
-                    });
-                });
-    }
+//    private void setEntitiesInitialLocations(SingleSimulation simulation) {
+//        simulation.getWorld()
+//                .getEntities()
+//                .getEntitiesMap()
+//                .values()
+//                .forEach(entity -> {
+//                    entity.getSingleEntities().forEach(singleEntity -> {
+//                        Coordinate randomCoordinate = RandomGenerator.randomizeRandomCoordinate(simulation.getGrid());
+//                        singleEntity.setCoordinate(randomCoordinate);
+//                        changeCoordinateState(simulation, randomCoordinate);
+//                    });
+//                });
+//    }
     public ResponseDTO getPastSimulations() {
         if (historyManager.isEmpty())
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");

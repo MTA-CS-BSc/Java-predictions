@@ -45,11 +45,15 @@ public class Entity implements Serializable {
     }
     public void setSingleEntities(List<SingleEntity> list) { singleEntities = list; }
     public void initPopulation(WorldGrid grid, int population) {
+        singleEntities.forEach(singleEntity -> grid.changeCoordinateState(singleEntity.getCoordinate()));
         setPopulation(population);
         singleEntities.clear();
 
-        for (int i = 0; i < population; i++)
-            singleEntities.add(new SingleEntity(name, getInitialProperties(), grid));
+        for (int i = 0; i < population; i++) {
+            SingleEntity singleEntity = new SingleEntity(name, getInitialProperties(), grid);
+            singleEntities.add(singleEntity);
+            grid.changeCoordinateState(singleEntity.getCoordinate());
+        }
     }
     @Override
     public String toString() {

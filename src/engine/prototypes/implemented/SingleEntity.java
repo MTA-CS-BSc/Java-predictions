@@ -16,9 +16,10 @@ public class SingleEntity implements Serializable {
         entityName = other.entityName;
     }
     public SingleEntity(String entityName, Properties fromProperties, WorldGrid worldGrid) {
-        properties = new Properties(fromProperties);
-        coordinate = RandomGenerator.randomizeRandomCoordinate(worldGrid);
         this.entityName = entityName;
+        coordinate = RandomGenerator.randomizeRandomCoordinate(worldGrid);
+        properties = new Properties(fromProperties);
+        initRandomVars();
     }
     public Properties getProperties() {
         return properties;
