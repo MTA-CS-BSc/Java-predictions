@@ -134,6 +134,9 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         }
 
         else {
+            if (ticks == 0)
+                return;
+
             ticks--;
             world.setByWorldState(popWorldState());
         }

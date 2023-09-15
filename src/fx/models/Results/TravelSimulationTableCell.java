@@ -43,7 +43,7 @@ public class TravelSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
             setGraphic(paddedButton);
 
             SingleSimulationDTO simulation = getTableView().getItems().get(getIndex());
-            setDisable(simulation.getSimulationState() != SimulationState.PAUSED);
+            setDisable(simulation.getSimulationState() != SimulationState.PAUSED || simulation.getTicks() == 0);
         }
 
         else
