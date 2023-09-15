@@ -6,7 +6,6 @@ import engine.history.HistoryManager;
 import engine.logs.EngineLoggers;
 import engine.modules.Utils;
 import engine.parsers.XmlParser;
-import engine.prototypes.implemented.Coordinate;
 import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
@@ -39,9 +38,6 @@ public class EngineAPI {
 
         EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
         EngineLoggers.formatLogger(EngineLoggers.SIMULATION_ERRORS_LOGGER);
-    }
-    private void changeCoordinateState(SingleSimulation simulation, Coordinate coordinate) {
-        simulation.getWorld().getGrid().changeCoordinateState(coordinate);
     }
 
     //#region XML
