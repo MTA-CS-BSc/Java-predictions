@@ -4,13 +4,15 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <VBox fx:id="container" alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/8.0.171"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.views.Results.ResultsScreenController">
-    <HBox alignment="CENTER" spacing="20">
+    <HBox alignment="CENTER" spacing="20" maxHeight="200.0" >
         <fx:include source="../SimulationsTable/SimulationsTable.fxml" fx:id="simulationsTable"/>
-
-        <VBox>
-            <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>
-        </VBox>
+        <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>
     </HBox>
+
+    <StackPane>
+        <fx:include source="../StatsTable/StatsTable.fxml" fx:id="statsTable"/>
+    </StackPane>
 </VBox>

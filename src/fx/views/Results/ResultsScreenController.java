@@ -4,6 +4,7 @@ import dtos.SingleSimulationDTO;
 import fx.views.PopulationTable.PopulationTableController;
 import fx.views.HeaderComponent.HeaderComponentController;
 import fx.views.SimulationsTable.SimulationsTableController;
+import fx.views.StatsTable.StatsTableController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -22,6 +23,9 @@ public class ResultsScreenController implements Initializable {
 
     @FXML
     private SimulationsTableController simulationsTableController;
+
+    @FXML
+    private StatsTableController statsTableController;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
