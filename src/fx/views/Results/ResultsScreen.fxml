@@ -10,7 +10,5 @@
         <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>
     </HBox>
 
-    <StackPane>
-        <fx:include source="../StatsTable/StatsTable.fxml" fx:id="statsTable"/>
-    </StackPane>
+    <fx:include source="../StatsTable/StatsTable.fxml" fx:id="statsTable"/>
 </VBox>
