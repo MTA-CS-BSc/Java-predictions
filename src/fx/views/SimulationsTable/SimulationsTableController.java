@@ -132,7 +132,7 @@ public class SimulationsTableController implements Initializable {
         stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
         restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable, this));
 
-        Stream.of(pauseButtonColumn, resumeButtonColumn, stopButtonColumn, resumeButtonColumn)
+        Stream.of(pauseButtonColumn, resumeButtonColumn, stopButtonColumn, restartButtonColumn)
                 .forEach(column -> column.setSortable(false));
     }
 
