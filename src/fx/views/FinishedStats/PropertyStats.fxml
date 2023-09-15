@@ -19,7 +19,12 @@
             <ComboBox fx:id="propertyNamesComboBox"/>
         </HBox>
     </HBox>
-    <HBox>
+    <HBox alignment="CENTER">
         <PieChart fx:id="histogramChart"/>
+        <Region/>
+        <VBox alignment="CENTER" fx:id="avgContainer" spacing="5">
+            <Label text="Average:"/>
+            <Label fx:id="averageLabel"/>
+        </VBox>
     </HBox>
 </VBox>

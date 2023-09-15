@@ -1,6 +1,5 @@
 package engine;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import dtos.*;
 import engine.exceptions.UUIDNotFoundException;
 import engine.history.HistoryManager;
@@ -321,11 +320,27 @@ public class EngineAPI {
 
         return new ResponseDTO(200, entitiesAmount);
     }
-    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException, JsonProcessingException {
+    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
         return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
+    }
+    public ResponseDTO getPropertyAverage(String uuid, String entityName, String propertyName) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+
+        Entity mainEntity = historyManager.getPastSimulation(uuid).getWorld().getEntities().getEntitiesMap().get(entityName);
+
+        if (!PropTypes.NUMERIC_PROPS.contains(mainEntity.getInitialProperties().getPropsMap().get(propertyName).getType()))
+            return new ResponseDTO(400, null, "Property is not numeric");
+
+        double average = mainEntity.getSingleEntities()
+                .stream()
+                .mapToDouble(element -> Double.parseDouble(element.getProperties().getPropsMap().get(propertyName).getValue().getCurrentValue()))
+                .average().orElse(0);
+
+        return new ResponseDTO(200, average);
     }
     //#endregion
 }

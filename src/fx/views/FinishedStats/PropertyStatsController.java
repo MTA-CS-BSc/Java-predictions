@@ -7,6 +7,7 @@ import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import helpers.modules.SingletonObjectMapper;
+import helpers.types.PropTypes;
 import helpers.types.SimulationState;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -36,13 +37,23 @@ public class PropertyStatsController implements Initializable {
     @FXML
     private PieChart histogramChart;
 
+    @FXML
+    private Label averageLabel;
+
+    @FXML
+    private VBox avgContainer;
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
+    private void hideAvgContainer() {
+        avgContainer.setVisible(false);
+        averageLabel.setText("");
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedSimulation = new SimpleObjectProperty<>();
         container.setVisible(false);
         propertyNamesComboBox.setDisable(true);
+        hideAvgContainer();
 
         entityNamesComboBox.setCellFactory(getEntityCellFactory());
         propertyNamesComboBox.setCellFactory(getPropertyCellFactory());
@@ -67,15 +78,37 @@ public class PropertyStatsController implements Initializable {
                 propertyNamesComboBox.getItems().clear();
                 propertyNamesComboBox.getItems().addAll(t1.getProperties());
             }
+
+            hideAvgContainer();
         });
 
         propertyNamesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, propertyDTO, t1) -> {
-            if (!Objects.isNull(t1))
-                showSelectedPropertyStats(entityNamesComboBox.getSelectionModel().getSelectedItem().getName(),
-                        t1.getName());
+            if (!Objects.isNull(t1)) {
+                String entityName = entityNamesComboBox.getSelectionModel().getSelectedItem().getName();
+                String propertyName = t1.getName();
+
+                showSelectedPropertyStats(entityName, propertyName);
+
+                if (PropTypes.NUMERIC_PROPS.contains(t1.getType()))
+                    showPropertyAverage(entityName, propertyName);
+
+                else
+                    hideAvgContainer();
+            }
         });
     }
 
+    private void showPropertyAverage(String entityName, String propertyName) {
+        try {
+            double average = SingletonObjectMapper.objectMapper.readValue(
+                    SingletonEngineAPI.api.getPropertyAverage(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
+                    Double.class);
+            averageLabel.setText(String.valueOf(average));
+            avgContainer.setVisible(true);
+        } catch (Exception ignored) { }
+
+
+    }
     private Callback<ListView<EntityDTO>, ListCell<EntityDTO>> getEntityCellFactory() {
         return new Callback<ListView<EntityDTO>, ListCell<EntityDTO>>() {
             @Override
