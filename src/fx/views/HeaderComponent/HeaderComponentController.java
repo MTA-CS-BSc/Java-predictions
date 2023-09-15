@@ -126,19 +126,17 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     private void showSimulationDetailsScreen() throws JsonProcessingException {
-        if (!detailsScreenController.getContainer().isVisible()) {
-            if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
-                highlightButtonText(detailsButton);
-                hideVisible();
-                detailsScreenController.handleShowCategoriesData();
-                Platform.runLater(() ->  GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
-            }
+        if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
+            highlightButtonText(detailsButton);
+            hideVisible();
+            detailsScreenController.handleShowCategoriesData();
+            Platform.runLater(() ->  GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
+        }
 
-            else {
-                TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
-                tray.setAnimationType(AnimationType.FADE);
-                Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
-            }
+        else {
+            TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
+            tray.setAnimationType(AnimationType.FADE);
+            Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
         }
     }
 
@@ -152,12 +150,10 @@ public class HeaderComponentController implements Initializable {
     }
 
     public void showNewExecutionScreenFromUuid(String uuid) throws Exception {
-        if (!newExecutionController.getContainer().isVisible()) {
-            prepareSimulation(uuid);
-            highlightButtonText(newExecutionButton);
-            hideVisible();
-            Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
-        }
+        prepareSimulation(uuid);
+        highlightButtonText(newExecutionButton);
+        hideVisible();
+        Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
     }
 
     private void hideVisible() {
@@ -177,17 +173,15 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     public void showResultsScreen() {
-        if (!resultsScreenController.getContainer().isVisible()) {
-            Platform.runLater(() -> {
-                highlightButtonText(resultsButton);
-                hideVisible();
+        Platform.runLater(() -> {
+            highlightButtonText(resultsButton);
+            hideVisible();
 
-                if (!newExecutionController.isSimulationEmpty())
-                    SingletonEngineAPI.api.removeUnusedSimulations();
+            if (!newExecutionController.isSimulationEmpty())
+                SingletonEngineAPI.api.removeUnusedSimulations();
 
-                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsScreenController.getContainer()));
-            });
-        }
+            Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsScreenController.getContainer()));
+        });
     }
 
     private void prepareSimulation(String uuid) throws Exception {
