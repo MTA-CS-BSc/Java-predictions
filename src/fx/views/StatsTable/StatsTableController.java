@@ -19,13 +19,17 @@ public class StatsTableController implements Initializable {
     @FXML
     private EntitiesAmountChartController entitiesAmountChartController;
 
+    @FXML
+    private PropertyStatsController propertyStatsController;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedSimulation = new SimpleObjectProperty<>();
 
         filterByComboBox.getSelectionModel().selectedItemProperty()
                         .addListener((observableValue, s, t1) -> {
-                            showStats();
+                            entitiesAmountChartController.toggleVisibility();
+                            propertyStatsController.toggleVisibility();
                         });
 
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
@@ -33,9 +37,6 @@ public class StatsTableController implements Initializable {
         });
     }
 
-    public void showStats() {
-
-    }
     public void setSelectedSimulation(SingleSimulationDTO simulation) {
         selectedSimulation.setValue(simulation);
     }

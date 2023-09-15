@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.collections.FXCollections?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -27,5 +25,6 @@
 
     <StackPane prefHeight="250.0">
         <fx:include source="EntitiesAmountChart.fxml" fx:id="entitiesAmountChart"/>
+        <fx:include source="PropertyStats.fxml" fx:id="propertyStats"/>
     </StackPane>
 </VBox>
