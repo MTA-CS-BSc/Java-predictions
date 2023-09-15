@@ -10,6 +10,7 @@ import engine.prototypes.implemented.Entity;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
 import engine.prototypes.jaxb.PRDWorld;
+import engine.simulation.ByStep;
 import engine.simulation.SingleSimulation;
 import engine.validators.PRDWorldValidators;
 import helpers.modules.ThreadPoolManager;
@@ -296,8 +297,8 @@ public class EngineAPI {
                 String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
     }
     public ResponseDTO getEntitiesAmountsPerTick(String uuid) {
-        if (historyManager.isEmpty())
-            return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(400, Collections.emptyMap(), "Simulation not found!");
 
         else if (historyManager.getPastSimulation(uuid).getSimulationState() != SimulationState.FINISHED)
             return new ResponseDTO(400, 0, "Simulation is not finished!");
@@ -356,6 +357,16 @@ public class EngineAPI {
         QueueMgmtDTO queueMgmtDTO = new QueueMgmtDTO(pendingSimulations, runningSimulations, finishedSimulations);
 
         return new ResponseDTO(200, queueMgmtDTO);
+    }
+    public ResponseDTO setByStep(String uuid, ByStep byStep) {
+        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+            return new ResponseDTO(400, Collections.emptyMap(), "Simulation not found!");
+
+        else if (historyManager.getPastSimulation(uuid).getSimulationState() != SimulationState.PAUSED)
+            return new ResponseDTO(400, 0, "Simulation is not paused!");
+
+        historyManager.getPastSimulation(uuid).setByStep(byStep);
+        return new ResponseDTO(200, "");
     }
     //#endregion
 }
