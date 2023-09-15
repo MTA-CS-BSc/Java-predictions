@@ -70,10 +70,7 @@ public class PropertyStatsController implements Initializable {
         });
 
         propertyNamesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, propertyDTO, t1) -> {
-            if (Objects.isNull(t1))
-                hideSelectedPropertyStats();
-
-            else
+            if (!Objects.isNull(t1))
                 showSelectedPropertyStats(entityNamesComboBox.getSelectionModel().getSelectedItem().getName(),
                         t1.getName());
         });
@@ -132,10 +129,6 @@ public class PropertyStatsController implements Initializable {
     public void reset() {
         entityNamesComboBox.getSelectionModel().select(null);
         propertyNamesComboBox.getSelectionModel().select(null);
-    }
-
-    private void hideSelectedPropertyStats() {
-        //TODO: Not implemented
     }
 
     private void showSelectedPropertyStats(String entityName, String propertyName) {
