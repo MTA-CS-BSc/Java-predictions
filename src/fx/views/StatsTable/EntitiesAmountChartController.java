@@ -31,7 +31,6 @@ public class EntitiesAmountChartController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        entitiesAmountChart.setVisible(true);
         selectedSimulation = new SimpleObjectProperty<>();
 
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
