@@ -75,7 +75,7 @@ public class EngineAPI {
     }
     private void runSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
-        
+
         simulation.run();
 
         if (simulation.getSimulationState() == SimulationState.ERROR)
@@ -193,19 +193,6 @@ public class EngineAPI {
     private World getInitialWorld() {
         return historyManager.getInitialWorld();
     }
-//    private void setEntitiesInitialLocations(SingleSimulation simulation) {
-//        simulation.getWorld()
-//                .getEntities()
-//                .getEntitiesMap()
-//                .values()
-//                .forEach(entity -> {
-//                    entity.getSingleEntities().forEach(singleEntity -> {
-//                        Coordinate randomCoordinate = RandomGenerator.randomizeRandomCoordinate(simulation.getGrid());
-//                        singleEntity.setCoordinate(randomCoordinate);
-//                        changeCoordinateState(simulation, randomCoordinate);
-//                    });
-//                });
-//    }
     public ResponseDTO getPastSimulations() {
         if (historyManager.isEmpty())
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
