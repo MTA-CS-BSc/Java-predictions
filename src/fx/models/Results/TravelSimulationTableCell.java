@@ -28,7 +28,10 @@ public class TravelSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
 
         travelPastButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
-            SingletonEngineAPI.api.setByStep(getTableView().getSelectionModel().getSelectedItem().getUuid(), byStep);
+
+            String uuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
+            SingletonEngineAPI.api.setByStep(uuid, byStep);
+            SingletonEngineAPI.api.resumeSimulation(uuid);
         });
     }
 
