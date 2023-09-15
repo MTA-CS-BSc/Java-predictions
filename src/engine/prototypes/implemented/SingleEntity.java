@@ -1,30 +1,23 @@
 package engine.prototypes.implemented;
 
+import engine.modules.RandomGenerator;
 import engine.modules.Utils;
-import engine.prototypes.jaxb.PRDProperty;
-import helpers.Constants;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 
 public class SingleEntity implements Serializable {
     protected Properties properties;
     protected Coordinate coordinate;
     protected String entityName;
-    public SingleEntity(String entityName, List<PRDProperty> props) {
-        properties = new Properties(props);
-        coordinate = new Coordinate(Constants.NOT_SET, Constants.NOT_SET);
-        this.entityName = entityName;
-    }
     public SingleEntity(SingleEntity other) {
         properties = new Properties(other.getProperties());
         coordinate = new Coordinate(other.coordinate);
         entityName = other.entityName;
     }
-    public SingleEntity(String entityName, Properties fromProperties) {
+    public SingleEntity(String entityName, Properties fromProperties, WorldGrid worldGrid) {
         properties = new Properties(fromProperties);
-        coordinate = new Coordinate(Constants.NOT_SET, Constants.NOT_SET);
+        coordinate = RandomGenerator.randomizeRandomCoordinate(worldGrid);
         this.entityName = entityName;
     }
     public Properties getProperties() {

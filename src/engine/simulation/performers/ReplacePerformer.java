@@ -14,7 +14,7 @@ public abstract class ReplacePerformer {
         String mode = action.getMode();
 
         SingleEntity created = mode.equals(ReplaceModes.SCRATCH) ?
-                CreatePerformer.scratch(createEntity) : CreatePerformer.derived(createEntity, killEntity, singleKillEntity);
+                CreatePerformer.scratch(createEntity, world.getGrid()) : CreatePerformer.derived(createEntity, killEntity, singleKillEntity, world.getGrid());
 
         // Check if entity was killed, if it was - deliver the created entity
         if (KillPerformer.handle(world, killEntity.getName(), singleKillEntity)) {

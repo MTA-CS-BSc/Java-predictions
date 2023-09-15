@@ -7,11 +7,11 @@ import helpers.Constants;
 import java.util.Objects;
 
 public class CreatePerformer {
-    public static SingleEntity scratch(Entity entity) {
-        return new SingleEntity(entity.getName(), entity.getInitialProperties());
+    public static SingleEntity scratch(Entity entity, WorldGrid grid) {
+        return new SingleEntity(entity.getName(), entity.getInitialProperties(), grid);
     }
-    public static SingleEntity derived(Entity create, Entity from, SingleEntity singleFrom) {
-        SingleEntity created = scratch(create);
+    public static SingleEntity derived(Entity create, Entity from, SingleEntity singleFrom, WorldGrid grid) {
+        SingleEntity created = scratch(create, grid);
 
         created.getProperties().getPropsMap().values()
                 .stream()

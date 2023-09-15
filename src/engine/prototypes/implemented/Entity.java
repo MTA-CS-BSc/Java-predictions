@@ -11,6 +11,7 @@ public class Entity implements Serializable {
     protected int population;
     protected List<SingleEntity> singleEntities;
     protected Properties initialProperties;
+
     public Entity(PRDEntity entity) {
         name = entity.getName();
         population = 0;
@@ -43,12 +44,12 @@ public class Entity implements Serializable {
         return singleEntities;
     }
     public void setSingleEntities(List<SingleEntity> list) { singleEntities = list; }
-    public void initPopulation(int population) {
+    public void initPopulation(WorldGrid grid, int population) {
         setPopulation(population);
         singleEntities.clear();
 
         for (int i = 0; i < population; i++)
-            singleEntities.add(new SingleEntity(name, getInitialProperties()));
+            singleEntities.add(new SingleEntity(name, getInitialProperties(), grid));
     }
     @Override
     public String toString() {
