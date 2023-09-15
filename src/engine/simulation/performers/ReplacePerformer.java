@@ -20,6 +20,7 @@ public abstract class ReplacePerformer {
         if (KillPerformer.handle(world, killEntity.getName(), singleKillEntity)) {
             createEntity.getSingleEntities().add(created);
             createEntity.setPopulation(createEntity.getPopulation() + 1);
+            world.getGrid().changeCoordinateState(created.getCoordinate());
         }
     }
 }

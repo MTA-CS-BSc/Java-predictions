@@ -27,6 +27,8 @@ public abstract class KillPerformer {
         if (mainEntity.getSingleEntities().size() > updatedList.size()) {
             mainEntity.setSingleEntities(updatedList);
             mainEntity.setPopulation(mainEntity.getPopulation() - 1);
+            world.getGrid().changeCoordinateState(kill.getCoordinate());
+
             EngineLoggers.SIMULATION_LOGGER.info(String.format("Killed 1 entity named [%s]. Population is [%d]", entityName, mainEntity.getPopulation()));
             return true;
         }
