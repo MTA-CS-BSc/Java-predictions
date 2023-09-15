@@ -3,7 +3,7 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <LineChart xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-           fx:id="entitiesAmountChart" fx:controller="fx.views.StatsTable.EntitiesAmountChartController">
+           fx:id="entitiesAmountChart" fx:controller="fx.views.FinishedStats.EntitiesAmountChartController">
     <xAxis>
         <NumberAxis fx:id="ticksAxis" tickUnit="1" tickLabelGap="2" label="Tick" />
     </xAxis>

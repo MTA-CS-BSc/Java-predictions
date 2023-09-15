@@ -1,4 +1,4 @@
-package fx.views.StatsTable;
+package fx.views.FinishedStats;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;

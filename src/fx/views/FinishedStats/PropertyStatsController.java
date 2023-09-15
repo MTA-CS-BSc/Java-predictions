@@ -1,4 +1,4 @@
-package fx.views.StatsTable;
+package fx.views.FinishedStats;
 
 import dtos.SingleSimulationDTO;
 import javafx.beans.property.ObjectProperty;

@@ -4,7 +4,7 @@ import dtos.SingleSimulationDTO;
 import fx.views.PopulationTable.PopulationTableController;
 import fx.views.HeaderComponent.HeaderComponentController;
 import fx.views.SimulationsTable.SimulationsTableController;
-import fx.views.StatsTable.StatsTableController;
+import fx.views.FinishedStats.FinishedStatsController;
 import helpers.types.SimulationState;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -26,7 +26,7 @@ public class ResultsScreenController implements Initializable {
     private SimulationsTableController simulationsTableController;
 
     @FXML
-    private StatsTableController statsTableController;
+    private FinishedStatsController finishedStatsController;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
@@ -36,7 +36,7 @@ public class ResultsScreenController implements Initializable {
 
         simulationsTableController.selectedSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
             populationTableController.setSelectedSimulation(t1);
-            statsTableController.setSelectedSimulation(t1.getSimulationState() == SimulationState.FINISHED ? t1 : null);
+            finishedStatsController.setSelectedSimulation(t1.getSimulationState() == SimulationState.FINISHED ? t1 : null);
         });
     }
 

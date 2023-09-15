@@ -1,4 +1,4 @@
-package fx.views.StatsTable;
+package fx.views.FinishedStats;
 
 import dtos.SingleSimulationDTO;
 import helpers.types.SimulationState;
@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class StatsTableController implements Initializable {
+public class FinishedStatsController implements Initializable {
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
     @FXML
