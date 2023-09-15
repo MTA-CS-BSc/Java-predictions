@@ -342,5 +342,24 @@ public class EngineAPI {
 
         return new ResponseDTO(200, average);
     }
+    public ResponseDTO getQueueManagementDetails() {
+        Collection<SingleSimulation> pastSimulations = historyManager.getPastSimulations().values();
+
+        int finishedSimulations = (int)pastSimulations.stream()
+                .filter(simulation -> simulation.getSimulationState() == SimulationState.FINISHED)
+                .count();
+
+        int runningSimulations = (int)pastSimulations.stream()
+                .filter(simulation -> simulation.getSimulationState() == SimulationState.RUNNING)
+                .count();
+
+        int pendingSimulations = (int)pastSimulations.stream()
+                .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED)
+                .count();
+
+        QueueMgmtDTO queueMgmtDTO = new QueueMgmtDTO(pendingSimulations, runningSimulations, finishedSimulations);
+
+        return new ResponseDTO(200, queueMgmtDTO);
+    }
     //#endregion
 }

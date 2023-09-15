@@ -1,6 +1,7 @@
 package fx.views.HeaderComponent;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import dtos.QueueMgmtDTO;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
 import fx.views.NewExecution.NewExecutionController;
@@ -17,9 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
@@ -31,6 +30,8 @@ import tray.notification.TrayNotification;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class HeaderComponentController implements Initializable {
@@ -42,6 +43,8 @@ public class HeaderComponentController implements Initializable {
     private Button resultsButton;
     @FXML
     private TextArea currentXmlFilePath;
+    @FXML
+    private Button queueMgmtButton;
 
     private DetailsScreenController detailsScreenController;
     private NewExecutionController newExecutionController;
@@ -54,6 +57,27 @@ public class HeaderComponentController implements Initializable {
         resultsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
 
         highlightButtonText(detailsButton);
+
+        Executors.newScheduledThreadPool(1)
+                .scheduleAtFixedRate(this::getQueueMgmtFromAPI, 0,
+                        5000, TimeUnit.MILLISECONDS);
+    }
+
+    private void getQueueMgmtFromAPI() {
+        try {
+            QueueMgmtDTO queueMgmtDTO = SingletonObjectMapper.objectMapper.readValue(
+                    SingletonEngineAPI.api.getQueueManagementDetails().getData(),
+                    QueueMgmtDTO.class
+            );
+
+            String data = String.format("Pending: %d\nRunning: %d\nFinished: %d",
+                    queueMgmtDTO.getPendingSimulations(), queueMgmtDTO.getRunningSimulations(), queueMgmtDTO.getFinishedSimulations());
+
+            queueMgmtButton.setTooltip(new Tooltip(data));
+        }
+
+        catch (Exception ignored) { }
+
     }
 
     private void highlightButtonText(Button button) {
@@ -187,8 +211,9 @@ public class HeaderComponentController implements Initializable {
         Platform.runLater(() -> {
             highlightButtonText(resultsButton);
 
-            if (!newExecutionController.isSimulationEmpty())
-                SingletonEngineAPI.api.removeUnusedSimulations();
+            //TODO: Check if needed
+//            if (!newExecutionController.isSimulationEmpty())
+//                SingletonEngineAPI.api.removeUnusedSimulations();
         });
     }
 
