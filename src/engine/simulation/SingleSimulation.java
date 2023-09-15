@@ -64,33 +64,33 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     }
     public ByStep getByStep() { return byStep; }
     private void moveEntity(SingleEntity singleEntity) {
-        Direction randomDirection = Direction.values()[RandomGenerator.randomizeRandomNumber(0, Direction.values().length)];
+        Direction randomDirection = Direction.values()[RandomGenerator.randomizeRandomNumber(0, Direction.values().length - 1)];
         Coordinate newCoordinate = new Coordinate(singleEntity.getCoordinate());
 
         switch (randomDirection) {
             case UP:
-                newCoordinate.setY(newCoordinate.getY() - 1);
-
-                if (newCoordinate.getY() < 0)
-                    newCoordinate.setY(world.getGrid().getRows() - 1);
-                break;
-            case DOWN:
-                newCoordinate.setY(newCoordinate.getY() + 1);
-
-                if (newCoordinate.getY() > world.getGrid().getRows() - 1)
-                    newCoordinate.setY(0);
-                break;
-            case LEFT:
                 newCoordinate.setX(newCoordinate.getX() - 1);
 
                 if (newCoordinate.getX() < 0)
-                    newCoordinate.setX(world.getGrid().getColumns() - 1);
+                    newCoordinate.setX(world.getGrid().getRows() - 1);
                 break;
-            case RIGHT:
+            case DOWN:
                 newCoordinate.setX(newCoordinate.getX() + 1);
 
-                if (newCoordinate.getX() > world.getGrid().getColumns() - 1)
+                if (newCoordinate.getX() > world.getGrid().getRows() - 1)
                     newCoordinate.setX(0);
+                break;
+            case LEFT:
+                newCoordinate.setY(newCoordinate.getY() - 1);
+
+                if (newCoordinate.getY() < 0)
+                    newCoordinate.setY(world.getGrid().getColumns() - 1);
+                break;
+            case RIGHT:
+                newCoordinate.setY(newCoordinate.getY() + 1);
+
+                if (newCoordinate.getY() > world.getGrid().getColumns() - 1)
+                    newCoordinate.setY(0);
                 break;
         }
 
@@ -114,7 +114,9 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 else if (action.getEntityName().isEmpty() || action.getEntityName().equals(singleEntity.getEntityName())) {
                     try {
                         ActionsPerformer.fireAction(world, action, singleEntity);
-                    } catch (Exception e) { simulationState = SimulationState.ERROR; }
+                    } catch (Exception e) {
+                        simulationState = SimulationState.ERROR;
+                    }
                 }
             });
 

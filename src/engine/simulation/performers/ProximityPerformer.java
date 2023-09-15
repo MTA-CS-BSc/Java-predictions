@@ -14,10 +14,39 @@ import java.util.Objects;
 public abstract class ProximityPerformer {
     private static Bounds getBounds(WorldGrid grid, Coordinate start, int depth) {
         Bounds bounds = new Bounds();
-        bounds.setRowMDepth((start.getX() - depth) % grid.getRows());
-        bounds.setRowPDepth((start.getX() + depth) % grid.getRows());
-        bounds.setColMDepth((start.getY() - depth) % grid.getColumns());
-        bounds.setColPDepth((start.getY() + depth) % grid.getColumns());
+
+        int mRowIterator = start.getX();
+        int pRowIterator = start.getX();
+        int mColIterator = start.getY();
+        int pColIterator = start.getY();
+
+        int amount = 0;
+
+        while (amount < depth) {
+            mRowIterator--;
+            mColIterator--;
+            pRowIterator++;
+            pColIterator++;
+
+            if (mRowIterator < 0)
+                mRowIterator = grid.getRows() - 1;
+
+            if (mColIterator < 0)
+                mColIterator = grid.getColumns() - 1;
+
+            if (pRowIterator > grid.getRows() - 1)
+                pRowIterator = 0;
+
+            if (pColIterator > grid.getColumns() - 1)
+                pColIterator = 0;
+
+            amount++;
+        }
+
+        bounds.setRowMDepth(mRowIterator);
+        bounds.setColMDepth(mColIterator);
+        bounds.setRowPDepth(pRowIterator);
+        bounds.setColPDepth(pColIterator);
 
         return bounds;
     }
