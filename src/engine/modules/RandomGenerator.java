@@ -1,5 +1,7 @@
 package engine.modules;
 
+import engine.prototypes.implemented.Coordinate;
+import engine.prototypes.implemented.WorldGrid;
 import helpers.Constants;
 
 import java.util.Random;
@@ -28,5 +30,20 @@ public abstract class RandomGenerator {
         }
 
         return sb.toString();
+    }
+    public static Coordinate randomizeRandomCoordinate(WorldGrid grid) {
+        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0,grid.getColumns() - 1),
+                RandomGenerator.randomizeRandomNumber(0, grid.getRows() - 1));
+
+        while (isCoordinateTaken(grid, randomCoordinate)) {
+            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, grid.getColumns() - 1));
+            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, grid.getRows() - 1));
+        }
+
+        return randomCoordinate;
+    }
+
+    public static boolean isCoordinateTaken(WorldGrid grid, Coordinate coordinate) {
+        return grid.isTaken(coordinate);
     }
 }

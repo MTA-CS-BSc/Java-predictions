@@ -42,9 +42,6 @@ public class EngineAPI {
         EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
         EngineLoggers.formatLogger(EngineLoggers.SIMULATION_ERRORS_LOGGER);
     }
-    private boolean isCoordinateTaken(SingleSimulation simulation, Coordinate coordinate) {
-        return simulation.getWorld().getGrid().isTaken(coordinate);
-    }
     private void changeCoordinateState(SingleSimulation simulation, Coordinate coordinate) {
         simulation.getWorld().getGrid().changeCoordinateState(coordinate);
     }
@@ -208,14 +205,7 @@ public class EngineAPI {
                 .values()
                 .forEach(entity -> {
                     entity.getSingleEntities().forEach(singleEntity -> {
-                        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getColumns() - 1),
-                                RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getRows() - 1));
-
-                        while (isCoordinateTaken(simulation, randomCoordinate)) {
-                            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getColumns() - 1));
-                            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, getInitialWorld().getGrid().getRows() - 1));
-                        }
-
+                        Coordinate randomCoordinate = RandomGenerator.randomizeRandomCoordinate(simulation.getGrid());
                         singleEntity.setCoordinate(randomCoordinate);
                         changeCoordinateState(simulation, randomCoordinate);
                     });
@@ -284,7 +274,7 @@ public class EngineAPI {
             return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Overall population exceeds board!");
 
-        entity.initPopulation(population);
+        entity.initPopulation(simulation.getGrid(), population);
         entityDTO.setPopulation(population);
 
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
