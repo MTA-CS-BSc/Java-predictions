@@ -6,8 +6,8 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import java.lang.String?>
-<VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="fx.views.StatsTable.StatsTableController">
+<VBox fx:id="container" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="fx.views.StatsTable.StatsTableController" spacing="10">
 
     <HBox>
         <ComboBox fx:id="filterByComboBox" promptText="Filter by">
