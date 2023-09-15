@@ -1,6 +1,7 @@
 package fx.models.Results;
 
 import dtos.SingleSimulationDTO;
+import engine.simulation.ByStep;
 import fx.consts.FilePaths;
 import fx.modules.SingletonEngineAPI;
 import helpers.types.SimulationState;
@@ -27,7 +28,9 @@ public class ResumeSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
 
         resumeButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
-            SingletonEngineAPI.api.resumeSimulation(getTableView().getSelectionModel().getSelectedItem().getUuid());
+            String uuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
+            SingletonEngineAPI.api.setByStep(uuid, ByStep.NOT_BY_STEP);
+            SingletonEngineAPI.api.resumeSimulation(uuid);
         });
     }
 
