@@ -58,4 +58,9 @@ public class PropertyDTO {
         return Objects.isNull(getRange())
                 || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
