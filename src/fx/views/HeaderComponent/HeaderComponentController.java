@@ -109,7 +109,7 @@ public class HeaderComponentController implements Initializable {
     public void setResultsScreenController(ResultsScreenController controller) { resultsScreenController = controller; }
 
     @FXML
-    private void handleLoadXml(ActionEvent event) throws JsonProcessingException {
+    private void handleLoadXml(ActionEvent event) {
         Window window = ((Node)event.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
