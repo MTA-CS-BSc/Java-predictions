@@ -68,13 +68,14 @@ public class SimulationsTableController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        selectedSimulation = new SimpleObjectProperty<>();
+
         initColumns();
 
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::addSimulationsFromAPI, 0,
                         Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
 
-        selectedSimulation = new SimpleObjectProperty<>();
     }
 
     public HeaderComponentController getHeaderController() {
