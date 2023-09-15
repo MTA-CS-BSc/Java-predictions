@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
+<?import java.lang.String?>
 <VBox xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="fx.views.StatsTable.StatsTableController">
 
-    <ComboBox fx:id="filterBy" promptText="Filter by"/>
+    <HBox>
+        <ComboBox fx:id="filterByComboBox" promptText="Filter by">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="Entities amounts"/>
+                    <String fx:value="Property statistics"/>
+                </FXCollections>
+            </items>
+            <value>
+                <String fx:value="Entities amounts"/>
+            </value>
+        </ComboBox>
+    </HBox>
+
     <StackPane prefHeight="250.0">
-        <LineChart fx:id="entitiesAmountChart">
-            <xAxis>
-                <NumberAxis fx:id="ticksAxis" tickUnit="1" tickLabelGap="2" label="Tick" />
-            </xAxis>
-            <yAxis>
-                <NumberAxis fx:id="amountAxis" label="Entity amount" />
-            </yAxis>
-        </LineChart>
+        <fx:include source="EntitiesAmountChart.fxml" fx:id="entitiesAmountChart"/>
     </StackPane>
 </VBox>
