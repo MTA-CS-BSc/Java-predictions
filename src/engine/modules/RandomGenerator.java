@@ -32,12 +32,12 @@ public abstract class RandomGenerator {
         return sb.toString();
     }
     public static Coordinate randomizeRandomCoordinate(WorldGrid grid) {
-        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0,grid.getColumns() - 1),
-                RandomGenerator.randomizeRandomNumber(0, grid.getRows() - 1));
+        Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, grid.getRows() - 1),
+                RandomGenerator.randomizeRandomNumber(0, grid.getColumns() - 1));
 
         while (isCoordinateTaken(grid, randomCoordinate)) {
-            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, grid.getColumns() - 1));
-            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, grid.getRows() - 1));
+            randomCoordinate.setX(RandomGenerator.randomizeRandomNumber(0, grid.getRows() - 1));
+            randomCoordinate.setY(RandomGenerator.randomizeRandomNumber(0, grid.getColumns() - 1));
         }
 
         return randomCoordinate;
