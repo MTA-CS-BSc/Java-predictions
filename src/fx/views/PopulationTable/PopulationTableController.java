@@ -99,5 +99,7 @@ public class PopulationTableController implements Initializable {
         for (EntityDTO entity : populationTable.getItems())
             SingletonEngineAPI.api.setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
                     entity, 0);
+
+        populationTable.refresh();
     }
 }
