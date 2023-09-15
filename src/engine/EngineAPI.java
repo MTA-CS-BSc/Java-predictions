@@ -347,7 +347,7 @@ public class EngineAPI {
                 .count();
 
         int runningSimulations = (int)pastSimulations.stream()
-                .filter(simulation -> simulation.getSimulationState() == SimulationState.RUNNING)
+                .filter(simulation -> Arrays.asList(SimulationState.RUNNING, SimulationState.PAUSED).contains(simulation.getSimulationState()))
                 .count();
 
         int pendingSimulations = (int)pastSimulations.stream()
