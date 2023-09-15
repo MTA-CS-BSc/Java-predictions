@@ -1,11 +1,13 @@
 package engine.simulation;
 
 import engine.consts.TerminationReasons;
+import engine.modules.RandomGenerator;
 import engine.modules.Utils;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.Action;
 import engine.simulation.performers.ActionsPerformer;
 import helpers.modules.ElapsedTimer;
+import helpers.types.Direction;
 import helpers.types.SimulationState;
 
 import java.io.Serializable;
@@ -62,7 +64,42 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     }
     public ByStep getByStep() { return byStep; }
     private void moveEntity(SingleEntity singleEntity) {
-        //TODO: Not implemented
+        Direction randomDirection = Direction.values()[RandomGenerator.randomizeRandomNumber(0, Direction.values().length)];
+        Coordinate newCoordinate = new Coordinate(singleEntity.getCoordinate());
+
+        switch (randomDirection) {
+            case UP:
+                newCoordinate.setY(newCoordinate.getY() - 1);
+
+                if (newCoordinate.getY() < 0)
+                    newCoordinate.setY(world.getGrid().getRows() - 1);
+                break;
+            case DOWN:
+                newCoordinate.setY(newCoordinate.getY() + 1);
+
+                if (newCoordinate.getY() > world.getGrid().getRows() - 1)
+                    newCoordinate.setY(0);
+                break;
+            case LEFT:
+                newCoordinate.setX(newCoordinate.getX() - 1);
+
+                if (newCoordinate.getX() < 0)
+                    newCoordinate.setX(world.getGrid().getColumns() - 1);
+                break;
+            case RIGHT:
+                newCoordinate.setX(newCoordinate.getX() + 1);
+
+                if (newCoordinate.getX() > world.getGrid().getColumns() - 1)
+                    newCoordinate.setX(0);
+                break;
+        }
+
+        if (RandomGenerator.isCoordinateTaken(world.getGrid(), newCoordinate))
+            return;
+
+        world.getGrid().changeCoordinateState(singleEntity.getCoordinate());
+        world.getGrid().changeCoordinateState(newCoordinate);
+        singleEntity.setCoordinate(newCoordinate);
     }
     private void performAllPossibleActions() {
         List<Action> actionsToPerform = getActionsToPerform();
