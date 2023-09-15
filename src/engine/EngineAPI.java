@@ -185,7 +185,6 @@ public class EngineAPI {
             return new ResponseDTO(500, "Attempted to load history but no history file was found");
         }
     }
-
     //#endregion
 
     //#region Getters & Setters
