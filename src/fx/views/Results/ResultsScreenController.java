@@ -5,6 +5,7 @@ import fx.views.PopulationTable.PopulationTableController;
 import fx.views.HeaderComponent.HeaderComponentController;
 import fx.views.SimulationsTable.SimulationsTableController;
 import fx.views.StatsTable.StatsTableController;
+import helpers.types.SimulationState;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -33,7 +34,10 @@ public class ResultsScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedSimulation = new SimpleObjectProperty<>();
 
-        simulationsTableController.selectedSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> populationTableController.setSelectedSimulation(t1));
+        simulationsTableController.selectedSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
+            populationTableController.setSelectedSimulation(t1);
+            statsTableController.setSelectedSimulation(t1.getSimulationState() == SimulationState.FINISHED ? t1 : null);
+        });
     }
 
     public void setHeaderController(HeaderComponentController controller) {
