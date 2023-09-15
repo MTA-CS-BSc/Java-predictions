@@ -1,25 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 
-<TableView xmlns="http://javafx.com/javafx"
-               xmlns:fx="http://javafx.com/fxml"
-               fx:controller="fx.views.SimulationsTable.SimulationsTableController"
-               fx:id="simulationsTable" onMouseClicked="#handleSelectedSimulation">
+<TableView fx:id="simulationsTable" onMouseClicked="#handleSelectedSimulation" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.views.SimulationsTable.SimulationsTableController">
         <columns>
-            <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>
-            <TableColumn fx:id="createdTimestampColumn" prefWidth="200" text="Created at"/>
-            <TableColumn fx:id="ticksColumn" prefWidth="100" text="Ticks"/>
-            <TableColumn fx:id="elapsedTimeColumn" prefWidth="200" text="Elapsed time (millis)"/>
-            <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
-            <TableColumn fx:id="pauseButtonColumn" prefWidth="100" text="Pause"/>
-            <TableColumn fx:id="resumeButtonColumn" prefWidth="100" text="Resume"/>
-            <TableColumn fx:id="stopButtonColumn" prefWidth="100" text="Stop"/>
-            <TableColumn fx:id="restartButtonColumn" prefWidth="100" text="Rerun"/>
+            <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id" />
+            <TableColumn fx:id="createdTimestampColumn" prefWidth="200" text="Created at" />
+            <TableColumn fx:id="ticksColumn" prefWidth="100" text="Ticks" />
+            <TableColumn fx:id="elapsedTimeColumn" prefWidth="200" text="Elapsed time (millis)" />
+            <TableColumn fx:id="stateColumn" prefWidth="100" text="State" />
+            <TableColumn fx:id="pauseButtonColumn" prefWidth="100" text="Pause" />
+            <TableColumn fx:id="resumeButtonColumn" prefWidth="100" text="Resume" />
+            <TableColumn fx:id="stopButtonColumn" prefWidth="100" text="Stop" />
+            <TableColumn fx:id="restartButtonColumn" prefWidth="100" text="Rerun" />
         </columns>
 </TableView>
-
