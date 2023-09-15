@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:id="container"
             fx:controller="fx.views.StatsTable.PropertyStatsController">
-</StackPane>
+    <HBox alignment="CENTER" spacing="10">
+        <HBox spacing="5">
+            <Label text="Entity:"/>
+            <ComboBox fx:id="entityName"/>
+        </HBox>
+        <Label text="|"/>
+        <HBox spacing="5">
+            <Label text="Property:"/>
+            <ComboBox fx:id="propertyName"/>
+        </HBox>
+    </HBox>
+</VBox>
