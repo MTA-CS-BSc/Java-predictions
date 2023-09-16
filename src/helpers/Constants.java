@@ -16,5 +16,4 @@ public class Constants {
     public final static Duration ANIMATION_DURATION = new javafx.util.Duration(1000);
     public final static int API_RESPONSE_OK = 200;
     public final static int API_REFETCH_INTERVAL_MILLIS = 1000;
-    public static Gson GSON_UTIL = new Gson();
 }
