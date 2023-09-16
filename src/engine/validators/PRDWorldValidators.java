@@ -8,6 +8,7 @@ import engine.validators.entities.PRDEntitiesValidators;
 import engine.validators.env.PRDEnvironmentValidators;
 import engine.validators.rules.PRDRulesValidators;
 import engine.validators.termination.PRDTerminationValidators;
+import helpers.Constants;
 
 public abstract class PRDWorldValidators {
     public static ResponseDTO validateWorld(PRDWorld world) {
@@ -51,10 +52,10 @@ public abstract class PRDWorldValidators {
     private static boolean validateGrid(PRDWorld world) throws Exception {
         PRDWorld.PRDGrid grid = world.getPRDGrid();
 
-        if (grid.getRows() < 10 || grid.getRows() > 100)
+        if (grid.getRows() < Constants.MIN_GRID_LINEAR_SIZE || grid.getRows() > Constants.MAX_GRID_LINEAR_SIZE)
             throw new GridSizeException("World grid rows range is [10, 100] but value is " + grid.getRows());
 
-        if (grid.getColumns() < 10 || grid.getColumns() > 100)
+        if (grid.getColumns() < Constants.MIN_GRID_LINEAR_SIZE || grid.getColumns() > Constants.MAX_GRID_LINEAR_SIZE)
             throw new GridSizeException("World grid columns range is [10, 100] but value is " + grid.getColumns());
 
         return true;

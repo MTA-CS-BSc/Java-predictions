@@ -13,7 +13,7 @@ public class Constants {
     public final static int NOT_SET = -1;
     public final static String STRING_ALLOWED_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!?,-.()0123456789 ";
     public final static int MAX_RANDOM_STRING_LENGTH = 50;
-    public final static Duration ANIMATION_DURATION = new javafx.util.Duration(2000);
+    public final static Duration ANIMATION_DURATION = new javafx.util.Duration(1000);
     public final static int API_RESPONSE_OK = 200;
     public final static int API_REFETCH_INTERVAL_MILLIS = 1000;
     public static Gson GSON_UTIL = new Gson();
