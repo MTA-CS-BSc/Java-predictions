@@ -159,13 +159,11 @@ public class HeaderComponentController implements Initializable {
         if (!detailsScreenController.getContainer().isVisible()) {
             hideVisible();
 
-            Platform.runLater(() -> {
-                if (isAnimationsOn.getValue())
-                    GuiUtils.fadeInAnimation(detailsScreenController.getContainer());
+            if (isAnimationsOn.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
 
-                else
-                    detailsScreenController.getContainer().setVisible(true);
-            });
+            else
+                Platform.runLater(() -> detailsScreenController.getContainer().setVisible(true));
         }
 
         if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
@@ -190,14 +188,11 @@ public class HeaderComponentController implements Initializable {
     public void showNewExecutionScreenFromUuid(String uuid) throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
             hideVisible();
+            if (isAnimationsOn.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
 
-            Platform.runLater(() -> {
-                if (isAnimationsOn.getValue())
-                    GuiUtils.fadeInAnimation(newExecutionController.getContainer());
-
-                else
-                    newExecutionController.getContainer().setVisible(true);
-            });
+            else
+                Platform.runLater(() -> newExecutionController.getContainer().setVisible(true));
         }
 
         prepareSimulation(uuid);
@@ -240,13 +235,11 @@ public class HeaderComponentController implements Initializable {
         if (!resultsScreenController.getContainer().isVisible()) {
             hideVisible();
 
-            Platform.runLater(() -> {
-                if (isAnimationsOn.getValue())
-                    GuiUtils.fadeInAnimation(resultsScreenController.getContainer());
+            if (isAnimationsOn.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsScreenController.getContainer()));
 
-                else
-                    resultsScreenController.getContainer().setVisible(true);
-            });
+            else
+                Platform.runLater(() -> resultsScreenController.getContainer().setVisible(true));
         }
 
         Platform.runLater(() -> {

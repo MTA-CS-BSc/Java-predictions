@@ -31,8 +31,6 @@ public class AppMenuController implements Initializable {
         isAnimationsOn.addListener((observableValue, aBoolean, t1) -> {
            toggleAnimations.setText(t1 ? "Toggle animations OFF" : "Toggle animations ON");
         });
-
-        isAnimationsOnProperty().setValue(true);
     }
 
     public void setThemeToAllScenes(String cssPath) {

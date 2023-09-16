@@ -24,6 +24,8 @@ public class AllScreensUpperBarController implements Initializable {
         appMenuController.isAnimationsOnProperty().addListener((observableValue, aBoolean, t1) -> {
             headerComponentController.setIsAnimationsOn(t1);
         });
+
+        appMenuController.isAnimationsOnProperty().setValue(true);
     }
 
     public void addScene(Scene scene) {
