@@ -9,8 +9,7 @@
 
 <GridPane alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.views.HeaderComponent.HeaderComponentController">
     <HBox spacing="22.0" GridPane.rowIndex="1">
-        <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXml" prefHeight="35.0"
-                prefWidth="120.0" text="Load XML"/>
+        <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXml" text="Load XML"/>
         <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5"
                   prefHeight="40.0" prefWidth="454.0" promptText="No XML is currently loaded" wrapText="true">
             <HBox.margin>

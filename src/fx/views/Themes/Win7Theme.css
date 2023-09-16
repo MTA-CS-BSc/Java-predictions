@@ -1,9 +1,11 @@
 .root {
-    -fx-font-family: "Segoe UI", Arial, sans-serif;
     -fx-background-color: radial-gradient(radius 100%, #3889d2, #6c8edf, #8fddff);
-
 }
 
+.text {
+    -fx-font-family: "Andale Mono";
+    -fx-font-size: 16px;
+}
 /* Buttons */
 .button {
     -fx-background-color:
