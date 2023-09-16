@@ -21,6 +21,9 @@ public class AllScreensUpperBarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        appMenuController.isAnimationsOnProperty().addListener((observableValue, aBoolean, t1) -> {
+            headerComponentController.setIsAnimationsOn(t1);
+        });
     }
 
     public void addScene(Scene scene) {

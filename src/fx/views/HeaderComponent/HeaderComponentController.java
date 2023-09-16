@@ -14,6 +14,8 @@ import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -53,8 +55,12 @@ public class HeaderComponentController implements Initializable {
     private NewExecutionController newExecutionController;
     private ResultsScreenController resultsScreenController;
 
+    private BooleanProperty isAnimationsOn;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isAnimationsOn = new SimpleBooleanProperty();
+
         detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         newExecutionButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
         resultsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
@@ -152,7 +158,12 @@ public class HeaderComponentController implements Initializable {
     private void showSimulationDetailsScreen() throws JsonProcessingException {
         if (!detailsScreenController.getContainer().isVisible()) {
             hideVisible();
-            Platform.runLater(() -> GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
+
+            if (isAnimationsOn.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
+
+            else
+                Platform.runLater(() -> detailsScreenController.getContainer().setVisible(true));
         }
 
         if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
@@ -177,7 +188,12 @@ public class HeaderComponentController implements Initializable {
     public void showNewExecutionScreenFromUuid(String uuid) throws Exception {
         if (!newExecutionController.getContainer().isVisible()) {
             hideVisible();
-            Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
+
+            if (isAnimationsOn.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(newExecutionController.getContainer()));
+
+            else
+                Platform.runLater(() -> newExecutionController.getContainer().setVisible(true));
         }
 
         prepareSimulation(uuid);
@@ -186,14 +202,32 @@ public class HeaderComponentController implements Initializable {
 
     private void hideVisible() {
         Platform.runLater(() -> {
-            if (detailsScreenController.getContainer().isVisible())
-                GuiUtils.fadeOutAnimation(detailsScreenController.getContainer());
+            if (detailsScreenController.getContainer().isVisible()) {
+                if (isAnimationsOn.getValue())
+                    GuiUtils.fadeOutAnimation(detailsScreenController.getContainer());
+
+                else
+                    detailsScreenController.getContainer().setVisible(false);
+            }
 
             else if (resultsScreenController.getContainer().isVisible()) {
-                GuiUtils.fadeOutAnimation(resultsScreenController.getContainer());
                 resultsScreenController.setSelectedSimulation(null);
-            } else if (newExecutionController.getContainer().isVisible())
-                GuiUtils.fadeOutAnimation(newExecutionController.getContainer());
+
+                if (isAnimationsOn.getValue())
+                    GuiUtils.fadeOutAnimation(resultsScreenController.getContainer());
+
+                else
+                    resultsScreenController.getContainer().setVisible(false);
+
+            }
+
+            else if (newExecutionController.getContainer().isVisible()) {
+                if (isAnimationsOn.getValue())
+                    GuiUtils.fadeOutAnimation(newExecutionController.getContainer());
+
+                else
+                    newExecutionController.getContainer().setVisible(false);
+            }
         });
     }
 
@@ -201,7 +235,12 @@ public class HeaderComponentController implements Initializable {
     public void showResultsScreen() {
         if (!resultsScreenController.getContainer().isVisible()) {
             hideVisible();
-            Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsScreenController.getContainer()));
+
+            if (isAnimationsOn.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsScreenController.getContainer()));
+
+            else
+                Platform.runLater(() -> resultsScreenController.getContainer().setVisible(true));
         }
 
         Platform.runLater(() -> {
@@ -219,5 +258,9 @@ public class HeaderComponentController implements Initializable {
                 SingleSimulationDTO.class);
 
         newExecutionController.setCurrentSimulation(simulation);
+    }
+
+    public void setIsAnimationsOn(boolean isAnimationsOn) {
+        this.isAnimationsOn.setValue(isAnimationsOn);
     }
 }

@@ -2,11 +2,12 @@ package fx.views.AppMenu;
 
 import fx.consts.StyleSheetsPaths;
 import fx.consts.ThemeNames;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 
 import java.net.URL;
@@ -15,14 +16,23 @@ import java.util.Collection;
 import java.util.ResourceBundle;
 
 public class AppMenuController implements Initializable {
-    @FXML
-    private Menu themeMenu;
-
     private Collection<Scene> scenes;
+
+    @FXML
+    private MenuItem toggleAnimations;
+
+    private BooleanProperty isAnimationsOn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         scenes = new ArrayList<>();
+        isAnimationsOn = new SimpleBooleanProperty();
+
+        isAnimationsOn.addListener((observableValue, aBoolean, t1) -> {
+           toggleAnimations.setText(t1 ? "Toggle animations OFF" : "Toggle animations ON");
+        });
+
+        isAnimationsOnProperty().setValue(true);
     }
 
     public void setThemeToAllScenes(String cssPath) {
@@ -51,7 +61,16 @@ public class AppMenuController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleToggleAnimations() {
+        isAnimationsOn.setValue(!isAnimationsOn.getValue());
+    }
+
     public void addScene(Scene scene) {
         scenes.add(scene);
+    }
+
+    public BooleanProperty isAnimationsOnProperty() {
+        return isAnimationsOn;
     }
 }
