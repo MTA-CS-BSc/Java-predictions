@@ -43,6 +43,8 @@ public class WorldGridPaneController implements Initializable {
                             container.add(rectangle, coordinate.getX(), coordinate.getY());
                         });
                     });
+
+                    //TODO: Fix alignment & add random colors to entities
                 });
             }
         });
