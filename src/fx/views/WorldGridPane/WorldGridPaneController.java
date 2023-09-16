@@ -1,7 +1,9 @@
 package fx.views.WorldGridPane;
 
 import dtos.SingleSimulationDTO;
+import engine.prototypes.implemented.Coordinate;
 import engine.simulation.ByStep;
+import fx.modules.SingletonThreadpoolManager;
 import helpers.types.SimulationState;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -11,8 +13,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Pair;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -32,7 +37,8 @@ public class WorldGridPaneController implements Initializable {
             container.getColumnConstraints().clear();
 
             if (container.isVisible()) {
-                Platform.runLater(() -> {
+                SingletonThreadpoolManager.executeTask(() -> {
+                    List<Pair<Coordinate, Rectangle>> spots = new ArrayList<>();
                     container.getChildren().clear();
                     container.setGridLinesVisible(true);
 
@@ -40,7 +46,13 @@ public class WorldGridPaneController implements Initializable {
                         entity.getTakenSpots().forEach(coordinate -> {
                             Rectangle rectangle = new Rectangle(10, 10);
                             rectangle.setFill(Color.BLUE);
-                            container.add(rectangle, coordinate.getX(), coordinate.getY());
+                            spots.add(new Pair<>(coordinate, rectangle));
+                        });
+                    });
+
+                    Platform.runLater(() -> {
+                        spots.forEach(pair -> {
+                            container.add(pair.getValue(), pair.getKey().getX(), pair.getKey().getY());
                         });
                     });
 

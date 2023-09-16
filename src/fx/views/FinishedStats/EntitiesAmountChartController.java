@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.SingleSimulationDTO;
 import fx.modules.SingletonEngineAPI;
+import fx.modules.SingletonThreadpoolManager;
 import helpers.modules.SingletonObjectMapper;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -15,10 +16,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class EntitiesAmountChartController implements Initializable {
     @FXML
@@ -58,17 +56,24 @@ public class EntitiesAmountChartController implements Initializable {
                 }
         );
 
-        Platform.runLater(() -> entitiesAmountChart.getData().clear());
+        SingletonThreadpoolManager.executeTask(() -> {
+            List<XYChart.Series<Integer, Integer>> seriesList = new ArrayList<>();
 
-        entitiesAmountsPerTick.forEach((key, amountsListPerTick) -> {
-            XYChart.Series<Integer, Integer> series = new XYChart.Series<>();
-            series.setName(key);
+            entitiesAmountsPerTick.forEach((key, amountsListPerTick) -> {
+                XYChart.Series<Integer, Integer> series = new XYChart.Series<>();
+                series.setName(key);
 
-            for (int i = 0; i < amountsListPerTick.size(); i++)
-                series.getData().add(new XYChart.Data<>(i, amountsListPerTick.get(i)));
+                for (int i = 0; i < amountsListPerTick.size(); i++)
+                    series.getData().add(new XYChart.Data<>(i, amountsListPerTick.get(i)));
+
+                seriesList.add(series);
+            });
 
             Platform.runLater(() -> {
-                entitiesAmountChart.getData().add(series);
+                if (!seriesList.isEmpty()) {
+                    entitiesAmountChart.getData().clear();
+                    entitiesAmountChart.getData().addAll(seriesList);
+                }
             });
         });
     }

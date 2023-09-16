@@ -7,6 +7,7 @@ import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.GuiUtils;
 import fx.modules.SingletonEngineAPI;
+import fx.modules.SingletonThreadpoolManager;
 import fx.views.DetailsScreen.DetailsScreenController;
 import fx.views.NewExecution.NewExecutionController;
 import fx.views.Results.ResultsScreenController;
@@ -247,7 +248,7 @@ public class HeaderComponentController implements Initializable {
                 Platform.runLater(() -> resultsScreenController.getContainer().setVisible(true));
         }
 
-        Platform.runLater(() -> {
+        SingletonThreadpoolManager.executeTask(() -> {
             highlightButtonText(resultsButton);
 
             if (!newExecutionController.isSimulationEmpty())

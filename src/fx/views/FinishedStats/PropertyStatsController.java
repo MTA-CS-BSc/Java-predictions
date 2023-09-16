@@ -6,6 +6,7 @@ import dtos.PropertyDTO;
 import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
+import fx.modules.SingletonThreadpoolManager;
 import helpers.modules.SingletonObjectMapper;
 import helpers.types.PropTypes;
 import helpers.types.SimulationState;
@@ -20,9 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class PropertyStatsController implements Initializable {
     @FXML
@@ -176,17 +175,23 @@ public class PropertyStatsController implements Initializable {
                         String.format("All instances of %s died during the simulation", entityName),
                         Alert.AlertType.INFORMATION));
 
-            Platform.runLater(() -> {
+            SingletonThreadpoolManager.executeTask(() -> {
+                List<PieChart.Data> data = new ArrayList<>();
+
                 entitiesCountForProp.forEach((propertyValue, amount) -> {
-                    histogramChart.getData().add(new PieChart.Data(propertyValue, amount));
+                    data.add(new PieChart.Data(propertyValue, amount));
                     configureChartTooltips();
                 });
 
-                if (!entitiesCountForProp.isEmpty() && PropTypes.NUMERIC_PROPS.contains(property.getType()))
-                    showPropertyAverage(entityName, property.getName());
+                Platform.runLater(() -> {
+                    histogramChart.getData().addAll(data);
 
-                else
-                    hideAvgContainer();
+                    if (!entitiesCountForProp.isEmpty() && PropTypes.NUMERIC_PROPS.contains(property.getType()))
+                        showPropertyAverage(entityName, property.getName());
+
+                    else
+                        hideAvgContainer();
+                });
             });
 
         } catch (Exception ignored) {
