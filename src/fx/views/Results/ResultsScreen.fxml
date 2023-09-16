@@ -9,5 +9,5 @@
         <fx:include source="../PopulationTable/PopulationTable.fxml" fx:id="populationTable"/>
     </HBox>
 
-    <fx:include source="../FinishedStats/FinishedStats.fxml" fx:id="finishedStats"/>
+    <fx:include source="../Stats/Stats.fxml" fx:id="stats"/>
 </VBox>
