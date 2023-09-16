@@ -44,4 +44,9 @@ public class WorldGrid {
     public void changeCoordinateState(Coordinate coordinate) {
         taken[coordinate.getX()][coordinate.getY()] = !taken[coordinate.getX()][coordinate.getY()];
     }
+    public void clear() {
+        for (int i = 0; i < rows; i++)
+            for (int j = 0; j < columns; j++)
+                taken[i][j] = false;
+    }
 }

@@ -55,6 +55,8 @@ public class World implements Serializable {
         });
     }
     private void setGridByWorldState(Map<String, Entity> entitiesMap) {
+        grid.clear();
+
         for (Entity entity : entitiesMap.values())
             for (SingleEntity singleEntity : entity.getSingleEntities())
                 grid.changeCoordinateState(singleEntity.getCoordinate());
