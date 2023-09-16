@@ -6,6 +6,7 @@ import java.io.Serializable;
 
 public class BySecond implements Serializable {
     protected int count;
+
     public BySecond(PRDBySecond bySecond) {
         count = bySecond.getCount();
     }
@@ -14,5 +15,7 @@ public class BySecond implements Serializable {
         count = other.getCount();
     }
 
-    public int getCount() { return count; }
+    public int getCount() {
+        return count;
+    }
 }

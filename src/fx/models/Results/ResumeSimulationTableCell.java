@@ -24,7 +24,8 @@ public class ResumeSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
 
         try {
             styleButton(resumeButton, FilePaths.RESUME_SIMULATION_ICON_PATH);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         resumeButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
@@ -34,16 +35,17 @@ public class ResumeSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
         });
     }
 
-    /** places an add button in the row only if the row is not empty. */
-    @Override protected void updateItem(Boolean item, boolean empty) {
+    /**
+     * places an add button in the row only if the row is not empty.
+     */
+    @Override
+    protected void updateItem(Boolean item, boolean empty) {
         super.updateItem(item, empty);
         if (!empty) {
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             setGraphic(paddedButton);
             setDisable(getTableView().getItems().get(getIndex()).getSimulationState() != SimulationState.PAUSED);
-        }
-
-        else
+        } else
             setGraphic(null);
     }
 }

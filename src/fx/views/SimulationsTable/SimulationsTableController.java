@@ -94,16 +94,16 @@ public class SimulationsTableController implements Initializable {
         try {
             List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
                             .getPastSimulations().getData(),
-                    new TypeReference<List<SingleSimulationDTO>>() {});
+                    new TypeReference<List<SingleSimulationDTO>>() {
+                    });
 
             simulationsTable.getItems().clear();
             simulationsTable.getItems().addAll(simulations);
 
             if (!Objects.isNull(selectedSimulation.getValue()))
                 selectPreviouslySelectedSimulation();
+        } catch (Exception ignored) {
         }
-
-        catch (Exception ignored) {}
     }
 
     private void selectPreviouslySelectedSimulation() {
@@ -144,7 +144,9 @@ public class SimulationsTableController implements Initializable {
                 .forEach(column -> column.setSortable(false));
     }
 
-    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
+    public void setSelectedSimulation(SingleSimulationDTO simulation) {
+        selectedSimulation.setValue(simulation);
+    }
 
     public ObjectProperty<SingleSimulationDTO> selectedSimulationProperty() {
         return selectedSimulation;

@@ -5,6 +5,7 @@ import helpers.types.ActionTypes;
 public class SetModel extends ActionModel {
     private final String propertyName;
     private final String value;
+
     public SetModel(String entityName, SecondaryEntityModel secondaryEntity,
                     String propertyName, String value) {
         super(ActionTypes.SET, entityName, secondaryEntity);
@@ -12,6 +13,11 @@ public class SetModel extends ActionModel {
         this.value = value;
     }
 
-    public String getPropertyName() { return propertyName; }
-    public String getValue() { return value; }
+    public String getPropertyName() {
+        return propertyName;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

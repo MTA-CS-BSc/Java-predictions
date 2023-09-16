@@ -3,16 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-
-<VBox xmlns="http://javafx.com/javafx/8.0.171" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.views.Orchestrator.OrchestratorController">
-    <fx:include fx:id="allScreensUpperBar" source="../AllScreensUpperBar/AllScreensUpperBar.fxml" />
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" spacing="20.0"
+      fx:controller="fx.views.Orchestrator.OrchestratorController">
+    <fx:include fx:id="allScreensUpperBar" source="../AllScreensUpperBar/AllScreensUpperBar.fxml"/>
 
     <StackPane>
-        <fx:include fx:id="newExecution" source="../NewExecution/NewExecution.fxml" />
-        <fx:include fx:id="detailsScreen" source="../DetailsScreen/DetailsScreen.fxml" />
-        <fx:include fx:id="resultsScreen" source="../Results/ResultsScreen.fxml" />
-      <padding>
-         <Insets left="20.0" right="20.0" />
-      </padding>
+        <fx:include fx:id="newExecution" source="../NewExecution/NewExecution.fxml"/>
+        <fx:include fx:id="detailsScreen" source="../DetailsScreen/DetailsScreen.fxml"/>
+        <fx:include fx:id="resultsScreen" source="../Results/ResultsScreen.fxml"/>
+        <padding>
+            <Insets left="20.0" right="20.0"/>
+        </padding>
     </StackPane>
 </VBox>

@@ -5,6 +5,7 @@ import engine.prototypes.jaxb.PRDAction;
 public class SetAction extends Action {
     protected String propertyName;
     protected String value;
+
     public SetAction(PRDAction action) {
         super(action);
 
@@ -18,9 +19,11 @@ public class SetAction extends Action {
         propertyName = other.getPropertyName();
         value = other.getValue();
     }
+
     public String getPropertyName() {
         return propertyName;
     }
+
     public String getValue() {
         return value;
     }

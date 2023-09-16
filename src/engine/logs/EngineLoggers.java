@@ -13,6 +13,7 @@ public abstract class EngineLoggers {
     public static final Logger SIMULATION_LOGGER = Logger.getLogger(SingleSimulation.class.getSimpleName());
     public static final Logger API_LOGGER = Logger.getLogger(EngineAPI.class.getSimpleName());
     public static final Logger SIMULATION_ERRORS_LOGGER = Logger.getLogger(SingleSimulation.class.getSimpleName());
+
     public static void formatLogger(Logger logger) {
         logger.setUseParentHandlers(false);
         logger.addHandler(new CustomConsoleHandler());

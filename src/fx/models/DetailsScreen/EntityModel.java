@@ -11,12 +11,16 @@ public class EntityModel extends TreeItemModel {
         this.properties = properties;
         this.population = 0;
     }
+
     public List<EntityPropertyModel> getProperties() {
         return properties;
     }
-    public void setPopulation(int value) { population = value; }
 
     public int getPopulation() {
         return population;
+    }
+
+    public void setPopulation(int value) {
+        population = value;
     }
 }

@@ -20,12 +20,15 @@ public class HistoryManager implements Serializable {
     public HistoryManager() {
         pastSimulations = new HashMap<>();
     }
+
     public void addPastSimulation(SingleSimulation pastSimulation) {
         pastSimulations.put(pastSimulation.getUUID(), pastSimulation);
     }
+
     public SingleSimulation getPastSimulation(String uuid) {
         return pastSimulations.get(uuid);
     }
+
     private void getSimulationDetails(String uuid, SingleSimulation simulation) throws UUIDNotFoundException {
         if (Objects.isNull(simulation))
             throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
@@ -33,6 +36,7 @@ public class HistoryManager implements Serializable {
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation start time: [%s]%n", simulation.getCreatedTimestamp()));
     }
+
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
                                                   String entityName, String propertyName) {
         Entity mainEntity = singleSimulation.getLastWorldState().getEntitiesMap().get(entityName);
@@ -49,8 +53,9 @@ public class HistoryManager implements Serializable {
                 .map(Value::getCurrentValue)
                 .collect(Collectors.toList());
     }
+
     public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName,
-                                                            String propertyName) throws UUIDNotFoundException {
+                                                     String propertyName) throws UUIDNotFoundException {
         SingleSimulation foundSimulation = getPastSimulation(uuid);
         getSimulationDetails(uuid, foundSimulation);
         List<String> propertyValues = getValuesListForProperty(foundSimulation, entityName, propertyName);
@@ -60,6 +65,7 @@ public class HistoryManager implements Serializable {
 
         return propertyValues.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
+
     public Map<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
         Map<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
 
@@ -68,14 +74,15 @@ public class HistoryManager implements Serializable {
 
         simulation.getStartWorldState().getEntitiesMap().forEach((key, entity) -> {
             Entity finishEntity = simulation.getLastWorldState().getEntitiesMap().get(key);
-            int finishAmount =  Objects.isNull(finishEntity) ? 0 : finishEntity.getPopulation();
-            Integer[] array = { entity.getPopulation(), finishAmount };
+            int finishAmount = Objects.isNull(finishEntity) ? 0 : finishEntity.getPopulation();
+            Integer[] array = {entity.getPopulation(), finishAmount};
 
             entitiesBeforeAfter.put(key, array);
         });
 
         return entitiesBeforeAfter;
     }
+
     public World getLatestWorldObject() {
         SingleSimulation latestSimulation = pastSimulations.values()
                 .stream()
@@ -84,21 +91,32 @@ public class HistoryManager implements Serializable {
 
         return !Objects.isNull(latestSimulation) ? latestSimulation.getWorld() : null;
     }
+
     public boolean isEmpty() {
         return pastSimulations.isEmpty();
     }
-    public Map<String, SingleSimulation> getPastSimulations() { return pastSimulations; }
+
+    public Map<String, SingleSimulation> getPastSimulations() {
+        return pastSimulations;
+    }
+
     public void clearHistory() {
         pastSimulations.clear();
     }
+
     public void setInitialXmlWorld(World initialXmlWorld) {
         clearHistory();
         this.initialWorld = initialXmlWorld;
     }
+
     public boolean isXmlLoaded() {
         return !Objects.isNull(initialWorld);
     }
-    public World getInitialWorld() { return initialWorld; }
+
+    public World getInitialWorld() {
+        return initialWorld;
+    }
+
     public SingleSimulationDTO getMockSimulationForDetails() {
         if (isXmlLoaded())
             return new SingleSimulationDTO(Mappers.toDto(initialWorld));

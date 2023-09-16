@@ -10,13 +10,9 @@ public class ThreadPoolManager {
     public ThreadPoolManager() {
         this(1);
     }
+
     public ThreadPoolManager(int threadsAmount) {
         setThreadsAmount(threadsAmount);
-    }
-
-    public void setThreadsAmount(int value) {
-        threadsAmount = value;
-        executor = Executors.newFixedThreadPool(threadsAmount);
     }
 
     public void executeTask(Runnable task) {
@@ -30,5 +26,10 @@ public class ThreadPoolManager {
 
     public int getThreadsAmount() {
         return threadsAmount;
+    }
+
+    public void setThreadsAmount(int value) {
+        threadsAmount = value;
+        executor = Executors.newFixedThreadPool(threadsAmount);
     }
 }

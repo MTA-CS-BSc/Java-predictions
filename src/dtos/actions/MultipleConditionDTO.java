@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class MultipleConditionDTO extends ConditionDTO {
     protected String logicalOperator;
     protected int conditionsAmount;
+
     @JsonCreator
     public MultipleConditionDTO(@JsonProperty("entityName") String entityName,
                                 @JsonProperty("secondaryEntity") SecondaryEntityDTO secondaryEntity,
@@ -19,9 +20,11 @@ public class MultipleConditionDTO extends ConditionDTO {
         this.logicalOperator = logicalOperator;
         this.conditionsAmount = conditionsAmount;
     }
+
     public String getLogicalOperator() {
         return logicalOperator;
     }
+
     public int getConditionsAmount() {
         return conditionsAmount;
     }

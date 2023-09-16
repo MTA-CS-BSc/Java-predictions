@@ -9,6 +9,7 @@ public class ActionModel extends TreeItemModel {
     private final String entityName;
     private final boolean hasSecondaryEntity;
     private final SecondaryEntityModel secondaryEntity;
+
     public ActionModel(String type, String entityName, SecondaryEntityModel secondaryEntity) {
         super(type);
         this.type = type;

@@ -6,6 +6,7 @@ public class ReplaceAction extends Action {
     protected String kill;
     protected String create;
     protected String mode;
+
     public ReplaceAction(PRDAction action) {
         super(action);
 
@@ -21,12 +22,15 @@ public class ReplaceAction extends Action {
         create = other.getCreate();
         mode = other.getMode();
     }
+
     public String getKill() {
         return kill;
     }
+
     public String getCreate() {
         return create;
     }
+
     public String getMode() {
         return mode;
     }

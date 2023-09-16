@@ -1,20 +1,20 @@
 package engine.validators.actions;
 
-import helpers.loggers.ConditionSingularities;
-import helpers.types.PropTypes;
 import engine.exceptions.InvalidTypeException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDCondition;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDWorld;
+import helpers.loggers.ConditionSingularities;
+import helpers.types.PropTypes;
 
 import java.util.List;
 import java.util.Objects;
 
 public abstract class ConditionValidators {
     private static boolean validateSingleCondition(PRDWorld world, PRDAction action,
-                                                  PRDCondition condition) throws Exception {
+                                                   PRDCondition condition) throws Exception {
         PRDProperty property = ValidatorsUtils.findPRDPropertyByName(world, condition.getEntity(), condition.getProperty());
         String propertyExpressionType = ValidatorsUtils.getExpressionType(world, action, condition.getProperty());
         String valueExpressionType = ValidatorsUtils.getExpressionType(world, action, condition.getValue());
@@ -41,10 +41,11 @@ public abstract class ConditionValidators {
 
         return propertyExpressionType.equals(valueExpressionType)
                 || (PropTypes.NUMERIC_PROPS.contains(propertyExpressionType)
-                    && PropTypes.NUMERIC_PROPS.contains(valueExpressionType));
+                && PropTypes.NUMERIC_PROPS.contains(valueExpressionType));
     }
+
     private static boolean validateMultipleCondition(PRDWorld world, PRDAction action,
-                                                    PRDCondition condition) throws Exception{
+                                                     PRDCondition condition) throws Exception {
         List<PRDCondition> allConditions = condition.getPRDCondition();
 
         for (PRDCondition current : allConditions)
@@ -53,6 +54,7 @@ public abstract class ConditionValidators {
 
         return true;
     }
+
     public static boolean validate(PRDWorld world, PRDAction action,
                                    PRDCondition condition) throws Exception {
         if (condition.getSingularity().equals(ConditionSingularities.SINGLE))

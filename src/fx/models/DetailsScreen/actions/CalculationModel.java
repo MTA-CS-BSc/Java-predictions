@@ -6,8 +6,9 @@ public class CalculationModel extends ActionModel {
     protected String operationType;
     protected String arg1;
     protected String arg2;
+
     public CalculationModel(String entityName, SecondaryEntityModel secondaryEntity,
-                       String operationType, String arg1, String arg2) {
+                            String operationType, String arg1, String arg2) {
         super(ActionTypes.CALCULATION, entityName, secondaryEntity);
         this.operationType = operationType;
         this.arg1 = arg1;

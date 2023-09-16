@@ -16,6 +16,11 @@ public class Between {
         targetEntity = other.getTargetEntity();
     }
 
-    public String getSourceEntity() { return sourceEntity; }
-    public String getTargetEntity() { return targetEntity; }
+    public String getSourceEntity() {
+        return sourceEntity;
+    }
+
+    public String getTargetEntity() {
+        return targetEntity;
+    }
 }

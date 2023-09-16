@@ -18,7 +18,12 @@ public class Divide implements Serializable {
         arg2 = other.getArg2();
     }
 
-    public String getArg1() { return arg1; }
-    public String getArg2() { return arg2; }
+    public String getArg1() {
+        return arg1;
+    }
+
+    public String getArg2() {
+        return arg2;
+    }
 
 }

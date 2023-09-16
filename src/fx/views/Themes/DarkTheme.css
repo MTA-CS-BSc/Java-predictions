@@ -18,10 +18,9 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 10, 0, 0, 0);
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 20px, 19px, 18px;
-    -fx-background-color:
-            linear-gradient(to bottom, #555555 0%, #444444 100%),
-            #444444,
-            #333333;
+    -fx-background-color: linear-gradient(to bottom, #555555 0%, #444444 100%),
+    #444444,
+    #333333;
 }
 
 .button:hover {
@@ -42,6 +41,7 @@
     -fx-pref-width: 1;
     -fx-opacity: 0;
 }
+
 .text-area .scroll-bar:horizontal {
     -fx-pref-height: 1;
     -fx-opacity: 0;
@@ -107,7 +107,7 @@
 
 .text-field-table-cell .text-field {
     -fx-padding: 1;
-    -fx-border-color:black;
+    -fx-border-color: black;
     -fx-background-color: #9d9d9d;
     -fx-alignment: center;
 }
@@ -115,6 +115,7 @@
 .table-cell:focused {
     -fx-padding: 0;
 }
+
 .table-column {
     -fx-alignment: center;
 }

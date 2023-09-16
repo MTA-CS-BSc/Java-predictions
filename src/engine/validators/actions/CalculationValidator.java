@@ -1,10 +1,10 @@
 package engine.validators.actions;
 
-import helpers.types.PropTypes;
 import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.*;
+import helpers.types.PropTypes;
 
 import java.util.Objects;
 
@@ -24,11 +24,11 @@ public abstract class CalculationValidator {
 
         if (!Objects.isNull(multiply))
             if (!ValidatorsUtils.validateExpressionType(world, action, property.getType(), multiply.getArg1())
-                || !ValidatorsUtils.validateExpressionType(world, action, property.getType(), multiply.getArg2()))
+                    || !ValidatorsUtils.validateExpressionType(world, action, property.getType(), multiply.getArg2()))
                 throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",
                         action.getType(), action.getEntity()));
 
-        else if (!Objects.isNull(divide)) {
+            else if (!Objects.isNull(divide)) {
                 if (!ValidatorsUtils.validateExpressionType(world, action, property.getType(), divide.getArg1())
                         || !ValidatorsUtils.validateExpressionType(world, action, property.getType(), divide.getArg2()))
                     throw new InvalidTypeException(String.format("Action [%s]: Entity [%s]: Arithmetic operation must receive arithmetic args",

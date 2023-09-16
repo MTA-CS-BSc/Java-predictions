@@ -9,6 +9,7 @@ public class ReplaceDTO extends ActionDTO {
     protected String kill;
     protected String create;
     protected String mode;
+
     public ReplaceDTO(@JsonProperty("secondaryEntity") SecondaryEntityDTO secondaryEntity,
                       @JsonProperty("kill") String kill,
                       @JsonProperty("create") String create,
@@ -18,6 +19,7 @@ public class ReplaceDTO extends ActionDTO {
         this.create = create;
         this.mode = mode;
     }
+
     public String getKill() {
         return kill;
     }

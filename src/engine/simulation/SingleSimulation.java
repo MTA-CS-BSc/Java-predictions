@@ -29,29 +29,33 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         byStep = ByStep.NOT_BY_STEP;
         simulationState = SimulationState.CREATED;
     }
+
     public SingleSimulation(World world) {
         this();
         this.world = world;
         setCreatedTime(new Date());
     }
+
     public SingleSimulation(SingleSimulation other) {
         this();
         this.world = new World(other.world.getTermination(), other.world.getRules(), other.getStartWorldState());
         setCreatedTime(new Date());
     }
-    public String getUUID() { return uuid; }
+
+    public String getUUID() {
+        return uuid;
+    }
+
     public String isSimulationFinished(long startTimeMillis) {
         Termination termination = world.getTermination();
 
         for (Object stopCondition : termination.getStopConditions()) {
             if (stopCondition.getClass() == BySecond.class
-                    && System.currentTimeMillis() - startTimeMillis >= (long)((BySecond)stopCondition).getCount() * 1000) {
+                    && System.currentTimeMillis() - startTimeMillis >= (long) ((BySecond) stopCondition).getCount() * 1000) {
                 simulationState = SimulationState.FINISHED;
                 return TerminationReasons.BY_SECOND;
-            }
-
-            else if (stopCondition.getClass() == ByTicks.class
-                    && ticks >= ((ByTicks)stopCondition).getCount()) {
+            } else if (stopCondition.getClass() == ByTicks.class
+                    && ticks >= ((ByTicks) stopCondition).getCount()) {
                 simulationState = SimulationState.FINISHED;
                 return TerminationReasons.BY_TICKS;
             }
@@ -59,10 +63,15 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
         return simulationState == SimulationState.FINISHED ? "ByUser" : "";
     }
+
+    public ByStep getByStep() {
+        return byStep;
+    }
+
     public void setByStep(ByStep value) {
         byStep = value;
     }
-    public ByStep getByStep() { return byStep; }
+
     private void moveEntity(SingleEntity singleEntity) {
         Direction randomDirection = Direction.values()[RandomGenerator.randomizeRandomNumber(0, Direction.values().length - 1)];
         Coordinate newCoordinate = new Coordinate(singleEntity.getCoordinate());
@@ -101,6 +110,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         world.getGrid().changeCoordinateState(newCoordinate);
         singleEntity.setCoordinate(newCoordinate);
     }
+
     private void performAllPossibleActions() {
         List<Action> actionsToPerform = getActionsToPerform();
         List<SingleEntity> allEntities = getAllSingleEntities();
@@ -109,9 +119,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             actionsToPerform.forEach(action -> {
                 if (!action.getEntityName().isEmpty() && !action.getEntityName().equals(singleEntity.getEntityName())) {
                     // Skip action
-                }
-
-                else if (action.getEntityName().isEmpty() || action.getEntityName().equals(singleEntity.getEntityName())) {
+                } else if (action.getEntityName().isEmpty() || action.getEntityName().equals(singleEntity.getEntityName())) {
                     try {
                         ActionsPerformer.fireAction(world, action, singleEntity);
                     } catch (Exception e) {
@@ -125,15 +133,14 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             KillReplaceSaver.storage.clear();
         });
     }
+
     public void handleSingleTick() {
         if (byStep != ByStep.PAST) {
             ticks++;
             ActionsPerformer.updateStableTimeToAllProps(world);
             performAllPossibleActions();
             pushWorldState(world);
-        }
-
-        else {
+        } else {
             if (ticks == 0)
                 return;
 
@@ -141,6 +148,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             world.setByWorldState(popWorldState());
         }
     }
+
     private List<SingleEntity> getAllSingleEntities() {
         return world.getEntities().getEntitiesMap().values()
                 .stream()
@@ -148,6 +156,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
+
     private List<Action> getActionsToPerform() {
         return Utils.getRulesToApply(world, ticks).values()
                 .stream()
@@ -156,9 +165,11 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .flatMap(List::stream)
                 .collect(Collectors.toList());
     }
+
     public void initializeRandomVariables() {
         world.initAllRandomVars();
     }
+
     public void run() {
         if (Objects.isNull(world) || simulationState == SimulationState.ERROR)
             return;
@@ -182,9 +193,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
 
                 if (byStep != ByStep.NOT_BY_STEP)
                     simulationState = SimulationState.PAUSED;
-            }
-
-            else if (elapsedTimer.isRunning())
+            } else if (elapsedTimer.isRunning())
                 elapsedTimer.pause();
         }
 
@@ -194,9 +203,19 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
         if (simulationState == SimulationState.FINISHED)
             setEndTime(new Date());
     }
-    public World getWorld() { return world; }
-    public SimulationState getSimulationState() { return simulationState; }
-    public void setSimulationState(SimulationState value) { simulationState = value; }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public SimulationState getSimulationState() {
+        return simulationState;
+    }
+
+    public void setSimulationState(SimulationState value) {
+        simulationState = value;
+    }
+
     public int getOverallPopulation() {
         return world.getEntities()
                 .getEntitiesMap()
@@ -205,20 +224,30 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
                 .mapToInt(Entity::getPopulation)
                 .sum();
     }
-    public WorldGrid getGrid() { return world.getGrid(); }
+
+    public WorldGrid getGrid() {
+        return world.getGrid();
+    }
+
     public int getMaxEntitiesAmount() {
         return world.getGrid().getColumns() * world.getGrid().getRows();
     }
-    public long getTicks() { return ticks; }
+
+    public long getTicks() {
+        return ticks;
+    }
+
     public long getElapsedTime() {
         return elapsedTimer.getElapsedTime();
     }
+
     public int getEntityAmountForTick(String entityName, int tick) {
         if (Objects.isNull(worldStatesByTicks.get(tick)))
             return 0;
 
         return worldStatesByTicks.get(tick).getEntitiesMap().get(entityName).getPopulation();
     }
+
     @Override
     public String toString() {
         return "--------------------------------------\n" +

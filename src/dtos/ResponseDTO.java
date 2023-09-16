@@ -7,6 +7,7 @@ public class ResponseDTO {
     protected int status;
     protected ErrorDescriptionDTO errorDescription;
     protected String data; // JSON object
+
     public ResponseDTO(int status) {
         this.status = status;
         errorDescription = null;
@@ -17,9 +18,7 @@ public class ResponseDTO {
         this.status = status;
         try {
             this.data = SingletonObjectMapper.objectMapper.writeValueAsString(data);
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             this.data = null;
         }
         errorDescription = null;
@@ -31,7 +30,15 @@ public class ResponseDTO {
         this.errorDescription = new ErrorDescriptionDTO(cause);
     }
 
-    public int getStatus() { return status; }
-    public ErrorDescriptionDTO getErrorDescription() { return errorDescription; }
-    public String getData() { return data; }
+    public int getStatus() {
+        return status;
+    }
+
+    public ErrorDescriptionDTO getErrorDescription() {
+        return errorDescription;
+    }
+
+    public String getData() {
+        return data;
+    }
 }

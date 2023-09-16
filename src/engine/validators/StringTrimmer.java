@@ -10,6 +10,7 @@ public abstract class StringTrimmer {
         trimEnvironment(world);
         trimRules(world);
     }
+
     private static void trimEntities(PRDWorld world) {
         if (Objects.isNull(world.getPRDEntities()))
             return;
@@ -30,6 +31,7 @@ public abstract class StringTrimmer {
             });
         });
     }
+
     private static void trimEnvironment(PRDWorld world) {
         if (!Objects.isNull(world.getPRDEnvironment()))
             world.getPRDEnvironment().getPRDEnvProperty().forEach(property -> {
@@ -40,6 +42,7 @@ public abstract class StringTrimmer {
                     property.setType(property.getType().trim());
             });
     }
+
     private static void trimRules(PRDWorld world) {
         if (!Objects.isNull(world.getPRDRules()))
             world.getPRDRules().getPRDRule().forEach(rule -> {
@@ -49,6 +52,7 @@ public abstract class StringTrimmer {
                 rule.getPRDActions().getPRDAction().forEach(StringTrimmer::trimAction);
             });
     }
+
     private static void trimAction(PRDAction action) {
         if (Objects.isNull(action))
             return;
@@ -101,6 +105,7 @@ public abstract class StringTrimmer {
         trimThen(action.getPRDThen());
         trimElse(action.getPRDElse());
     }
+
     private static void trimCondition(PRDCondition condition) {
         if (Objects.isNull(condition))
             return;
@@ -123,10 +128,12 @@ public abstract class StringTrimmer {
         if (!Objects.isNull(condition.getOperator()))
             condition.setOperator(condition.getOperator().trim());
     }
+
     private static void trimThen(PRDThen prdThen) {
         if (!Objects.isNull(prdThen))
             prdThen.getPRDAction().forEach(StringTrimmer::trimAction);
     }
+
     private static void trimElse(PRDElse prdElse) {
         if (!Objects.isNull(prdElse))
             prdElse.getPRDAction().forEach(StringTrimmer::trimAction);

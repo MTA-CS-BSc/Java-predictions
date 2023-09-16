@@ -1,12 +1,15 @@
 package engine.simulation.performers;
 
-import helpers.types.ActionTypes;
-import engine.exceptions.*;
+import engine.exceptions.EmptyExpressionException;
+import engine.exceptions.ErrorMessageFormatter;
+import engine.exceptions.InvalidTypeException;
+import engine.exceptions.PropertyNotFoundException;
 import engine.modules.Utils;
 import engine.parsers.ExpressionParser;
 import engine.prototypes.implemented.*;
 import engine.prototypes.implemented.actions.CalculationAction;
 import helpers.Constants;
+import helpers.types.ActionTypes;
 
 import java.util.Objects;
 
@@ -31,11 +34,13 @@ public abstract class CalculationPerformer {
         return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
 
     }
+
     private static void handle(World world, CalculationAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         Property resultProperty = Utils.findPropertyByName(main, action.getResultPropertyName());
         String newValue = getCalculationResult(world, action, main, secondary);
         ActionsPerformer.setPropertyValue(ActionTypes.CALCULATION, action.getEntityName(), resultProperty, newValue);
     }
+
     public static void performAction(World world, CalculationAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getResultPropertyName())))
             throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getResultPropertyName()));

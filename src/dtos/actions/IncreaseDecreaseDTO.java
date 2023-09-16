@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public class IncreaseDecreaseDTO extends ActionDTO {
     protected String propertyName;
     protected String by;
+
     @JsonCreator
     public IncreaseDecreaseDTO(@JsonProperty("actionType") String type,
                                @JsonProperty("entityName") String entityName,
@@ -18,9 +19,11 @@ public class IncreaseDecreaseDTO extends ActionDTO {
         this.propertyName = propertyName;
         this.by = by;
     }
+
     public String getPropertyName() {
         return propertyName;
     }
+
     public String getBy() {
         return by;
     }

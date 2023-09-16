@@ -16,6 +16,7 @@ public abstract class PRDRulesValidators {
                 && validateActions(world)
                 && validateActivations(world);
     }
+
     private static boolean validateRulesUniqueNames(PRDWorld world) throws UniqueNameException {
         for (PRDRule rule : world.getPRDRules().getPRDRule())
             if (world.getPRDRules().getPRDRule()
@@ -26,6 +27,7 @@ public abstract class PRDRulesValidators {
 
         return true;
     }
+
     private static boolean validateNoWhitespacesInNames(PRDWorld world) throws WhitespacesFoundException {
         for (PRDRule rule : world.getPRDRules().getPRDRule())
             if (rule.getName().contains(" "))
@@ -34,12 +36,14 @@ public abstract class PRDRulesValidators {
 
         return true;
     }
+
     private static boolean validateActions(PRDWorld world) throws Exception {
         for (PRDRule rule : world.getPRDRules().getPRDRule())
             PRDActionsValidators.validateActions(world, rule.getPRDActions().getPRDAction());
 
         return true;
     }
+
     private static boolean validateActivations(PRDWorld world) throws ValueNotInRangeException {
         for (PRDRule rule : world.getPRDRules().getPRDRule()) {
             if (!Objects.isNull(rule.getPRDActivation().getProbability()))

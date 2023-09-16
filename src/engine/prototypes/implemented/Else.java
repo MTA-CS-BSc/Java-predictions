@@ -36,5 +36,7 @@ public class Else implements Serializable {
             });
     }
 
-    public List<Action> getActions() { return actions; }
+    public List<Action> getActions() {
+        return actions;
+    }
 }

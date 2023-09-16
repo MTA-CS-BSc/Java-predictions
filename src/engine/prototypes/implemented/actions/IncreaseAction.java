@@ -5,6 +5,7 @@ import engine.prototypes.jaxb.PRDAction;
 public class IncreaseAction extends Action {
     protected String propertyName;
     protected String by;
+
     public IncreaseAction(PRDAction action) {
         super(action);
 
@@ -17,6 +18,7 @@ public class IncreaseAction extends Action {
         propertyName = other.getPropertyName();
         by = other.getBy();
     }
+
     public String getPropertyName() {
         return propertyName;
     }

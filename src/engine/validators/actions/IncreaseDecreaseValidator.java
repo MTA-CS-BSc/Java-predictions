@@ -1,12 +1,12 @@
 package engine.validators.actions;
 
-import helpers.types.PropTypes;
 import engine.exceptions.InvalidTypeException;
 import engine.exceptions.PropertyNotFoundException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDWorld;
+import helpers.types.PropTypes;
 
 import java.util.Objects;
 

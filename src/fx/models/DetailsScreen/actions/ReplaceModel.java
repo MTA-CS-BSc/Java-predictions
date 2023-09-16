@@ -15,7 +15,15 @@ public class ReplaceModel extends ActionModel {
         this.mode = mode;
     }
 
-    public String getKill() { return kill; }
-    public String getCreate() { return create; }
-    public String getMode() { return mode; }
+    public String getKill() {
+        return kill;
+    }
+
+    public String getCreate() {
+        return create;
+    }
+
+    public String getMode() {
+        return mode;
+    }
 }

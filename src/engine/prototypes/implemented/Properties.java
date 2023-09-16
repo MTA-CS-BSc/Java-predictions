@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class Properties implements Serializable {
     protected Map<String, Property> propertiesMap;
+
     public Properties(List<PRDProperty> list) {
         propertiesMap = new HashMap<>();
 
@@ -23,5 +24,7 @@ public class Properties implements Serializable {
             propertiesMap.put(property.getName(), new Property(property));
     }
 
-    public Map<String, Property> getPropsMap() { return propertiesMap; }
+    public Map<String, Property> getPropsMap() {
+        return propertiesMap;
+    }
 }

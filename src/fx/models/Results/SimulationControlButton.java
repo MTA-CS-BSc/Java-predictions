@@ -17,10 +17,11 @@ public interface SimulationControlButton {
         scaleTransition.setFromX(type.equals(TransitionType.ENTERED) ? 1.0 : 1.1);
         scaleTransition.setToX(type.equals(TransitionType.ENTERED) ? 1.1 : 1.0);
         scaleTransition.setFromY(type.equals(TransitionType.ENTERED) ? 1.0 : 1.1);
-        scaleTransition.setToY(type.equals(TransitionType.ENTERED ) ? 1.1 : 1.0);
+        scaleTransition.setToY(type.equals(TransitionType.ENTERED) ? 1.1 : 1.0);
 
         return scaleTransition;
     }
+
     default ImageView getImageView(String path) throws IOException {
         ImageView imageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(path)).openStream()));
 
@@ -29,6 +30,7 @@ public interface SimulationControlButton {
 
         return imageView;
     }
+
     default void styleButton(Button controlButton, String imagePath) throws IOException {
         controlButton.setBackground(Background.EMPTY);
         controlButton.setGraphic(getImageView(imagePath));

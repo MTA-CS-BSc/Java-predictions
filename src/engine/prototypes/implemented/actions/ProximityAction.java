@@ -8,6 +8,7 @@ public class ProximityAction extends Action {
     protected Between between;
     protected String depthExpression;
     protected Actions actions;
+
     public ProximityAction(PRDAction action) {
         super(action);
 
@@ -23,12 +24,15 @@ public class ProximityAction extends Action {
         actions = new Actions(other.getActions());
         between = new Between(other.getBetween());
     }
+
     public Between getBetween() {
         return between;
     }
+
     public String getDepthExpression() {
         return depthExpression;
     }
+
     public Actions getActions() {
         return actions;
     }

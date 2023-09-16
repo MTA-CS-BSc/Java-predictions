@@ -50,6 +50,7 @@ public abstract class ProximityPerformer {
 
         return bounds;
     }
+
     private static List<Coordinate> getDepthCoordinates(WorldGrid grid, Coordinate start, int depth) {
         List<Coordinate> relevant = new ArrayList<>();
         Bounds bounds = getBounds(grid, start, depth);
@@ -79,11 +80,13 @@ public abstract class ProximityPerformer {
 
         return relevant;
     }
+
     private static boolean isInDepth(WorldGrid grid, SingleEntity ent1, SingleEntity ent2, int depth) {
         return getDepthCoordinates(grid, ent1.getCoordinate(), depth)
                 .stream()
                 .anyMatch(coordinate -> coordinate.equals(ent2.getCoordinate()));
     }
+
     private static void handleSingleMainSingleSecondary(World world, ProximityAction action,
                                                         SingleEntity main, SingleEntity secondary) throws Exception {
         int depth = Integer.parseInt(ExpressionParser.evaluateExpression(world, action.getDepthExpression(), main, secondary));
@@ -92,6 +95,7 @@ public abstract class ProximityPerformer {
             for (Action actToPerform : action.getActions().getActions())
                 ActionsPerformer.handleAction(world, actToPerform, main, secondary);
     }
+
     public static void performAction(World world, ProximityAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         Entity targetEntity = Utils.findEntityByName(world, action.getBetween().getTargetEntity());
 

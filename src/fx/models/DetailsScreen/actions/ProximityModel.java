@@ -17,6 +17,7 @@ public class ProximityModel extends ActionModel {
         this.sourceEntity = sourceEntity;
         this.depth = depth;
     }
+
     public String getSourceEntity() {
         return sourceEntity;
     }

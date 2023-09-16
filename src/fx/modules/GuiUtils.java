@@ -22,10 +22,10 @@ public abstract class GuiUtils {
             return null;
 
         return root.getChildren()
-                        .stream()
-                        .map(child -> findTreeItemByValue(child, value))
-                        .filter(element -> !Objects.isNull(element))
-                        .findFirst().orElse(null);
+                .stream()
+                .map(child -> findTreeItemByValue(child, value))
+                .filter(element -> !Objects.isNull(element))
+                .findFirst().orElse(null);
     }
 
     public static ActionModel createActionModel(ActionDTO action) {
@@ -39,21 +39,15 @@ public abstract class GuiUtils {
             SetDTO setAction = (SetDTO) action;
             return new SetModel(entityName, secondaryEntityModel,
                     setAction.getPropertyName(), setAction.getValue());
-        }
-
-        else if (action instanceof ReplaceDTO) {
+        } else if (action instanceof ReplaceDTO) {
             ReplaceDTO replaceAction = (ReplaceDTO) action;
             return new ReplaceModel(entityName, secondaryEntityModel,
                     replaceAction.getKill(), replaceAction.getCreate(), replaceAction.getMode());
-        }
-
-        else if (action instanceof CalculationDTO) {
-            CalculationDTO calcAction = (CalculationDTO)action;
+        } else if (action instanceof CalculationDTO) {
+            CalculationDTO calcAction = (CalculationDTO) action;
             return new CalculationModel(entityName, secondaryEntityModel,
                     calcAction.getOperationType(), calcAction.getArg1(), calcAction.getArg2());
-        }
-
-        else if (action instanceof KillDTO)
+        } else if (action instanceof KillDTO)
             return new KillModel(entityName, secondaryEntityModel);
 
         else if (action instanceof ProximityDTO) {
@@ -61,22 +55,16 @@ public abstract class GuiUtils {
             return new ProximityModel(secondaryEntityModel, proximityAction.getSourceEntity(),
                     proximityAction.getTargetEntity(), proximityAction.getDepth(),
                     proximityAction.getActionsAmount());
-        }
-
-        else if (action instanceof IncreaseDecreaseDTO) {
+        } else if (action instanceof IncreaseDecreaseDTO) {
             IncreaseDecreaseDTO increaseDecreaseAction = (IncreaseDecreaseDTO) action;
             return new IncreaseDecreaseModel(action.getType(), entityName,
                     secondaryEntityModel, increaseDecreaseAction.getPropertyName(), increaseDecreaseAction.getBy());
-        }
-
-        else if (action instanceof SingleConditionDTO) {
+        } else if (action instanceof SingleConditionDTO) {
             SingleConditionDTO condition = (SingleConditionDTO) action;
             return new SingleConditionModel(entityName, secondaryEntityModel,
                     condition.getThenActionsAmount(), condition.getElseActionsAmount(),
                     condition.getOperator(), condition.getProperty(), condition.getValue());
-        }
-
-        else if (action instanceof MultipleConditionDTO) {
+        } else if (action instanceof MultipleConditionDTO) {
             MultipleConditionDTO condition = ((MultipleConditionDTO) action);
             return new MultipleConditionModel(entityName, secondaryEntityModel,
                     condition.getThenActionsAmount(), condition.getElseActionsAmount(),
@@ -95,6 +83,7 @@ public abstract class GuiUtils {
         fadeIn.setOnFinished(event -> root.setVisible(true));
         fadeIn.play();
     }
+
     public static void fadeOutAnimation(Pane root) {
         FadeTransition fadeOut = new FadeTransition(Duration.millis(1200), root);
         fadeOut.setFromValue(1.0);
@@ -103,7 +92,6 @@ public abstract class GuiUtils {
         fadeOut.setOnFinished(event -> root.setVisible(false));
         fadeOut.play();
     }
-
 
 
     public static List<EntityModel> getEntities(WorldDTO world) {
@@ -121,6 +109,7 @@ public abstract class GuiUtils {
                     return new EntityModel(entity.getName(), props);
                 }).collect(Collectors.toList());
     }
+
     public static List<PropertyModel> getEnvironmentVars(WorldDTO world) {
         return world.getEnvironment().stream()
                 .map(property -> {
@@ -132,6 +121,7 @@ public abstract class GuiUtils {
                     return new PropertyModel(property.getName(), property.getType(), range);
                 }).collect(Collectors.toList());
     }
+
     public static List<RuleModel> getRules(WorldDTO world) {
         return world.getRules().stream()
                 .map(rule -> {

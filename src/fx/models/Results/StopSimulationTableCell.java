@@ -23,7 +23,8 @@ public class StopSimulationTableCell extends TableCell<SingleSimulationDTO, Bool
 
         try {
             styleButton(stopButton, FilePaths.STOP_SIMULATION_ICON_PATH);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         stopButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
@@ -31,8 +32,11 @@ public class StopSimulationTableCell extends TableCell<SingleSimulationDTO, Bool
         });
     }
 
-    /** places an add button in the row only if the row is not empty. */
-    @Override protected void updateItem(Boolean item, boolean empty) {
+    /**
+     * places an add button in the row only if the row is not empty.
+     */
+    @Override
+    protected void updateItem(Boolean item, boolean empty) {
         super.updateItem(item, empty);
         if (!empty) {
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -45,9 +49,7 @@ public class StopSimulationTableCell extends TableCell<SingleSimulationDTO, Bool
                     (simulationState != SimulationState.PAUSED && simulationState != SimulationState.RUNNING);
 
             setDisable(isDisabled);
-        }
-
-        else
+        } else
             setGraphic(null);
     }
 }

@@ -34,13 +34,13 @@ public class FinishedStatsController implements Initializable {
         selectedSimulation = new SimpleObjectProperty<>();
 
         filterByComboBox.getSelectionModel().selectedItemProperty()
-                        .addListener((observableValue, s, t1) -> {
-                            entitiesAmountChartController.toggleVisibility();
-                            propertyStatsController.toggleVisibility();
+                .addListener((observableValue, s, t1) -> {
+                    entitiesAmountChartController.toggleVisibility();
+                    propertyStatsController.toggleVisibility();
 
-                            if (!propertyStatsController.getVisible())
-                                propertyStatsController.reset();
-                        });
+                    if (!propertyStatsController.getVisible())
+                        propertyStatsController.reset();
+                });
 
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
             entitiesAmountChartController.setSelectedSimulation(t1);

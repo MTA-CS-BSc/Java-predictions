@@ -25,6 +25,7 @@ public class ConditionAction extends Action {
         prdThen = new Then(other.getThen());
         prdElse = new Else(other.getElse());
     }
+
     public Condition getCondition() {
         return condition;
     }

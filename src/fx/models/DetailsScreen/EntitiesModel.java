@@ -11,6 +11,7 @@ public class EntitiesModel extends TreeItemModel {
         super(StringUtils.capitalize(WorldTreeViewCategories.ENTITIES.name().toLowerCase()));
         this.entities = entities;
     }
+
     public List<EntityModel> getEntities() {
         return entities;
     }

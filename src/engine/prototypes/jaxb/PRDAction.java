@@ -8,12 +8,7 @@
 
 package engine.prototypes.jaxb;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
@@ -114,8 +109,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -172,10 +165,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdSecondaryEntity property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDAction.PRDSecondaryEntity }
-     *
+     * @return possible object is
+     * {@link PRDAction.PRDSecondaryEntity }
      */
     public PRDAction.PRDSecondaryEntity getPRDSecondaryEntity() {
         return prdSecondaryEntity;
@@ -184,10 +175,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdSecondaryEntity property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDAction.PRDSecondaryEntity }
-     *
+     * @param value allowed object is
+     *              {@link PRDAction.PRDSecondaryEntity }
      */
     public void setPRDSecondaryEntity(PRDAction.PRDSecondaryEntity value) {
         this.prdSecondaryEntity = value;
@@ -196,10 +185,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdDivide property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDDivide }
-     *
+     * @return possible object is
+     * {@link PRDDivide }
      */
     public PRDDivide getPRDDivide() {
         return prdDivide;
@@ -208,10 +195,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdDivide property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDDivide }
-     *
+     * @param value allowed object is
+     *              {@link PRDDivide }
      */
     public void setPRDDivide(PRDDivide value) {
         this.prdDivide = value;
@@ -220,10 +205,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdMultiply property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDMultiply }
-     *
+     * @return possible object is
+     * {@link PRDMultiply }
      */
     public PRDMultiply getPRDMultiply() {
         return prdMultiply;
@@ -232,10 +215,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdMultiply property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDMultiply }
-     *
+     * @param value allowed object is
+     *              {@link PRDMultiply }
      */
     public void setPRDMultiply(PRDMultiply value) {
         this.prdMultiply = value;
@@ -244,10 +225,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdCondition property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDCondition }
-     *
+     * @return possible object is
+     * {@link PRDCondition }
      */
     public PRDCondition getPRDCondition() {
         return prdCondition;
@@ -256,10 +235,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdCondition property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDCondition }
-     *
+     * @param value allowed object is
+     *              {@link PRDCondition }
      */
     public void setPRDCondition(PRDCondition value) {
         this.prdCondition = value;
@@ -268,10 +245,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdThen property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDThen }
-     *
+     * @return possible object is
+     * {@link PRDThen }
      */
     public PRDThen getPRDThen() {
         return prdThen;
@@ -280,10 +255,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdThen property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDThen }
-     *
+     * @param value allowed object is
+     *              {@link PRDThen }
      */
     public void setPRDThen(PRDThen value) {
         this.prdThen = value;
@@ -292,10 +265,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdElse property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDElse }
-     *
+     * @return possible object is
+     * {@link PRDElse }
      */
     public PRDElse getPRDElse() {
         return prdElse;
@@ -304,10 +275,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdElse property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDElse }
-     *
+     * @param value allowed object is
+     *              {@link PRDElse }
      */
     public void setPRDElse(PRDElse value) {
         this.prdElse = value;
@@ -316,10 +285,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdBetween property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDAction.PRDBetween }
-     *
+     * @return possible object is
+     * {@link PRDAction.PRDBetween }
      */
     public PRDAction.PRDBetween getPRDBetween() {
         return prdBetween;
@@ -328,10 +295,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdBetween property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDAction.PRDBetween }
-     *
+     * @param value allowed object is
+     *              {@link PRDAction.PRDBetween }
      */
     public void setPRDBetween(PRDAction.PRDBetween value) {
         this.prdBetween = value;
@@ -340,10 +305,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdEnvDepth property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDAction.PRDEnvDepth }
-     *
+     * @return possible object is
+     * {@link PRDAction.PRDEnvDepth }
      */
     public PRDAction.PRDEnvDepth getPRDEnvDepth() {
         return prdEnvDepth;
@@ -352,10 +315,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdEnvDepth property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDAction.PRDEnvDepth }
-     *
+     * @param value allowed object is
+     *              {@link PRDAction.PRDEnvDepth }
      */
     public void setPRDEnvDepth(PRDAction.PRDEnvDepth value) {
         this.prdEnvDepth = value;
@@ -364,10 +325,8 @@ public class PRDAction {
     /**
      * Gets the value of the prdActions property.
      *
-     * @return
-     *     possible object is
-     *     {@link PRDActions }
-     *
+     * @return possible object is
+     * {@link PRDActions }
      */
     public PRDActions getPRDActions() {
         return prdActions;
@@ -376,10 +335,8 @@ public class PRDAction {
     /**
      * Sets the value of the prdActions property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link PRDActions }
-     *
+     * @param value allowed object is
+     *              {@link PRDActions }
      */
     public void setPRDActions(PRDActions value) {
         this.prdActions = value;
@@ -388,10 +345,8 @@ public class PRDAction {
     /**
      * Gets the value of the mode property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getMode() {
         return mode;
@@ -400,10 +355,8 @@ public class PRDAction {
     /**
      * Sets the value of the mode property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setMode(String value) {
         this.mode = value;
@@ -412,10 +365,8 @@ public class PRDAction {
     /**
      * Gets the value of the value property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getValue() {
         return value;
@@ -424,10 +375,8 @@ public class PRDAction {
     /**
      * Sets the value of the value property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setValue(String value) {
         this.value = value;
@@ -436,10 +385,8 @@ public class PRDAction {
     /**
      * Gets the value of the type property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getType() {
         return type;
@@ -448,10 +395,8 @@ public class PRDAction {
     /**
      * Sets the value of the type property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setType(String value) {
         this.type = value;
@@ -460,10 +405,8 @@ public class PRDAction {
     /**
      * Gets the value of the resultProp property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getResultProp() {
         return resultProp;
@@ -472,10 +415,8 @@ public class PRDAction {
     /**
      * Sets the value of the resultProp property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setResultProp(String value) {
         this.resultProp = value;
@@ -484,10 +425,8 @@ public class PRDAction {
     /**
      * Gets the value of the property property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getProperty() {
         return property;
@@ -496,10 +435,8 @@ public class PRDAction {
     /**
      * Sets the value of the property property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setProperty(String value) {
         this.property = value;
@@ -508,10 +445,8 @@ public class PRDAction {
     /**
      * Gets the value of the entity property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getEntity() {
         return entity;
@@ -520,10 +455,8 @@ public class PRDAction {
     /**
      * Sets the value of the entity property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setEntity(String value) {
         this.entity = value;
@@ -532,10 +465,8 @@ public class PRDAction {
     /**
      * Gets the value of the by property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getBy() {
         return by;
@@ -544,10 +475,8 @@ public class PRDAction {
     /**
      * Sets the value of the by property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setBy(String value) {
         this.by = value;
@@ -556,10 +485,8 @@ public class PRDAction {
     /**
      * Gets the value of the kill property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getKill() {
         return kill;
@@ -568,10 +495,8 @@ public class PRDAction {
     /**
      * Sets the value of the kill property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setKill(String value) {
         this.kill = value;
@@ -580,10 +505,8 @@ public class PRDAction {
     /**
      * Gets the value of the create property.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
-     *
+     * @return possible object is
+     * {@link String }
      */
     public String getCreate() {
         return create;
@@ -592,10 +515,8 @@ public class PRDAction {
     /**
      * Sets the value of the create property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *
+     * @param value allowed object is
+     *              {@link String }
      */
     public void setCreate(String value) {
         this.create = value;
@@ -617,8 +538,6 @@ public class PRDAction {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     *
-     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "")
@@ -632,10 +551,8 @@ public class PRDAction {
         /**
          * Gets the value of the targetEntity property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *
+         * @return possible object is
+         * {@link String }
          */
         public String getTargetEntity() {
             return targetEntity;
@@ -644,10 +561,8 @@ public class PRDAction {
         /**
          * Sets the value of the targetEntity property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setTargetEntity(String value) {
             this.targetEntity = value;
@@ -656,10 +571,8 @@ public class PRDAction {
         /**
          * Gets the value of the sourceEntity property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *
+         * @return possible object is
+         * {@link String }
          */
         public String getSourceEntity() {
             return sourceEntity;
@@ -668,10 +581,8 @@ public class PRDAction {
         /**
          * Sets the value of the sourceEntity property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setSourceEntity(String value) {
             this.sourceEntity = value;
@@ -694,8 +605,6 @@ public class PRDAction {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     *
-     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "")
@@ -707,10 +616,8 @@ public class PRDAction {
         /**
          * Gets the value of the of property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *
+         * @return possible object is
+         * {@link String }
          */
         public String getOf() {
             return of;
@@ -719,10 +626,8 @@ public class PRDAction {
         /**
          * Sets the value of the of property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setOf(String value) {
             this.of = value;
@@ -759,8 +664,6 @@ public class PRDAction {
      *   &lt;/complexContent>
      * &lt;/complexType>
      * </pre>
-     *
-     *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
@@ -776,10 +679,8 @@ public class PRDAction {
         /**
          * Gets the value of the prdSelection property.
          *
-         * @return
-         *     possible object is
-         *     {@link PRDAction.PRDSecondaryEntity.PRDSelection }
-         *
+         * @return possible object is
+         * {@link PRDAction.PRDSecondaryEntity.PRDSelection }
          */
         public PRDAction.PRDSecondaryEntity.PRDSelection getPRDSelection() {
             return prdSelection;
@@ -788,10 +689,8 @@ public class PRDAction {
         /**
          * Sets the value of the prdSelection property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link PRDAction.PRDSecondaryEntity.PRDSelection }
-         *
+         * @param value allowed object is
+         *              {@link PRDAction.PRDSecondaryEntity.PRDSelection }
          */
         public void setPRDSelection(PRDAction.PRDSecondaryEntity.PRDSelection value) {
             this.prdSelection = value;
@@ -800,10 +699,8 @@ public class PRDAction {
         /**
          * Gets the value of the entity property.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
-         *
+         * @return possible object is
+         * {@link String }
          */
         public String getEntity() {
             return entity;
@@ -812,10 +709,8 @@ public class PRDAction {
         /**
          * Sets the value of the entity property.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
-         *
+         * @param value allowed object is
+         *              {@link String }
          */
         public void setEntity(String value) {
             this.entity = value;
@@ -839,8 +734,6 @@ public class PRDAction {
          *   &lt;/complexContent>
          * &lt;/complexType>
          * </pre>
-         *
-         *
          */
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
@@ -856,10 +749,8 @@ public class PRDAction {
             /**
              * Gets the value of the prdCondition property.
              *
-             * @return
-             *     possible object is
-             *     {@link PRDCondition }
-             *
+             * @return possible object is
+             * {@link PRDCondition }
              */
             public PRDCondition getPRDCondition() {
                 return prdCondition;
@@ -868,10 +759,8 @@ public class PRDAction {
             /**
              * Sets the value of the prdCondition property.
              *
-             * @param value
-             *     allowed object is
-             *     {@link PRDCondition }
-             *
+             * @param value allowed object is
+             *              {@link PRDCondition }
              */
             public void setPRDCondition(PRDCondition value) {
                 this.prdCondition = value;
@@ -880,10 +769,8 @@ public class PRDAction {
             /**
              * Gets the value of the count property.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
-             *
+             * @return possible object is
+             * {@link String }
              */
             public String getCount() {
                 return count;
@@ -892,10 +779,8 @@ public class PRDAction {
             /**
              * Sets the value of the count property.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
-             *
+             * @param value allowed object is
+             *              {@link String }
              */
             public void setCount(String value) {
                 this.count = value;

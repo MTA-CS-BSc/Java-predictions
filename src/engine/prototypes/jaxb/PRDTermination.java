@@ -15,9 +15,9 @@ import java.util.List;
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
@@ -30,8 +30,6 @@ import java.util.List;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
@@ -52,10 +50,8 @@ public class PRDTermination {
     /**
      * Gets the value of the prdByUser property.
      *
-     * @return
-     *     possible object is
-     *     {@link Object }
-     *
+     * @return possible object is
+     * {@link Object }
      */
     public Object getPRDByUser() {
         return prdByUser;
@@ -64,10 +60,8 @@ public class PRDTermination {
     /**
      * Sets the value of the prdByUser property.
      *
-     * @param value
-     *     allowed object is
-     *     {@link Object }
-     *
+     * @param value allowed object is
+     *              {@link Object }
      */
     public void setPRDByUser(Object value) {
         this.prdByUser = value;
@@ -93,8 +87,6 @@ public class PRDTermination {
      * Objects of the following type(s) are allowed in the list
      * {@link PRDBySecond }
      * {@link PRDByTicks }
-     *
-     *
      */
     public List<Object> getPRDBySecondOrPRDByTicks() {
         if (prdBySecondOrPRDByTicks == null) {

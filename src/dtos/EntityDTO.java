@@ -18,10 +18,23 @@ public class EntityDTO {
         this.properties = properties;
         this.population = population;
     }
-    public String getName() { return name; }
-    public int getPopulation() { return population; }
-    public void setPopulation(int value) { population = value; }
-    public List<PropertyDTO> getProperties() { return properties; }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPopulation() {
+        return population;
+    }
+
+    public void setPopulation(int value) {
+        population = value;
+    }
+
+    public List<PropertyDTO> getProperties() {
+        return properties;
+    }
+
     @Override
     public String toString() {
         return name;

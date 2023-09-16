@@ -8,18 +8,14 @@
 
 package engine.prototypes.jaxb;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 
 
 /**
  * <p>Java class for anonymous complex type.
- * 
+ *
  * <p>The following schema fragment specifies the expected content contained within this class.
- * 
+ *
  * <pre>
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
@@ -30,8 +26,6 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
  * </pre>
- * 
- * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
@@ -47,13 +41,12 @@ public class PRDActivation {
         ticks = 1;
         probability = 1.0;
     }
+
     /**
      * Gets the value of the ticks property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
+     *
+     * @return possible object is
+     * {@link Integer }
      */
     public Integer getTicks() {
         return ticks;
@@ -61,11 +54,9 @@ public class PRDActivation {
 
     /**
      * Sets the value of the ticks property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Integer }
      */
     public void setTicks(Integer value) {
         this.ticks = value;
@@ -73,11 +64,9 @@ public class PRDActivation {
 
     /**
      * Gets the value of the probability property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Double }
-     *     
+     *
+     * @return possible object is
+     * {@link Double }
      */
     public Double getProbability() {
         return probability;
@@ -85,11 +74,9 @@ public class PRDActivation {
 
     /**
      * Sets the value of the probability property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Double }
-     *     
+     *
+     * @param value allowed object is
+     *              {@link Double }
      */
     public void setProbability(Double value) {
         this.probability = value;

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.views.AllScreensUpperBar.AllScreensUpperBarController">
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx"
+      fx:controller="fx.views.AllScreensUpperBar.AllScreensUpperBarController">
     <fx:include source="../AppMenu/AppMenu.fxml" fx:id="appMenu"/>
-    <fx:include source="../HeaderComponent/HeaderComponent.fxml" fx:id="headerComponent" />
+    <fx:include source="../HeaderComponent/HeaderComponent.fxml" fx:id="headerComponent"/>
 </VBox>

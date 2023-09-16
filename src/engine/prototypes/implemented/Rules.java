@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class Rules implements Serializable {
     protected Map<String, Rule> rulesMap;
+
     public Rules(List<PRDRule> list) {
         rulesMap = new HashMap<>();
 
@@ -21,7 +22,11 @@ public class Rules implements Serializable {
 
         other.getRulesMap().forEach((key, value) -> rulesMap.put(key, new Rule(value)));
     }
-    public Map<String, Rule> getRulesMap() { return rulesMap; }
+
+    public Map<String, Rule> getRulesMap() {
+        return rulesMap;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

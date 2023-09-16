@@ -1,6 +1,5 @@
 package engine.simulation.performers;
 
-import helpers.types.ActionTypes;
 import engine.exceptions.ErrorMessageFormatter;
 import engine.exceptions.PropertyNotFoundException;
 import engine.modules.Utils;
@@ -9,6 +8,7 @@ import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.SingleEntity;
 import engine.prototypes.implemented.World;
 import engine.prototypes.implemented.actions.SetAction;
+import helpers.types.ActionTypes;
 
 import java.util.Objects;
 
@@ -18,6 +18,7 @@ public abstract class SetPerformer {
         String newValue = ExpressionParser.evaluateExpression(world, action.getValue(), main, secondary);
         ActionsPerformer.setPropertyValue(ActionTypes.SET, action.getEntityName(), property, newValue);
     }
+
     public static void performAction(World world, SetAction action, SingleEntity main, SingleEntity secondary) throws Exception {
         if (Objects.isNull(Utils.findAnyPropertyByName(world, action.getEntityName(), action.getPropertyName())))
             throw new PropertyNotFoundException(ErrorMessageFormatter.formatPropertyNotFoundMessage(action.getType(), action.getEntityName(), action.getPropertyName()));

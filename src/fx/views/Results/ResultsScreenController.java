@@ -1,10 +1,10 @@
 package fx.views.Results;
 
 import dtos.SingleSimulationDTO;
-import fx.views.PopulationTable.PopulationTableController;
-import fx.views.HeaderComponent.HeaderComponentController;
-import fx.views.SimulationsTable.SimulationsTableController;
 import fx.views.FinishedStats.FinishedStatsController;
+import fx.views.HeaderComponent.HeaderComponentController;
+import fx.views.PopulationTable.PopulationTableController;
+import fx.views.SimulationsTable.SimulationsTableController;
 import helpers.types.SimulationState;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -48,5 +48,7 @@ public class ResultsScreenController implements Initializable {
         return container;
     }
 
-    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
+    public void setSelectedSimulation(SingleSimulationDTO simulation) {
+        selectedSimulation.setValue(simulation);
+    }
 }

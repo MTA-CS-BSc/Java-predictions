@@ -3,6 +3,7 @@ package fx.models.DetailsScreen.actions;
 public class IncreaseDecreaseModel extends ActionModel {
     private final String propertyName;
     private final String by;
+
     public IncreaseDecreaseModel(String type, String entityName, SecondaryEntityModel secondaryEntity,
                                  String propertyName, String by) {
         super(type, entityName, secondaryEntity);
@@ -10,6 +11,11 @@ public class IncreaseDecreaseModel extends ActionModel {
         this.by = by;
     }
 
-    public String getBy() { return by; }
-    public String getPropertyName() { return propertyName; }
+    public String getBy() {
+        return by;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
+    }
 }

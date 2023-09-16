@@ -26,6 +26,7 @@ public class SingleSimulationDTO {
         this.ticks = ticks;
         this.elapsedTimeMillis = elapsedTimeMillis;
     }
+
     public SingleSimulationDTO(WorldDTO world) {
         uuid = "";
         createdTimestamp = "";
@@ -34,12 +35,28 @@ public class SingleSimulationDTO {
         this.ticks = 0;
         this.elapsedTimeMillis = 0;
     }
-    public String getUuid() { return uuid; }
-    public String getCreatedTimestamp() { return createdTimestamp; }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public String getCreatedTimestamp() {
+        return createdTimestamp;
+    }
+
     public WorldDTO getWorld() {
         return world;
     }
-    public SimulationState getSimulationState() { return simulationState; }
-    public long getTicks() { return ticks; }
-    public long getElapsedTimeMillis() { return elapsedTimeMillis; }
+
+    public SimulationState getSimulationState() {
+        return simulationState;
+    }
+
+    public long getTicks() {
+        return ticks;
+    }
+
+    public long getElapsedTimeMillis() {
+        return elapsedTimeMillis;
+    }
 }

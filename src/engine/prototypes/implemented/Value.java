@@ -25,18 +25,23 @@ public class Value implements Serializable {
         return isRandomInitialize;
     }
 
+    public void setRandomInitialize(boolean value) {
+        isRandomInitialize = value;
+    }
+
     public String getInit() {
         return init;
+    }
+
+    public void setInit(String value) {
+        init = value;
     }
 
     public String getCurrentValue() {
         return currentValue;
     }
 
-    public void setRandomInitialize(boolean value) { isRandomInitialize = value; }
-    public void setInit(String value) {
-        init = value;
+    public void setCurrentValue(String value) {
+        currentValue = value;
     }
-
-    public void setCurrentValue(String value) { currentValue = value; }
 }

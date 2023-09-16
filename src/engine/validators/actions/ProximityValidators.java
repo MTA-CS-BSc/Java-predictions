@@ -1,6 +1,5 @@
 package engine.validators.actions;
 
-import helpers.types.PropTypes;
 import engine.exceptions.EmptyExpressionException;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.InvalidTypeException;
@@ -8,6 +7,7 @@ import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDActions;
 import engine.prototypes.jaxb.PRDWorld;
+import helpers.types.PropTypes;
 
 import java.util.Objects;
 

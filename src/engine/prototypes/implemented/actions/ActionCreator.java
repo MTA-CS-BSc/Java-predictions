@@ -1,7 +1,7 @@
 package engine.prototypes.implemented.actions;
 
-import helpers.types.ActionTypes;
 import engine.prototypes.jaxb.PRDAction;
+import helpers.types.ActionTypes;
 
 public abstract class ActionCreator {
     public static Action createAction(PRDAction action) {
@@ -29,28 +29,28 @@ public abstract class ActionCreator {
 
     public static Action createAction(Action other) {
         if (other instanceof IncreaseAction)
-            return new IncreaseAction((IncreaseAction)other);
+            return new IncreaseAction((IncreaseAction) other);
 
         else if (other instanceof DecreaseAction)
-            return new DecreaseAction((DecreaseAction)other);
+            return new DecreaseAction((DecreaseAction) other);
 
         else if (other instanceof CalculationAction)
-            return new CalculationAction((CalculationAction)other);
+            return new CalculationAction((CalculationAction) other);
 
         else if (other instanceof SetAction)
-            return new SetAction((SetAction)other);
+            return new SetAction((SetAction) other);
 
         else if (other instanceof KillAction)
-            return new KillAction((KillAction)other);
+            return new KillAction((KillAction) other);
 
         else if (other instanceof ReplaceAction)
-            return new ReplaceAction((ReplaceAction)other);
+            return new ReplaceAction((ReplaceAction) other);
 
         else if (other instanceof ConditionAction)
-            return new ConditionAction((ConditionAction)other);
+            return new ConditionAction((ConditionAction) other);
 
         else if (other instanceof ProximityAction)
-            return new ProximityAction((ProximityAction)other);
+            return new ProximityAction((ProximityAction) other);
 
         return null;
     }

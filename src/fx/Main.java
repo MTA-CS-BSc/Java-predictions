@@ -20,6 +20,7 @@ public class Main extends Application {
 
         return mainScene;
     }
+
     @Override
     public void start(Stage stage) throws Exception {
         stage.setTitle(Constants.APP_TITLE);

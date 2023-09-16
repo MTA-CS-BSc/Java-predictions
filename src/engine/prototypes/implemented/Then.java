@@ -33,5 +33,8 @@ public class Then implements Serializable {
                 actions.add(created);
         });
     }
-    public List<Action> getActions() { return actions; }
+
+    public List<Action> getActions() {
+        return actions;
+    }
 }

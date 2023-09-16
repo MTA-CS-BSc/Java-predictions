@@ -33,6 +33,7 @@ public class EngineAPI {
         threadPoolManager = new ThreadPoolManager();
         configureLoggers();
     }
+
     private void configureLoggers() {
         EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
         EngineLoggers.API_LOGGER.setLevel(Level.OFF);
@@ -53,6 +54,7 @@ public class EngineAPI {
 
         return validateWorldResponse;
     }
+
     public ResponseDTO isXmlLoaded() {
         return new ResponseDTO(200, historyManager.isXmlLoaded());
     }
@@ -64,11 +66,13 @@ public class EngineAPI {
         historyManager.addPastSimulation(sm);
         return new ResponseDTO(200, sm.getUUID());
     }
+
     public ResponseDTO cloneSimulation(String uuid) {
         SingleSimulation cloned = new SingleSimulation(historyManager.getPastSimulation(uuid));
         historyManager.addPastSimulation(cloned);
         return new ResponseDTO(200, cloned.getUUID());
     }
+
     private void runSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
@@ -77,6 +81,7 @@ public class EngineAPI {
         if (simulation.getSimulationState() == SimulationState.ERROR)
             historyManager.getPastSimulations().remove(uuid);
     }
+
     public ResponseDTO enqueueSimulation(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
@@ -85,6 +90,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
     }
+
     public ResponseDTO stopSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
         SimulationState simulationState = simulation.getSimulationState();
@@ -97,6 +103,7 @@ public class EngineAPI {
         simulation.setSimulationState(SimulationState.FINISHED);
         return new ResponseDTO(200, String.format("Simulation [%s] is stopped", uuid));
     }
+
     public ResponseDTO pauseSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
@@ -107,6 +114,7 @@ public class EngineAPI {
         simulation.setSimulationState(SimulationState.PAUSED);
         return new ResponseDTO(200, String.format("Simulation [%s] was paused", uuid));
     }
+
     public ResponseDTO resumeSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
@@ -117,6 +125,7 @@ public class EngineAPI {
         simulation.setSimulationState(SimulationState.RUNNING);
         return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
     }
+
     public ResponseDTO getSimulationDetails() {
         if (!historyManager.isXmlLoaded())
             return new ResponseDTO(400, "", "No loaded XML");
@@ -129,6 +138,7 @@ public class EngineAPI {
     private void removeSimulationFromHistory(String uuid) {
         historyManager.getPastSimulations().remove(uuid);
     }
+
     public ResponseDTO removeSimulationIfUnused(String uuid) {
         if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.CREATED) {
             removeSimulationFromHistory(uuid);
@@ -137,6 +147,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, false);
     }
+
     public ResponseDTO removeUnusedSimulations() {
         List<SingleSimulation> toRemove = historyManager.getPastSimulations().values()
                 .stream()
@@ -147,9 +158,11 @@ public class EngineAPI {
 
         return new ResponseDTO(200, "");
     }
+
     public ResponseDTO isHistoryEmpty() {
         return new ResponseDTO(200, historyManager.isEmpty());
     }
+
     public ResponseDTO writeHistoryToFile(String filePath) {
         try {
             FileOutputStream f = new FileOutputStream(filePath);
@@ -164,15 +177,14 @@ public class EngineAPI {
             return new ResponseDTO(200, false);
         }
     }
+
     public ResponseDTO loadHistory(String filePath) {
         try {
             FileInputStream fi = new FileInputStream(filePath);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
             return new ResponseDTO(200);
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             EngineLoggers.API_LOGGER.info(e.getMessage());
             return new ResponseDTO(500, "Attempted to load history but no history file was found");
         }
@@ -183,12 +195,15 @@ public class EngineAPI {
     public ResponseDTO getGrid() {
         return new ResponseDTO(200, getInitialWorld().getGrid());
     }
+
     private void setInitialXmlWorld(World initialWorld) {
         historyManager.setInitialXmlWorld(initialWorld);
     }
+
     private World getInitialWorld() {
         return historyManager.getInitialWorld();
     }
+
     public ResponseDTO getPastSimulations() {
         if (historyManager.isEmpty())
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
@@ -201,12 +216,14 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
+
     public ResponseDTO getPastSimulation(String uuid) {
         if (historyManager.isEmpty())
             return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
 
         return new ResponseDTO(200, Mappers.toDto(historyManager.getPastSimulation(uuid)));
     }
+
     public ResponseDTO getEntities(String uuid, boolean isInitial) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
@@ -224,6 +241,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
+
     public ResponseDTO getEnvironmentProperties(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
@@ -237,6 +255,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, data);
     }
+
     public ResponseDTO setEntityInitialPopulation(String uuid, EntityDTO entityDTO, int population) {
         String entityName = entityDTO.getName();
 
@@ -258,6 +277,7 @@ public class EngineAPI {
         return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
     }
+
     public ResponseDTO setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, "UUID", UUIDNotFoundException.class.getSimpleName());
@@ -296,6 +316,7 @@ public class EngineAPI {
         return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()),
                 String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
     }
+
     public ResponseDTO getEntitiesAmountsPerTick(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, Collections.emptyMap(), "Simulation not found!");
@@ -317,12 +338,14 @@ public class EngineAPI {
 
         return new ResponseDTO(200, entitiesAmount);
     }
+
     public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
         return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
+
     public ResponseDTO getPropertyAverage(String uuid, String entityName, String propertyName) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
@@ -339,18 +362,19 @@ public class EngineAPI {
 
         return new ResponseDTO(200, average);
     }
+
     public ResponseDTO getQueueManagementDetails() {
         Collection<SingleSimulation> pastSimulations = historyManager.getPastSimulations().values();
 
-        int finishedSimulations = (int)pastSimulations.stream()
+        int finishedSimulations = (int) pastSimulations.stream()
                 .filter(simulation -> simulation.getSimulationState() == SimulationState.FINISHED)
                 .count();
 
-        int runningSimulations = (int)pastSimulations.stream()
+        int runningSimulations = (int) pastSimulations.stream()
                 .filter(simulation -> Arrays.asList(SimulationState.RUNNING, SimulationState.PAUSED).contains(simulation.getSimulationState()))
                 .count();
 
-        int pendingSimulations = (int)pastSimulations.stream()
+        int pendingSimulations = (int) pastSimulations.stream()
                 .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED)
                 .count();
 
@@ -358,6 +382,7 @@ public class EngineAPI {
 
         return new ResponseDTO(200, queueMgmtDTO);
     }
+
     public ResponseDTO setByStep(String uuid, ByStep byStep) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(400, Collections.emptyMap(), "Simulation not found!");

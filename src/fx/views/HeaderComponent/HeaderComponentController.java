@@ -4,12 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import dtos.QueueMgmtDTO;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
-import fx.views.NewExecution.NewExecutionController;
-import fx.views.Results.ResultsScreenController;
 import fx.modules.Alerts;
 import fx.modules.GuiUtils;
 import fx.modules.SingletonEngineAPI;
 import fx.views.DetailsScreen.DetailsScreenController;
+import fx.views.NewExecution.NewExecutionController;
+import fx.views.Results.ResultsScreenController;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import javafx.application.Platform;
@@ -18,7 +18,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
@@ -74,9 +77,8 @@ public class HeaderComponentController implements Initializable {
                     queueMgmtDTO.getPendingSimulations(), queueMgmtDTO.getRunningSimulations(), queueMgmtDTO.getFinishedSimulations());
 
             queueMgmtButton.setTooltip(new Tooltip(data));
+        } catch (Exception ignored) {
         }
-
-        catch (Exception ignored) { }
 
     }
 
@@ -106,11 +108,13 @@ public class HeaderComponentController implements Initializable {
         newExecutionController = controller;
     }
 
-    public void setResultsScreenController(ResultsScreenController controller) { resultsScreenController = controller; }
+    public void setResultsScreenController(ResultsScreenController controller) {
+        resultsScreenController = controller;
+    }
 
     @FXML
     private void handleLoadXml(ActionEvent event) {
-        Window window = ((Node)event.getSource()).getScene().getWindow();
+        Window window = ((Node) event.getSource()).getScene().getWindow();
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose a XML file");
@@ -129,9 +133,7 @@ public class HeaderComponentController implements Initializable {
                 tray = new TrayNotification("SUCCESS", "XML was loaded successfully!", NotificationType.SUCCESS);
                 currentXmlFilePath.setText(file.getAbsolutePath());
                 detailsScreenController.handleShowCategoriesData();
-            }
-
-            else {
+            } else {
                 tray = new TrayNotification("FAILURE", "XML was not loaded.", NotificationType.ERROR);
                 Alerts.showAlert("XML was not loaded", "Validation error",
                         response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
@@ -140,9 +142,7 @@ public class HeaderComponentController implements Initializable {
             tray.setAnimationType(AnimationType.FADE);
             Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
             showSimulationDetailsScreen();
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             Alerts.showAlert("XML was not loaded", "Validation error",
                     "File not found, not supported or corrupted", Alert.AlertType.ERROR);
         }
@@ -152,15 +152,13 @@ public class HeaderComponentController implements Initializable {
     private void showSimulationDetailsScreen() throws JsonProcessingException {
         if (!detailsScreenController.getContainer().isVisible()) {
             hideVisible();
-            Platform.runLater(() ->  GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
+            Platform.runLater(() -> GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
         }
 
         if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
             highlightButtonText(detailsButton);
             detailsScreenController.handleShowCategoriesData();
-        }
-
-        else {
+        } else {
             TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
             tray.setAnimationType(AnimationType.FADE);
             Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
@@ -194,9 +192,7 @@ public class HeaderComponentController implements Initializable {
             else if (resultsScreenController.getContainer().isVisible()) {
                 GuiUtils.fadeOutAnimation(resultsScreenController.getContainer());
                 resultsScreenController.setSelectedSimulation(null);
-            }
-
-            else if (newExecutionController.getContainer().isVisible())
+            } else if (newExecutionController.getContainer().isVisible())
                 GuiUtils.fadeOutAnimation(newExecutionController.getContainer());
         });
     }

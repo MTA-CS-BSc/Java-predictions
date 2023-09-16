@@ -46,13 +46,21 @@ public class PropertyDTO {
         return range;
     }
 
-    public String getValue() { return value; }
+    public String getValue() {
+        return value;
+    }
 
-    public void setValue(String value) { this.value = value; }
+    public void setValue(String value) {
+        this.value = value;
+    }
 
-    public boolean getIsRandom() { return isRandom; }
+    public boolean getIsRandom() {
+        return isRandom;
+    }
 
-    public void setIsRandom(boolean value) { this.isRandom = value; }
+    public void setIsRandom(boolean value) {
+        this.isRandom = value;
+    }
 
     public boolean hasNoRange() {
         return Objects.isNull(getRange())

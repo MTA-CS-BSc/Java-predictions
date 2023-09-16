@@ -1,11 +1,11 @@
 package engine.validators;
 
-import helpers.types.PropTypes;
 import engine.consts.Restrictions;
 import engine.exceptions.*;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDProperty;
 import engine.prototypes.jaxb.PRDRange;
+import helpers.types.PropTypes;
 import helpers.types.TypesUtils;
 
 import java.util.List;
@@ -22,6 +22,7 @@ public abstract class PRDPropertyValidators {
                 && validatePropsValuesInRanges(entity)
                 && validateInitExistsOnNonRandomProps(entity);
     }
+
     private static boolean validatePropValue(PRDProperty property) {
         if (property.getPRDValue().isRandomInitialize())
             return true;
@@ -39,6 +40,7 @@ public abstract class PRDPropertyValidators {
 
         return true;
     }
+
     private static boolean validatePropsValueAgainstType(PRDEntity entity) throws Exception {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
             if (!validatePropValue(property))
@@ -47,6 +49,7 @@ public abstract class PRDPropertyValidators {
 
         return true;
     }
+
     private static boolean validatePropsTypes(PRDEntity entity) throws InvalidTypeException {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
             if (!Restrictions.PRD_PROPERTY_ALLOWED_TYPES.contains(property.getType()))
@@ -55,6 +58,7 @@ public abstract class PRDPropertyValidators {
 
         return true;
     }
+
     private static boolean validatePropsUniqueNames(PRDEntity entity) throws UniqueNameException {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
             if (entity.getPRDProperties().getPRDProperty()
@@ -67,6 +71,7 @@ public abstract class PRDPropertyValidators {
 
         return true;
     }
+
     private static boolean validateNoWhitespacesInNames(PRDEntity entity) throws WhitespacesFoundException {
         for (PRDProperty property : entity.getPRDProperties().getPRDProperty())
             if (property.getPRDName().contains(" "))
@@ -76,6 +81,7 @@ public abstract class PRDPropertyValidators {
 
         return true;
     }
+
     private static boolean validateRanges(PRDEntity entity) throws Exception {
         List<PRDProperty> propsWithRange =
                 entity.getPRDProperties().getPRDProperty()
@@ -95,19 +101,21 @@ public abstract class PRDPropertyValidators {
 
         return true;
     }
+
     private static boolean validateInitExistsOnNonRandomProps(PRDEntity entity) throws EmptyExpressionException {
         List<PRDProperty> notRandomProps = entity.getPRDProperties().getPRDProperty()
                 .stream()
                 .filter(element -> !element.getPRDValue().isRandomInitialize())
                 .collect(Collectors.toList());
 
-        for (PRDProperty property: notRandomProps)
+        for (PRDProperty property : notRandomProps)
             if (!property.getType().equals(PropTypes.STRING) && property.getPRDValue().getInit().isEmpty())
                 throw new EmptyExpressionException(String.format("Entity [%s]: Property [%s] has no init value but is not random",
                         entity.getName(), property.getPRDName()));
 
         return true;
     }
+
     private static boolean validatePropsValuesInRanges(PRDEntity entity) throws InvalidTypeException {
         List<PRDProperty> propsWithRange = entity.getPRDProperties().getPRDProperty()
                 .stream()
@@ -122,6 +130,7 @@ public abstract class PRDPropertyValidators {
 
         return true;
     }
+
     private static boolean validatePropValueInRange(PRDProperty property) {
         PRDRange range = property.getPRDRange();
 

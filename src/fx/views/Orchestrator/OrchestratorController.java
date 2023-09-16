@@ -1,9 +1,9 @@
 package fx.views.Orchestrator;
 
-import fx.views.Results.ResultsScreenController;
 import fx.views.AllScreensUpperBar.AllScreensUpperBarController;
 import fx.views.DetailsScreen.DetailsScreenController;
 import fx.views.NewExecution.NewExecutionController;
+import fx.views.Results.ResultsScreenController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;

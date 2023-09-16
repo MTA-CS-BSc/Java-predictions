@@ -1,12 +1,12 @@
 package engine.validators.actions;
 
-import helpers.types.ActionTypes;
 import engine.consts.SecondaryEntityCounts;
 import engine.exceptions.EntityNotFoundException;
 import engine.exceptions.ValueNotInRangeException;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.jaxb.PRDAction;
 import engine.prototypes.jaxb.PRDWorld;
+import helpers.types.ActionTypes;
 import helpers.types.TypesUtils;
 
 import java.util.Objects;
@@ -47,6 +47,7 @@ public abstract class PRDActionValidators {
 
         return false;
     }
+
     private static boolean validateSecondaryEntity(PRDWorld world, PRDAction action) throws Exception {
         if (Objects.isNull(ValidatorsUtils.findPRDEntityByName(world, action.getPRDSecondaryEntity().getEntity())))
             throw new EntityNotFoundException(String.format("Action [%s]: Secondary entity [%s] does not exist",

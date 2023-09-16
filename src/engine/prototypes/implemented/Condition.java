@@ -38,6 +38,7 @@ public class Condition implements Serializable {
 
         other.getConditions().forEach(prdCondition -> conditions.add(new Condition(prdCondition)));
     }
+
     public List<Condition> getConditions() {
         return conditions;
     }

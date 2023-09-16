@@ -24,7 +24,8 @@ public class TravelSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
 
         try {
             styleButton(travelPastButton, byStep == ByStep.PAST ? FilePaths.PAST_TRAVEL_ICON_PATH : FilePaths.FUTURE_TRAVEL_ICON_PATH);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         travelPastButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
@@ -35,8 +36,11 @@ public class TravelSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
         });
     }
 
-    /** places an add button in the row only if the row is not empty. */
-    @Override protected void updateItem(Boolean item, boolean empty) {
+    /**
+     * places an add button in the row only if the row is not empty.
+     */
+    @Override
+    protected void updateItem(Boolean item, boolean empty) {
         super.updateItem(item, empty);
         if (!empty) {
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
@@ -44,9 +48,7 @@ public class TravelSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
 
             SingleSimulationDTO simulation = getTableView().getItems().get(getIndex());
             setDisable(simulation.getSimulationState() != SimulationState.PAUSED || simulation.getTicks() == 0);
-        }
-
-        else
+        } else
             setGraphic(null);
     }
 }

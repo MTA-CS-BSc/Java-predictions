@@ -16,6 +16,7 @@ public abstract class PRDEnvironmentValidators {
         return validatePropsUniqueNames(world) && validatePropsTypes(world)
                 && validateRanges(world) && validateNoWhitespacesInNames(world);
     }
+
     private static boolean validatePropsUniqueNames(PRDWorld world) throws UniqueNameException {
         for (PRDEnvProperty property : world.getPRDEnvironment().getPRDEnvProperty())
             if (world.getPRDEnvironment().getPRDEnvProperty()
@@ -26,6 +27,7 @@ public abstract class PRDEnvironmentValidators {
 
         return true;
     }
+
     private static boolean validatePropsTypes(PRDWorld world) throws InvalidTypeException {
         for (PRDEnvProperty property : world.getPRDEnvironment().getPRDEnvProperty())
             if (!Restrictions.PRD_PROPERTY_ALLOWED_TYPES.contains(property.getType()))
@@ -34,6 +36,7 @@ public abstract class PRDEnvironmentValidators {
 
         return true;
     }
+
     private static boolean validateNoWhitespacesInNames(PRDWorld world) throws WhitespacesFoundException {
         for (PRDEnvProperty property : world.getPRDEnvironment().getPRDEnvProperty())
             if (property.getPRDName().contains(" "))
@@ -42,6 +45,7 @@ public abstract class PRDEnvironmentValidators {
 
         return true;
     }
+
     private static boolean validateRanges(PRDWorld world) throws Exception {
         List<PRDEnvProperty> propsWithRange =
                 world.getPRDEnvironment().getPRDEnvProperty()

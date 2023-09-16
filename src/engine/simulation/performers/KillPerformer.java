@@ -35,6 +35,7 @@ public abstract class KillPerformer {
 
         return false;
     }
+
     public static void performAction(World world, KillAction action, SingleEntity main, SingleEntity secondary) {
         handle(world, action.getEntityName(), action.getEntityName().equals(main.getEntityName()) ? main : secondary);
     }

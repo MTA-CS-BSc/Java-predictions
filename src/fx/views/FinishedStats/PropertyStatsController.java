@@ -48,6 +48,7 @@ public class PropertyStatsController implements Initializable {
         avgContainer.setVisible(false);
         averageLabel.setText("");
     }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedSimulation = new SimpleObjectProperty<>();
@@ -105,10 +106,12 @@ public class PropertyStatsController implements Initializable {
                     Double.class);
             averageLabel.setText(String.valueOf(average));
             avgContainer.setVisible(true);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
 
     }
+
     private Callback<ListView<EntityDTO>, ListCell<EntityDTO>> getEntityCellFactory() {
         return new Callback<ListView<EntityDTO>, ListCell<EntityDTO>>() {
             @Override
@@ -168,7 +171,8 @@ public class PropertyStatsController implements Initializable {
         try {
             Map<String, Long> entitiesCountForProp = SingletonObjectMapper.objectMapper.readValue(
                     SingletonEngineAPI.api.getEntitiesCountForProp(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
-                    new TypeReference<Map<String, Long>>() {}
+                    new TypeReference<Map<String, Long>>() {
+                    }
             );
 
             histogramChart.getData().clear();
@@ -186,12 +190,13 @@ public class PropertyStatsController implements Initializable {
             });
 
 
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 
     private void configureChartTooltips() {
         for (PieChart.Data data : histogramChart.getData()) {
-            Tooltip tooltip = new Tooltip(String.valueOf((int)data.getPieValue()));
+            Tooltip tooltip = new Tooltip(String.valueOf((int) data.getPieValue()));
             Tooltip.install(data.getNode(), tooltip);
 
             // Add a mouse listener to show tooltips on hover

@@ -25,6 +25,12 @@ public class WorldState implements Serializable {
     public Map<String, Entity> getEntitiesMap() {
         return entitiesMap;
     }
-    public Map<String, Property> getEnvironmentMap() { return environmentMap; }
-    public WorldGrid getGrid() { return grid; }
+
+    public Map<String, Property> getEnvironmentMap() {
+        return environmentMap;
+    }
+
+    public WorldGrid getGrid() {
+        return grid;
+    }
 }

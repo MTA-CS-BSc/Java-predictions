@@ -10,15 +10,19 @@ public abstract class RandomGenerator {
     public static Integer randomizeRandomNumber(int min, int max) {
         return new Random().nextInt(max - min) + min;
     }
+
     public static boolean randomizeRandomBoolean() {
         return new Random().nextBoolean();
     }
+
     public static float randomizeProbability() {
         return new Random().nextFloat();
     }
+
     public static float randomizeFloat(float min, float max) {
         return (new Random().nextFloat() * (max - min)) + min;
     }
+
     public static String randomizeRandomString() {
         int randomLength = randomizeRandomNumber(1, Constants.MAX_RANDOM_STRING_LENGTH);
         StringBuilder sb = new StringBuilder(randomLength);
@@ -31,6 +35,7 @@ public abstract class RandomGenerator {
 
         return sb.toString();
     }
+
     public static Coordinate randomizeRandomCoordinate(WorldGrid grid) {
         Coordinate randomCoordinate = new Coordinate(RandomGenerator.randomizeRandomNumber(0, grid.getRows() - 1),
                 RandomGenerator.randomizeRandomNumber(0, grid.getColumns() - 1));

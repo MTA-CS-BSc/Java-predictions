@@ -14,26 +14,30 @@ public class Range implements Serializable {
         if (!Objects.isNull(range)) {
             to = range.getTo();
             from = range.getFrom();
-        }
-
-        else {
+        } else {
             to = Constants.MAX_RANGE;
             from = Constants.MIN_RANGE;
         }
     }
-    public Range (Range other) {
+
+    public Range(Range other) {
         if (!Objects.isNull(other)) {
             to = other.getTo();
             from = other.getFrom();
-        }
-
-        else {
+        } else {
             to = Constants.MAX_RANGE;
             from = Constants.MIN_RANGE;
         }
     }
-    public double getTo() { return to; }
-    public double getFrom() { return from; }
+
+    public double getTo() {
+        return to;
+    }
+
+    public double getFrom() {
+        return from;
+    }
+
     @Override
     public String toString() {
         return "Range: [" + getFrom() + ", " + getTo() + "]\n";

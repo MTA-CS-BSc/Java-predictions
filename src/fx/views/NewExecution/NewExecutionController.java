@@ -4,10 +4,10 @@ import dtos.PropertyDTO;
 import dtos.RangeDTO;
 import dtos.ResponseDTO;
 import dtos.SingleSimulationDTO;
-import fx.views.PopulationTable.PopulationTableController;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import fx.views.HeaderComponent.HeaderComponentController;
+import fx.views.PopulationTable.PopulationTableController;
 import helpers.Constants;
 import helpers.types.SimulationState;
 import javafx.application.Platform;
@@ -78,8 +78,6 @@ public class NewExecutionController implements Initializable {
         });
     }
 
-    public void setCurrentSimulation(SingleSimulationDTO simulation) { currentSimulation.setValue(simulation); }
-
     public void setHeaderComponentController(HeaderComponentController controller) {
         headerComponentController = controller;
     }
@@ -105,9 +103,7 @@ public class NewExecutionController implements Initializable {
 
                 editedProperty.setValue(event.getOldValue());
                 envPropsTable.refresh();
-            }
-
-            else
+            } else
                 editedProperty.setValue(event.getNewValue());
         });
     }
@@ -118,6 +114,10 @@ public class NewExecutionController implements Initializable {
 
     public SingleSimulationDTO getCurrentSimulation() {
         return currentSimulation.getValue();
+    }
+
+    public void setCurrentSimulation(SingleSimulationDTO simulation) {
+        currentSimulation.setValue(simulation);
     }
 
     public boolean isSimulationEmpty() {
@@ -156,14 +156,10 @@ public class NewExecutionController implements Initializable {
                 TrayNotification tray = new TrayNotification("SUCCESS", "Simulation was added to queue manager", NotificationType.SUCCESS);
                 Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
                 headerComponentController.showResultsScreen();
-            }
-
-            else
+            } else
                 Alerts.showAlert("FAILURE", "Simulation was not added to queue",
                         String.format("Cause: %s", response.getErrorDescription().getCause()), Alert.AlertType.ERROR);
-        }
-
-        else
+        } else
             Alerts.showAlert("FAILURE", "Simulation was not added to queue",
                     "Cause: Please initialize at least one of the entities population to be positive", Alert.AlertType.ERROR);
     }

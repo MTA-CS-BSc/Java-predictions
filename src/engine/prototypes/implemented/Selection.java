@@ -16,6 +16,11 @@ public class Selection {
         condition = new Condition(other.getCondition());
     }
 
-    public Condition getCondition() { return condition; }
-    public String getCount() { return count; }
+    public Condition getCondition() {
+        return condition;
+    }
+
+    public String getCount() {
+        return count;
+    }
 }

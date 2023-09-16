@@ -14,7 +14,15 @@ public class SingleConditionModel extends ConditionModel {
         this.value = value;
     }
 
-    public String getOperator() { return operator; }
-    public String getProperty() { return property; }
-    public String getValue() { return value; }
+    public String getOperator() {
+        return operator;
+    }
+
+    public String getProperty() {
+        return property;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }

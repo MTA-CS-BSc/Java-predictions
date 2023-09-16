@@ -22,24 +22,31 @@ public class RuleDTO {
         this.probability = probability;
         this.actions = actions;
     }
+
     public List<ActionDTO> getActions() {
         return actions;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public int getTicks() {
         return ticks;
     }
+
     public void setTicks(int ticks) {
         this.ticks = ticks;
     }
+
     public double getProbability() {
         return probability;
     }
+
     public void setProbability(double probability) {
         this.probability = probability;
     }

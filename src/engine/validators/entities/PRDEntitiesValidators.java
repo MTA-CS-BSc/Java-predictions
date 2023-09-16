@@ -1,6 +1,7 @@
 package engine.validators.entities;
 
-import engine.exceptions.*;
+import engine.exceptions.UniqueNameException;
+import engine.exceptions.WhitespacesFoundException;
 import engine.prototypes.jaxb.PRDEntity;
 import engine.prototypes.jaxb.PRDWorld;
 import engine.validators.PRDPropertyValidators;
@@ -11,6 +12,7 @@ public abstract class PRDEntitiesValidators {
                 && validateNoWhitespacesInNames(world)
                 && validateEntitiesProperties(world);
     }
+
     private static boolean validateEntitiesUniqueNames(PRDWorld world) throws UniqueNameException {
         for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
             if (world.getPRDEntities().getPRDEntity()
@@ -21,6 +23,7 @@ public abstract class PRDEntitiesValidators {
 
         return true;
     }
+
     private static boolean validateNoWhitespacesInNames(PRDWorld world) throws WhitespacesFoundException {
         for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
             if (entity.getName().contains(" "))
@@ -28,6 +31,7 @@ public abstract class PRDEntitiesValidators {
 
         return true;
     }
+
     private static boolean validateEntitiesProperties(PRDWorld world) throws Exception {
         for (PRDEntity entity : world.getPRDEntities().getPRDEntity())
             PRDPropertyValidators.validateProperties(entity);

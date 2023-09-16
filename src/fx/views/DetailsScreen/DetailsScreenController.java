@@ -35,21 +35,23 @@ public class DetailsScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         worldCategoriesTreeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
             if (newValue.getValue() instanceof EntityModel)
-                showEntityDetails((EntityModel)newValue.getValue());
+                showEntityDetails((EntityModel) newValue.getValue());
 
             else if (newValue.getValue() instanceof PropertyModel)
-                showEnvVarDetails((PropertyModel)newValue.getValue());
+                showEnvVarDetails((PropertyModel) newValue.getValue());
 
             else if (newValue.getValue() instanceof RuleModel)
-                showRuleDetails((RuleModel)newValue.getValue());
+                showRuleDetails((RuleModel) newValue.getValue());
 
             else
                 selectedComponentDetailsTreeView.setRoot(null);
         });
     }
+
     public GridPane getContainer() {
         return container;
     }
+
     private TreeItem<TreeItemModel> getActionTreeItem(ActionModel actionModel) {
         TreeItem<TreeItemModel> actionTreeItem = new TreeItem<>(actionModel);
 
@@ -84,6 +86,7 @@ public class DetailsScreenController implements Initializable {
 
         selectedComponentDetailsTreeView.getRoot().getChildren().addAll(Arrays.asList(ticks, probability, actions));
     }
+
     private void addActionProps(TreeItem<TreeItemModel> actionTreeItem, ActionModel actionModel) {
         if (actionModel instanceof IncreaseDecreaseModel) {
             IncreaseDecreaseModel increaseDecreaseModel = (IncreaseDecreaseModel) actionModel;
@@ -95,9 +98,7 @@ public class DetailsScreenController implements Initializable {
             property.getChildren().add(new TreeItem<>(new TreeItemModel(increaseDecreaseModel.getPropertyName())));
 
             actionTreeItem.getChildren().addAll(Arrays.asList(property, by));
-        }
-
-        else if (actionModel instanceof CalculationModel) {
+        } else if (actionModel instanceof CalculationModel) {
             CalculationModel calculationModel = (CalculationModel) actionModel;
 
             TreeItem<TreeItemModel> operationType = new TreeItem<>(new TreeItemModel("Operation type"));
@@ -110,9 +111,7 @@ public class DetailsScreenController implements Initializable {
             arg2.getChildren().add(new TreeItem<>(new TreeItemModel(calculationModel.getArg2())));
 
             actionTreeItem.getChildren().addAll(Arrays.asList(operationType, arg1, arg2));
-        }
-
-        else if (actionModel instanceof ProximityModel) {
+        } else if (actionModel instanceof ProximityModel) {
             ProximityModel proximityModel = (ProximityModel) actionModel;
             TreeItem<TreeItemModel> sourceEntity = new TreeItem<>(new TreeItemModel("Source entity"));
             TreeItem<TreeItemModel> targetEntity = new TreeItem<>(new TreeItemModel("Target Entity"));
@@ -125,9 +124,7 @@ public class DetailsScreenController implements Initializable {
             actionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(proximityModel.getActionsAmount()))));
 
             actionTreeItem.getChildren().addAll(Arrays.asList(sourceEntity, targetEntity, depth, actionsAmount));
-        }
-
-        else if (actionModel instanceof ReplaceModel) {
+        } else if (actionModel instanceof ReplaceModel) {
             ReplaceModel replaceModel = (ReplaceModel) actionModel;
 
             TreeItem<TreeItemModel> kill = new TreeItem<>(new TreeItemModel("Kill"));
@@ -139,9 +136,7 @@ public class DetailsScreenController implements Initializable {
             mode.getChildren().add(new TreeItem<>(new TreeItemModel(replaceModel.getMode())));
 
             actionTreeItem.getChildren().addAll(Arrays.asList(kill, create, mode));
-        }
-
-        else if (actionModel instanceof SetModel) {
+        } else if (actionModel instanceof SetModel) {
             SetModel setModel = (SetModel) actionModel;
 
             TreeItem<TreeItemModel> property = new TreeItem<>(new TreeItemModel("Property"));
@@ -151,9 +146,7 @@ public class DetailsScreenController implements Initializable {
             value.getChildren().add(new TreeItem<>(new TreeItemModel(setModel.getValue())));
 
             actionTreeItem.getChildren().addAll(Arrays.asList(property, value));
-        }
-
-        else if (actionModel instanceof SingleConditionModel) {
+        } else if (actionModel instanceof SingleConditionModel) {
             SingleConditionModel singleConditionModel = (SingleConditionModel) actionModel;
 
             TreeItem<TreeItemModel> property = new TreeItem<>(new TreeItemModel("Property"));
@@ -169,9 +162,7 @@ public class DetailsScreenController implements Initializable {
             elseActionsAmount.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(singleConditionModel.getElseActionsAmount()))));
 
             actionTreeItem.getChildren().addAll(Arrays.asList(property, operator, value, thenActionsAmount, elseActionsAmount));
-        }
-
-        else if (actionModel instanceof MultipleConditionModel) {
+        } else if (actionModel instanceof MultipleConditionModel) {
             MultipleConditionModel multipleConditionModel = (MultipleConditionModel) actionModel;
 
             TreeItem<TreeItemModel> thenActionsAmount = new TreeItem<>(new TreeItemModel("Then actions amount"));
@@ -187,6 +178,7 @@ public class DetailsScreenController implements Initializable {
             actionTreeItem.getChildren().addAll(Arrays.asList(logicalOperator, conditionsAmount, thenActionsAmount, elseActionsAmount));
         }
     }
+
     private void showEnvVarDetails(PropertyModel envVar) {
         selectedComponentDetailsTreeView.setRoot(new TreeItem<>(envVar));
 
@@ -203,6 +195,7 @@ public class DetailsScreenController implements Initializable {
             selectedComponentDetailsTreeView.getRoot().getChildren().add(range);
         }
     }
+
     private void showEntityDetails(EntityModel entityModel) {
         selectedComponentDetailsTreeView.setRoot(new TreeItem<>(entityModel));
 
@@ -246,6 +239,7 @@ public class DetailsScreenController implements Initializable {
         showTermination(world);
         showRules(world);
     }
+
     private void showEntities(WorldDTO world) {
         List<EntityModel> entities = GuiUtils.getEntities(world);
         TreeItem<TreeItemModel> entitiesTreeItem = new TreeItem<>(new EntitiesModel(entities));
@@ -257,17 +251,19 @@ public class DetailsScreenController implements Initializable {
 
         worldCategoriesTreeView.getRoot().getChildren().add(entitiesTreeItem);
     }
+
     private void showEnvironment(WorldDTO world) {
         List<PropertyModel> envVars = GuiUtils.getEnvironmentVars(world);
         TreeItem<TreeItemModel> environmentTreeItem = new TreeItem<>(new EnvironmentModel(envVars));
 
         envVars.forEach(property -> {
-           TreeItem<TreeItemModel> propertyTreeItem = new TreeItem<>(property);
-           environmentTreeItem.getChildren().add(propertyTreeItem);
+            TreeItem<TreeItemModel> propertyTreeItem = new TreeItem<>(property);
+            environmentTreeItem.getChildren().add(propertyTreeItem);
         });
 
         worldCategoriesTreeView.getRoot().getChildren().add(environmentTreeItem);
     }
+
     private void showGrid(WorldDTO world) {
         TreeItem<TreeItemModel> rows = new TreeItem<>(new TreeItemModel("Rows"));
         rows.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(world.getGridRows()))));
@@ -281,6 +277,7 @@ public class DetailsScreenController implements Initializable {
 
         worldCategoriesTreeView.getRoot().getChildren().add(gridTreeItem);
     }
+
     private void showTermination(WorldDTO world) {
         TreeItem<TreeItemModel> terminationTreeItem = new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.TERMINATION.name().toLowerCase())));
 
@@ -298,6 +295,7 @@ public class DetailsScreenController implements Initializable {
         worldCategoriesTreeView.getRoot().getChildren().add(terminationTreeItem);
 
     }
+
     private void showRules(WorldDTO world) {
         List<RuleModel> rules = GuiUtils.getRules(world);
         TreeItem<TreeItemModel> rulesTreeItem = new TreeItem<>(new RulesModel(rules));

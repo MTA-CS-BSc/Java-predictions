@@ -10,6 +10,7 @@ public class ProximityDTO extends ActionDTO {
     protected String targetEntity;
     protected String depth;
     protected int actionsAmount;
+
     public ProximityDTO(@JsonProperty("secondaryEntity") SecondaryEntityDTO secondaryEntity,
                         @JsonProperty("sourceEntity") String sourceEntity,
                         @JsonProperty("targetEntity") String targetEntity,
@@ -21,15 +22,19 @@ public class ProximityDTO extends ActionDTO {
         this.depth = depth;
         this.actionsAmount = actionsAmount;
     }
+
     public String getSourceEntity() {
         return sourceEntity;
     }
+
     public String getTargetEntity() {
         return targetEntity;
     }
+
     public String getDepth() {
         return depth;
     }
+
     public int getActionsAmount() {
         return actionsAmount;
     }

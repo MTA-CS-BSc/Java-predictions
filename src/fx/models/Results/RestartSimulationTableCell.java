@@ -2,9 +2,9 @@ package fx.models.Results;
 
 import dtos.SingleSimulationDTO;
 import fx.consts.FilePaths;
-import fx.views.SimulationsTable.SimulationsTableController;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
+import fx.views.SimulationsTable.SimulationsTableController;
 import helpers.modules.SingletonObjectMapper;
 import helpers.types.SimulationState;
 import javafx.geometry.Insets;
@@ -15,6 +15,7 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
     final Button restartButton;
     final StackPane paddedButton;
     final SimulationsTableController controller;
+
     public RestartSimulationTableCell(final TableView<SingleSimulationDTO> table, SimulationsTableController controller) {
         this.controller = controller;
         restartButton = new Button();
@@ -24,7 +25,8 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
 
         try {
             styleButton(restartButton, FilePaths.RESTART_SIMULATION_ICON_PATH);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
 
         restartButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
@@ -43,16 +45,17 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
         });
     }
 
-    /** places an add button in the row only if the row is not empty. */
-    @Override protected void updateItem(Boolean item, boolean empty) {
+    /**
+     * places an add button in the row only if the row is not empty.
+     */
+    @Override
+    protected void updateItem(Boolean item, boolean empty) {
         super.updateItem(item, empty);
         if (!empty) {
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             setGraphic(paddedButton);
             setDisable(getTableView().getItems().get(getIndex()).getSimulationState() != SimulationState.FINISHED);
-        }
-
-        else
+        } else
             setGraphic(null);
     }
 }

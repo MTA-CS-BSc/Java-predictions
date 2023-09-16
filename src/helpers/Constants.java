@@ -5,7 +5,6 @@ import javafx.util.Duration;
 
 
 public class Constants {
-    public static Gson GSON_UTIL = new Gson();
     public static final String REGEX_ONLY_ZEROES_AFTER_DOT = "^\\d+\\.0+$";
     public final static int MIN_RANGE = -999999999;
     public final static int MAX_RANGE = 999999999;
@@ -17,4 +16,5 @@ public class Constants {
     public final static Duration ANIMATION_DURATION = new javafx.util.Duration(2000);
     public final static int API_RESPONSE_OK = 200;
     public final static int API_REFETCH_INTERVAL_MILLIS = 1000;
+    public static Gson GSON_UTIL = new Gson();
 }

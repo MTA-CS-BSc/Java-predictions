@@ -56,7 +56,9 @@ public class PopulationTableController implements Initializable {
         });
     }
 
-    public void setSelectedSimulation(SingleSimulationDTO simulation) { selectedSimulation.setValue(simulation); }
+    public void setSelectedSimulation(SingleSimulationDTO simulation) {
+        selectedSimulation.setValue(simulation);
+    }
 
     public void addPopulationEditCommit() {
         if (Objects.isNull(selectedSimulation.getValue()))
@@ -77,12 +79,11 @@ public class PopulationTableController implements Initializable {
 
                     editedEntity.setPopulation(event.getOldValue());
                     populationTable.refresh();
-                }
-
-                else
+                } else
                     editedEntity.setPopulation(event.getNewValue());
 
-            } catch (Exception ignored) { }
+            } catch (Exception ignored) {
+            }
         });
     }
 

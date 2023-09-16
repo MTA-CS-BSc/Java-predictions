@@ -40,13 +40,12 @@ public class EntitiesAmountChartController implements Initializable {
             else if (!Objects.isNull(singleSimulationDTO) &&
                     singleSimulationDTO.getUuid().equals(t1.getUuid())) {
                 // Skip
-            }
-
-            else {
+            } else {
                 try {
                     ticksAxis.setUpperBound(t1.getTicks());
                     fillChart();
-                } catch (Exception ignored) { }
+                } catch (Exception ignored) {
+                }
             }
 
         });
@@ -55,13 +54,14 @@ public class EntitiesAmountChartController implements Initializable {
     private void fillChart() throws JsonProcessingException {
         Map<String, List<Integer>> entitiesAmountsPerTick = SingletonObjectMapper.objectMapper.readValue(
                 SingletonEngineAPI.api.getEntitiesAmountsPerTick(selectedSimulation.getValue().getUuid()).getData(),
-                new TypeReference<Map<String, List<Integer>>>() {}
+                new TypeReference<Map<String, List<Integer>>>() {
+                }
         );
 
         Platform.runLater(() -> entitiesAmountChart.getData().clear());
 
         entitiesAmountsPerTick.forEach((key, amountsListPerTick) -> {
-            XYChart.Series<Integer, Integer> series =  new XYChart.Series<>();
+            XYChart.Series<Integer, Integer> series = new XYChart.Series<>();
             series.setName(key);
 
             for (int i = 0; i < amountsListPerTick.size(); i++)

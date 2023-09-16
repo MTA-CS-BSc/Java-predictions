@@ -27,41 +27,41 @@ public abstract class ActionsPerformer {
 
             for (SingleEntity currentSecondary : secondaryEntities)
                 ActionsPerformer.handleAction(world, actToPerform, main, currentSecondary);
-        }
-
-        else
+        } else
             ActionsPerformer.handleAction(world, actToPerform, main, null);
     }
+
     public static void handleAction(World world, Action action, SingleEntity main, SingleEntity secondary) throws Exception {
         if (action instanceof IncreaseAction)
-            IncreasePerformer.performAction(world, (IncreaseAction)action, main, secondary);
+            IncreasePerformer.performAction(world, (IncreaseAction) action, main, secondary);
 
         else if (action instanceof DecreaseAction)
-            DecreasePerformer.performAction(world, (DecreaseAction)action, main, secondary);
+            DecreasePerformer.performAction(world, (DecreaseAction) action, main, secondary);
 
         else if (action instanceof CalculationAction)
-            CalculationPerformer.performAction(world, (CalculationAction)action, main, secondary);
+            CalculationPerformer.performAction(world, (CalculationAction) action, main, secondary);
 
         else if (action instanceof SetAction)
-            SetPerformer.performAction(world, (SetAction)action, main, secondary);
+            SetPerformer.performAction(world, (SetAction) action, main, secondary);
 
         else if (action instanceof ConditionAction)
-            ConditionPerformer.performAction(world, (ConditionAction)action, main, secondary);
+            ConditionPerformer.performAction(world, (ConditionAction) action, main, secondary);
 
         else if (action instanceof KillAction)
             KillReplaceSaver.storage.add(() -> {
-                KillPerformer.performAction(world, (KillAction)action, main, secondary);
+                KillPerformer.performAction(world, (KillAction) action, main, secondary);
             });
 
         else if (action instanceof ProximityAction)
-            ProximityPerformer.performAction(world, (ProximityAction)action, main, secondary);
+            ProximityPerformer.performAction(world, (ProximityAction) action, main, secondary);
 
         else if (action instanceof ReplaceAction)
             KillReplaceSaver.storage.add(() -> {
-                ReplacePerformer.performAction(world, (ReplaceAction)action, main);
+                ReplacePerformer.performAction(world, (ReplaceAction) action, main);
             });
 
     }
+
     public static void updateStableTimeToAllProps(World world) {
         world.getEntities().getEntitiesMap().values().forEach(entity -> {
             entity.getSingleEntities().forEach(singleEntity -> {
@@ -71,8 +71,9 @@ public abstract class ActionsPerformer {
             });
         });
     }
+
     public static void setPropertyValue(String actionType, String entityName,
-                                         Property property, String newValue) throws Exception {
+                                        Property property, String newValue) throws Exception {
         if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
             newValue = TypesUtils.removeExtraZeroes(newValue);
 
@@ -94,6 +95,7 @@ public abstract class ActionsPerformer {
         EngineLoggers.SIMULATION_LOGGER.info(String.format("Action [%s]: Entity [%s]: Property [%s]: value changed to [%s]",
                 actionType, entityName, property.getName(), newValue));
     }
+
     public static List<SingleEntity> chooseSecondaryEntities(World world, Action action) throws Exception {
         Condition condition = action.getSecondaryEntity().getSelection().getCondition();
         Entity secondaryEntity = Utils.findEntityByName(world, action.getSecondaryEntity().getEntityName());

@@ -23,6 +23,7 @@ public class SingleConditionDTO extends ConditionDTO {
         this.property = property;
         this.value = value;
     }
+
     public String getOperator() {
         return operator;
     }

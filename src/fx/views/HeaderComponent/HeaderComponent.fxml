@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Font?>
-
-<GridPane alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fx.views.HeaderComponent.HeaderComponentController">
+<GridPane xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" vgap="20.0" xmlns="http://javafx.com/javafx/8.0.171"
+          fx:controller="fx.views.HeaderComponent.HeaderComponentController">
     <HBox spacing="22.0" GridPane.rowIndex="1">
         <Button fx:id="loadXmlButton" mnemonicParsing="false" onAction="#handleLoadXml" text="Load XML"/>
         <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5"

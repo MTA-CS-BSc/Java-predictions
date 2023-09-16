@@ -1,9 +1,9 @@
 package engine.prototypes.implemented.actions;
 
-import helpers.types.CalculationTypes;
 import engine.prototypes.implemented.Divide;
 import engine.prototypes.implemented.Multiply;
 import engine.prototypes.jaxb.PRDAction;
+import helpers.types.CalculationTypes;
 
 import java.util.Objects;
 
@@ -44,14 +44,20 @@ public class CalculationAction extends Action {
             operationType = CalculationTypes.DIVIDE;
         }
     }
+
     public Multiply getMultiply() {
         return multiply;
     }
+
     public Divide getDivide() {
         return divide;
     }
+
     public String getResultPropertyName() {
         return resultPropertyName;
     }
-    public String getOperationType() { return operationType; }
+
+    public String getOperationType() {
+        return operationType;
+    }
 }

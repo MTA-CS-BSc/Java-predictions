@@ -12,7 +12,8 @@ import java.util.Objects;
 public class Termination implements Serializable {
     protected List<Object> stopConditions;
     protected boolean isStopByUser;
-    public Termination (PRDTermination termination) {
+
+    public Termination(PRDTermination termination) {
         stopConditions = new ArrayList<>();
 
         termination.getPRDBySecondOrPRDByTicks().forEach(stopCondition -> {
@@ -31,18 +32,23 @@ public class Termination implements Serializable {
 
         other.getStopConditions().forEach(stopCondition -> {
             if (stopCondition.getClass() == ByTicks.class)
-                stopConditions.add(new ByTicks((ByTicks)stopCondition));
+                stopConditions.add(new ByTicks((ByTicks) stopCondition));
 
             else if (stopCondition.getClass() == BySecond.class)
-                stopConditions.add(new BySecond((BySecond)stopCondition));
+                stopConditions.add(new BySecond((BySecond) stopCondition));
         });
 
         isStopByUser = other.isStopByUser();
     }
+
     public List<Object> getStopConditions() {
         return stopConditions;
     }
-    public boolean isStopByUser() { return isStopByUser; }
+
+    public boolean isStopByUser() {
+        return isStopByUser;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -52,10 +58,10 @@ public class Termination implements Serializable {
             sb.append("#####Stop Condition######\n");
 
             if (stopCondition.getClass() == ByTicks.class)
-                sb.append("Stop after [").append(((ByTicks)stopCondition).getCount()).append("] ticks\n");
+                sb.append("Stop after [").append(((ByTicks) stopCondition).getCount()).append("] ticks\n");
 
             else if (stopCondition.getClass() == BySecond.class)
-                sb.append("Stop after [").append(((BySecond)stopCondition).getCount()).append("] seconds\n");
+                sb.append("Stop after [").append(((BySecond) stopCondition).getCount()).append("] seconds\n");
         });
 
         if (isStopByUser) {

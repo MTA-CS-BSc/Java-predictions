@@ -6,8 +6,8 @@ import engine.modules.Utils;
 import engine.modules.ValidatorsUtils;
 import engine.prototypes.implemented.Property;
 import engine.prototypes.implemented.World;
-import helpers.loggers.BoolPropValues;
 import helpers.Constants;
+import helpers.loggers.BoolPropValues;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -25,12 +25,11 @@ public abstract class TypesUtils {
         try {
             Integer.parseInt(newStr);
             return true;
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
+
     public static boolean isFloat(String str) {
         try {
             if (isDecimal(str))
@@ -38,24 +37,27 @@ public abstract class TypesUtils {
 
             Float.parseFloat(str);
             return true;
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             return false;
         }
     }
+
     public static String formatDate(Date date) {
         return new SimpleDateFormat("dd-MM-yyyy | HH:mm:ss").format(date);
     }
+
     public static boolean isBoolean(String str) {
         return str.equalsIgnoreCase(BoolPropValues.TRUE) || str.equalsIgnoreCase(BoolPropValues.FALSE);
     }
+
     public static String removeExtraZeroes(String value) {
         return value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? value.split("\\.")[0] : value;
     }
+
     public static String getSystemFunctionType(String expression) {
         return expression.substring(0, expression.indexOf("("));
     }
+
     public static String getExpressionType(World world, String entityName, String expression) {
         Property expressionEntityProp = Utils.findAnyPropertyByName(world, entityName, expression);
 
@@ -75,9 +77,7 @@ public abstract class TypesUtils {
                     String evaluatePropName = systemFunctionValue.split("\\.")[1];
                     return Utils.findAnyPropertyByName(world, evaluateEntityName, evaluatePropName).getType();
             }
-        }
-
-        else if (!Objects.isNull(expressionEntityProp))
+        } else if (!Objects.isNull(expressionEntityProp))
             return expressionEntityProp.getType();
 
         else if (TypesUtils.isDecimal(expression))
@@ -91,6 +91,7 @@ public abstract class TypesUtils {
 
         return PropTypes.STRING;
     }
+
     public static boolean validateType(PropertyDTO property, String value) {
         //TODO: Check if should validate length & charset
         if (property.getType().equals(PropTypes.STRING))

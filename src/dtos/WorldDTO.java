@@ -27,6 +27,7 @@ public class WorldDTO {
         this.gridRows = gridRows;
         this.gridColumns = gridColumns;
     }
+
     public List<PropertyDTO> getEnvironment() {
         return environment;
     }
@@ -43,6 +44,11 @@ public class WorldDTO {
         return entities;
     }
 
-    public int getGridRows() { return gridRows; }
-    public int getGridColumns() { return gridColumns; }
+    public int getGridRows() {
+        return gridRows;
+    }
+
+    public int getGridColumns() {
+        return gridColumns;
+    }
 }
