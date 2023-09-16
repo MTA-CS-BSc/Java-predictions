@@ -145,8 +145,11 @@ public class HeaderComponentController implements Initializable {
                         response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
             }
 
-            tray.setAnimationType(AnimationType.FADE);
-            Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+            if (isAnimationsOn.getValue()) {
+                tray.setAnimationType(AnimationType.FADE);
+                Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+            }
+
             showSimulationDetailsScreen();
         } catch (Exception e) {
             Alerts.showAlert("XML was not loaded", "Validation error",
@@ -170,9 +173,11 @@ public class HeaderComponentController implements Initializable {
             highlightButtonText(detailsButton);
             detailsScreenController.handleShowCategoriesData();
         } else {
-            TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
-            tray.setAnimationType(AnimationType.FADE);
-            Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+            if (isAnimationsOn.getValue()) {
+                TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
+                tray.setAnimationType(AnimationType.FADE);
+                Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+            }
         }
     }
 
@@ -261,4 +266,6 @@ public class HeaderComponentController implements Initializable {
     public void setIsAnimationsOn(boolean isAnimationsOn) {
         this.isAnimationsOn.setValue(isAnimationsOn);
     }
+
+    public boolean isAnimationOn() { return isAnimationsOn.getValue(); }
 }
