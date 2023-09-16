@@ -81,6 +81,7 @@ public class PropertyStatsController implements Initializable {
             }
 
             hideAvgContainer();
+            Platform.runLater(() -> histogramChart.getData().clear());
         });
 
         propertyNamesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, propertyDTO, t1) -> {
