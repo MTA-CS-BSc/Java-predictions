@@ -16,7 +16,8 @@ import java.util.stream.Collectors;
 public abstract class Mappers {
     public static SingleSimulationDTO toDto(SingleSimulation simulation) {
         return new SingleSimulationDTO(simulation.getUUID(), TypesUtils.formatDate(simulation.getCreatedTimestamp()),
-                toDto(simulation.getWorld()), simulation.getSimulationState(), simulation.getTicks(), simulation.getElapsedTime());
+                toDto(simulation.getWorld()), simulation.getSimulationState(),
+                simulation.getTicks(), simulation.getElapsedTime(), simulation.getByStep());
     }
 
     public static WorldDTO toDto(World world) {
@@ -55,7 +56,12 @@ public abstract class Mappers {
                 .map(Mappers::toDto)
                 .collect(Collectors.toList());
 
-        return new EntityDTO(entity.getName(), entity.getPopulation(), entityProps);
+        List<Coordinate> takenSpots = entity.getSingleEntities()
+                .stream()
+                .map(SingleEntity::getCoordinate)
+                .collect(Collectors.toList());
+
+        return new EntityDTO(entity.getName(), entity.getPopulation(), entityProps, takenSpots);
     }
 
     public static PropertyDTO toDto(Property property) {

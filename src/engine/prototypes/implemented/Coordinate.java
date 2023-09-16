@@ -1,12 +1,17 @@
 package engine.prototypes.implemented;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Coordinate {
     protected int x;
     protected int y;
 
-    public Coordinate(int x, int y) {
+    @JsonCreator
+    public Coordinate(@JsonProperty("x") int x,
+                      @JsonProperty("y") int y) {
         this.x = x;
         this.y = y;
     }
