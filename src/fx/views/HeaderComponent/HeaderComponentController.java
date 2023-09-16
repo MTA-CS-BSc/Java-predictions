@@ -29,6 +29,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -57,9 +58,14 @@ public class HeaderComponentController implements Initializable {
     private ResultsScreenController resultsScreenController;
 
     private BooleanProperty isAnimationsOn;
+    private Tooltip queueMgmtTooltip;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        queueMgmtTooltip = new Tooltip();
+        queueMgmtTooltip.setShowDelay(new Duration(100));
+        queueMgmtButton.setTooltip(queueMgmtTooltip);
+
         isAnimationsOn = new SimpleBooleanProperty();
 
         detailsButton.disableProperty().bind(Bindings.isEmpty(currentXmlFilePath.textProperty()));
@@ -83,7 +89,7 @@ public class HeaderComponentController implements Initializable {
             String data = String.format("Pending: %d\nRunning: %d\nFinished: %d",
                     queueMgmtDTO.getPendingSimulations(), queueMgmtDTO.getRunningSimulations(), queueMgmtDTO.getFinishedSimulations());
 
-            queueMgmtButton.setTooltip(new Tooltip(data));
+            Platform.runLater(() -> queueMgmtTooltip.setText(data));
         } catch (Exception ignored) {
         }
 
