@@ -8,7 +8,7 @@ import java.util.concurrent.Executors;
 public class ThreadPoolManager {
     protected ExecutorService executor;
     protected int threadsAmount;
-    protected List<String> simulationIds;
+    protected List<String> recordedSimulationIds;
 
     public ThreadPoolManager() {
         this(1);
@@ -16,7 +16,7 @@ public class ThreadPoolManager {
 
     public ThreadPoolManager(int threadsAmount) {
         setThreadsAmount(threadsAmount);
-        simulationIds = new ArrayList<>();
+        recordedSimulationIds = new ArrayList<>();
     }
 
     public void executeTask(Runnable task) {
@@ -27,7 +27,7 @@ public class ThreadPoolManager {
     public void addRunSimulationToQueue(Runnable task, String uuid) {
         if (threadsAmount > 0) {
             executor.execute(task);
-            simulationIds.add(uuid);
+            recordedSimulationIds.add(uuid);
         }
     }
 
@@ -45,6 +45,6 @@ public class ThreadPoolManager {
     }
 
     public boolean isSimulationRecorded(String uuid) {
-        return simulationIds.contains(uuid);
+        return recordedSimulationIds.contains(uuid);
     }
 }
