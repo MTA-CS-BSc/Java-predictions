@@ -252,9 +252,8 @@ public class HeaderComponentController implements Initializable {
         Platform.runLater(() -> {
             highlightButtonText(resultsButton);
 
-            //TODO: Check if needed
-//            if (!newExecutionController.isSimulationEmpty())
-//                SingletonEngineAPI.api.removeUnusedSimulations();
+            if (!newExecutionController.isSimulationEmpty())
+                SingletonEngineAPI.api.removeUnusedSimulations();
         });
     }
 

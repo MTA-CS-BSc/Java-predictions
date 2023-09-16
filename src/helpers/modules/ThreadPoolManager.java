@@ -1,11 +1,14 @@
 package helpers.modules;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ThreadPoolManager {
     protected ExecutorService executor;
     protected int threadsAmount;
+    protected List<String> simulationIds;
 
     public ThreadPoolManager() {
         this(1);
@@ -13,11 +16,19 @@ public class ThreadPoolManager {
 
     public ThreadPoolManager(int threadsAmount) {
         setThreadsAmount(threadsAmount);
+        simulationIds = new ArrayList<>();
     }
 
     public void executeTask(Runnable task) {
         if (threadsAmount > 0)
             executor.execute(task);
+    }
+
+    public void addRunSimulationToQueue(Runnable task, String uuid) {
+        if (threadsAmount > 0) {
+            executor.execute(task);
+            simulationIds.add(uuid);
+        }
     }
 
     public void shutdown() {
@@ -31,5 +42,9 @@ public class ThreadPoolManager {
     public void setThreadsAmount(int value) {
         threadsAmount = value;
         executor = Executors.newFixedThreadPool(threadsAmount);
+    }
+
+    public boolean isSimulationRecorded(String uuid) {
+        return simulationIds.contains(uuid);
     }
 }

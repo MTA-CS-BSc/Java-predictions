@@ -86,7 +86,7 @@ public class EngineAPI {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
 
-        threadPoolManager.executeTask(() -> runSimulation(uuid));
+        threadPoolManager.addRunSimulationToQueue(() -> runSimulation(uuid), uuid);
 
         return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
     }
@@ -152,6 +152,7 @@ public class EngineAPI {
         List<SingleSimulation> toRemove = historyManager.getPastSimulations().values()
                 .stream()
                 .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED)
+                .filter(simulation -> !threadPoolManager.isSimulationRecorded(simulation.getUUID()))
                 .collect(Collectors.toList());
 
         toRemove.forEach(simulation -> removeSimulationIfUnused(simulation.getUUID()));
