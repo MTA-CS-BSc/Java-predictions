@@ -129,9 +129,10 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             });
 
             moveEntity(singleEntity);
-            KillReplaceSaver.storage.forEach(Runnable::run);
-            KillReplaceSaver.storage.clear();
         });
+
+        KillReplaceSaver.storage.forEach(Runnable::run);
+        KillReplaceSaver.storage.clear();
     }
 
     public void handleSingleTick() {
