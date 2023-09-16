@@ -39,8 +39,6 @@ public class WorldGridPaneController implements Initializable {
             if (container.isVisible()) {
                 SingletonThreadpoolManager.executeTask(() -> {
                     List<Pair<Coordinate, Rectangle>> spots = new ArrayList<>();
-                    container.getChildren().clear();
-                    container.setGridLinesVisible(true);
 
                     t1.getWorld().getEntities().forEach(entity -> {
                         entity.getTakenSpots().forEach(coordinate -> {
@@ -51,6 +49,8 @@ public class WorldGridPaneController implements Initializable {
                     });
 
                     Platform.runLater(() -> {
+                        container.getChildren().clear();
+
                         spots.forEach(pair -> {
                             container.add(pair.getValue(), pair.getKey().getX(), pair.getKey().getY());
                         });
