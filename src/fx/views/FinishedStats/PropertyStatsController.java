@@ -44,11 +44,6 @@ public class PropertyStatsController implements Initializable {
     private VBox avgContainer;
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
-    private void hideAvgContainer() {
-        avgContainer.setVisible(false);
-        averageLabel.setText("");
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedSimulation = new SimpleObjectProperty<>();
@@ -87,15 +82,7 @@ public class PropertyStatsController implements Initializable {
         propertyNamesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, propertyDTO, t1) -> {
             if (!Objects.isNull(t1)) {
                 String entityName = entityNamesComboBox.getSelectionModel().getSelectedItem().getName();
-                String propertyName = t1.getName();
-
-                showSelectedPropertyStats(entityName, propertyName);
-
-                if (PropTypes.NUMERIC_PROPS.contains(t1.getType()))
-                    showPropertyAverage(entityName, propertyName);
-
-                else
-                    hideAvgContainer();
+                showSelectedPropertyStats(entityName, t1);
             }
         });
     }
@@ -151,6 +138,11 @@ public class PropertyStatsController implements Initializable {
         };
     }
 
+    private void hideAvgContainer() {
+        avgContainer.setVisible(false);
+        averageLabel.setText("");
+    }
+
     public void toggleVisibility() {
         container.setVisible(!container.isVisible());
     }
@@ -168,28 +160,34 @@ public class PropertyStatsController implements Initializable {
         propertyNamesComboBox.getSelectionModel().select(null);
     }
 
-    private void showSelectedPropertyStats(String entityName, String propertyName) {
+    private void showSelectedPropertyStats(String entityName, PropertyDTO property) {
+        histogramChart.getData().clear();
+        hideAvgContainer();
+
         try {
             Map<String, Long> entitiesCountForProp = SingletonObjectMapper.objectMapper.readValue(
-                    SingletonEngineAPI.api.getEntitiesCountForProp(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
+                    SingletonEngineAPI.api.getEntitiesCountForProp(selectedSimulation.getValue().getUuid(), entityName, property.getName()).getData(),
                     new TypeReference<Map<String, Long>>() {
                     }
             );
-
-            histogramChart.getData().clear();
 
             if (entitiesCountForProp.isEmpty())
                 Platform.runLater(() -> Alerts.showAlert("", "No histogram",
                         String.format("All instances of %s died during the simulation", entityName),
                         Alert.AlertType.INFORMATION));
 
-            entitiesCountForProp.forEach((propertyValue, amount) -> {
-                Platform.runLater(() -> {
+            Platform.runLater(() -> {
+                entitiesCountForProp.forEach((propertyValue, amount) -> {
                     histogramChart.getData().add(new PieChart.Data(propertyValue, amount));
                     configureChartTooltips();
                 });
-            });
 
+                if (!entitiesCountForProp.isEmpty() && PropTypes.NUMERIC_PROPS.contains(property.getType()))
+                    showPropertyAverage(entityName, property.getName());
+
+                else
+                    hideAvgContainer();
+            });
 
         } catch (Exception ignored) {
         }
