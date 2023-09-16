@@ -5,29 +5,13 @@ import dtos.actions.*;
 import fx.models.DetailsScreen.*;
 import fx.models.DetailsScreen.actions.*;
 import javafx.animation.FadeTransition;
-import javafx.scene.control.TreeItem;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public abstract class GuiUtils {
-    public static TreeItem<String> findTreeItemByValue(TreeItem<String> root, String value) {
-        if (root.getValue().equalsIgnoreCase(value))
-            return root;
-
-        if (root.getChildren().size() == 0)
-            return null;
-
-        return root.getChildren()
-                .stream()
-                .map(child -> findTreeItemByValue(child, value))
-                .filter(element -> !Objects.isNull(element))
-                .findFirst().orElse(null);
-    }
-
     public static ActionModel createActionModel(ActionDTO action) {
         SecondaryEntityModel secondaryEntityModel = null;
         String entityName = action.getEntityName();
@@ -74,7 +58,6 @@ public abstract class GuiUtils {
         return null;
     }
 
-
     public static void fadeInAnimation(Pane root) {
         FadeTransition fadeIn = new FadeTransition(Duration.millis(1800), root);
         fadeIn.setFromValue(0.0);
@@ -92,7 +75,6 @@ public abstract class GuiUtils {
         fadeOut.setOnFinished(event -> root.setVisible(false));
         fadeOut.play();
     }
-
 
     public static List<EntityModel> getEntities(WorldDTO world) {
         return world.getEntities().stream()
