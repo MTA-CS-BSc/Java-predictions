@@ -184,6 +184,7 @@ public class PropertyStatsController implements Initializable {
                 });
 
                 Platform.runLater(() -> {
+                    histogramChart.getData().clear();
                     histogramChart.getData().addAll(data);
 
                     if (!entitiesCountForProp.isEmpty() && PropTypes.NUMERIC_PROPS.contains(property.getType()))
