@@ -2,6 +2,7 @@ package fx.views.Stats;
 
 import dtos.SingleSimulationDTO;
 import fx.views.FinishedStats.FinishedStatsController;
+import fx.views.WorldGridPane.WorldGridPaneController;
 import helpers.types.SimulationState;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,6 +17,9 @@ public class StatsController implements Initializable {
     @FXML
     private FinishedStatsController finishedStatsController;
 
+    @FXML
+    private WorldGridPaneController worldGridPaneController;
+
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
     @Override
@@ -24,6 +28,7 @@ public class StatsController implements Initializable {
 
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
             finishedStatsController.setSelectedSimulation(t1.getSimulationState() == SimulationState.FINISHED ? t1 : null);
+            worldGridPaneController.setSelectedSimulation(t1.getSimulationState() == SimulationState.PAUSED ? t1 : null);
         });
     }
 

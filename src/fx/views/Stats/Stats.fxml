@@ -10,4 +10,5 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="fx.views.Stats.StatsController">
     <fx:include source="../FinishedStats/FinishedStats.fxml" fx:id="finishedStats"/>
+    <fx:include source="../WorldGridPane/WorldGridPane.fxml" fx:id="worldGridPane"/>
 </StackPane>
