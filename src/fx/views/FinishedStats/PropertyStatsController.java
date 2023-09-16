@@ -74,8 +74,10 @@ public class PropertyStatsController implements Initializable {
                 propertyNamesComboBox.getItems().addAll(t1.getProperties());
             }
 
-            hideAvgContainer();
-            Platform.runLater(() -> histogramChart.getData().clear());
+            Platform.runLater(() -> {
+                hideAvgContainer();
+                histogramChart.getData().clear();
+            });
         });
 
         propertyNamesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, propertyDTO, t1) -> {
@@ -180,12 +182,12 @@ public class PropertyStatsController implements Initializable {
 
                 entitiesCountForProp.forEach((propertyValue, amount) -> {
                     data.add(new PieChart.Data(propertyValue, amount));
-                    configureChartTooltips();
                 });
 
                 Platform.runLater(() -> {
                     histogramChart.getData().clear();
                     histogramChart.getData().addAll(data);
+                    addChartTooltips();
 
                     if (!entitiesCountForProp.isEmpty() && PropTypes.NUMERIC_PROPS.contains(property.getType()))
                         showPropertyAverage(entityName, property.getName());
@@ -199,7 +201,7 @@ public class PropertyStatsController implements Initializable {
         }
     }
 
-    private void configureChartTooltips() {
+    private void addChartTooltips() {
         for (PieChart.Data data : histogramChart.getData()) {
             Tooltip tooltip = new Tooltip(String.valueOf((int) data.getPieValue()));
             Tooltip.install(data.getNode(), tooltip);
