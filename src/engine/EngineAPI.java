@@ -400,25 +400,16 @@ public class EngineAPI {
         if (Objects.isNull(simulation))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
-        OptionalDouble consistency = simulation.getWorldStatesByTicks()
+        int sumAllStable = simulation.getWorldStatesByTicks()
                 .stream()
-                .mapToDouble(worldState -> {
-                    return worldState.getEntitiesMap().values()
+                .mapToInt(worldState -> {
+                    return worldState.getEntitiesMap().get(entityName).getSingleEntities()
                             .stream()
-                            .mapToDouble(entity -> {
-                                return entity.getSingleEntities()
-                                        .stream()
-                                        .mapToInt(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getStableTime())
-                                        .average().getAsDouble();
-                            })
-                            .average().getAsDouble();
-                })
-                .average();
+                            .mapToInt(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getStableTime())
+                            .sum();
+                }).sum();
 
-        if (!consistency.isPresent())
-            return new ResponseDTO(500, -1, "Unknown");
-
-        return new ResponseDTO(200, consistency.getAsDouble());
+        return new ResponseDTO(200, (double)sumAllStable / (simulation.getOverallPopulation() * simulation.getTicks()));
     }
     //#endregion
 }
