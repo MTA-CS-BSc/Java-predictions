@@ -4,7 +4,6 @@ import dtos.EntityDTO;
 import dtos.SingleSimulationDTO;
 import engine.modules.RandomGenerator;
 import engine.prototypes.implemented.Coordinate;
-import engine.simulation.ByStep;
 import fx.modules.SingletonThreadpoolManager;
 import helpers.types.SimulationState;
 import javafx.application.Platform;
@@ -35,7 +34,8 @@ public class WorldGridPaneController implements Initializable {
         container.setVisible(false);
 
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
-            container.setVisible(!Objects.isNull(t1) && t1.getSimulationState() == SimulationState.PAUSED && t1.getByStep() != ByStep.NOT_BY_STEP);
+            //TODO: Check if should by != ByStep.NOT_BY_STEP
+            container.setVisible(!Objects.isNull(t1) && t1.getSimulationState() == SimulationState.PAUSED);
             container.getRowConstraints().clear();
             container.getColumnConstraints().clear();
             container.setGridLinesVisible(true);
