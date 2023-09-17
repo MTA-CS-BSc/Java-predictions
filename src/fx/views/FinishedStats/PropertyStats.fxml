@@ -21,9 +21,16 @@
     <HBox alignment="CENTER">
         <PieChart fx:id="histogramChart"/>
         <Region/>
-        <VBox alignment="CENTER" fx:id="avgContainer" spacing="5">
-            <Label text="Average:"/>
-            <Label fx:id="averageLabel"/>
-        </VBox>
+        <HBox fx:id="avgConsistencyContainer" alignment="CENTER" spacing="25">
+            <VBox alignment="CENTER_LEFT" fx:id="consistencyContainer" spacing="5">
+                <Label text="Consistency: "/>
+                <Label fx:id="consistencyLabel"/>
+            </VBox>
+
+            <VBox alignment="CENTER_RIGHT" fx:id="avgContainer" spacing="5">
+                <Label text="Average:"/>
+                <Label fx:id="averageLabel"/>
+            </VBox>
+        </HBox>
     </HBox>
 </VBox>

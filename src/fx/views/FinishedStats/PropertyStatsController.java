@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
@@ -42,6 +43,16 @@ public class PropertyStatsController implements Initializable {
 
     @FXML
     private VBox avgContainer;
+
+    @FXML
+    private HBox avgConsistencyContainer;
+
+    @FXML
+    private VBox consistencyContainer;
+
+    @FXML
+    private Label consistencyLabel;
+
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
     @Override
@@ -49,7 +60,7 @@ public class PropertyStatsController implements Initializable {
         selectedSimulation = new SimpleObjectProperty<>();
         container.setVisible(false);
         propertyNamesComboBox.setDisable(true);
-        hideAvgContainer();
+        avgConsistencyContainer.setVisible(false);
 
         entityNamesComboBox.setCellFactory(getEntityCellFactory());
         propertyNamesComboBox.setCellFactory(getPropertyCellFactory());
@@ -75,7 +86,7 @@ public class PropertyStatsController implements Initializable {
                 propertyNamesComboBox.getItems().addAll(t1.getProperties());
             }
 
-            hideAvgContainer();
+            avgConsistencyContainer.setVisible(false);
             Platform.runLater(() -> histogramChart.getData().clear());
         });
 
@@ -92,12 +103,21 @@ public class PropertyStatsController implements Initializable {
             double average = SingletonObjectMapper.objectMapper.readValue(
                     SingletonEngineAPI.api.getPropertyAverage(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
                     Double.class);
-            averageLabel.setText(String.valueOf(average));
+            averageLabel.setText(String.format("%.5f", average));
             avgContainer.setVisible(true);
         } catch (Exception ignored) {
         }
+    }
 
-
+    private void showPropertyConsistency(String entityName, String propertyName) {
+        try {
+            double average = SingletonObjectMapper.objectMapper.readValue(
+                    SingletonEngineAPI.api.getPropertyConsistency(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
+                    Double.class);
+            consistencyLabel.setText(String.valueOf(average));
+            consistencyContainer.setVisible(true);
+        } catch (Exception ignored) {
+        }
     }
 
     private Callback<ListView<EntityDTO>, ListCell<EntityDTO>> getEntityCellFactory() {
@@ -143,6 +163,11 @@ public class PropertyStatsController implements Initializable {
         averageLabel.setText("");
     }
 
+    private void hideConsistencyContainer() {
+        consistencyContainer.setVisible(false);
+        consistencyLabel.setText("");
+    }
+
     public void toggleVisibility() {
         container.setVisible(!container.isVisible());
     }
@@ -162,7 +187,7 @@ public class PropertyStatsController implements Initializable {
 
     private void showSelectedPropertyStats(String entityName, PropertyDTO property) {
         histogramChart.getData().clear();
-        hideAvgContainer();
+        avgConsistencyContainer.setVisible(true);
 
         try {
             Map<String, Long> entitiesCountForProp = SingletonObjectMapper.objectMapper.readValue(
@@ -182,11 +207,19 @@ public class PropertyStatsController implements Initializable {
                     configureChartTooltips();
                 });
 
-                if (!entitiesCountForProp.isEmpty() && PropTypes.NUMERIC_PROPS.contains(property.getType()))
-                    showPropertyAverage(entityName, property.getName());
+                if (!entitiesCountForProp.isEmpty()) {
+                    if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
+                        showPropertyAverage(entityName, property.getName());
+
+                    else
+                        hideAvgContainer();
+
+                    showPropertyConsistency(entityName, property.getName());
+                }
 
                 else
-                    hideAvgContainer();
+                    avgConsistencyContainer.setVisible(false);
+
             });
 
         } catch (Exception ignored) {
