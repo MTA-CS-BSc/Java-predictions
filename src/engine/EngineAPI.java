@@ -393,5 +393,43 @@ public class EngineAPI {
         historyManager.getPastSimulation(uuid).setByStep(byStep);
         return new ResponseDTO(200, "");
     }
+
+    public ResponseDTO getPropertyConsistency(String uuid, String entityName, String propertyName) {
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        if (Objects.isNull(simulation))
+            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+
+        OptionalDouble consistency = simulation.getWorldStatesByTicks()
+                .stream()
+                .mapToDouble(worldState -> {
+                    OptionalDouble worldStateConsistency = worldState.getEntitiesMap().values()
+                            .stream()
+                            .mapToDouble(entity -> {
+                                OptionalDouble singleEntitiesAvg = entity.getSingleEntities()
+                                        .stream()
+                                        .mapToInt(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getStableTime())
+                                        .average();
+
+                                //TODO: check
+                                if (!singleEntitiesAvg.isPresent())
+                                    return -1;
+
+                                return singleEntitiesAvg.getAsDouble();
+                            })
+                            .average();
+
+                    if (!worldStateConsistency.isPresent())
+                        return -1;
+
+                    return worldStateConsistency.getAsDouble();
+                })
+                .average();
+
+        if (!consistency.isPresent())
+            return new ResponseDTO(500, -1, "Unknown");
+
+        return new ResponseDTO(200, consistency);
+    }
     //#endregion
 }

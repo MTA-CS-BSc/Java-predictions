@@ -67,4 +67,8 @@ public abstract class SingleSimulationLog implements Serializable {
     public WorldState popWorldState() {
         return worldStatesByTicks.removeLast();
     }
+
+    public LinkedList<WorldState> getWorldStatesByTicks() {
+        return worldStatesByTicks;
+    }
 }
