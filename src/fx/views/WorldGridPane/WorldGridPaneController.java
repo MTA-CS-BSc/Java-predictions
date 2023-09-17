@@ -1,6 +1,8 @@
 package fx.views.WorldGridPane;
 
+import dtos.EntityDTO;
 import dtos.SingleSimulationDTO;
+import engine.modules.RandomGenerator;
 import engine.prototypes.implemented.Coordinate;
 import engine.simulation.ByStep;
 import fx.modules.SingletonThreadpoolManager;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class WorldGridPaneController implements Initializable {
     @FXML
@@ -35,18 +38,36 @@ public class WorldGridPaneController implements Initializable {
             container.setVisible(!Objects.isNull(t1) && t1.getSimulationState() == SimulationState.PAUSED && t1.getByStep() != ByStep.NOT_BY_STEP);
             container.getRowConstraints().clear();
             container.getColumnConstraints().clear();
+            container.setGridLinesVisible(true);
 
             if (container.isVisible()) {
                 SingletonThreadpoolManager.executeTask(() -> {
                     List<Pair<Coordinate, Rectangle>> spots = new ArrayList<>();
+                    List<EntityDTO> entities = t1.getWorld().getEntities();
+                    List<Color> randomColors = RandomGenerator.generateDistinctColors(entities.size());
 
-                    t1.getWorld().getEntities().forEach(entity -> {
-                        entity.getTakenSpots().forEach(coordinate -> {
+                    for (int i = 0; i < entities.size(); i++) {
+                        EntityDTO entity = t1.getWorld().getEntities().get(i);
+
+                        for (Coordinate coordinate : entity.getTakenSpots()) {
                             Rectangle rectangle = new Rectangle(10, 10);
-                            rectangle.setFill(Color.BLUE);
+                            rectangle.setFill(randomColors.get(i));
                             spots.add(new Pair<>(coordinate, rectangle));
-                        });
-                    });
+                        }
+                    }
+
+                    List<Coordinate> taken = spots.stream().map(Pair::getKey).collect(Collectors.toList());
+
+                    for (int i = 0; i < t1.getWorld().getGridRows(); i++) {
+                        for (int j = 0; j < t1.getWorld().getGridColumns(); j++) {
+                            Coordinate coordinate = new Coordinate(i, j);
+                            if (!taken.contains(coordinate)) {
+                                Rectangle rectangle = new Rectangle(10, 10);
+                                rectangle.setFill(Color.GREY);
+                                spots.add(new Pair<>(coordinate, rectangle));
+                            }
+                        }
+                    }
 
                     Platform.runLater(() -> {
                         container.getChildren().clear();
