@@ -403,33 +403,22 @@ public class EngineAPI {
         OptionalDouble consistency = simulation.getWorldStatesByTicks()
                 .stream()
                 .mapToDouble(worldState -> {
-                    OptionalDouble worldStateConsistency = worldState.getEntitiesMap().values()
+                    return worldState.getEntitiesMap().values()
                             .stream()
                             .mapToDouble(entity -> {
-                                OptionalDouble singleEntitiesAvg = entity.getSingleEntities()
+                                return entity.getSingleEntities()
                                         .stream()
                                         .mapToInt(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getStableTime())
-                                        .average();
-
-                                //TODO: check
-                                if (!singleEntitiesAvg.isPresent())
-                                    return -1;
-
-                                return singleEntitiesAvg.getAsDouble();
+                                        .average().getAsDouble();
                             })
-                            .average();
-
-                    if (!worldStateConsistency.isPresent())
-                        return -1;
-
-                    return worldStateConsistency.getAsDouble();
+                            .average().getAsDouble();
                 })
                 .average();
 
         if (!consistency.isPresent())
             return new ResponseDTO(500, -1, "Unknown");
 
-        return new ResponseDTO(200, consistency);
+        return new ResponseDTO(200, consistency.getAsDouble());
     }
     //#endregion
 }
