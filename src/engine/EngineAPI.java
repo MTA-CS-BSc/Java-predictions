@@ -35,7 +35,7 @@ public class EngineAPI {
     }
 
     private void configureLoggers() {
-        EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
+//        EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
         EngineLoggers.API_LOGGER.setLevel(Level.OFF);
 
         EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
@@ -295,11 +295,11 @@ public class EngineAPI {
                         uuid, foundProp.getName()));
             }
 
-            if (!Utils.validateValueInRange(prop, val))
-                return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
-
             else if (!TypesUtils.validateType(prop, val))
                 return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Incorrect type");
+
+            else if (!Utils.validateValueInRange(prop, val))
+                return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
 
             if (PropTypes.NUMERIC_PROPS.contains(foundProp.getType()))
                 val = TypesUtils.removeExtraZeroes(val);
@@ -400,16 +400,19 @@ public class EngineAPI {
         if (Objects.isNull(simulation))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
-        int sumAllStable = simulation.getWorldStatesByTicks()
+        double avgAmountOfChanges = simulation.getWorldStatesByTicks()
                 .stream()
                 .mapToInt(worldState -> {
-                    return worldState.getEntitiesMap().get(entityName).getSingleEntities()
+                    return Math.toIntExact(worldState.getEntitiesMap().get(entityName).getSingleEntities()
                             .stream()
-                            .mapToInt(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getStableTime())
-                            .sum();
-                }).sum();
+                            .filter(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getStableTime() == 0)
+                            .count());
+                })
+                .average().orElse(0.0);
 
-        return new ResponseDTO(200, (double)sumAllStable / (simulation.getOverallPopulation() * simulation.getTicks()));
+        int amountOfEntities = simulation.getStartWorldState().getEntitiesMap().get(entityName).getSingleEntities().size();
+        double returnValue = (float)simulation.getTicks() / avgAmountOfChanges * amountOfEntities;
+        return new ResponseDTO(200, returnValue);
     }
     //#endregion
 }
