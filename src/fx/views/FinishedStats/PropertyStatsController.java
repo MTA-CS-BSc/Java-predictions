@@ -111,10 +111,10 @@ public class PropertyStatsController implements Initializable {
 
     private void showPropertyConsistency(String entityName, String propertyName) {
         try {
-            double average = SingletonObjectMapper.objectMapper.readValue(
+            double consistency = SingletonObjectMapper.objectMapper.readValue(
                     SingletonEngineAPI.api.getPropertyConsistency(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
                     Double.class);
-            consistencyLabel.setText(String.valueOf(average));
+            consistencyLabel.setText(String.format("%.3f", consistency));
             consistencyContainer.setVisible(true);
         } catch (Exception ignored) {
         }
