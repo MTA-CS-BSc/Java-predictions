@@ -95,11 +95,6 @@ public class Property implements Serializable {
         this.stableTime = stableTime;
     }
 
-    public List<Long> getChangesTicks() {
-        return changesTicks;
-    }
-
-
     public double getConsistency(long simulationTicks) {
         double res = 0.0;
 
