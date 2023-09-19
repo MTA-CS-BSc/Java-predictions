@@ -35,7 +35,7 @@ public class EngineAPI {
     }
 
     private void configureLoggers() {
-//        EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
+        EngineLoggers.SIMULATION_LOGGER.setLevel(Level.OFF);
         EngineLoggers.API_LOGGER.setLevel(Level.OFF);
 
         EngineLoggers.formatLogger(EngineLoggers.XML_ERRORS_LOGGER);
