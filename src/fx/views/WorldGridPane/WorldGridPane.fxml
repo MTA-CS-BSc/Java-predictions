@@ -7,5 +7,5 @@
       fx:controller="fx.views.WorldGridPane.WorldGridPaneController"
       fx:id="container" spacing="20">
     <GridPane fx:id="grid" gridLinesVisible="true"/>
-    <GridPane fx:id="legend"/>
+    <GridPane hgap="5" vgap="5" fx:id="legend"/>
 </HBox>
