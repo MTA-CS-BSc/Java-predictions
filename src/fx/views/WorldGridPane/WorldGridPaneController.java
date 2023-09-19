@@ -11,7 +11,9 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
@@ -25,7 +27,13 @@ import java.util.stream.Collectors;
 
 public class WorldGridPaneController implements Initializable {
     @FXML
-    private GridPane container;
+    private HBox container;
+
+    @FXML
+    private GridPane grid;
+
+    @FXML
+    private GridPane legend;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
     @Override
@@ -34,21 +42,21 @@ public class WorldGridPaneController implements Initializable {
         container.setVisible(false);
 
         selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
-            //TODO: Check if should by != ByStep.NOT_BY_STEP
             container.setVisible(!Objects.isNull(t1) && t1.getSimulationState() == SimulationState.PAUSED);
-            container.getRowConstraints().clear();
-            container.getColumnConstraints().clear();
-            container.setGridLinesVisible(true);
 
-            if (container.isVisible()) {
+            if (container.isVisible() && (Objects.isNull(singleSimulationDTO)
+                                            || !singleSimulationDTO.getUuid().equals(t1.getUuid())
+                                            || singleSimulationDTO.getTicks() != t1.getTicks())) {
                 SingletonThreadpoolManager.executeTask(() -> {
                     List<Pair<Coordinate, Rectangle>> spots = new ArrayList<>();
+                    List<Pair<String, Color>> legendItems = new ArrayList<>();
                     List<EntityDTO> entities = t1.getWorld().getEntities();
                     List<Color> randomColors = RandomGenerator.generateDistinctColors(entities.size());
+                    List<Color> legendColors = RandomGenerator.generateDistinctColors(entities.size());
 
                     for (int i = 0; i < entities.size(); i++) {
                         EntityDTO entity = t1.getWorld().getEntities().get(i);
-
+                        legendItems.add(new Pair<>(entity.getName(), legendColors.get(i)));
                         for (Coordinate coordinate : entity.getTakenSpots()) {
                             Rectangle rectangle = new Rectangle(10, 10);
                             rectangle.setFill(randomColors.get(i));
@@ -70,20 +78,29 @@ public class WorldGridPaneController implements Initializable {
                     }
 
                     Platform.runLater(() -> {
-                        container.getChildren().clear();
+                        grid.getChildren().clear();
+                        legend.getChildren().clear();
+
+                        for (int i = 0; i < legendItems.size(); i++) {
+                            Pair<String, Color> pair = legendItems.get(i);
+                            Label entityNameLabel = new Label(pair.getKey());
+                            Rectangle rectangle = new Rectangle(5, 5);
+                            rectangle.setFill(pair.getValue());
+
+                            legend.add(rectangle, 0, i);
+                            legend.add(entityNameLabel, 1, i);
+                        }
 
                         spots.forEach(pair -> {
-                            container.add(pair.getValue(), pair.getKey().getX(), pair.getKey().getY());
+                            grid.add(pair.getValue(), pair.getKey().getX(), pair.getKey().getY());
                         });
                     });
-
-                    //TODO: Fix alignment & add random colors to entities
                 });
             }
         });
     }
 
-    public GridPane getContainer() { return container; }
+    public GridPane getGrid() { return grid; }
 
     public void setSelectedSimulation(SingleSimulationDTO simulation) {
         selectedSimulation.setValue(simulation);
