@@ -400,18 +400,12 @@ public class EngineAPI {
         if (Objects.isNull(simulation))
             return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
-        double avgAmountOfChanges = simulation.getWorldStatesByTicks()
-                .stream()
-                .mapToInt(worldState -> {
-                    return Math.toIntExact(worldState.getEntitiesMap().get(entityName).getSingleEntities()
-                            .stream()
-                            .filter(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getStableTime() == 0)
-                            .count());
-                })
-                .average().orElse(0.0);
+        double returnValue = simulation.getLastWorldState().getEntitiesMap().get(entityName).getSingleEntities()
+                .stream().mapToDouble(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getConsistency(simulation.getTicks()))
+                .average().orElse(simulation.getTicks());
 
-        int amountOfEntities = simulation.getStartWorldState().getEntitiesMap().get(entityName).getSingleEntities().size();
-        double returnValue = (float)simulation.getTicks() / avgAmountOfChanges * amountOfEntities;
+
+
         return new ResponseDTO(200, returnValue);
     }
     //#endregion

@@ -7,6 +7,8 @@ import helpers.Constants;
 import helpers.types.PropTypes;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Property implements Serializable {
@@ -15,8 +17,10 @@ public class Property implements Serializable {
     protected Range range;
     protected Value value;
     protected String type;
+    protected List<Long> changesTicks;
 
     public Property(PRDProperty property) {
+        changesTicks = new ArrayList<>();
         name = property.getPRDName();
         type = property.getType();
         value = new Value(property.getPRDValue());
@@ -26,6 +30,7 @@ public class Property implements Serializable {
     }
 
     public Property(PRDEnvProperty envProperty) {
+        changesTicks = new ArrayList<>();
         name = envProperty.getPRDName();
         type = envProperty.getType();
         value = new Value(new PRDValue());
@@ -36,12 +41,18 @@ public class Property implements Serializable {
     }
 
     public Property(Property other) {
+        changesTicks = new ArrayList<>();
         name = other.getName();
         type = other.getType();
+        stableTime = 0;
         value = new Value(other.getValue());
 
         if (PropTypes.NUMERIC_PROPS.contains(other.getType()))
             range = new Range(other.getRange());
+    }
+
+    public void addChangeTick(long tick) {
+        changesTicks.add(tick);
     }
 
     public String getName() {
@@ -82,6 +93,26 @@ public class Property implements Serializable {
 
     public void setStableTime(int stableTime) {
         this.stableTime = stableTime;
+    }
+
+    public List<Long> getChangesTicks() {
+        return changesTicks;
+    }
+
+
+    public double getConsistency(long simulationTicks) {
+        double res = 0.0;
+
+        if (changesTicks.size() == 0)
+            return simulationTicks;
+
+        for (int i = 0; i < changesTicks.size() - 1; i++)
+            res += changesTicks.get(i + 1) - changesTicks.get(i);
+
+        res += simulationTicks - changesTicks.get(changesTicks.size() - 1);
+        res += changesTicks.get(0);
+
+        return res / changesTicks.size();
     }
 
     public boolean hasNoRange() {

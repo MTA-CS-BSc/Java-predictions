@@ -124,4 +124,15 @@ public abstract class ActionsPerformer {
 
         return Collections.emptyList();
     }
+
+    public static void updateChangesTickToAll(World world, long ticks) {
+        world.getEntities().getEntitiesMap().values()
+                .forEach(entity -> {
+                    entity.getSingleEntities().forEach(singleEntity -> {
+                        singleEntity.getProperties().getPropsMap().values()
+                                .stream().filter(property -> property.getStableTime() == 0)
+                                .forEach(updatedProperty -> updatedProperty.addChangeTick(ticks));
+                    });
+                });
+    }
 }

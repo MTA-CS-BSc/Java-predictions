@@ -140,6 +140,7 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             ticks++;
             ActionsPerformer.updateStableTimeToAllProps(world);
             performAllPossibleActions();
+            ActionsPerformer.updateChangesTickToAll(world, ticks);
             pushWorldState(world);
         } else {
             if (ticks == 0)
