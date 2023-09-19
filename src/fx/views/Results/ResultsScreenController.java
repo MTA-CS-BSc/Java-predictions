@@ -1,11 +1,10 @@
 package fx.views.Results;
 
 import dtos.SingleSimulationDTO;
-import fx.views.FinishedStats.FinishedStatsController;
 import fx.views.HeaderComponent.HeaderComponentController;
 import fx.views.PopulationTable.PopulationTableController;
 import fx.views.SimulationsTable.SimulationsTableController;
-import helpers.types.SimulationState;
+import fx.views.Stats.StatsController;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -25,10 +24,11 @@ public class ResultsScreenController implements Initializable {
     @FXML
     private SimulationsTableController simulationsTableController;
 
-    @FXML
-    private FinishedStatsController finishedStatsController;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
+
+    @FXML
+    private StatsController statsController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -36,7 +36,7 @@ public class ResultsScreenController implements Initializable {
 
         simulationsTableController.selectedSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
             populationTableController.setSelectedSimulation(t1);
-            finishedStatsController.setSelectedSimulation(t1.getSimulationState() == SimulationState.FINISHED ? t1 : null);
+            statsController.setSelectedSimulation(t1);
         });
     }
 

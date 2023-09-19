@@ -2,6 +2,7 @@ package dtos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import engine.simulation.ByStep;
 import helpers.types.SimulationState;
 
 public class SingleSimulationDTO {
@@ -11,6 +12,7 @@ public class SingleSimulationDTO {
     protected final SimulationState simulationState;
     protected final long ticks;
     protected final long elapsedTimeMillis;
+    protected final ByStep byStep;
 
     @JsonCreator
     public SingleSimulationDTO(@JsonProperty("uuid") String uuid,
@@ -18,13 +20,15 @@ public class SingleSimulationDTO {
                                @JsonProperty("world") WorldDTO world,
                                @JsonProperty("state") SimulationState state,
                                @JsonProperty("ticks") long ticks,
-                               @JsonProperty("elapsedTime") long elapsedTimeMillis) {
+                               @JsonProperty("elapsedTime") long elapsedTimeMillis,
+                               @JsonProperty("byStep") ByStep byStep) {
         this.uuid = uuid;
         this.createdTimestamp = createdTimestamp;
         this.world = world;
         this.simulationState = state;
         this.ticks = ticks;
         this.elapsedTimeMillis = elapsedTimeMillis;
+        this.byStep = byStep;
     }
 
     public SingleSimulationDTO(WorldDTO world) {
@@ -34,6 +38,7 @@ public class SingleSimulationDTO {
         this.simulationState = SimulationState.CREATED;
         this.ticks = 0;
         this.elapsedTimeMillis = 0;
+        this.byStep = ByStep.NOT_BY_STEP;
     }
 
     public String getUuid() {
@@ -59,4 +64,6 @@ public class SingleSimulationDTO {
     public long getElapsedTimeMillis() {
         return elapsedTimeMillis;
     }
+
+    public ByStep getByStep() { return byStep; }
 }

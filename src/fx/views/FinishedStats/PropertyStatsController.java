@@ -6,6 +6,7 @@ import dtos.PropertyDTO;
 import dtos.SingleSimulationDTO;
 import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
+import fx.modules.SingletonThreadpoolManager;
 import helpers.modules.SingletonObjectMapper;
 import helpers.types.PropTypes;
 import helpers.types.SimulationState;
@@ -21,9 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 
 import java.net.URL;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class PropertyStatsController implements Initializable {
     @FXML
@@ -86,8 +85,10 @@ public class PropertyStatsController implements Initializable {
                 propertyNamesComboBox.getItems().addAll(t1.getProperties());
             }
 
-            avgConsistencyContainer.setVisible(false);
-            Platform.runLater(() -> histogramChart.getData().clear());
+            Platform.runLater(() -> {
+                avgConsistencyContainer.setVisible(false);
+                histogramChart.getData().clear();
+            });
         });
 
         propertyNamesComboBox.getSelectionModel().selectedItemProperty().addListener((observableValue, propertyDTO, t1) -> {
@@ -201,32 +202,39 @@ public class PropertyStatsController implements Initializable {
                         String.format("All instances of %s died during the simulation", entityName),
                         Alert.AlertType.INFORMATION));
 
-            Platform.runLater(() -> {
+            SingletonThreadpoolManager.executeTask(() -> {
+                List<PieChart.Data> data = new ArrayList<>();
+
                 entitiesCountForProp.forEach((propertyValue, amount) -> {
-                    histogramChart.getData().add(new PieChart.Data(propertyValue, amount));
-                    configureChartTooltips();
+                    data.add(new PieChart.Data(propertyValue, amount));
                 });
 
-                if (!entitiesCountForProp.isEmpty()) {
-                    if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
-                        showPropertyAverage(entityName, property.getName());
+                Platform.runLater(() -> {
+                    histogramChart.getData().clear();
+                    histogramChart.getData().addAll(data);
+                    addChartTooltips();
+
+                    if (!entitiesCountForProp.isEmpty()) {
+                        if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
+                            showPropertyAverage(entityName, property.getName());
+
+                        else
+                            hideAvgContainer();
+
+                        showPropertyConsistency(entityName, property.getName());
+                    }
 
                     else
-                        hideAvgContainer();
+                        avgConsistencyContainer.setVisible(false);
 
-                    showPropertyConsistency(entityName, property.getName());
-                }
-
-                else
-                    avgConsistencyContainer.setVisible(false);
-
+                });
             });
 
         } catch (Exception ignored) {
         }
     }
 
-    private void configureChartTooltips() {
+    private void addChartTooltips() {
         for (PieChart.Data data : histogramChart.getData()) {
             Tooltip tooltip = new Tooltip(String.valueOf((int) data.getPieValue()));
             Tooltip.install(data.getNode(), tooltip);
