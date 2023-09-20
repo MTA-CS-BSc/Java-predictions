@@ -4,17 +4,20 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import dtos.SingleSimulationDTO;
 import engine.simulation.ByStep;
 import fx.models.Results.*;
+import fx.modules.Alerts;
 import fx.modules.SingletonEngineAPI;
 import fx.views.HeaderComponent.HeaderComponentController;
 import helpers.Constants;
 import helpers.modules.SingletonObjectMapper;
 import helpers.types.SimulationState;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
@@ -96,6 +99,10 @@ public class SimulationsTableController implements Initializable {
                             .getPastSimulations().getData(),
                     new TypeReference<List<SingleSimulationDTO>>() {
                     });
+
+            if (simulations.size() < simulationsTable.getItems().size())
+                Platform.runLater(() -> Alerts.showAlert("Simulations were removed",
+                        "", "One or more simulations were removed due to ERROR state reached", Alert.AlertType.INFORMATION));
 
             simulationsTable.getItems().clear();
             simulationsTable.getItems().addAll(simulations);
