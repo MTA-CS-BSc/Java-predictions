@@ -1,5 +1,6 @@
 package fx.views.AppMenu;
 
+import fx.Main;
 import fx.consts.StyleSheetsPaths;
 import fx.consts.ThemeNames;
 import javafx.beans.property.BooleanProperty;
@@ -36,7 +37,7 @@ public class AppMenuController implements Initializable {
     public void setThemeToAllScenes(String cssPath) {
         scenes.forEach(scene -> {
             scene.getStylesheets().clear();
-            scene.getStylesheets().add(String.valueOf(getClass().getResource(cssPath)));
+            scene.getStylesheets().add(String.valueOf(Main.class.getResource(cssPath)));
         });
     }
 

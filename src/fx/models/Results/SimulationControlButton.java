@@ -1,5 +1,6 @@
 package fx.models.Results;
 
+import fx.Main;
 import fx.models.TransitionType;
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Button;
@@ -23,7 +24,7 @@ public interface SimulationControlButton {
     }
 
     default ImageView getImageView(String path) throws IOException {
-        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(getClass().getResource(path)).openStream()));
+        ImageView imageView = new ImageView(new Image(Objects.requireNonNull(Main.class.getResource(path)).openStream()));
 
         imageView.setFitHeight(20);
         imageView.setFitWidth(20);
