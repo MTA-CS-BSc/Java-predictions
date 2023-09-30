@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     private Scene createMainScene() throws Exception {
-        FXMLLoader loader = new FXMLLoader(FilePaths.class.getResource(FilePaths.ADMIN_ORCHESTRATOR_FXML));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(FilePaths.ADMIN_ORCHESTRATOR_FXML));
         Scene mainScene = new Scene(loader.load());
         OrchestratorController controller = loader.getController();
 
