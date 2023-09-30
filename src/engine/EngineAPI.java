@@ -43,8 +43,8 @@ public class EngineAPI {
     }
 
     //#region XML
-    public ResponseDTO loadXml(String xmlPath) throws JAXBException, FileNotFoundException {
-        PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
+    public ResponseDTO loadXml(File file) throws JAXBException {
+        PRDWorld prdWorld = XmlParser.parseWorldXml(file);
         ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
         if (!Objects.isNull(historyManager.getInitialWorld(prdWorld.getName())))
@@ -176,7 +176,7 @@ public class EngineAPI {
             return new ResponseDTO(200);
         } catch (Exception e) {
             EngineLoggers.API_LOGGER.info(e.getMessage());
-            return new ResponseDTO(500, "Attempted to load history but no history file was found");
+            return new ResponseDTO(500, "Attempted to loader history but no history file was found");
         }
     }
     //#endregion
