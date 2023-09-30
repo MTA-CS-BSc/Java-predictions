@@ -1,44 +1,41 @@
 package engine.prototypes.implemented;
 
-import engine.prototypes.jaxb.PRDBySecond;
-import engine.prototypes.jaxb.PRDByTicks;
-import engine.prototypes.jaxb.PRDTermination;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Termination implements Serializable {
     protected List<Object> stopConditions;
     protected boolean isStopByUser;
 
-    public Termination(PRDTermination termination) {
+    public Termination() {
         stopConditions = new ArrayList<>();
-
-        termination.getPRDBySecondOrPRDByTicks().forEach(stopCondition -> {
-            if (stopCondition.getClass() == PRDByTicks.class)
-                stopConditions.add(new ByTicks((PRDByTicks) stopCondition));
-
-            else if (stopCondition.getClass() == PRDBySecond.class)
-                stopConditions.add(new BySecond((PRDBySecond) stopCondition));
-        });
-
-        isStopByUser = !Objects.isNull(termination.getPRDByUser());
+        isStopByUser = false;
     }
 
     public Termination(Termination other) {
         stopConditions = new ArrayList<>();
 
-        other.getStopConditions().forEach(stopCondition -> {
-            if (stopCondition.getClass() == ByTicks.class)
-                stopConditions.add(new ByTicks((ByTicks) stopCondition));
-
-            else if (stopCondition.getClass() == BySecond.class)
-                stopConditions.add(new BySecond((BySecond) stopCondition));
-        });
+        other.getStopConditions().forEach(this::addStopCondition);
 
         isStopByUser = other.isStopByUser();
+    }
+
+    public void addStopCondition(Object stopCondition) {
+        if (stopCondition.getClass() == ByTicks.class)
+            stopConditions.add(new ByTicks((ByTicks) stopCondition));
+
+        else if (stopCondition.getClass() == BySecond.class)
+            stopConditions.add(new BySecond((BySecond) stopCondition));
+
+        isStopByUser = false;
+    }
+
+    public void setStopByUser(boolean value) {
+        if (!stopConditions.isEmpty() && value)
+            stopConditions.clear();
+
+        isStopByUser = value;
     }
 
     public List<Object> getStopConditions() {
@@ -47,28 +44,5 @@ public class Termination implements Serializable {
 
     public boolean isStopByUser() {
         return isStopByUser;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("###########Termination###########\n");
-
-        getStopConditions().forEach(stopCondition -> {
-            sb.append("#####Stop Condition######\n");
-
-            if (stopCondition.getClass() == ByTicks.class)
-                sb.append("Stop after [").append(((ByTicks) stopCondition).getCount()).append("] ticks\n");
-
-            else if (stopCondition.getClass() == BySecond.class)
-                sb.append("Stop after [").append(((BySecond) stopCondition).getCount()).append("] seconds\n");
-        });
-
-        if (isStopByUser) {
-            sb.append("#####Stop Condition######\n");
-            sb.append("Termination by user\n");
-        }
-
-        return sb.toString();
     }
 }
