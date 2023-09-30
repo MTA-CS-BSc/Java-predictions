@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 
 import javax.xml.bind.JAXBException;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,9 +30,8 @@ public class XmlParserTests {
     @DisplayName("Parse valid XML")
     public void parseValidXmlTest() {
         String xmlPath = String.format("%s/master-ex1.xml", ex1TestFilesPath);
-
         Assertions.assertDoesNotThrow(() -> {
-            XmlParser.parseWorldXml(xmlPath);
+            XmlParser.parseWorldXml(new File(xmlPath));
         });
     }
 
@@ -45,28 +45,28 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    XmlParser.parseWorldXml(xmlPaths.get(0));
+                    XmlParser.parseWorldXml(new File(xmlPaths.get(0)));
                 }),
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    XmlParser.parseWorldXml(xmlPaths.get(1));
+                    XmlParser.parseWorldXml(new File(xmlPaths.get(1)));
                 }),
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    XmlParser.parseWorldXml(xmlPaths.get(2));
+                    XmlParser.parseWorldXml(new File(xmlPaths.get(2)));
                 })
         );
     }
 
     @Test
     @DisplayName("EX 1 Validations check for valid XML")
-    public void ex1ValidationsForValidXml() throws JAXBException, FileNotFoundException {
+    public void ex1ValidationsForValidXml() throws JAXBException {
         String xmlPath = String.format("%s/master-ex1.xml", ex1TestFilesPath);
-        PRDWorld world = XmlParser.parseWorldXml(xmlPath);
+        PRDWorld world = XmlParser.parseWorldXml(new File(xmlPath));
         Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
     }
 
     @Test
     @DisplayName("EX 1 Validations check for invalid XML")
-    public void ex1ValidationsForInvalidXml() throws JAXBException, FileNotFoundException {
+    public void ex1ValidationsForInvalidXml() {
         List<String> xmlPaths = Arrays.asList(
                 String.format("%s/err-calculation-args.xml", ex1TestFilesPath),
                 String.format("%s/err-condition-args.xml", ex1TestFilesPath),
@@ -81,7 +81,7 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> ()
-                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element)).getErrorDescription()))
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(new File(element))).getErrorDescription()))
         );
     }
 
@@ -89,7 +89,7 @@ public class XmlParserTests {
     @DisplayName("EX 2 Validations check for valid XML")
     public void ex2ValidationsForValidXml() throws JAXBException, FileNotFoundException {
         String xmlPath = String.format("%s\\master-ex2.xml", ex2TestFilesPath);
-        PRDWorld world = XmlParser.parseWorldXml(xmlPath);
+        PRDWorld world = XmlParser.parseWorldXml(new File(xmlPath));
         Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
     }
 
@@ -102,7 +102,7 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> ()
-                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(element)).getErrorDescription()))
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(new File(element))).getErrorDescription()))
         );
     }
 

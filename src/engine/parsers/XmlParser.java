@@ -4,13 +4,12 @@ import engine.prototypes.jaxb.PRDWorld;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.File;
 
 public abstract class XmlParser {
-    public static PRDWorld parseWorldXml(String xmlPath) throws JAXBException, FileNotFoundException {
+    public static PRDWorld parseWorldXml(File file) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(PRDWorld.class);
         return (PRDWorld) context.createUnmarshaller()
-                .unmarshal(new FileReader(xmlPath));
+                .unmarshal(file);
     }
 }
