@@ -27,10 +27,12 @@ import java.util.stream.Collectors;
 public class EngineAPI {
     protected HistoryManager historyManager;
     protected ThreadPoolManager threadPoolManager;
+    protected Map<String, World> initialWorlds;
 
     public EngineAPI() {
         historyManager = new HistoryManager();
         threadPoolManager = new ThreadPoolManager();
+        initialWorlds = new HashMap<>();
         configureLoggers();
     }
 
@@ -48,21 +50,37 @@ public class EngineAPI {
         ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
         if (Objects.isNull(validateWorldResponse.getErrorDescription())) {
-            setInitialXmlWorld(new World(prdWorld));
-            threadPoolManager.setThreadsAmount(prdWorld.getPRDThreadCount());
+            World initialWorld = new World(prdWorld);
+            initialWorlds.put(initialWorld.getName(), initialWorld);
         }
+
 
         return validateWorldResponse;
     }
 
+    //TODO: Add usage
+    public ResponseDTO setThreadsAmount(int amount) {
+        threadPoolManager.setThreadsAmount(amount);
+
+        return new ResponseDTO(200, true);
+    }
+
+    private boolean anyXmlUploaded() {
+        return !initialWorlds.isEmpty();
+    }
+
     public ResponseDTO isXmlLoaded() {
-        return new ResponseDTO(200, historyManager.isXmlLoaded());
+        return new ResponseDTO(200, anyXmlUploaded());
     }
     //#endregion
 
     //#region Simulation
-    public ResponseDTO createSimulation() {
-        SingleSimulation sm = new SingleSimulation(new World(getInitialWorld()));
+    public ResponseDTO createSimulation(String fromInitialName) {
+        return createSimulationFromWorld(new World(initialWorlds.get(fromInitialName)));
+    }
+
+    public ResponseDTO createSimulationFromWorld(World initialWorld) {
+        SingleSimulation sm = new SingleSimulation(initialWorld);
         historyManager.addPastSimulation(sm);
         return new ResponseDTO(200, sm.getUUID());
     }
@@ -126,26 +144,17 @@ public class EngineAPI {
         return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
     }
 
-    public ResponseDTO getSimulationDetails() {
-        if (!historyManager.isXmlLoaded())
+    public ResponseDTO getSimulationDetails(String fromInitialName) {
+        if (!anyXmlUploaded())
             return new ResponseDTO(400, "", "No loaded XML");
 
-        return new ResponseDTO(200, historyManager.getMockSimulationForDetails());
+        return new ResponseDTO(200, new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(fromInitialName))));
     }
     //#endregion
 
     //#region History
-    private void removeSimulationFromHistory(String uuid) {
-        historyManager.getPastSimulations().remove(uuid);
-    }
-
-    public ResponseDTO removeSimulationIfUnused(String uuid) {
-        if (historyManager.getPastSimulation(uuid).getSimulationState() == SimulationState.CREATED) {
-            removeSimulationFromHistory(uuid);
-            return new ResponseDTO(200, true);
-        }
-
-        return new ResponseDTO(200, false);
+    private void removeSimulation(SingleSimulation simulation) {
+        historyManager.getPastSimulations().remove(simulation.getUUID());
     }
 
     public ResponseDTO removeUnusedSimulations() {
@@ -154,7 +163,7 @@ public class EngineAPI {
                 .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED && !threadPoolManager.isSimulationRecorded(simulation.getUUID()))
                 .collect(Collectors.toList());
 
-        toRemove.forEach(simulation -> removeSimulationIfUnused(simulation.getUUID()));
+        toRemove.forEach(this::removeSimulation);
 
         return new ResponseDTO(200, "");
     }
@@ -192,16 +201,8 @@ public class EngineAPI {
     //#endregion
 
     //#region Getters & Setters
-    public ResponseDTO getGrid() {
-        return new ResponseDTO(200, getInitialWorld().getGrid());
-    }
-
-    private void setInitialXmlWorld(World initialWorld) {
-        historyManager.setInitialXmlWorld(initialWorld);
-    }
-
-    private World getInitialWorld() {
-        return historyManager.getInitialWorld();
+    public ResponseDTO getGrid(String uuid) {
+        return new ResponseDTO(200, historyManager.getPastSimulation(uuid).getGrid());
     }
 
     public ResponseDTO getPastSimulations() {
@@ -225,10 +226,18 @@ public class EngineAPI {
     }
 
     public ResponseDTO getEntities(String uuid, boolean isInitial) {
-        if (Objects.isNull(historyManager.getPastSimulation(uuid)))
+        SingleSimulation simulation = historyManager.getPastSimulation(uuid);
+
+        if (Objects.isNull(simulation))
             return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
-        World relevantWorld = isInitial ? getInitialWorld() : historyManager.getPastSimulation(uuid).getWorld();
+        World relevantWorld;
+
+        if (isInitial)
+            relevantWorld = new World(simulation.getWorld(), simulation.getStartWorldState());
+
+        else
+            relevantWorld = simulation.getWorld();
 
         List<EntityDTO> data = relevantWorld
                 .getEntities()
