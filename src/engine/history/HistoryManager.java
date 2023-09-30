@@ -1,21 +1,34 @@
 package engine.history;
 
+import dtos.Mappers;
+import dtos.SingleSimulationDTO;
 import engine.exceptions.UUIDNotFoundException;
-import engine.logs.EngineLoggers;
-import engine.prototypes.implemented.Properties;
 import engine.prototypes.implemented.*;
 import engine.simulation.SingleSimulation;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class HistoryManager implements Serializable {
     protected Map<String, SingleSimulation> pastSimulations;
+    protected Map<String, World> initialWorlds;
 
     public HistoryManager() {
         pastSimulations = new HashMap<>();
+        initialWorlds = new HashMap<>();
+    }
+
+    public void addInitialWorld(World world) {
+        initialWorlds.put(world.getName(), world);
+    }
+
+    public boolean anyXmlLoaded() {
+        return !initialWorlds.isEmpty();
     }
 
     public void addPastSimulation(SingleSimulation pastSimulation) {
@@ -24,14 +37,6 @@ public class HistoryManager implements Serializable {
 
     public SingleSimulation getPastSimulation(String uuid) {
         return pastSimulations.get(uuid);
-    }
-
-    private void getSimulationDetails(String uuid, SingleSimulation simulation) throws UUIDNotFoundException {
-        if (Objects.isNull(simulation))
-            throw new UUIDNotFoundException(String.format("No simulation found with uuid [%s]", uuid));
-
-        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation uuid: [%s]%n", uuid));
-        EngineLoggers.SIMULATION_LOGGER.info(String.format("Simulation start time: [%s]%n", simulation.getCreatedTimestamp()));
     }
 
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
@@ -54,7 +59,6 @@ public class HistoryManager implements Serializable {
     public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName,
                                                      String propertyName) throws UUIDNotFoundException {
         SingleSimulation foundSimulation = getPastSimulation(uuid);
-        getSimulationDetails(uuid, foundSimulation);
         List<String> propertyValues = getValuesListForProperty(foundSimulation, entityName, propertyName);
 
         if (Objects.isNull(propertyValues))
@@ -69,5 +73,15 @@ public class HistoryManager implements Serializable {
 
     public Map<String, SingleSimulation> getPastSimulations() {
         return pastSimulations;
+    }
+
+    public SingleSimulationDTO getSimulationDetails(String fromInitialName) {
+        return new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(fromInitialName)));
+    }
+
+    public String createSimulationFromName(String name) {
+        SingleSimulation sm = new SingleSimulation(initialWorlds.get(name));
+        addPastSimulation(sm);
+        return sm.getUUID();
     }
 }

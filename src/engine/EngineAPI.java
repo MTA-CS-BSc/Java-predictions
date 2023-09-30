@@ -27,12 +27,10 @@ import java.util.stream.Collectors;
 public class EngineAPI {
     protected HistoryManager historyManager;
     protected ThreadPoolManager threadPoolManager;
-    protected Map<String, World> initialWorlds;
 
     public EngineAPI() {
         historyManager = new HistoryManager();
         threadPoolManager = new ThreadPoolManager();
-        initialWorlds = new HashMap<>();
         configureLoggers();
     }
 
@@ -49,11 +47,8 @@ public class EngineAPI {
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
         ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
-        if (Objects.isNull(validateWorldResponse.getErrorDescription())) {
-            World initialWorld = new World(prdWorld);
-            initialWorlds.put(initialWorld.getName(), initialWorld);
-        }
-
+        if (Objects.isNull(validateWorldResponse.getErrorDescription()))
+            historyManager.addInitialWorld(new World(prdWorld));
 
         return validateWorldResponse;
     }
@@ -65,24 +60,14 @@ public class EngineAPI {
         return new ResponseDTO(200, true);
     }
 
-    private boolean anyXmlUploaded() {
-        return !initialWorlds.isEmpty();
-    }
-
-    public ResponseDTO isXmlLoaded() {
-        return new ResponseDTO(200, anyXmlUploaded());
+    public ResponseDTO anyXmlLoaded() {
+        return new ResponseDTO(200, historyManager.anyXmlLoaded());
     }
     //#endregion
 
     //#region Simulation
     public ResponseDTO createSimulation(String fromInitialName) {
-        return createSimulationFromWorld(new World(initialWorlds.get(fromInitialName)));
-    }
-
-    public ResponseDTO createSimulationFromWorld(World initialWorld) {
-        SingleSimulation sm = new SingleSimulation(initialWorld);
-        historyManager.addPastSimulation(sm);
-        return new ResponseDTO(200, sm.getUUID());
+        return new ResponseDTO(200, historyManager.createSimulationFromName(fromInitialName));
     }
 
     public ResponseDTO cloneSimulation(String uuid) {
@@ -145,10 +130,10 @@ public class EngineAPI {
     }
 
     public ResponseDTO getSimulationDetails(String fromInitialName) {
-        if (!anyXmlUploaded())
+        if (!historyManager.anyXmlLoaded())
             return new ResponseDTO(400, "", "No loaded XML");
 
-        return new ResponseDTO(200, new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(fromInitialName))));
+        return new ResponseDTO(200, historyManager.getSimulationDetails(fromInitialName));
     }
     //#endregion
 
