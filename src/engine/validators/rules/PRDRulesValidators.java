@@ -46,16 +46,17 @@ public abstract class PRDRulesValidators {
 
     private static boolean validateActivations(PRDWorld world) throws ValueNotInRangeException {
         for (PRDRule rule : world.getPRDRules().getPRDRule()) {
-            if (!Objects.isNull(rule.getPRDActivation().getProbability()))
+            if (!Objects.isNull(rule.getPRDActivation())) {
                 if (rule.getPRDActivation().getProbability() < 0
                         || rule.getPRDActivation().getProbability() > 1)
                     throw new ValueNotInRangeException(String.format("Rule [%s]: Activation probability should be on the interval [0,1]",
                             rule.getName()));
 
-            if (!Objects.isNull(rule.getPRDActivation().getTicks()))
-                if (rule.getPRDActivation().getTicks() < 0)
-                    throw new ValueNotInRangeException(String.format("Rule [%s]: Activation ticks should be positive",
-                            rule.getName()));
+                if (!Objects.isNull(rule.getPRDActivation().getTicks()))
+                    if (rule.getPRDActivation().getTicks() < 0)
+                        throw new ValueNotInRangeException(String.format("Rule [%s]: Activation ticks should be positive",
+                                rule.getName()));
+            }
         }
 
         return true;
