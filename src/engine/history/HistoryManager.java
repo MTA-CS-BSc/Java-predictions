@@ -1,7 +1,5 @@
 package engine.history;
 
-import dtos.Mappers;
-import dtos.SingleSimulationDTO;
 import engine.exceptions.UUIDNotFoundException;
 import engine.logs.EngineLoggers;
 import engine.prototypes.implemented.Properties;
@@ -15,7 +13,6 @@ import java.util.stream.Collectors;
 
 public class HistoryManager implements Serializable {
     protected Map<String, SingleSimulation> pastSimulations;
-    protected World initialWorld;
 
     public HistoryManager() {
         pastSimulations = new HashMap<>();
@@ -66,61 +63,11 @@ public class HistoryManager implements Serializable {
         return propertyValues.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
-    public Map<String, Integer[]> getEntitiesBeforeAndAfter(String uuid) throws UUIDNotFoundException {
-        Map<String, Integer[]> entitiesBeforeAfter = new HashMap<>();
-
-        SingleSimulation simulation = getPastSimulation(uuid);
-        getSimulationDetails(uuid, simulation);
-
-        simulation.getStartWorldState().getEntitiesMap().forEach((key, entity) -> {
-            Entity finishEntity = simulation.getLastWorldState().getEntitiesMap().get(key);
-            int finishAmount = Objects.isNull(finishEntity) ? 0 : finishEntity.getPopulation();
-            Integer[] array = {entity.getPopulation(), finishAmount};
-
-            entitiesBeforeAfter.put(key, array);
-        });
-
-        return entitiesBeforeAfter;
-    }
-
-    public World getLatestWorldObject() {
-        SingleSimulation latestSimulation = pastSimulations.values()
-                .stream()
-                .max(Comparator.comparing(SingleSimulation::getFinishedTimestamp))
-                .orElse(null);
-
-        return !Objects.isNull(latestSimulation) ? latestSimulation.getWorld() : null;
-    }
-
     public boolean isEmpty() {
         return pastSimulations.isEmpty();
     }
 
     public Map<String, SingleSimulation> getPastSimulations() {
         return pastSimulations;
-    }
-
-    public void clearHistory() {
-        pastSimulations.clear();
-    }
-
-    public void setInitialXmlWorld(World initialXmlWorld) {
-        clearHistory();
-        this.initialWorld = initialXmlWorld;
-    }
-
-    public boolean isXmlLoaded() {
-        return !Objects.isNull(initialWorld);
-    }
-
-    public World getInitialWorld() {
-        return initialWorld;
-    }
-
-    public SingleSimulationDTO getMockSimulationForDetails() {
-        if (isXmlLoaded())
-            return new SingleSimulationDTO(Mappers.toDto(initialWorld));
-
-        return null;
     }
 }
