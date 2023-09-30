@@ -10,6 +10,8 @@ public class WorldDTO {
     protected List<RuleDTO> rules;
     protected TerminationDTO termination;
     protected List<EntityDTO> entities;
+    protected int sleep;
+    protected String name;
     protected int gridRows;
     protected int gridColumns;
 
@@ -19,13 +21,17 @@ public class WorldDTO {
                     @JsonProperty("rules") List<RuleDTO> rules,
                     @JsonProperty("environment") List<PropertyDTO> environment,
                     @JsonProperty("gridRows") int gridRows,
-                    @JsonProperty("gridColumns") int gridColumns) {
+                    @JsonProperty("gridColumns") int gridColumns,
+                    @JsonProperty("name") String name,
+                    @JsonProperty("sleep") int sleep) {
         this.environment = environment;
         this.rules = rules;
         this.termination = termination;
         this.entities = entities;
         this.gridRows = gridRows;
         this.gridColumns = gridColumns;
+        this.sleep = sleep;
+        this.name = name;
     }
 
     public List<PropertyDTO> getEnvironment() {
@@ -51,4 +57,8 @@ public class WorldDTO {
     public int getGridColumns() {
         return gridColumns;
     }
+
+    public String getName() { return name; }
+
+    public int getSleep() { return sleep; }
 }

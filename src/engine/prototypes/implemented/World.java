@@ -5,6 +5,7 @@ import engine.simulation.WorldState;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 
 public class World implements Serializable {
     protected Environment environment;
@@ -12,13 +13,19 @@ public class World implements Serializable {
     protected Termination termination;
     protected Rules rules;
     protected WorldGrid grid;
+    protected String name;
+    protected int sleep;
 
-    public World(Termination termination, Rules rules, WorldState worldState) {
-        this.termination = new Termination(termination);
-        this.rules = new Rules(rules);
+    public World(World other, WorldState worldState) {
+        this.termination = new Termination(other.getTermination());
+        this.rules = new Rules(other.getRules());
+        this.name = other.name;
+        this.sleep = other.sleep;
+
         environment = new Environment();
         entities = new Entities();
         grid = new WorldGrid(worldState.getGrid());
+
         setByWorldState(worldState);
     }
 
@@ -26,12 +33,16 @@ public class World implements Serializable {
         rules = new Rules(world.getPRDRules().getPRDRule());
         entities = new Entities(world.getPRDEntities().getPRDEntity());
         environment = new Environment(world.getPRDEnvironment().getPRDEnvProperty());
-        termination = new Termination(world.getPRDTermination());
+        termination = new Termination();
         grid = new WorldGrid(world.getPRDGrid());
+        name = world.getName();
+
+        Integer otherSleep = world.getSleep();
+        sleep = !Objects.isNull(otherSleep) ? otherSleep : 0;
     }
 
     public World(World other) {
-        this(other.getTermination(), other.getRules(), new WorldState(other));
+        this(other, new WorldState(other));
     }
 
     public Environment getEnvironment() {
@@ -53,6 +64,10 @@ public class World implements Serializable {
     public WorldGrid getGrid() {
         return grid;
     }
+
+    public String getName() { return name; }
+
+    public int getSleep() { return sleep; }
 
     public void initAllRandomVars() {
         entities.initRandomVars();
@@ -87,6 +102,14 @@ public class World implements Serializable {
         setEnvironmentByWorldState(worldState.getEnvironmentMap());
         setEntitiesByWorldState(worldState.getEntitiesMap());
         setGridByWorldState(worldState.getEntitiesMap());
+    }
+
+    public void addStopCondition(Object stopCondition) {
+        termination.addStopCondition(stopCondition);
+    }
+
+    public void setTerminationByUser() {
+        termination.setStopByUser(true);
     }
 
     @Override
