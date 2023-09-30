@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 
-<HBox xmlns="http://javafx.com/javafx"
+<VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="admin.client.fx.views.mgmt.MgmtController">
 
-</HBox>
+    <fx:include source="../xml/loader/XmlLoader.fxml" fx:id="xmlLoader"/>
+</VBox>
