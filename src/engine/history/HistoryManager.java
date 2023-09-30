@@ -84,4 +84,8 @@ public class HistoryManager implements Serializable {
         addPastSimulation(sm);
         return sm.getUUID();
     }
+
+    public World getInitialWorld(String fromInitialName) {
+        return initialWorlds.get(fromInitialName);
+    }
 }

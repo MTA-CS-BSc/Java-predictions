@@ -47,6 +47,9 @@ public class EngineAPI {
         PRDWorld prdWorld = XmlParser.parseWorldXml(xmlPath);
         ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
+        if (!Objects.isNull(historyManager.getInitialWorld(prdWorld.getName())))
+            return new ResponseDTO(400, "Validation failed", "Name exists");
+
         if (Objects.isNull(validateWorldResponse.getErrorDescription()))
             historyManager.addInitialWorld(new World(prdWorld));
 
