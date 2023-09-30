@@ -9,6 +9,7 @@ public abstract class StringTrimmer {
         trimEntities(world);
         trimEnvironment(world);
         trimRules(world);
+        world.setName(world.getName().trim());
     }
 
     private static void trimEntities(PRDWorld world) {
