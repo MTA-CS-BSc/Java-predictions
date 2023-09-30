@@ -176,7 +176,7 @@ public class HeaderComponentController implements Initializable {
                 Platform.runLater(() -> detailsScreenController.getContainer().setVisible(true));
         }
 
-        if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.isXmlLoaded().getData(), Boolean.class)) {
+        if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.anyXmlLoaded().getData(), Boolean.class)) {
             highlightButtonText(detailsButton);
             detailsScreenController.handleShowCategoriesData();
         } else {
