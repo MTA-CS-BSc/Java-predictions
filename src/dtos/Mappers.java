@@ -46,7 +46,9 @@ public abstract class Mappers {
                 .sorted(Comparator.comparing(RuleDTO::getName))
                 .collect(Collectors.toList());
 
-        return new WorldDTO(entities, termination, rules, envs, world.getGrid().getRows(), world.getGrid().getColumns());
+        return new WorldDTO(entities, termination, rules, envs,
+                world.getGrid().getRows(), world.getGrid().getColumns(),
+                world.getName(), world.getSleep());
     }
 
     public static EntityDTO toDto(Entity entity) {
