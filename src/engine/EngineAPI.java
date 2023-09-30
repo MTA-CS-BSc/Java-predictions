@@ -53,13 +53,6 @@ public class EngineAPI {
         return validateWorldResponse;
     }
 
-    //TODO: Add usage
-    public ResponseDTO setThreadsAmount(int amount) {
-        threadPoolManager.setThreadsAmount(amount);
-
-        return new ResponseDTO(200, true);
-    }
-
     public ResponseDTO anyXmlLoaded() {
         return new ResponseDTO(200, historyManager.anyXmlLoaded());
     }
@@ -401,6 +394,13 @@ public class EngineAPI {
 
 
         return new ResponseDTO(200, returnValue);
+    }
+
+    //TODO: Add usage
+    public ResponseDTO setThreadsAmount(int amount) {
+        threadPoolManager.setThreadsAmount(amount);
+
+        return new ResponseDTO(200, true);
     }
     //#endregion
 }
