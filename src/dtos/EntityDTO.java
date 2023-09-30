@@ -11,16 +11,19 @@ public class EntityDTO {
     protected int population;
     protected List<PropertyDTO> properties;
     protected List<Coordinate> takenSpots;
+    protected int initialPopulation;
 
     @JsonCreator
     public EntityDTO(@JsonProperty("name") String name,
                      @JsonProperty("population") int population,
                      @JsonProperty("properties") List<PropertyDTO> properties,
-                     @JsonProperty("takenSpots") List<Coordinate> takenSpots) {
+                     @JsonProperty("takenSpots") List<Coordinate> takenSpots,
+                     @JsonProperty("initialPopulation") int initialPopulation) {
         this.name = name;
         this.properties = properties;
         this.population = population;
         this.takenSpots = takenSpots;
+        this.initialPopulation = initialPopulation;
     }
 
     public String getName() {

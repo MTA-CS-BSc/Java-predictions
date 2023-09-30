@@ -11,10 +11,12 @@ public class Entity implements Serializable {
     protected int population;
     protected List<SingleEntity> singleEntities;
     protected Properties initialProperties;
+    protected int initialPopulation;
 
     public Entity(PRDEntity entity) {
         name = entity.getName();
         population = 0;
+        initialPopulation = 0;
         singleEntities = new ArrayList<>();
         initialProperties = new Properties(entity.getPRDProperties().getPRDProperty());
     }
@@ -28,6 +30,8 @@ public class Entity implements Serializable {
         other.getSingleEntities().forEach(singleEntity -> {
             singleEntities.add(new SingleEntity(singleEntity));
         });
+
+        initialPopulation = other.getPopulation();
     }
 
     public Properties getInitialProperties() {
@@ -41,6 +45,8 @@ public class Entity implements Serializable {
     public int getPopulation() {
         return population;
     }
+
+    public int getInitialPopulation() { return initialPopulation; }
 
     public void setPopulation(int population) {
         this.population = population;
@@ -57,6 +63,7 @@ public class Entity implements Serializable {
     public void initPopulation(WorldGrid grid, int population) {
         singleEntities.forEach(singleEntity -> grid.changeCoordinateState(singleEntity.getCoordinate()));
         setPopulation(population);
+        initialPopulation = population;
         singleEntities.clear();
 
         for (int i = 0; i < population; i++) {
@@ -64,6 +71,7 @@ public class Entity implements Serializable {
             singleEntities.add(singleEntity);
             grid.changeCoordinateState(singleEntity.getCoordinate());
         }
+
     }
 
     @Override

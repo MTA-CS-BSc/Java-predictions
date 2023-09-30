@@ -63,7 +63,7 @@ public abstract class Mappers {
                 .map(SingleEntity::getCoordinate)
                 .collect(Collectors.toList());
 
-        return new EntityDTO(entity.getName(), entity.getPopulation(), entityProps, takenSpots);
+        return new EntityDTO(entity.getName(), entity.getPopulation(), entityProps, takenSpots, entity.getInitialPopulation());
     }
 
     public static PropertyDTO toDto(Property property) {
