@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.control.Label?>
 <VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="admin.client.fx.views.orchestrator.OrchestratorController">
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="20"
+      alignment="CENTER"
+      fx:controller="admin.client.fx.views.orchestrator.OrchestratorController">
+
+    <Label text="Predictions - Admin"/>
 
     <fx:include source="../navbar/Navbar.fxml" fx:id="navbar"/>
 
