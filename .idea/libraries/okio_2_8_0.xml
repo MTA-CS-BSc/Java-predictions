@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="okio-2.8.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/src/lib/okio-2.8.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/okhttp-4.9.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/kotlin-stdlib-1.4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/annotations-13.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/src/lib/kotlin-stdlib-common-1.4.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
