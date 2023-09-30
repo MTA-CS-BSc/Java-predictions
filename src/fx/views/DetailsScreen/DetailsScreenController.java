@@ -2,14 +2,11 @@ package fx.views.DetailsScreen;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.sun.xml.internal.ws.util.StringUtils;
-import dtos.SingleSimulationDTO;
 import dtos.StopConditionDTO;
 import dtos.WorldDTO;
 import fx.models.DetailsScreen.*;
 import fx.models.DetailsScreen.actions.*;
 import fx.modules.GuiUtils;
-import fx.modules.SingletonEngineAPI;
-import helpers.modules.SingletonObjectMapper;
 import helpers.types.PropTypes;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -228,16 +225,17 @@ public class DetailsScreenController implements Initializable {
 
     //#region World Categories
     public void handleShowCategoriesData() throws JsonProcessingException {
-        worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
-
-        WorldDTO world = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.getSimulationDetails().getData(),
-                SingleSimulationDTO.class).getWorld();
-
-        showEnvironment(world);
-        showEntities(world);
-        showGrid(world);
-        showTermination(world);
-        showRules(world);
+        //FIXME: Rewrite logic
+//        worldCategoriesTreeView.setRoot(new TreeItem<>(new TreeItemModel(StringUtils.capitalize(WorldTreeViewCategories.WORLD.name().toLowerCase()))));
+//
+//        WorldDTO world = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.getSimulationDetails().getData(),
+//                SingleSimulationDTO.class).getWorld();
+//
+//        showEnvironment(world);
+//        showEntities(world);
+//        showGrid(world);
+//        showTermination(world);
+//        showRules(world);
     }
 
     private void showEntities(WorldDTO world) {

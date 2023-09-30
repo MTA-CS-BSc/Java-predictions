@@ -190,11 +190,12 @@ public class HeaderComponentController implements Initializable {
 
     @FXML
     private void showNewExecutionScreen() throws Exception {
-        String uuid = SingletonObjectMapper.objectMapper.readValue(
-                SingletonEngineAPI.api.createSimulation().getData(),
-                String.class);
-
-        showNewExecutionScreenFromUuid(uuid);
+        //FIXME: Rewrite logic
+//        String uuid = SingletonObjectMapper.objectMapper.readValue(
+//                SingletonEngineAPI.api.createSimulation().getData(),
+//                String.class);
+//
+//        showNewExecutionScreenFromUuid(uuid);
     }
 
     public void showNewExecutionScreenFromUuid(String uuid) throws Exception {
