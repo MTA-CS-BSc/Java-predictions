@@ -43,8 +43,8 @@ public class EngineAPI {
     }
 
     //#region XML
-    public ResponseDTO loadXml(File file) throws JAXBException {
-        PRDWorld prdWorld = XmlParser.parseWorldXml(file);
+    public ResponseDTO loadXml(InputStream fileStream) throws JAXBException, IOException {
+        PRDWorld prdWorld = XmlParser.parseWorldXml(fileStream);
         ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
         if (!Objects.isNull(historyManager.getInitialWorld(prdWorld.getName())))
