@@ -12,6 +12,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -31,7 +32,7 @@ public class XmlParserTests {
     public void parseValidXmlTest() {
         String xmlPath = String.format("%s/master-ex1.xml", ex1TestFilesPath);
         Assertions.assertDoesNotThrow(() -> {
-            XmlParser.parseWorldXml(new File(xmlPath));
+            XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPath).toPath()));
         });
     }
 
@@ -45,22 +46,22 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    XmlParser.parseWorldXml(new File(xmlPaths.get(0)));
+                    XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPaths.get(0)).toPath()));
                 }),
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    XmlParser.parseWorldXml(new File(xmlPaths.get(1)));
+                    XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPaths.get(1)).toPath()));
                 }),
                 () -> Assertions.assertDoesNotThrow(() -> {
-                    XmlParser.parseWorldXml(new File(xmlPaths.get(2)));
+                    XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPaths.get(2)).toPath()));
                 })
         );
     }
 
     @Test
     @DisplayName("EX 1 Validations check for valid XML")
-    public void ex1ValidationsForValidXml() throws JAXBException {
+    public void ex1ValidationsForValidXml() throws JAXBException, IOException {
         String xmlPath = String.format("%s/master-ex1.xml", ex1TestFilesPath);
-        PRDWorld world = XmlParser.parseWorldXml(new File(xmlPath));
+        PRDWorld world = XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPath).toPath()));
         Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
     }
 
@@ -81,15 +82,15 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> ()
-                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(new File(element))).getErrorDescription()))
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(Files.newInputStream(new File(element).toPath()))).getErrorDescription()))
         );
     }
 
     @Test
     @DisplayName("EX 2 Validations check for valid XML")
-    public void ex2ValidationsForValidXml() throws JAXBException, FileNotFoundException {
+    public void ex2ValidationsForValidXml() throws JAXBException, IOException {
         String xmlPath = String.format("%s\\master-ex2.xml", ex2TestFilesPath);
-        PRDWorld world = XmlParser.parseWorldXml(new File(xmlPath));
+        PRDWorld world = XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPath).toPath()));
         Assertions.assertNull(PRDWorldValidators.validateWorld(world).getErrorDescription());
     }
 
@@ -102,7 +103,7 @@ public class XmlParserTests {
 
         Assertions.assertAll(
                 xmlPaths.stream().map(element -> ()
-                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(new File(element))).getErrorDescription()))
+                        -> Assertions.assertNotNull(PRDWorldValidators.validateWorld(XmlParser.parseWorldXml(Files.newInputStream(new File(element).toPath()))).getErrorDescription()))
         );
     }
 

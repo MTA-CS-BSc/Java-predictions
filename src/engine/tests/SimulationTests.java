@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Objects;
 import java.util.logging.FileHandler;
 
@@ -25,7 +26,7 @@ public class SimulationTests {
     @DisplayName("Termination reason")
     public void testTerminationReasonOccurs() throws Exception {
         String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
-        PRDWorld prdWorld = XmlParser.parseWorldXml(new File(xmlPath));
+        PRDWorld prdWorld = XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPath).toPath()));
 
         if (Objects.isNull(PRDWorldValidators.validateWorld(prdWorld).getErrorDescription())) {
             World world = new World(prdWorld);
@@ -38,7 +39,7 @@ public class SimulationTests {
     @DisplayName("Simulation log world states")
     public void testSimulationLog() throws Exception {
         String xmlPath = String.format("%s/master-ex1.xml", XmlParserTests.testFilesPath);
-        PRDWorld prdWorld = XmlParser.parseWorldXml(new File(xmlPath));
+        PRDWorld prdWorld = XmlParser.parseWorldXml(Files.newInputStream(new File(xmlPath).toPath()));
 
         if (Objects.isNull(PRDWorldValidators.validateWorld(prdWorld).getErrorDescription())) {
             HistoryManager historyManager = new HistoryManager();
