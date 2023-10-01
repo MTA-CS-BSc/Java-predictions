@@ -1,5 +1,5 @@
 package admin.client.consts;
 
 public class FilePaths {
-    public static final String ADMIN_ORCHESTRATOR_FXML = "views/orchestrator/Orchestrator.fxml";
+    public static final String ADMIN_ORCHESTRATOR_FXML = "orchestrator/views/Orchestrator.fxml";
 }

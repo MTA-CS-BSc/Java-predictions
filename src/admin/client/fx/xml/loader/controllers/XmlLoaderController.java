@@ -1,4 +1,4 @@
-package admin.client.fx.views.xml.loader;
+package admin.client.fx.xml.loader.controllers;
 
 import admin.client.api.Configuration;
 import dtos.ResponseDTO;

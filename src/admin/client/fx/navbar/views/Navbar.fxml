@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <!--TODO: Add styleClass-->
-<HBox fx:controller="admin.client.fx.views.navbar.NavbarController"
+<HBox fx:controller="admin.client.fx.navbar.controllers.NavbarController"
       xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" spacing="70.0">
     <Button mnemonicParsing="false" styleClass="nav-button" text="Management"/>
     <Button mnemonicParsing="false" styleClass="nav-button" text="Allocations"/>

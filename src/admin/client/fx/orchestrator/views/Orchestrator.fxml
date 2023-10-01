@@ -6,13 +6,13 @@
       xmlns:fx="http://javafx.com/fxml"
       spacing="20"
       alignment="CENTER"
-      fx:controller="admin.client.fx.views.orchestrator.OrchestratorController">
+      fx:controller="admin.client.fx.orchestrator.controllers.OrchestratorController">
 
     <Label text="Predictions - Admin"/>
 
-    <fx:include source="../navbar/Navbar.fxml" fx:id="navbar"/>
+    <fx:include source="../../navbar/views/Navbar.fxml" fx:id="navbar"/>
 
     <StackPane>
-        <fx:include source="../mgmt/Mgmt.fxml" fx:id="mgmt"/>
+        <fx:include source="../../mgmt/views/Mgmt.fxml" fx:id="mgmt"/>
     </StackPane>
 </VBox>

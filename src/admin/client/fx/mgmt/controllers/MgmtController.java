@@ -1,11 +1,11 @@
-package admin.client.fx.views.navbar;
+package admin.client.fx.mgmt.controllers;
 
 import javafx.fxml.Initializable;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NavbarController implements Initializable {
+public class MgmtController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }

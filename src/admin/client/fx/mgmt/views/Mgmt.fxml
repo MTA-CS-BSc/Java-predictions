@@ -3,7 +3,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="admin.client.fx.views.mgmt.MgmtController">
+            fx:controller="admin.client.fx.mgmt.controllers.MgmtController">
 
-    <fx:include source="../xml/loader/XmlLoader.fxml" fx:id="xmlLoader"/>
+    <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
 </VBox>

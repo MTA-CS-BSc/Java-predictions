@@ -2,7 +2,7 @@ package admin.client.fx;
 
 import admin.client.consts.App;
 import admin.client.consts.FilePaths;
-import admin.client.fx.views.orchestrator.OrchestratorController;
+import admin.client.fx.orchestrator.controllers.OrchestratorController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
