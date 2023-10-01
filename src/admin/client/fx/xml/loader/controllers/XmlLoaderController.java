@@ -2,7 +2,6 @@ package admin.client.fx.xml.loader.controllers;
 
 import admin.client.api.xml.loader.HttpXmlLoader;
 import admin.client.consts.Alerts;
-import dtos.ResponseDTO;
 import helpers.Constants;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -15,12 +14,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
+import okhttp3.Response;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class XmlLoaderController implements Initializable {
@@ -48,11 +49,11 @@ public class XmlLoaderController implements Initializable {
     private void handleNotNullXmlFileEntered(File file) {
         try {
             TrayNotification tray;
-            ResponseDTO response = HttpXmlLoader.uploadXml(file);
+            Response response = HttpXmlLoader.uploadXml(file);
             String title, body;
             NotificationType type;
 
-            if (response.getStatus() == Constants.API_RESPONSE_OK) {
+            if (response.code() == Constants.API_RESPONSE_OK) {
                 title = "SUCCESS";
                 body = "XML was loaded successfully!";
                 type = NotificationType.SUCCESS;
@@ -61,7 +62,9 @@ public class XmlLoaderController implements Initializable {
                 title = "FAILURE";
                 body = "XML was not loaded!";
                 type = NotificationType.ERROR;
-                Alerts.showAlert( "XML was not loaded", response.getErrorDescription().getCause(), Alert.AlertType.ERROR);
+
+                if (!Objects.isNull(response.body()))
+                    Alerts.showAlert( "XML was not loaded", response.body().string(), Alert.AlertType.ERROR);
             }
 
             if (isAnimationsOn.getValue()) {

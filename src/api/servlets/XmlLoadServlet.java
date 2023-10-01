@@ -1,6 +1,7 @@
 package api.servlets;
 
 import api.Configuration;
+import dtos.ResponseDTO;
 import helpers.Constants;
 
 import javax.servlet.ServletException;
@@ -9,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 @WebServlet(name = "XmlLoadServlet", urlPatterns = { "/xml/load" })
 public class XmlLoadServlet extends HttpServlet {
@@ -20,16 +21,18 @@ public class XmlLoadServlet extends HttpServlet {
         Part filePart = request.getPart("fileField");
         InputStream fileContent = filePart.getInputStream();
 
+        response.setContentType("text/plain");
+        ResponseDTO responseDTO = null;
+
         try {
-            response.setContentType("text/plain");
-
-            Configuration.api.loadXml(fileContent);
-
+            responseDTO = Configuration.api.loadXml(fileContent);
             response.setStatus(Constants.API_RESPONSE_OK);
             response.getWriter().write("OK");
-        } catch (JAXBException e) {
+        } catch (Exception e) {
             response.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
-            response.getWriter().write("Failed to parse file");
+
+            if (!Objects.isNull(responseDTO) && !Objects.isNull(responseDTO.getErrorDescription()))
+                response.getWriter().write(responseDTO.getErrorDescription().getCause());
         }
     }
 }
