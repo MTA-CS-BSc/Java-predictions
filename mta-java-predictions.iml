@@ -37,5 +37,6 @@
     <orderEntry type="library" name="TrayTester" level="project" />
     <orderEntry type="library" name="jackson-databind-2.15.2" level="project" />
     <orderEntry type="library" name="okio-2.8.0" level="project" />
+    <orderEntry type="library" name="javax.servlet-api-4.0.1" level="project" />
   </component>
 </module>
