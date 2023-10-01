@@ -1,4 +1,4 @@
-package api;
+package api.config;
 
 import engine.EngineAPI;
 

@@ -1,6 +1,6 @@
 package api.servlets;
 
-import api.Configuration;
+import api.config.Configuration;
 import dtos.ResponseDTO;
 import helpers.Constants;
 
