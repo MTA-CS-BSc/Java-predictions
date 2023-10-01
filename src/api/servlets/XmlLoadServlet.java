@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
-@WebServlet(name = "XmlLoadServlet", urlPatterns = { "/xml/load" })
+@WebServlet(name = "XmlLoadServlet", urlPatterns = "/xml/load")
 public class XmlLoadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
