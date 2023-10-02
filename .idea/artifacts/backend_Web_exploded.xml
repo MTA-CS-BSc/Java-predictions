@@ -6,12 +6,12 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="backend" />
-          <element id="module-output" name="dtos" />
-          <element id="module-output" name="helpers" />
-          <element id="module-output" name="engine" />
         </element>
         <element id="directory" name="lib">
           <element id="dir-copy" path="$PROJECT_DIR$/lib" />
+          <element id="artifact" artifact-name="engine" />
+          <element id="artifact" artifact-name="dtos" />
+          <element id="artifact" artifact-name="helpers" />
         </element>
       </element>
     </root>
