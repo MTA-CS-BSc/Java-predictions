@@ -37,6 +37,14 @@
     <orderEntry type="library" name="TrayTester" level="project" />
     <orderEntry type="library" name="jackson-databind-2.15.2" level="project" />
     <orderEntry type="library" name="okio-2.8.0" level="project" />
-    <orderEntry type="library" name="javax.servlet-api-4.0.1" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/out/production/mta-java-predictions/lib/servlet-api.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
