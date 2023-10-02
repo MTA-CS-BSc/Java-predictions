@@ -9,7 +9,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="dtos" />
     <orderEntry type="module" module-name="helpers" />
-    <orderEntry type="library" name="testcontainers.junit.jupiter" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>

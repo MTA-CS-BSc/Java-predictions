@@ -12,7 +12,7 @@ public abstract class HttpXmlLoader {
     public static Response uploadXml(File file) throws IOException {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("fileField",file.getName(), RequestBody.create(file, MediaType.parse("application/octet-stream")))
+                .addFormDataPart("fileField", file.getName(), RequestBody.create(file, MediaType.parse("application/xml")))
                 .build();
 
         Request request = new Request.Builder()

@@ -1,6 +1,7 @@
 package servlets;
 
 import config.Configuration;
+import jakarta.servlet.annotation.MultipartConfig;
 import other.ResponseDTO;
 import modules.Constants;
 import jakarta.servlet.ServletException;
@@ -14,13 +15,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
+@MultipartConfig
 @WebServlet(name = "XmlLoadServlet", urlPatterns = "/xml/load")
 public class XmlLoadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Part filePart = request.getPart("fileField");
         InputStream fileContent = filePart.getInputStream();
-
         response.setContentType("text/plain");
         ResponseDTO responseDTO = null;
 
