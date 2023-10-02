@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="dtos">
+    <output-path>$PROJECT_DIR$/out/artifacts/dtos</output-path>
+    <root id="archive" name="dtos.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/../meta-dtos/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/out/production/mta-java-predictions/dtos" />
+    </root>
+  </artifact>
+</component>

@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/admin.client/admin.client.iml" filepath="$PROJECT_DIR$/admin.client/admin.client.iml" />
+      <module fileurl="file://$PROJECT_DIR$/api/api.iml" filepath="$PROJECT_DIR$/api/api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dtos/dtos.iml" filepath="$PROJECT_DIR$/dtos/dtos.iml" />
+      <module fileurl="file://$PROJECT_DIR$/engine/engine.iml" filepath="$PROJECT_DIR$/engine/engine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/helpers/helpers.iml" filepath="$PROJECT_DIR$/helpers/helpers.iml" />
       <module fileurl="file://$PROJECT_DIR$/mta-java-predictions.iml" filepath="$PROJECT_DIR$/mta-java-predictions.iml" />
     </modules>
   </component>
