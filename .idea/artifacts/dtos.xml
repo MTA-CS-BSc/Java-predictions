@@ -5,7 +5,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/../meta-dtos/META-INF/MANIFEST.MF" />
       </element>
-      <element id="dir-copy" path="$PROJECT_DIR$/out/production/mta-java-predictions/dtos" />
+      <element id="dir-copy" path="$PROJECT_DIR$/out/production/dtos" />
     </root>
   </artifact>
 </component>

@@ -4,7 +4,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="dir-copy" path="$PROJECT_DIR$/out/production/mta-java-predictions/api" />
+          <element id="dir-copy" path="$PROJECT_DIR$/out/production/api" />
         </element>
       </element>
     </root>

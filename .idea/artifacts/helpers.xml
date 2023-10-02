@@ -2,10 +2,10 @@
   <artifact type="jar" name="helpers">
     <output-path>$PROJECT_DIR$/out/artifacts/helpers</output-path>
     <root id="archive" name="helpers.jar">
-      <element id="dir-copy" path="$PROJECT_DIR$/out/production/mta-java-predictions/helpers" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/../meta-helpers/META-INF/MANIFEST.MF" />
       </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/out/production/helpers" />
     </root>
   </artifact>
 </component>
