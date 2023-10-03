@@ -16,7 +16,7 @@ import java.io.InputStream;
 import java.util.Objects;
 
 @MultipartConfig
-@WebServlet(name = "XmlLoadServlet", urlPatterns = "/xml/load")
+@WebServlet("/xml/load")
 public class XmlLoadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
