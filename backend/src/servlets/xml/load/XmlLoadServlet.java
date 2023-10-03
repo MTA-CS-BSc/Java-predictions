@@ -20,10 +20,10 @@ import java.util.Objects;
 public class XmlLoadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType(Configuration.JSON_CONTENT_TYPE);
+        response.setContentType(Constants.JSON_CONTENT_TYPE);
 
         try {
-            Part filePart = request.getPart("fileField");
+            Part filePart = request.getPart(Constants.XML_UPLOAD_KEY);
             InputStream fileContent = filePart.getInputStream();
             ResponseDTO responseDTO = Configuration.api.loadXml(fileContent);
 

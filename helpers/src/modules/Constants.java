@@ -17,4 +17,7 @@ public abstract class Constants {
     public final static int API_RESPONSE_SERVER_ERROR = 500;
     public final static int API_RESPONSE_BAD_REQUEST = 400;
     public final static int API_REFETCH_INTERVAL_MILLIS = 1500;
+    public final static String XML_UPLOAD_KEY = "xmlField";
+    public final static String XML_CONTENT_TYPE = "application/xml";
+    public final static String JSON_CONTENT_TYPE = "application/json";
 }
