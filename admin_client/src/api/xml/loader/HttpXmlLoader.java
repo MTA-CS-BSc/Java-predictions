@@ -1,6 +1,8 @@
 package api.xml.loader;
 
 import api.Configuration;
+import api.Routes;
+import json.Keys;
 import modules.Constants;
 import okhttp3.*;
 
@@ -8,12 +10,12 @@ import java.io.File;
 import java.io.IOException;
 
 public abstract class HttpXmlLoader {
-    private static final String XML_LOAD_URL = Configuration.SERVER_URL + "/xml/load";
+    private static final String XML_LOAD_URL = Configuration.SERVER_URL + Routes.XML_LOAD;
 
     public static Response uploadXml(File file) throws IOException {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart(Constants.XML_UPLOAD_KEY, file.getName(),
+                .addFormDataPart(Keys.XML_UPLOAD_KEY, file.getName(),
                         RequestBody.create(file, MediaType.parse(Constants.XML_CONTENT_TYPE)))
                 .build();
 

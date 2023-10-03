@@ -1,5 +1,6 @@
 package servlets.threadpool;
 
+import api.Routes;
 import com.fasterxml.jackson.databind.JsonNode;
 import config.Configuration;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,7 +16,7 @@ import other.ResponseDTO;
 import java.io.IOException;
 import java.util.Objects;
 
-@WebServlet("/threadpool")
+@WebServlet(Routes.THREADPOOL)
 public class ThreadsAmountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
