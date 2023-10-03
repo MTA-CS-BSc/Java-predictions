@@ -1,17 +1,11 @@
 package types;
 
-import consts.SystemFunctions;
 import modules.Constants;
-import modules.Utils;
-import modules.ValidatorsUtils;
 import other.PropertyDTO;
-import prototypes.implemented.Property;
-import prototypes.implemented.World;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Objects;
 
 public abstract class TypesUtils {
 
@@ -55,40 +49,6 @@ public abstract class TypesUtils {
 
     public static String getSystemFunctionType(String expression) {
         return expression.substring(0, expression.indexOf("("));
-    }
-
-    public static String getExpressionType(World world, String entityName, String expression) {
-        Property expressionEntityProp = Utils.findAnyPropertyByName(world, entityName, expression);
-
-        if (ValidatorsUtils.isSystemFunction(expression)) {
-            String systemFunctionValue = expression.substring(expression.indexOf("(") + 1, expression.lastIndexOf(")"));
-
-            switch (getSystemFunctionType(expression)) {
-                case SystemFunctions.RANDOM:
-                case SystemFunctions.TICKS:
-                    return PropTypes.DECIMAL;
-                case SystemFunctions.PERCENT:
-                    return PropTypes.FLOAT;
-                case SystemFunctions.ENVIRONMENT:
-                    return Utils.findEnvironmentPropertyByName(world, systemFunctionValue).getType();
-                case SystemFunctions.EVALUATE:
-                    String evaluateEntityName = systemFunctionValue.split("\\.")[0];
-                    String evaluatePropName = systemFunctionValue.split("\\.")[1];
-                    return Utils.findAnyPropertyByName(world, evaluateEntityName, evaluatePropName).getType();
-            }
-        } else if (!Objects.isNull(expressionEntityProp))
-            return expressionEntityProp.getType();
-
-        else if (TypesUtils.isDecimal(expression))
-            return PropTypes.DECIMAL;
-
-        else if (TypesUtils.isFloat(expression))
-            return PropTypes.FLOAT;
-
-        else if (TypesUtils.isBoolean(expression))
-            return PropTypes.BOOLEAN;
-
-        return PropTypes.STRING;
     }
 
     public static boolean validateType(PropertyDTO property, String value) {
