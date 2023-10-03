@@ -8,6 +8,6 @@
     <HBox>
         <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
         <Region HBox.hgrow="ALWAYS"/>
-        <fx:include source="../../threadpool/command/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
+        <fx:include source="../../threadpool/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
     </HBox>
 </VBox>
