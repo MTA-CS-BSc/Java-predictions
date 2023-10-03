@@ -28,10 +28,8 @@ public class XmlLoadServlet extends HttpServlet {
             InputStream fileContent = filePart.getInputStream();
             ResponseDTO responseDTO = Configuration.api.loadXml(fileContent);
 
-            if (responseDTO.getStatus() == Constants.API_RESPONSE_OK) {
+            if (responseDTO.getStatus() == Constants.API_RESPONSE_OK)
                 resp.setStatus(Constants.API_RESPONSE_OK);
-                resp.getWriter().write(JsonParser.toJson(Keys.VALID_RESPONSE_KEY, "OK"));
-            }
 
             else {
                 resp.setStatus(responseDTO.getStatus());

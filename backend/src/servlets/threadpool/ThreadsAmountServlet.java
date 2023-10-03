@@ -56,5 +56,10 @@ public class ThreadsAmountServlet extends HttpServlet {
                 }
             }
         }
+
+        else {
+            resp.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
+            resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, "Unknown"));
+        }
     }
 }
