@@ -2,7 +2,7 @@
   <artifact type="war" name="backend">
     <output-path>$PROJECT_DIR$/out/artifacts/backend</output-path>
     <root id="archive" name="backend.war">
-      <element id="artifact" artifact-name="backend-exploded" />
+      <element id="artifact" artifact-name="backend_exploded" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/../meta-backend/META-INF/MANIFEST.MF" />
       </element>
