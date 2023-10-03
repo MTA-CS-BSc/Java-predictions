@@ -399,11 +399,16 @@ public class EngineAPI {
         return new ResponseDTO(200, returnValue);
     }
 
-    //TODO: Add usage
     public ResponseDTO setThreadsAmount(int amount) {
-        threadPoolManager.setThreadsAmount(amount);
+        if (amount <= 0)
+            return new ResponseDTO(400, "Amount not set", "Amount should be positive");
 
+        threadPoolManager.setThreadsAmount(amount);
         return new ResponseDTO(200, true);
+    }
+
+    public ResponseDTO getThreadsAmount() {
+        return new ResponseDTO(20, threadPoolManager.getThreadsAmount());
     }
     //#endregion
 }

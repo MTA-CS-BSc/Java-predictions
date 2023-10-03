@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import json.JsonParser;
+import json.Keys;
 import modules.Constants;
 import other.ResponseDTO;
 
@@ -19,31 +20,31 @@ import java.util.Objects;
 @WebServlet("/xml/load")
 public class XmlLoadServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType(Constants.JSON_CONTENT_TYPE);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
+        resp.setContentType(Constants.JSON_CONTENT_TYPE);
 
         try {
-            Part filePart = request.getPart(Constants.XML_UPLOAD_KEY);
+            Part filePart = req.getPart(Keys.XML_UPLOAD_KEY);
             InputStream fileContent = filePart.getInputStream();
             ResponseDTO responseDTO = Configuration.api.loadXml(fileContent);
 
             if (responseDTO.getStatus() == Constants.API_RESPONSE_OK) {
-                response.setStatus(Constants.API_RESPONSE_OK);
-                response.getWriter().write(JsonParser.toJson("data", "OK"));
+                resp.setStatus(Constants.API_RESPONSE_OK);
+                resp.getWriter().write(JsonParser.toJson(Keys.VALID_RESPONSE_KEY, "OK"));
             }
 
             else {
-                response.setStatus(Constants.API_RESPONSE_BAD_REQUEST);
+                resp.setStatus(responseDTO.getStatus());
 
                 if (!Objects.isNull(responseDTO.getErrorDescription()))
-                    response.getWriter().write(JsonParser.toJson("detail", responseDTO.getErrorDescription().getCause()));
+                    resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
             }
         }
 
         catch (IOException e) {
-            response.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
+            resp.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
         } catch (Exception se) {
-            response.setStatus(Constants.API_RESPONSE_BAD_REQUEST);
+            resp.setStatus(Constants.API_RESPONSE_BAD_REQUEST);
         }
     }
 }
