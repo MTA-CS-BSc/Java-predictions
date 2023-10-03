@@ -8,9 +8,9 @@
       alignment="CENTER"
       fx:controller="fx.orchestrator.controllers.OrchestratorController">
 
-    <Label text="Predictions - Admin"/>
+    <fx:include source="../../header/views/Header.fxml" fx:id="header"/>
 
-    <fx:include source="../../navbar/views/Navbar.fxml" fx:id="navbar"/>
+    <Label text="Predictions - Admin"/>
 
     <StackPane>
         <fx:include source="../../mgmt/views/Mgmt.fxml" fx:id="mgmt"/>

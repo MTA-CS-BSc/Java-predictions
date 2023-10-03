@@ -1,0 +1,101 @@
+/* Set the default background color */
+.root {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Style the primary stage */
+.primary-stage {
+    -fx-background-color: #ffffff;
+    -fx-padding: 20px;
+}
+
+/* Style buttons */
+.button {
+    -fx-font-size: 14px;
+    -fx-background-color: #007bff; /* Blue background color */
+    -fx-text-fill: #ffffff; /* White text color */
+    -fx-pref-width: 120px;
+    -fx-pref-height: 36px;
+    -fx-border-radius: 4px;
+}
+
+/* Hover effect */
+.button:hover {
+    -fx-background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Pressed effect */
+.button:pressed {
+    -fx-background-color: #003e80; /* Even darker blue on button press */
+}
+
+/* Style labels */
+.label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #333333; /* Dark gray text color */
+}
+
+/* Style text fields */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-pref-width: 200px;
+    -fx-pref-height: 36px;
+}
+
+/* Style headings */
+.heading {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333; /* Dark gray text color */
+}
+
+/* Style list views */
+.list-view {
+    -fx-font-size: 14px;
+}
+
+/* Style tables */
+.table-view {
+    -fx-font-size: 14px;
+}
+
+/* Style table columns */
+.table-column {
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* Style table rows */
+.table-row-cell {
+    -fx-background-color: #f0f0f0; /* Light gray background color */
+}
+
+/* Style selected table rows */
+.table-row-cell:selected {
+    -fx-background-color: #007bff; /* Blue background color for selected rows */
+    -fx-text-fill: #ffffff; /* White text color for selected rows */
+}
+
+/* Style tabs */
+.tab {
+    -fx-font-size: 14px;
+    -fx-background-color: #f0f0f0; /* Light gray background color */
+}
+
+/* Style selected tab */
+.tab:selected {
+    -fx-background-color: #ffffff; /* White background color for selected tab */
+    -fx-border-color: #007bff; /* Blue border color for selected tab */
+    -fx-text-fill: #007bff; /* Blue text color for selected tab */
+}
+
+/* Style progress bars */
+.progress-bar {
+    -fx-background-color: #007bff; /* Blue background color for progress bars */
+}
+
+/* Style tooltips */
+.tooltip {
+    -fx-font-size: 14px;
+    -fx-background-color: #333333; /* Dark gray background color for tooltips */
+    -fx-text-fill: #ffffff; /* White text color for tooltips */
+}

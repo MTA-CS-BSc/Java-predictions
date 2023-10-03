@@ -2,6 +2,7 @@ package fx;
 
 import consts.App;
 import consts.FilePaths;
+import consts.ThemePaths;
 import fx.orchestrator.controllers.OrchestratorController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,9 +15,8 @@ public class Main extends Application {
         Scene mainScene = new Scene(loader.load());
         OrchestratorController controller = loader.getController();
 
-        //TODO: Add themes
-//        controller.addScene(mainScene);
-//        controller.setThemeToAllScenes(StyleSheetsPaths.DEFAULT_THEME_CSS);
+        controller.addScene(mainScene);
+        controller.setThemeToAllScenes(ThemePaths.DEFAULT_THEME_CSS);
 
         return mainScene;
     }
