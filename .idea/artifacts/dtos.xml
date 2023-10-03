@@ -2,10 +2,10 @@
   <artifact type="jar" name="dtos">
     <output-path>$PROJECT_DIR$/out/artifacts/dtos</output-path>
     <root id="archive" name="dtos.jar">
+      <element id="module-output" name="dtos" />
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/../meta-dtos/META-INF/MANIFEST.MF" />
       </element>
-      <element id="module-output" name="dtos" />
     </root>
   </artifact>
 </component>
