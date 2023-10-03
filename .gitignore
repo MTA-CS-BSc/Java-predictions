@@ -29,3 +29,4 @@ bin/
 .DS_Store
 
 ex1-maya-raskin-209372325/*
+/lib/apache-tomcat-10.0.11/
