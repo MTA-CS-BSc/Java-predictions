@@ -226,7 +226,7 @@
 
 <!--
 
-  These properties control option settings on the Javac compiler when it
+  These properties command option settings on the Javac compiler when it
   is invoked using the <javac> task.
 
   compile.debug        Should compilation include the debug option?

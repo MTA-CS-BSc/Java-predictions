@@ -5,5 +5,8 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="fx.mgmt.controllers.MgmtController">
 
-    <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
+    <HBox>
+        <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
+        <fx:include source="../../threadpool/command/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
+    </HBox>
 </VBox>

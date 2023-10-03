@@ -2,21 +2,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.text.Font?>
-
-<HBox xmlns="http://javafx.com/javafx"
+<Pane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      spacing="22.0"
       fx:controller="fx.xml.loader.controllers.XmlLoaderController">
         <Button mnemonicParsing="false" onAction="#handleLoadXml" text="Load XML"/>
-        <TextArea fx:id="currentXmlFilePath" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="5"
-                  prefHeight="40.0" prefWidth="454.0" promptText="No XML is currently loaded" wrapText="true">
-            <HBox.margin>
-                <Insets top="5.0"/>
-            </HBox.margin>
-            <font>
-                <Font size="12.0"/>
-            </font>
-        </TextArea>
-</HBox>
+</Pane>

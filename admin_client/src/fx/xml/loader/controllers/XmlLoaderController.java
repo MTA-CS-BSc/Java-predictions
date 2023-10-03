@@ -2,15 +2,13 @@ package fx.xml.loader.controllers;
 
 import api.xml.loader.HttpXmlLoader;
 import consts.Alerts;
+import consts.Animations;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import modules.Constants;
@@ -25,14 +23,8 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class XmlLoaderController implements Initializable {
-    private BooleanProperty isAnimationsOn;
-
-    @FXML private TextArea currentXmlFilePath;
-
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        isAnimationsOn = new SimpleBooleanProperty();
-    }
+    public void initialize(URL url, ResourceBundle resourceBundle) { }
 
     @FXML
     private void handleLoadXml(ActionEvent event) {
@@ -57,7 +49,6 @@ public class XmlLoaderController implements Initializable {
                 title = "SUCCESS";
                 body = "XML was loaded successfully!";
                 type = NotificationType.SUCCESS;
-                currentXmlFilePath.setText(file.getAbsolutePath());
             } else {
                 title = "FAILURE";
                 body = "XML was not loaded!";
@@ -67,7 +58,7 @@ public class XmlLoaderController implements Initializable {
                     Alerts.showAlert( "XML was not loaded", response.body().string(), Alert.AlertType.ERROR);
             }
 
-            if (isAnimationsOn.getValue()) {
+            if (Animations.IS_ANIMATIONS_ON.getValue()) {
                 tray = new TrayNotification(title, body, type);
                 tray.setAnimationType(AnimationType.FADE);
                 Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
@@ -77,10 +68,4 @@ public class XmlLoaderController implements Initializable {
         }
         //#endregion
     }
-
-    public void setIsAnimationsOn(boolean isAnimationsOn) {
-        this.isAnimationsOn.setValue(isAnimationsOn);
-    }
-
-    public boolean isAnimationOn() { return isAnimationsOn.getValue(); }
 }

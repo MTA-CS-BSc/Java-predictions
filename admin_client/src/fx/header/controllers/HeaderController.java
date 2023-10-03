@@ -14,13 +14,7 @@ public class HeaderController implements Initializable {
     @FXML private MenuController menuController;
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        menuController.isAnimationsOnProperty().addListener((observableValue, aBoolean, t1) -> {
-            navbarController.setIsAnimationsOn(t1);
-        });
-
-        menuController.isAnimationsOnProperty().setValue(true);
-    }
+    public void initialize(URL url, ResourceBundle resourceBundle) { }
 
     public void addScene(Scene scene) {
         menuController.addScene(scene);
