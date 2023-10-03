@@ -1,4 +1,4 @@
-package servlets;
+package servlets.xml.load;
 
 import config.Configuration;
 import jakarta.servlet.annotation.MultipartConfig;
