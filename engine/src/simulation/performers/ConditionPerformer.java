@@ -8,9 +8,9 @@ import prototypes.implemented.*;
 import prototypes.implemented.actions.Action;
 import prototypes.implemented.actions.ConditionAction;
 import modules.Constants;
-import loggers.ConditionLogicalOperators;
-import loggers.ConditionSingularities;
-import loggers.Operators;
+import types.ConditionLogicalOperators;
+import types.ConditionSingularities;
+import types.Operators;
 import types.TypesUtils;
 
 import java.util.List;

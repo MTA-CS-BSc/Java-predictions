@@ -1,4 +1,4 @@
-package loggers;
+package types;
 
 public abstract class Operators {
     public static final String BT = "bt";

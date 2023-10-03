@@ -13,7 +13,7 @@ import prototypes.jaxb.PRDWorld;
 import simulation.ByStep;
 import simulation.SingleSimulation;
 import validators.PRDWorldValidators;
-import modules.ThreadPoolManager;
+import threads.ThreadPoolManager;
 import types.PropTypes;
 import types.SimulationState;
 import types.TypesUtils;

@@ -6,7 +6,7 @@ import prototypes.jaxb.PRDAction;
 import prototypes.jaxb.PRDCondition;
 import prototypes.jaxb.PRDProperty;
 import prototypes.jaxb.PRDWorld;
-import loggers.ConditionSingularities;
+import types.ConditionSingularities;
 import types.PropTypes;
 
 import java.util.List;

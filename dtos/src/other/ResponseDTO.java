@@ -1,7 +1,7 @@
 package other;
 
 import com.google.gson.Gson;
-import modules.SingletonObjectMapper;
+import json.SingletonObjectMapper;
 
 public class ResponseDTO {
     protected int status;

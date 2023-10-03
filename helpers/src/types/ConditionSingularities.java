@@ -1,4 +1,4 @@
-package loggers;
+package types;
 
 public abstract class ConditionSingularities {
     public static final String SINGLE = "single";

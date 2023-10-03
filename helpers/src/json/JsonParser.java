@@ -1,7 +1,6 @@
 package json;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import modules.SingletonObjectMapper;
 
 import java.util.HashMap;
 import java.util.Map;

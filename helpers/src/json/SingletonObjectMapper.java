@@ -1,4 +1,4 @@
-package modules;
+package json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

@@ -4,7 +4,7 @@ import actions.*;
 import prototypes.implemented.*;
 import prototypes.implemented.actions.*;
 import simulation.SingleSimulation;
-import loggers.ConditionSingularities;
+import types.ConditionSingularities;
 import types.CalculationTypes;
 import types.TypesUtils;
 

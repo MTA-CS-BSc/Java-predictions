@@ -1,4 +1,4 @@
-package loggers;
+package types;
 
 public abstract class BoolPropValues {
     public static final String TRUE = "true";

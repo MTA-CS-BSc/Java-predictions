@@ -7,7 +7,6 @@ import modules.ValidatorsUtils;
 import other.PropertyDTO;
 import prototypes.implemented.Property;
 import prototypes.implemented.World;
-import loggers.BoolPropValues;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
