@@ -1,23 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 
-<HBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fx.mgmt.controllers.MgmtController"
-            spacing="50">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fx.mgmt.controllers.MgmtController"
+      spacing="50">
+
     <VBox spacing="10">
+        <HBox alignment="TOP_CENTER">
+            <Label text="Threadpool management"/>
+        </HBox>
+
+        <HBox alignment="CENTER">
+            <VBox spacing="10">
+                <fx:include source="../threadpool/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
+                <fx:include source="../threadpool/views/ThreadpoolQueue.fxml" fx:id="threadpoolQueue"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <Separator style="-fx-background-color: black" orientation="horizontal"/>
+
+    <VBox spacing="10">
+        <HBox alignment="TOP_CENTER">
+            <Label text="Valid Worlds/Simulations"/>
+        </HBox>
+
         <HBox alignment="CENTER_LEFT">
             <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
         </HBox>
 
-        <fx:include source="../valid/worlds/views/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
-    </VBox>
-
-    <VBox alignment="TOP_RIGHT" spacing="10">
-        <HBox alignment="CENTER_RIGHT">
-            <fx:include source="../threadpool/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
+        <HBox spacing="10">
+            <fx:include source="../valid/worlds/views/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
+            <fx:include source="../world/details/views/WorldDetails.fxml" fx:id="worldDetails"/>
         </HBox>
-
-        <fx:include source="../threadpool/views/ThreadpoolQueue.fxml" fx:id="threadpoolQueue"/>
     </VBox>
-</HBox>
+</VBox>
