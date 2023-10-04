@@ -4,13 +4,11 @@ import dtos.Mappers;
 import other.SingleSimulationDTO;
 import exceptions.UUIDNotFoundException;
 import prototypes.implemented.*;
+import prototypes.implemented.Properties;
 import simulation.SingleSimulation;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -83,6 +81,10 @@ public class HistoryManager implements Serializable {
         return initialWorlds.values().stream()
                 .map(world -> getSimulationDetails(world.getName()))
                 .collect(Collectors.toList());
+    }
+
+    public List<String> getAllValidWorldsNames() {
+        return new ArrayList<>(initialWorlds.keySet());
     }
 
     public String createSimulationFromName(String name) {

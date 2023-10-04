@@ -139,6 +139,13 @@ public class EngineAPI {
 
         return new ResponseDTO(200,  historyManager.getAllSimulationsDetails());
     }
+
+    public ResponseDTO getAllValidWorldsNames() {
+        if (!historyManager.anyXmlLoaded())
+            return new ResponseDTO(400, "", "No loaded XML");
+
+        return new ResponseDTO(200,  historyManager.getAllValidWorldsNames());
+    }
     //#endregion
 
     //#region History
