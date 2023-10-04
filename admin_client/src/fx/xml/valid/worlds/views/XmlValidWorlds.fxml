@@ -7,6 +7,6 @@
             fx:id="validWorldsTableView"
             fx:controller="fx.xml.valid.worlds.controllers.XmlValidWorldController">
     <columns>
-        <TableColumn fx:id="nameColumn" prefWidth="200" text="Simulation/World name"/>
+        <TableColumn fx:id="nameColumn" prefWidth="100" text="Simulation/World name"/>
     </columns>
 </TableView>
