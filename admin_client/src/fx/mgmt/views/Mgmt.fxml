@@ -3,11 +3,11 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.geometry.Insets?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="fx.mgmt.controllers.MgmtController"
       spacing="50">
-
     <VBox spacing="10">
         <HBox alignment="TOP_CENTER">
             <Label text="Threadpool management"/>
@@ -24,6 +24,10 @@
     <Separator style="-fx-background-color: black" orientation="horizontal"/>
 
     <VBox spacing="10">
+        <VBox.margin>
+            <Insets left="10"/>
+        </VBox.margin>
+
         <HBox alignment="TOP_CENTER">
             <Label text="Valid Worlds/Simulations"/>
         </HBox>

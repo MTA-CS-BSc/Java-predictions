@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="war" build-on-make="true" name="backend">
+  <artifact type="war" name="backend">
     <output-path>$PROJECT_DIR$/out/artifacts/backend</output-path>
     <root id="archive" name="backend.war">
       <element id="artifact" artifact-name="backend_exploded" />

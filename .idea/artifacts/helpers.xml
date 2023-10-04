@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="helpers">
+  <artifact type="jar" name="helpers">
     <output-path>$PROJECT_DIR$/out/artifacts/helpers</output-path>
     <root id="archive" name="helpers.jar">
       <element id="directory" name="META-INF">
