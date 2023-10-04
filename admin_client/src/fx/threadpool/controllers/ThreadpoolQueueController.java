@@ -33,11 +33,11 @@ public class ThreadpoolQueueController implements Initializable {
         runningColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getRunning()).asObject());
 
         Executors.newScheduledThreadPool(1)
-                .scheduleAtFixedRate(this::pullQueueMgmt, 0,
+                .scheduleAtFixedRate(this::fetchQueueMgmt, 0,
                         Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
-    private void pullQueueMgmt() {
+    private void fetchQueueMgmt() {
         try {
             Response response = HttpThreadpool.getThreadpoolQueueData();
 
