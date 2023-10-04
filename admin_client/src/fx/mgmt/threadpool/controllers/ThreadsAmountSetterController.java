@@ -1,4 +1,4 @@
-package fx.threadpool.controllers;
+package fx.mgmt.threadpool.controllers;
 
 import consts.FilePaths;
 import fx.Main;

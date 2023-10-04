@@ -1,4 +1,4 @@
-package fx.threadpool.controllers;
+package fx.mgmt.threadpool.controllers;
 
 import api.threadpool.HttpThreadpool;
 import javafx.application.Platform;

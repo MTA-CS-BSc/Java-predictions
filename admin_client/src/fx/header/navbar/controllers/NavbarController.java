@@ -1,4 +1,4 @@
-package fx.navbar.controllers;
+package fx.header.navbar.controllers;
 
 import javafx.fxml.Initializable;
 

@@ -1,7 +1,7 @@
 package fx.header.controllers;
 
-import fx.menu.controllers.MenuController;
-import fx.navbar.controllers.NavbarController;
+import fx.header.menu.controllers.MenuController;
+import fx.header.navbar.controllers.NavbarController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 

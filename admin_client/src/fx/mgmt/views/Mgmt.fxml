@@ -10,14 +10,14 @@
             <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
         </HBox>
 
-        <fx:include source="../../xml/valid/worlds/views/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
+        <fx:include source="../valid/worlds/views/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
     </VBox>
 
     <VBox alignment="TOP_RIGHT" spacing="10">
         <HBox alignment="CENTER_RIGHT">
-            <fx:include source="../../threadpool/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
+            <fx:include source="../threadpool/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
         </HBox>
 
-        <fx:include source="../../threadpool/views/ThreadpoolQueue.fxml" fx:id="threadpoolQueue"/>
+        <fx:include source="../threadpool/views/ThreadpoolQueue.fxml" fx:id="threadpoolQueue"/>
     </VBox>
 </HBox>

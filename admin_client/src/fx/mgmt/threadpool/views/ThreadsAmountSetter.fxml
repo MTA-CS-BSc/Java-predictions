@@ -4,6 +4,6 @@
 
 <Pane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fx.threadpool.controllers.ThreadsAmountSetterController">
+            fx:controller="fx.mgmt.threadpool.controllers.ThreadsAmountSetterController">
     <Button mnemonicParsing="false" onAction="#handleSetThreadsAmountClicked" text="Set threads count"/>
 </Pane>

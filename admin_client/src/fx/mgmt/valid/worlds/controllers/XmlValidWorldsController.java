@@ -1,4 +1,4 @@
-package fx.xml.valid.worlds.controllers;
+package fx.mgmt.valid.worlds.controllers;
 
 import api.xml.valid.worlds.HttpValidWorlds;
 import com.fasterxml.jackson.core.type.TypeReference;

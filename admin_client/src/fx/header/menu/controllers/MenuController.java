@@ -1,4 +1,4 @@
-package fx.menu.controllers;
+package fx.header.menu.controllers;
 
 import consts.Animations;
 import consts.ThemeNames;

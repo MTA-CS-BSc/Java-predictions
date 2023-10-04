@@ -7,7 +7,7 @@
 <?import javafx.scene.control.Button?>
 <VBox alignment="CENTER" spacing="10" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="fx.threadpool.controllers.ThreadsAmountPopupController">
+      fx:controller="fx.mgmt.threadpool.controllers.ThreadsAmountPopupController">
     <Label text="Amount" style="-fx-font-weight: bold; -fx-font-size: 14" />
     <TextArea fx:id="amountTextArea" text="Amount" prefHeight="30" prefWidth="100" minWidth="-Infinity" minHeight="-Infinity"/>
     <Button text="SET" onAction="#handleSetClicked"/>

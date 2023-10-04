@@ -1,7 +1,7 @@
 package fx.mgmt.controllers;
 
 import consts.Animations;
-import fx.threadpool.controllers.ThreadsAmountSetterController;
+import fx.mgmt.threadpool.controllers.ThreadsAmountSetterController;
 import fx.xml.loader.controllers.XmlLoaderController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
