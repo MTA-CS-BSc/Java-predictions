@@ -2,8 +2,7 @@ package fx;
 
 import consts.App;
 import consts.FilePaths;
-import consts.ThemePaths;
-import fx.orchestrator.controllers.OrchestratorController;
+import fx.themes.ScenesStore;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,10 +12,7 @@ public class Main extends Application {
     private Scene createMainScene() throws Exception {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource(FilePaths.ADMIN_ORCHESTRATOR_FXML));
         Scene mainScene = new Scene(loader.load());
-        OrchestratorController controller = loader.getController();
-
-        controller.addScene(mainScene);
-        controller.setThemeToAllScenes(ThemePaths.DEFAULT_THEME_CSS);
+        ScenesStore.SCENES_PROPERTY.add(mainScene);
 
         return mainScene;
     }
