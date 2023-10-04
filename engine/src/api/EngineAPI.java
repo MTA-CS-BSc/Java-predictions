@@ -145,7 +145,7 @@ public class EngineAPI {
         if (!historyManager.anyXmlLoaded())
             return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
 
-        return new ResponseDTO(Constants.API_RESPONSE_OK,  historyManager.getAllValidWorldsNames());
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getAllValidWorldsNames());
     }
     //#endregion
 
