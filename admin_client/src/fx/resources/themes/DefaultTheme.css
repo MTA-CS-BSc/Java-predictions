@@ -31,7 +31,7 @@
 
 /* Style labels */
 .label {
-    -fx-font-size: 16px;
+    -fx-font-size: 14px;
     -fx-text-fill: #333333; /* Dark gray text color */
 }
 
@@ -51,12 +51,12 @@
 
 /* Style list views */
 .list-view {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
 }
 
 /* Style tables */
 .table-view {
-    -fx-font-size: 14px;
+    -fx-font-size: 12px;
 }
 
 /* Style table columns */

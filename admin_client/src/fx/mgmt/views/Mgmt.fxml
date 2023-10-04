@@ -5,7 +5,7 @@
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="fx.mgmt.controllers.MgmtController"
             spacing="50">
-    <VBox alignment="CENTER_LEFT">
+    <VBox spacing="10">
         <HBox alignment="CENTER_LEFT">
             <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
         </HBox>
@@ -13,7 +13,7 @@
         <fx:include source="../../xml/valid/worlds/views/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
     </VBox>
 
-    <VBox alignment="CENTER_RIGHT" spacing="10">
+    <VBox alignment="TOP_RIGHT" spacing="10">
         <HBox alignment="CENTER_RIGHT">
             <fx:include source="../../threadpool/views/ThreadsAmountSetter.fxml" fx:id="threadsAmountSetter"/>
         </HBox>
