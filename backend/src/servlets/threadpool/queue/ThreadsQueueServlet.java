@@ -29,7 +29,6 @@ public class ThreadsQueueServlet extends HttpServlet {
         }
 
         else
-            resp.getWriter().write(JsonParser.toJson(JsonParser.getMapFromJsonString(responseDTO.getData())));
-
+            resp.getWriter().write(responseDTO.getData());
     }
 }

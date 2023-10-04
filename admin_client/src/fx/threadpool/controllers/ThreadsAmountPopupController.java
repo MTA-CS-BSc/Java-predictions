@@ -58,7 +58,7 @@ public class ThreadsAmountPopupController implements Initializable {
             }
 
             else
-                Alerts.showAlert("ERROR", response.message(), Alert.AlertType.ERROR);
+                Alerts.showAlert("ERROR", response.body().string(), Alert.AlertType.ERROR);
         } catch (Exception e) {
             Alerts.showAlert("ERROR", "IOException encountered", Alert.AlertType.ERROR);
         }

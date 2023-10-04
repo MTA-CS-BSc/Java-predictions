@@ -31,4 +31,8 @@ public class QueueMgmtDTO {
     public int getFinished() {
         return finished;
     }
+
+    public int getThreadsAmount() {
+        return threadsAmount;
+    }
 }
