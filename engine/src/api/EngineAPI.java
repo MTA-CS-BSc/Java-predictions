@@ -369,7 +369,7 @@ public class EngineAPI {
                 .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED)
                 .count();
 
-        QueueMgmtDTO queueMgmtDTO = new QueueMgmtDTO(pendingSimulations, runningSimulations, finishedSimulations);
+        QueueMgmtDTO queueMgmtDTO = new QueueMgmtDTO(pendingSimulations, runningSimulations, finishedSimulations, threadPoolManager.getThreadsAmount());
 
         return new ResponseDTO(200, queueMgmtDTO);
     }
