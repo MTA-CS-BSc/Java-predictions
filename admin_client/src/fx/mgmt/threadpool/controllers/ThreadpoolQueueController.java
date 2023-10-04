@@ -41,6 +41,9 @@ public class ThreadpoolQueueController implements Initializable {
         try {
             Response response = HttpThreadpool.getThreadpoolQueueData();
 
+            if (!response.isSuccessful())
+                response.close();
+
             if (response.isSuccessful() && !Objects.isNull(response.body())) {
                 QueueMgmtDTO queueMgmtDTO = SingletonObjectMapper.objectMapper.readValue(response.body().string(), QueueMgmtDTO.class);
 

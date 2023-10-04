@@ -43,6 +43,9 @@ public class XmlValidWorldsController implements Initializable {
         try {
             Response response = HttpValidWorlds.getValidWorlds();
 
+            if (!response.isSuccessful())
+                response.close();
+
             if (response.isSuccessful() && !Objects.isNull(response.body())) {
                 List<WorldDTO> validWorlds = SingletonObjectMapper.objectMapper.readValue(response.body().string(), new TypeReference<List<WorldDTO>>() {});
 
@@ -56,17 +59,15 @@ public class XmlValidWorldsController implements Initializable {
     }
 
     private void selectPreviouslySelected() {
-        WorldDTO newlySelected = validWorldsTableView.getItems()
-                .stream()
-                .filter(element -> element.getName().equals(selectedWorld.getValue().getName()))
-                .findFirst().orElse(null);
+        if (!Objects.isNull(selectedWorld.getValue())) {
+            WorldDTO newlySelected = validWorldsTableView.getItems()
+                    .stream()
+                    .filter(element -> element.getName().equals(selectedWorld.getValue().getName()))
+                    .findFirst().orElse(null);
 
-        validWorldsTableView.getSelectionModel().select(newlySelected);
-        setSelectedWorld(newlySelected);
-    }
-
-    public void setSelectedWorld(WorldDTO value) {
-        selectedWorld.setValue(value);
+            validWorldsTableView.getSelectionModel().select(newlySelected);
+            setSelectedWorld(newlySelected);
+        }
     }
 
     @FXML
@@ -77,5 +78,17 @@ public class XmlValidWorldsController implements Initializable {
             if (selectedWorld != null)
                 setSelectedWorld(selectedWorld);
         }
+    }
+
+    public void setSelectedWorld(WorldDTO value) {
+        selectedWorld.setValue(value);
+    }
+
+    public WorldDTO getSelectedWorld() {
+        return selectedWorld.getValue();
+    }
+
+    public ObjectProperty<WorldDTO> selectedWorldProperty() {
+        return selectedWorld;
     }
 }

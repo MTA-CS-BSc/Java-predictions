@@ -41,15 +41,16 @@ public class XmlLoaderController implements Initializable {
     private void handleNotNullXmlFileEntered(File file) {
         try {
             TrayNotification tray;
-            Response response = HttpXmlLoader.uploadXml(file);
             String title, body;
             NotificationType type;
+            Response response = HttpXmlLoader.uploadXml(file);
 
-            if (response.code() == Constants.API_RESPONSE_OK) {
+            if (response.isSuccessful()) {
                 title = "SUCCESS";
                 body = "XML was loaded successfully!";
                 type = NotificationType.SUCCESS;
             } else {
+                response.close();
                 title = "FAILURE";
                 body = "XML was not loaded!";
                 type = NotificationType.ERROR;

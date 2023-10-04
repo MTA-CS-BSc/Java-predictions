@@ -9,7 +9,7 @@
 
     <Label text="Selected world details"/>
 
-    <GridPane vgap="15.0">
+    <GridPane vgap="15.0" fx:id="container">
         <columnConstraints>
             <ColumnConstraints hgrow="ALWAYS"/>
         </columnConstraints>

@@ -54,10 +54,12 @@ public class ThreadsAmountPopupController implements Initializable {
         try {
             Response response = HttpThreadpool.setThreadsAmount(amount);
 
-            if (response.isSuccessful())
+            if (!response.isSuccessful())
+                    response.close();
+            else
                 Alerts.showAlert("SUCCESS", "Threadpool count set to " + amount, Alert.AlertType.INFORMATION);
 
-            else if (!Objects.isNull(response.body()))
+            if (!response.isSuccessful() && !Objects.isNull(response.body()))
                 Alerts.showAlert("ERROR", response.body().string(), Alert.AlertType.ERROR);
 
             closePopup(event);
