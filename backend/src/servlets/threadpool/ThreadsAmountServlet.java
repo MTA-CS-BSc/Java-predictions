@@ -22,9 +22,16 @@ public class ThreadsAmountServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
         try {
-            int threadsAmount = SingletonObjectMapper.objectMapper.readValue(Configuration.api.getThreadsAmount().getData(), Integer.class);
-            resp.setStatus(Constants.API_RESPONSE_OK);
-            resp.getWriter().write(JsonParser.toJson(Keys.VALID_RESPONSE_KEY, threadsAmount));
+            ResponseDTO responseDTO = Configuration.api.getThreadsAmount();
+            resp.setStatus(responseDTO.getStatus());
+
+            if (!Objects.isNull(responseDTO.getErrorDescription()))
+                resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
+
+            else {
+                int threadsAmount = SingletonObjectMapper.objectMapper.readValue(responseDTO.getData(), Integer.class);
+                resp.getWriter().write(JsonParser.toJson(Keys.VALID_RESPONSE_KEY, threadsAmount));
+            }
         } catch (Exception e) {
             resp.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
             resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, e.getMessage()));
@@ -45,16 +52,10 @@ public class ThreadsAmountServlet extends HttpServlet {
 
             else {
                 ResponseDTO responseDTO = Configuration.api.setThreadsAmount(amount);
+                resp.setStatus(responseDTO.getStatus());
 
-                if (responseDTO.getStatus() == Constants.API_RESPONSE_OK)
-                    resp.setStatus(Constants.API_RESPONSE_OK);
-
-                else {
-                    resp.setStatus(responseDTO.getStatus());
-
-                    if (!Objects.isNull(responseDTO.getErrorDescription()))
-                        resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
-                }
+                if (!Objects.isNull(responseDTO.getErrorDescription()))
+                    resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
             }
         }
 

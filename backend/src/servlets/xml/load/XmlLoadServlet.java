@@ -12,7 +12,6 @@ import json.Keys;
 import modules.Constants;
 import other.ResponseDTO;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
 
@@ -29,13 +28,8 @@ public class XmlLoadServlet extends HttpServlet {
             ResponseDTO responseDTO = Configuration.api.loadXml(fileContent);
             resp.setStatus(responseDTO.getStatus());
 
-            if (responseDTO.getStatus() != Constants.API_RESPONSE_OK)
-                if (!Objects.isNull(responseDTO.getErrorDescription()))
-                    resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
-        }
-
-        catch (IOException e) {
-            resp.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
+            if (!Objects.isNull(responseDTO.getErrorDescription()))
+                resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
         } catch (Exception se) {
             resp.setStatus(Constants.API_RESPONSE_BAD_REQUEST);
         }

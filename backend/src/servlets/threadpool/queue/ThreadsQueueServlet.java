@@ -19,13 +19,12 @@ public class ThreadsQueueServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
+
         ResponseDTO responseDTO = Configuration.api.getQueueManagementDetails();
         resp.setStatus(responseDTO.getStatus());
 
-        if (responseDTO.getStatus() != Constants.API_RESPONSE_OK) {
-            if (!Objects.isNull(responseDTO.getErrorDescription()))
-                resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
-        }
+        if (!Objects.isNull(responseDTO.getErrorDescription()))
+            resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
 
         else
             resp.getWriter().write(responseDTO.getData());

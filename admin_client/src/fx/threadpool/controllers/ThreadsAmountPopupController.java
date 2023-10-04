@@ -10,6 +10,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
+import json.JsonParser;
+import json.Keys;
 import okhttp3.Response;
 
 import java.io.IOException;
@@ -26,7 +28,9 @@ public class ThreadsAmountPopupController implements Initializable {
 
         try {
             Response amountResponse = HttpThreadpool.getThreadsAmount();
-            amountTextArea.setText(Objects.isNull(amountResponse.body()) ? "ERROR" : amountResponse.body().string());
+
+            if (!Objects.isNull(amountResponse.body()))
+                amountTextArea.setText(JsonParser.getMapFromJsonString(amountResponse.body().string()).get(Keys.VALID_RESPONSE_KEY).toString());
         } catch (IOException e) {
             amountTextArea.setText("ERROR");
         }
