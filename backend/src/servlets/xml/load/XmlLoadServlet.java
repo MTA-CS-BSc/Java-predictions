@@ -27,16 +27,11 @@ public class XmlLoadServlet extends HttpServlet {
             Part filePart = req.getPart(Keys.XML_UPLOAD_KEY);
             InputStream fileContent = filePart.getInputStream();
             ResponseDTO responseDTO = Configuration.api.loadXml(fileContent);
+            resp.setStatus(responseDTO.getStatus());
 
-            if (responseDTO.getStatus() == Constants.API_RESPONSE_OK)
-                resp.setStatus(Constants.API_RESPONSE_OK);
-
-            else {
-                resp.setStatus(responseDTO.getStatus());
-
+            if (responseDTO.getStatus() != Constants.API_RESPONSE_OK)
                 if (!Objects.isNull(responseDTO.getErrorDescription()))
                     resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
-            }
         }
 
         catch (IOException e) {
