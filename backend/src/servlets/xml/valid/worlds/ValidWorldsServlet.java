@@ -29,6 +29,5 @@ public class ValidWorldsServlet extends HttpServlet {
 
         else
             resp.getWriter().write(responseDTO.getData());
-
     }
 }
