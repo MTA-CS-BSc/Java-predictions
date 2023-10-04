@@ -7,7 +7,7 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="fx.mgmt.controllers.MgmtController"
-      spacing="50">
+      spacing="15">
     <VBox spacing="10">
         <HBox alignment="TOP_CENTER">
             <Label text="Threadpool management"/>
