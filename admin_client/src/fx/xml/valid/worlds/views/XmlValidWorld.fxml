@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<TableView xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:id="validWorldsTableView"
+            fx:controller="fx.xml.valid.worlds.controllers.XmlValidWorldController">
+    <columns>
+        <TableColumn fx:id="nameColumn" prefWidth="200" text="Simulation/World name"/>
+    </columns>
+</TableView>
