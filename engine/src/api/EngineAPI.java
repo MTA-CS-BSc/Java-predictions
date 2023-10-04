@@ -132,6 +132,13 @@ public class EngineAPI {
 
         return new ResponseDTO(200, historyManager.getSimulationDetails(fromInitialName));
     }
+
+    public ResponseDTO getAllSimulationsDetails() {
+        if (!historyManager.anyXmlLoaded())
+            return new ResponseDTO(400, "", "No loaded XML");
+
+        return new ResponseDTO(200,  historyManager.getAllSimulationsDetails());
+    }
     //#endregion
 
     //#region History
