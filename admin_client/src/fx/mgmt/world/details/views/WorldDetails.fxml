@@ -7,7 +7,7 @@
 <VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER"
       xmlns="http://javafx.com/javafx/8.0.171" fx:controller="fx.mgmt.world.details.controllers.WorldDetailsController">
 
-    <Label text="Selected world details"/>
+    <Label style="-fx-font-weight: bold; -fx-underline: true" text="Selected world details"/>
 
     <GridPane vgap="15.0" fx:id="container">
         <columnConstraints>

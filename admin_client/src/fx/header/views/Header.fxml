@@ -6,7 +6,7 @@
       fx:controller="fx.header.controllers.HeaderController" alignment="CENTER">
     <fx:include source="../menu/views/Menu.fxml" fx:id="menu"/>
 
-    <Label text="Predictions - Admin"/>
+    <Label styleClass="app-title" text="Predictions - Admin"/>
 
     <fx:include source="../navbar/views/Navbar.fxml" fx:id="navbar"/>
 </VBox>
