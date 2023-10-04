@@ -15,11 +15,11 @@ public abstract class PRDWorldValidators {
         try {
             if (validateEntities(world) && validateEnvironment(world) &&
                     validateRules(world) && validateGrid(world))
-                return new ResponseDTO(200, "XML validation passed");
+                return new ResponseDTO(Constants.API_RESPONSE_OK, "XML validation passed");
 
-            return new ResponseDTO(500, "XML validation failed", "Unknown");
+            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, "XML validation failed", "Unknown");
         } catch (Exception e) {
-            return new ResponseDTO(400, "XML validation failed", e.getMessage());
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "XML validation failed", e.getMessage());
         }
     }
 

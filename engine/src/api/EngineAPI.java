@@ -4,6 +4,7 @@ import dtos.Mappers;
 import exceptions.UUIDNotFoundException;
 import history.HistoryManager;
 import logs.EngineLoggers;
+import modules.Constants;
 import modules.Utils;
 import other.*;
 import parsers.XmlParser;
@@ -49,7 +50,7 @@ public class EngineAPI {
         ResponseDTO validateWorldResponse = PRDWorldValidators.validateWorld(prdWorld);
 
         if (!Objects.isNull(historyManager.getInitialWorld(prdWorld.getName())))
-            return new ResponseDTO(400, "Validation failed", "Name exists");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "Validation failed", "Name exists");
 
         if (Objects.isNull(validateWorldResponse.getErrorDescription()))
             historyManager.addInitialWorld(new World(prdWorld));
@@ -58,19 +59,19 @@ public class EngineAPI {
     }
 
     public ResponseDTO anyXmlLoaded() {
-        return new ResponseDTO(200, historyManager.anyXmlLoaded());
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.anyXmlLoaded());
     }
     //#endregion
 
     //#region Simulation
     public ResponseDTO createSimulation(String fromInitialName) {
-        return new ResponseDTO(200, historyManager.createSimulationFromName(fromInitialName));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.createSimulationFromName(fromInitialName));
     }
 
     public ResponseDTO cloneSimulation(String uuid) {
         SingleSimulation cloned = new SingleSimulation(historyManager.getPastSimulation(uuid));
         historyManager.addPastSimulation(cloned);
-        return new ResponseDTO(200, cloned.getUUID());
+        return new ResponseDTO(Constants.API_RESPONSE_OK, cloned.getUUID());
     }
 
     private void runSimulation(String uuid) {
@@ -84,11 +85,11 @@ public class EngineAPI {
 
     public ResponseDTO enqueueSimulation(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(500, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
+            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, String.format("Simulation [%s] was not executed", uuid), String.format("Simulation [%s] could not be found", uuid));
 
         threadPoolManager.addRunSimulationToQueue(() -> runSimulation(uuid), uuid);
 
-        return new ResponseDTO(200, String.format("Simulation [%s] was added to thread pool", uuid));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("Simulation [%s] was added to thread pool", uuid));
     }
 
     public ResponseDTO stopSimulation(String uuid) {
@@ -97,54 +98,54 @@ public class EngineAPI {
 
         if (!simulationState.equals(SimulationState.RUNNING) &&
                 !simulationState.equals(SimulationState.PAUSED))
-            return new ResponseDTO(400, String.format("Simulation [%s] was not stopped.", uuid),
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s] was not stopped.", uuid),
                     String.format("Requested simulation's state is [%s]", simulationState.name()));
 
         simulation.setSimulationState(SimulationState.FINISHED);
-        return new ResponseDTO(200, String.format("Simulation [%s] is stopped", uuid));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("Simulation [%s] is stopped", uuid));
     }
 
     public ResponseDTO pauseSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
         if (!simulation.getSimulationState().equals(SimulationState.RUNNING))
-            return new ResponseDTO(400, String.format("Simulation [%s] was not stopped", uuid),
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s] was not stopped", uuid),
                     "Simulation is not running");
 
         simulation.setSimulationState(SimulationState.PAUSED);
-        return new ResponseDTO(200, String.format("Simulation [%s] was paused", uuid));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("Simulation [%s] was paused", uuid));
     }
 
     public ResponseDTO resumeSimulation(String uuid) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
         if (!simulation.getSimulationState().equals(SimulationState.PAUSED))
-            return new ResponseDTO(400, String.format("Simulation [%s] was not resumed.", uuid),
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s] was not resumed.", uuid),
                     "Requested simulation is not stopped");
 
         simulation.setSimulationState(SimulationState.RUNNING);
-        return new ResponseDTO(200, String.format("Simulation [%s] is running", uuid));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("Simulation [%s] is running", uuid));
     }
 
     public ResponseDTO getSimulationDetails(String fromInitialName) {
         if (!historyManager.anyXmlLoaded())
-            return new ResponseDTO(400, "", "No loaded XML");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
 
-        return new ResponseDTO(200, historyManager.getSimulationDetails(fromInitialName));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getSimulationDetails(fromInitialName));
     }
 
     public ResponseDTO getAllSimulationsDetails() {
         if (!historyManager.anyXmlLoaded())
-            return new ResponseDTO(400, "", "No loaded XML");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
 
-        return new ResponseDTO(200,  historyManager.getAllSimulationsDetails());
+        return new ResponseDTO(Constants.API_RESPONSE_OK,  historyManager.getAllSimulationsDetails());
     }
 
     public ResponseDTO getAllValidWorldsNames() {
         if (!historyManager.anyXmlLoaded())
-            return new ResponseDTO(400, "", "No loaded XML");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
 
-        return new ResponseDTO(200,  historyManager.getAllValidWorldsNames());
+        return new ResponseDTO(Constants.API_RESPONSE_OK,  historyManager.getAllValidWorldsNames());
     }
     //#endregion
 
@@ -161,11 +162,11 @@ public class EngineAPI {
 
         toRemove.forEach(this::removeSimulation);
 
-        return new ResponseDTO(200, "");
+        return new ResponseDTO(Constants.API_RESPONSE_OK, "");
     }
 
     public ResponseDTO isHistoryEmpty() {
-        return new ResponseDTO(200, historyManager.isEmpty());
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.isEmpty());
     }
 
     public ResponseDTO writeHistoryToFile(String filePath) {
@@ -176,10 +177,10 @@ public class EngineAPI {
             o.close();
             f.close();
             EngineLoggers.API_LOGGER.info("History saved successfully.");
-            return new ResponseDTO(200, true);
+            return new ResponseDTO(Constants.API_RESPONSE_OK, true);
         } catch (Exception e) {
             EngineLoggers.API_LOGGER.info("Could not save history: " + e.getMessage());
-            return new ResponseDTO(200, false);
+            return new ResponseDTO(Constants.API_RESPONSE_OK, false);
         }
     }
 
@@ -188,22 +189,22 @@ public class EngineAPI {
             FileInputStream fi = new FileInputStream(filePath);
             ObjectInputStream oi = new ObjectInputStream(fi);
             historyManager = (HistoryManager) oi.readObject();
-            return new ResponseDTO(200);
+            return new ResponseDTO(Constants.API_RESPONSE_OK);
         } catch (Exception e) {
             EngineLoggers.API_LOGGER.info(e.getMessage());
-            return new ResponseDTO(500, "Attempted to loader history but no history file was found");
+            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, "Attempted to loader history but no history file was found");
         }
     }
     //#endregion
 
     //#region Getters & Setters
     public ResponseDTO getGrid(String uuid) {
-        return new ResponseDTO(200, historyManager.getPastSimulation(uuid).getGrid());
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getPastSimulation(uuid).getGrid());
     }
 
     public ResponseDTO getPastSimulations() {
         if (historyManager.isEmpty())
-            return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
 
         List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
                 .stream()
@@ -211,21 +212,21 @@ public class EngineAPI {
                 .sorted(Comparator.comparing(SingleSimulationDTO::getCreatedTimestamp))
                 .collect(Collectors.toList());
 
-        return new ResponseDTO(200, data);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, data);
     }
 
     public ResponseDTO getPastSimulation(String uuid) {
         if (historyManager.isEmpty())
-            return new ResponseDTO(400, Collections.emptyList(), "History is empty!");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
 
-        return new ResponseDTO(200, Mappers.toDto(historyManager.getPastSimulation(uuid)));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, Mappers.toDto(historyManager.getPastSimulation(uuid)));
     }
 
     public ResponseDTO getEntities(String uuid, boolean isInitial) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
         if (Objects.isNull(simulation))
-            return new ResponseDTO(400, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
         World relevantWorld;
 
@@ -244,12 +245,12 @@ public class EngineAPI {
                 .sorted(Comparator.comparing(EntityDTO::getName))
                 .collect(Collectors.toList());
 
-        return new ResponseDTO(200, data);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, data);
     }
 
     public ResponseDTO getEnvironmentProperties(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(500, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
+            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, Collections.emptyList(), String.format("UUID [%s] not found", uuid));
 
         List<PropertyDTO> data = historyManager.getPastSimulation(uuid).getWorld().getEnvironment()
                 .getEnvVars().values()
@@ -258,14 +259,14 @@ public class EngineAPI {
                 .sorted(Comparator.comparing(PropertyDTO::getName))
                 .collect(Collectors.toList());
 
-        return new ResponseDTO(200, data);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, data);
     }
 
     public ResponseDTO setEntityInitialPopulation(String uuid, EntityDTO entityDTO, int population) {
         String entityName = entityDTO.getName();
 
         if (population < 0)
-            return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Population is negative");
 
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
@@ -273,19 +274,19 @@ public class EngineAPI {
 
         if (simulation.getOverallPopulation() - entity.getPopulation() + population
                 > simulation.getMaxEntitiesAmount())
-            return new ResponseDTO(400, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     uuid, entityName), "Overall population exceeds board!");
 
         entity.initPopulation(simulation.getGrid(), population);
         entityDTO.setPopulation(population);
 
-        return new ResponseDTO(200, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
+        return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
                 uuid, entityName, population));
     }
 
     public ResponseDTO setEnvironmentVariable(String uuid, PropertyDTO prop, String val) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(400, "UUID", UUIDNotFoundException.class.getSimpleName());
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "UUID", UUIDNotFoundException.class.getSimpleName());
 
         Property foundProp = Utils.findEnvironmentPropertyByName(historyManager.getPastSimulation(uuid).getWorld(), prop.getName());
 
@@ -296,15 +297,15 @@ public class EngineAPI {
                 foundProp.getValue().setInit(null);
                 foundProp.getValue().setCurrentValue(null);
                 prop.setValue(val);
-                return new ResponseDTO(200, String.format("UUID [%s]: Reset environment variable [%s]",
+                return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("UUID [%s]: Reset environment variable [%s]",
                         uuid, foundProp.getName()));
             }
 
             else if (!TypesUtils.validateType(prop.getType(), val))
-                return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Incorrect type");
+                return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", prop.getName()), "Incorrect type");
 
             else if (!Utils.validateValueInRange(prop, val))
-                return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
+                return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
 
             if (PropTypes.NUMERIC_PROPS.contains(foundProp.getType()))
                 val = TypesUtils.removeExtraZeroes(val);
@@ -314,20 +315,20 @@ public class EngineAPI {
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
             prop.setValue(val);
 
-            return new ResponseDTO(200, String.format("UUID [%s]: Set environment variable [%s]: Value: [%s]",
+            return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("UUID [%s]: Set environment variable [%s]: Value: [%s]",
                     uuid, foundProp.getName(), foundProp.getValue().getCurrentValue()));
         }
 
-        return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()),
+        return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", prop.getName()),
                 String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
     }
 
     public ResponseDTO getEntitiesAmountsPerTick(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(400, Collections.emptyMap(), "Simulation not found!");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyMap(), "Simulation not found!");
 
         else if (historyManager.getPastSimulation(uuid).getSimulationState() != SimulationState.FINISHED)
-            return new ResponseDTO(400, 0, "Simulation is not finished!");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, 0, "Simulation is not finished!");
 
         Map<String, List<Integer>> entitiesAmount = new HashMap<>();
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
@@ -341,31 +342,31 @@ public class EngineAPI {
             entitiesAmount.put(entity.getName(), amounts);
         }
 
-        return new ResponseDTO(200, entitiesAmount);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, entitiesAmount);
     }
 
     public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
-        return new ResponseDTO(200, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getEntitiesCountForProp(uuid, entityName, propertyName));
     }
 
     public ResponseDTO getPropertyAverage(String uuid, String entityName, String propertyName) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
         Entity mainEntity = historyManager.getPastSimulation(uuid).getWorld().getEntities().getEntitiesMap().get(entityName);
 
         if (!PropTypes.NUMERIC_PROPS.contains(mainEntity.getInitialProperties().getPropsMap().get(propertyName).getType()))
-            return new ResponseDTO(400, null, "Property is not numeric");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, null, "Property is not numeric");
 
         double average = mainEntity.getSingleEntities()
                 .stream()
                 .mapToDouble(element -> Double.parseDouble(element.getProperties().getPropsMap().get(propertyName).getValue().getCurrentValue()))
                 .average().orElse(0);
 
-        return new ResponseDTO(200, average);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, average);
     }
 
     public ResponseDTO getQueueManagementDetails() {
@@ -385,25 +386,25 @@ public class EngineAPI {
 
         QueueMgmtDTO queueMgmtDTO = new QueueMgmtDTO(pendingSimulations, runningSimulations, finishedSimulations, threadPoolManager.getThreadsAmount());
 
-        return new ResponseDTO(200, queueMgmtDTO);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, queueMgmtDTO);
     }
 
     public ResponseDTO setByStep(String uuid, ByStep byStep) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
-            return new ResponseDTO(400, Collections.emptyMap(), "Simulation not found!");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyMap(), "Simulation not found!");
 
         else if (historyManager.getPastSimulation(uuid).getSimulationState() != SimulationState.PAUSED)
-            return new ResponseDTO(400, 0, "Simulation is not paused!");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, 0, "Simulation is not paused!");
 
         historyManager.getPastSimulation(uuid).setByStep(byStep);
-        return new ResponseDTO(200, "");
+        return new ResponseDTO(Constants.API_RESPONSE_OK, "");
     }
 
     public ResponseDTO getPropertyConsistency(String uuid, String entityName, String propertyName) {
         SingleSimulation simulation = historyManager.getPastSimulation(uuid);
 
         if (Objects.isNull(simulation))
-            return new ResponseDTO(500, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
+            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 
         double returnValue = simulation.getLastWorldState().getEntitiesMap().get(entityName).getSingleEntities()
                 .stream().mapToDouble(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getConsistency(simulation.getTicks()))
@@ -411,19 +412,19 @@ public class EngineAPI {
 
 
 
-        return new ResponseDTO(200, returnValue);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, returnValue);
     }
 
     public ResponseDTO setThreadsAmount(int amount) {
         if (amount <= 0)
-            return new ResponseDTO(400, "Amount not set", "Amount should be positive");
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "Amount not set", "Amount should be positive");
 
         threadPoolManager.setThreadsAmount(amount);
-        return new ResponseDTO(200, true);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, true);
     }
 
     public ResponseDTO getThreadsAmount() {
-        return new ResponseDTO(200, threadPoolManager.getThreadsAmount());
+        return new ResponseDTO(Constants.API_RESPONSE_OK, threadPoolManager.getThreadsAmount());
     }
     //#endregion
 }
