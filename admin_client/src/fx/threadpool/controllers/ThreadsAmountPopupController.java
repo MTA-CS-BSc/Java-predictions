@@ -31,9 +31,7 @@ public class ThreadsAmountPopupController implements Initializable {
 
             if (!Objects.isNull(amountResponse.body()))
                 amountTextArea.setText(JsonParser.getMapFromJsonString(amountResponse.body().string()).get(Keys.VALID_RESPONSE_KEY).toString());
-        } catch (IOException e) {
-            amountTextArea.setText("ERROR");
-        }
+        } catch (IOException ignored) { }
     }
 
     private void addNumericFilter(TextArea textArea) {
@@ -56,16 +54,14 @@ public class ThreadsAmountPopupController implements Initializable {
         try {
             Response response = HttpThreadpool.setThreadsAmount(amount);
 
-            if (response.isSuccessful()) {
+            if (response.isSuccessful())
                 Alerts.showAlert("SUCCESS", "Threadpool count set to " + amount, Alert.AlertType.INFORMATION);
-                closePopup(event);
-            }
 
-            else
+            else if (!Objects.isNull(response.body()))
                 Alerts.showAlert("ERROR", response.body().string(), Alert.AlertType.ERROR);
-        } catch (Exception e) {
-            Alerts.showAlert("ERROR", "IOException encountered", Alert.AlertType.ERROR);
-        }
+
+            closePopup(event);
+        } catch (Exception ignored) { }
     }
 
     private void closePopup(ActionEvent event) {
