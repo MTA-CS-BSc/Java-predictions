@@ -11,7 +11,7 @@ import prototypes.implemented.Entity;
 import prototypes.implemented.Property;
 import prototypes.implemented.World;
 import prototypes.jaxb.PRDWorld;
-import simulation.ByStep;
+import types.ByStep;
 import simulation.SingleSimulation;
 import validators.PRDWorldValidators;
 import threads.ThreadPoolManager;

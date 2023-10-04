@@ -2,7 +2,7 @@ package other;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import prototypes.implemented.Coordinate;
+import types.Coordinate;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package simulation;
+package types;
 
 public enum ByStep {
     NOT_BY_STEP,

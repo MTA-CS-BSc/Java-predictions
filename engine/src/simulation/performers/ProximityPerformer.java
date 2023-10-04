@@ -6,6 +6,7 @@ import prototypes.implemented.*;
 import prototypes.implemented.actions.Action;
 import prototypes.implemented.actions.ProximityAction;
 import types.Bounds;
+import types.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,7 +2,7 @@ package other;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import simulation.ByStep;
+import types.ByStep;
 import types.SimulationState;
 
 public class SingleSimulationDTO {

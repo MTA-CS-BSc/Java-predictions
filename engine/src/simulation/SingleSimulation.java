@@ -7,6 +7,8 @@ import prototypes.implemented.*;
 import prototypes.implemented.actions.Action;
 import simulation.performers.ActionsPerformer;
 import modules.ElapsedTimer;
+import types.ByStep;
+import types.Coordinate;
 import types.Direction;
 import types.SimulationState;
 

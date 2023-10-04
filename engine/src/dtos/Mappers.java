@@ -7,6 +7,7 @@ import prototypes.implemented.actions.*;
 import simulation.SingleSimulation;
 import types.ConditionSingularities;
 import types.CalculationTypes;
+import types.Coordinate;
 import types.TypesUtils;
 
 import java.util.Comparator;

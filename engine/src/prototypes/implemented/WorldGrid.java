@@ -1,6 +1,7 @@
 package prototypes.implemented;
 
 import prototypes.jaxb.PRDWorld;
+import types.Coordinate;
 
 public class WorldGrid {
     protected int rows;

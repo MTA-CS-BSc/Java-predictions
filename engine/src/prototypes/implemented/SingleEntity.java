@@ -2,6 +2,7 @@ package prototypes.implemented;
 
 import modules.RandomGenerator;
 import modules.Utils;
+import types.Coordinate;
 
 import java.io.Serializable;
 import java.util.Objects;

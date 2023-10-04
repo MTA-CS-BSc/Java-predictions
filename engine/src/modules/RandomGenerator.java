@@ -1,7 +1,7 @@
 package modules;
 
 import javafx.scene.paint.Color;
-import prototypes.implemented.Coordinate;
+import types.Coordinate;
 import prototypes.implemented.WorldGrid;
 
 import java.util.ArrayList;
