@@ -140,13 +140,6 @@ public class EngineAPI {
 
         return new ResponseDTO(Constants.API_RESPONSE_OK,  historyManager.getAllSimulationsDetails());
     }
-
-    public ResponseDTO getAllValidWorldsNames() {
-        if (!historyManager.anyXmlLoaded())
-            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
-
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getAllValidWorldsNames());
-    }
     //#endregion
 
     //#region History
@@ -425,6 +418,18 @@ public class EngineAPI {
 
     public ResponseDTO getThreadsAmount() {
         return new ResponseDTO(Constants.API_RESPONSE_OK, threadPoolManager.getThreadsAmount());
+    }
+
+    public ResponseDTO getAllValidWorlds() {
+        if (!historyManager.anyXmlLoaded())
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
+
+        List<WorldDTO> validWorlds = historyManager.getAllValidWorlds()
+                .stream()
+                .map(Mappers::toDto)
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(Constants.API_RESPONSE_OK, validWorlds);
     }
     //#endregion
 }

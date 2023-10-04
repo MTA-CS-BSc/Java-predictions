@@ -83,8 +83,8 @@ public class HistoryManager implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<String> getAllValidWorldsNames() {
-        return new ArrayList<>(initialWorlds.keySet());
+    public List<World> getAllValidWorlds() {
+        return new ArrayList<>(initialWorlds.values());
     }
 
     public String createSimulationFromName(String name) {

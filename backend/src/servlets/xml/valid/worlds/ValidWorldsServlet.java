@@ -21,7 +21,7 @@ public class ValidWorldsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
 
-        ResponseDTO responseDTO = Configuration.api.getAllValidWorldsNames();
+        ResponseDTO responseDTO = Configuration.api.getAllValidWorlds();
         resp.setStatus(responseDTO.getStatus());
 
         if (!Objects.isNull(responseDTO.getErrorDescription()))
