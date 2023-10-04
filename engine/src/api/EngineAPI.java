@@ -423,7 +423,7 @@ public class EngineAPI {
     }
 
     public ResponseDTO getThreadsAmount() {
-        return new ResponseDTO(20, threadPoolManager.getThreadsAmount());
+        return new ResponseDTO(200, threadPoolManager.getThreadsAmount());
     }
     //#endregion
 }
