@@ -1,5 +1,6 @@
 package api;
 
+import dtos.Mappers;
 import exceptions.UUIDNotFoundException;
 import history.HistoryManager;
 import logs.EngineLoggers;
@@ -285,7 +286,7 @@ public class EngineAPI {
                         uuid, foundProp.getName()));
             }
 
-            else if (!TypesUtils.validateType(prop, val))
+            else if (!TypesUtils.validateType(prop.getType(), val))
                 return new ResponseDTO(500, String.format("Environment variable [%s] was not set", prop.getName()), "Incorrect type");
 
             else if (!Utils.validateValueInRange(prop, val))

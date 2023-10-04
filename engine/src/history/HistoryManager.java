@@ -1,6 +1,6 @@
 package history;
 
-import other.Mappers;
+import dtos.Mappers;
 import other.SingleSimulationDTO;
 import exceptions.UUIDNotFoundException;
 import prototypes.implemented.*;

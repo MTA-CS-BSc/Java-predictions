@@ -1,7 +1,6 @@
 package types;
 
 import modules.Constants;
-import other.PropertyDTO;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -51,18 +50,17 @@ public abstract class TypesUtils {
         return expression.substring(0, expression.indexOf("("));
     }
 
-    public static boolean validateType(PropertyDTO property, String value) {
-        //TODO: Check if should validate length & charset
-        if (property.getType().equals(PropTypes.STRING))
+    public static boolean validateType(String propertyType, String value) {
+        if (propertyType.equals(PropTypes.STRING))
             return true;
 
-        if (property.getType().equals(PropTypes.BOOLEAN))
+        if (propertyType.equals(PropTypes.BOOLEAN))
             return Arrays.asList(BoolPropValues.TRUE, BoolPropValues.FALSE).contains(value);
 
-        else if (property.getType().equals(PropTypes.FLOAT))
+        else if (propertyType.equals(PropTypes.FLOAT))
             return TypesUtils.isFloat(value);
 
-        return property.getType().equals(PropTypes.DECIMAL)
+        return propertyType.equals(PropTypes.DECIMAL)
                 && TypesUtils.isDecimal(TypesUtils.removeExtraZeroes(value));
     }
 }

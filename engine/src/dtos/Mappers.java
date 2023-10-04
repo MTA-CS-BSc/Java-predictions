@@ -1,6 +1,7 @@
-package other;
+package dtos;
 
 import actions.*;
+import other.*;
 import prototypes.implemented.*;
 import prototypes.implemented.actions.*;
 import simulation.SingleSimulation;
