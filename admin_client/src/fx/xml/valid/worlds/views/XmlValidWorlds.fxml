@@ -5,7 +5,8 @@
 <TableView xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:id="validWorldsTableView"
-            fx:controller="fx.xml.valid.worlds.controllers.XmlValidWorldController">
+            fx:controller="fx.xml.valid.worlds.controllers.XmlValidWorldsController"
+            onMouseClicked="#handleSelectedWorld">
     <columns>
         <TableColumn fx:id="nameColumn" prefWidth="150" text="World name"/>
     </columns>

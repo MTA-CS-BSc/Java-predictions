@@ -3,11 +3,14 @@ package fx.xml.valid.worlds.controllers;
 import api.xml.valid.worlds.HttpValidWorlds;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import json.SingletonObjectMapper;
 import modules.Constants;
 import okhttp3.Response;
@@ -20,12 +23,15 @@ import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-public class XmlValidWorldController implements Initializable {
+public class XmlValidWorldsController implements Initializable {
     @FXML private TableView<WorldDTO> validWorldsTableView;
     @FXML private TableColumn<WorldDTO, String> nameColumn;
 
+    private ObjectProperty<WorldDTO> selectedWorld;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        selectedWorld = new SimpleObjectProperty<>();
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
 
         Executors.newScheduledThreadPool(1)
@@ -43,9 +49,33 @@ public class XmlValidWorldController implements Initializable {
                 Platform.runLater(() -> {
                    validWorldsTableView.getItems().clear();
                    validWorldsTableView.getItems().addAll(validWorlds);
+                   selectPreviouslySelected();
                 });
             }
         } catch (Exception ignored) { }
+    }
 
+    private void selectPreviouslySelected() {
+        WorldDTO newlySelected = validWorldsTableView.getItems()
+                .stream()
+                .filter(element -> element.getName().equals(selectedWorld.getValue().getName()))
+                .findFirst().orElse(null);
+
+        validWorldsTableView.getSelectionModel().select(newlySelected);
+        setSelectedWorld(newlySelected);
+    }
+
+    public void setSelectedWorld(WorldDTO value) {
+        selectedWorld.setValue(value);
+    }
+
+    @FXML
+    private void handleSelectedWorld(MouseEvent event) {
+        if (event.getClickCount() == 1) {
+            WorldDTO selectedWorld = validWorldsTableView.getSelectionModel().getSelectedItem();
+
+            if (selectedWorld != null)
+                setSelectedWorld(selectedWorld);
+        }
     }
 }
