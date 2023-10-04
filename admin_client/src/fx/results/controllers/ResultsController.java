@@ -14,19 +14,15 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ResultsController implements Initializable {
-    @FXML
-    private VBox container;
+    @FXML private VBox container;
 
-    @FXML
-    private PopulationTableController populationTableController;
+    @FXML private PopulationTableController populationTableController;
 
-    @FXML
-    private SimulationsTableController simulationsTableController;
+    @FXML private SimulationsTableController simulationsTableController;
+
+    @FXML private StatsController statsController;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
-
-    @FXML
-    private StatsController statsController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

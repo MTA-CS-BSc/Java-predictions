@@ -19,14 +19,11 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class PopulationTableController implements Initializable {
-    @FXML
-    private TableView<EntityDTO> populationTable;
+    @FXML private TableView<EntityDTO> populationTable;
 
-    @FXML
-    private TableColumn<EntityDTO, String> entityNameColumn;
+    @FXML private TableColumn<EntityDTO, String> entityNameColumn;
 
-    @FXML
-    private TableColumn<EntityDTO, Integer> populationColumn;
+    @FXML private TableColumn<EntityDTO, Integer> populationColumn;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 

@@ -27,14 +27,11 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class WorldGridPaneController implements Initializable {
-    @FXML
-    private HBox container;
+    @FXML private HBox container;
 
-    @FXML
-    private GridPane grid;
+    @FXML private GridPane grid;
 
-    @FXML
-    private GridPane legend;
+    @FXML private GridPane legend;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
     @Override

@@ -30,41 +30,29 @@ import java.util.stream.Stream;
 
 public class SimulationsTableController implements Initializable {
     //#region Simulations
-    @FXML
-    private TableView<SingleSimulationDTO> simulationsTable;
+    @FXML private TableView<SingleSimulationDTO> simulationsTable;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, String> idColumn;
+    @FXML private TableColumn<SingleSimulationDTO, String> idColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, String> createdTimestampColumn;
+    @FXML private TableColumn<SingleSimulationDTO, String> createdTimestampColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, SimulationState> stateColumn;
+    @FXML private TableColumn<SingleSimulationDTO, SimulationState> stateColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Long> ticksColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Long> ticksColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Long> elapsedTimeColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Long> elapsedTimeColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Boolean> pauseButtonColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Boolean> pauseButtonColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Boolean> resumeButtonColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Boolean> resumeButtonColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Boolean> stopButtonColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Boolean> stopButtonColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Boolean> restartButtonColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Boolean> restartButtonColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Boolean> pastStepButtonColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Boolean> pastStepButtonColumn;
 
-    @FXML
-    private TableColumn<SingleSimulationDTO, Boolean> futureStepButtonColumn;
+    @FXML private TableColumn<SingleSimulationDTO, Boolean> futureStepButtonColumn;
     //#endregion
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;

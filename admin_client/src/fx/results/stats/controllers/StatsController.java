@@ -15,11 +15,9 @@ import java.util.ResourceBundle;
 
 public class StatsController implements Initializable {
 
-    @FXML
-    private FinishedStatsController finishedStatsController;
+    @FXML private FinishedStatsController finishedStatsController;
 
-    @FXML
-    private WorldGridPaneController worldGridPaneController;
+    @FXML private WorldGridPaneController worldGridPaneController;
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
