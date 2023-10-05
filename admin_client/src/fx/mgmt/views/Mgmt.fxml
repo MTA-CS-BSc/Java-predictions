@@ -34,11 +34,11 @@
             <Label styleClass="header-label" text="Valid Worlds/Simulations"/>
         </HBox>
 
-        <HBox alignment="CENTER_LEFT">
+        <HBox alignment="CENTER">
             <fx:include source="../../xml/loader/views/XmlLoader.fxml" fx:id="xmlLoader"/>
         </HBox>
 
-        <HBox spacing="10">
+        <HBox spacing="10" alignment="CENTER">
             <fx:include source="../valid/worlds/views/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
             <fx:include source="../world/details/views/WorldDetails.fxml" fx:id="worldDetails"/>
         </HBox>
