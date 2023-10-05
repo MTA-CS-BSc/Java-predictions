@@ -76,12 +76,12 @@ public class SimulationsTableController implements Initializable {
             simulationsTable.getItems().addAll(simulations);
 
             if (!Objects.isNull(selectedSimulation.getValue()))
-                selectPreviouslySelectedSimulation();
+                selectPreviouslySelected();
         } catch (Exception ignored) {
         }
     }
 
-    private void selectPreviouslySelectedSimulation() {
+    private void selectPreviouslySelected() {
         SingleSimulationDTO newlySelectedSimulation = simulationsTable.getItems()
                 .stream()
                 .filter(element -> element.getUuid().equals(selectedSimulation.getValue().getUuid()))
