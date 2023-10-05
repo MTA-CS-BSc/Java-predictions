@@ -483,7 +483,7 @@ public class EngineAPI {
                 .map(Mappers::toDto)
                 .collect(Collectors.toList());
 
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getRequests());
+        return new ResponseDTO(Constants.API_RESPONSE_OK, requests);
     }
     //#endregion
 }
