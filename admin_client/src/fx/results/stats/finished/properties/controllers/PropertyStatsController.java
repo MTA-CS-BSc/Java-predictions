@@ -2,6 +2,7 @@ package fx.results.stats.finished.properties.controllers;
 
 
 import api.results.stats.properties.HttpPropertyStats;
+import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import fx.modules.SingletonThreadpoolManager;
 import javafx.application.Platform;
@@ -204,48 +205,52 @@ public class PropertyStatsController implements Initializable {
         avgConsistencyContainer.setVisible(true);
 
         try {
-            //TODO: Re-write
-//            Map<String, Long> entitiesCountForProp = SingletonObjectMapper.objectMapper.readValue(
-//                    SingletonEngineAPI.api.getEntitiesCountForProp(selectedSimulation.getValue().getUuid(), entityName, property.getName()).getData(),
-//                    new TypeReference<Map<String, Long>>() {
-//                    }
-//            );
+            Response response = HttpPropertyStats.getEntitiesCountForProp(selectedSimulation.getValue().getUuid(), entityName, property.getName());
 
-            Map<String, Long> entitiesCountForProp = Collections.emptyMap();
+            if (!response.isSuccessful()) {
+                response.close();
+                return;
+            }
 
-            if (entitiesCountForProp.isEmpty())
-                Platform.runLater(() -> Alerts.showAlert("No histogram",
-                        String.format("All instances of %s died during the simulation", entityName),
-                        Alert.AlertType.INFORMATION));
+            if (!Objects.isNull(response.body())) {
+                Map<String, Long> entitiesCountForProp = SingletonObjectMapper.objectMapper.readValue(
+                        response.body().string(),
+                        new TypeReference<Map<String, Long>>() {});
 
-            SingletonThreadpoolManager.executeTask(() -> {
-                List<PieChart.Data> data = new ArrayList<>();
+                if (entitiesCountForProp.isEmpty())
+                    Platform.runLater(() -> Alerts.showAlert("No histogram",
+                            String.format("All instances of %s died during the simulation", entityName),
+                            Alert.AlertType.INFORMATION));
 
-                entitiesCountForProp.forEach((propertyValue, amount) -> {
-                    data.add(new PieChart.Data(propertyValue, amount));
-                });
+                SingletonThreadpoolManager.executeTask(() -> {
+                    List<PieChart.Data> data = new ArrayList<>();
 
-                Platform.runLater(() -> {
-                    histogramChart.getData().clear();
-                    histogramChart.getData().addAll(data);
-                    addChartTooltips();
+                    entitiesCountForProp.forEach((propertyValue, amount) -> {
+                        data.add(new PieChart.Data(propertyValue, amount));
+                    });
 
-                    if (!entitiesCountForProp.isEmpty()) {
-                        if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
-                            showPropertyAverage(entityName, property.getName());
+                    Platform.runLater(() -> {
+                        histogramChart.getData().clear();
+                        histogramChart.getData().addAll(data);
+                        addChartTooltips();
+
+                        if (!entitiesCountForProp.isEmpty()) {
+                            if (PropTypes.NUMERIC_PROPS.contains(property.getType()))
+                                showPropertyAverage(entityName, property.getName());
+
+                            else
+                                hideAvgContainer();
+
+                            showPropertyConsistency(entityName, property.getName());
+                        }
 
                         else
-                            hideAvgContainer();
+                            avgConsistencyContainer.setVisible(false);
 
-                        showPropertyConsistency(entityName, property.getName());
-                    }
-
-                    else
-                        avgConsistencyContainer.setVisible(false);
-
+                    });
                 });
-            });
 
+            }
         } catch (Exception ignored) {
         }
     }

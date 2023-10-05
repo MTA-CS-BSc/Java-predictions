@@ -27,10 +27,10 @@ public class ThreadsAmountPopupController implements Initializable {
         addNumericFilter(amountTextArea);
 
         try {
-            Response amountResponse = HttpThreadpool.getThreadsAmount();
+            Response response = HttpThreadpool.getThreadsAmount();
 
-            if (!Objects.isNull(amountResponse.body()))
-                amountTextArea.setText(JsonParser.getMapFromJsonString(amountResponse.body().string()).get(Keys.VALID_RESPONSE_KEY).toString());
+            if (!Objects.isNull(response.body()))
+                amountTextArea.setText(JsonParser.getMapFromJsonString(response.body().string()).get(Keys.VALID_RESPONSE_KEY).toString());
         } catch (IOException ignored) { }
     }
 

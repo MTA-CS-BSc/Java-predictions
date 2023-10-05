@@ -42,4 +42,13 @@ public abstract class HttpPropertyStats {
 
         return Configuration.HTTP_CLIENT.newCall(request).execute();
     }
+
+    public static Response getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws IOException {
+        Request request = new Request.Builder()
+                .url(getUrlWithParams(ENTITIES_COUNT_URL, uuid, entityName, propertyName))
+                .get()
+                .build();
+
+        return Configuration.HTTP_CLIENT.newCall(request).execute();
+    }
 }
