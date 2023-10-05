@@ -42,8 +42,6 @@ public class AllocationsController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, Boolean> approveColumn;
     @FXML private TableColumn<AllocationRequestDTO, Boolean> declineColumn;
     @FXML private TableColumn<AllocationRequestDTO, TerminationDTO> terminationColumn;
-
-    //TODO: Add parsing
     @FXML private TableColumn<AllocationRequestDTO, Integer> userTotalFinishedSimulations;
 
     private ObjectProperty<AllocationRequestDTO> selectedRequest;
@@ -123,6 +121,14 @@ public class AllocationsController implements Initializable {
         runningSimulationsInRequestColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty((int)cellData.getValue().getRequestSimulations().stream().filter(element -> element.getSimulationState() == SimulationState.RUNNING).count()).asObject());
         terminationColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTermination()));
 
+        userTotalFinishedSimulations.setCellValueFactory(cellData -> {
+            int amount = allocationsTableView.getItems().stream()
+                    .filter(element -> element.getCreatedUser().equals(cellData.getValue().getCreatedUser()))
+                    .mapToInt(element -> (int)element.getRequestSimulations().stream().filter(simulation -> simulation.getSimulationState() == SimulationState.FINISHED).count())
+                    .sum();
+
+            return new SimpleIntegerProperty(amount).asObject();
+        });
         approveColumn.setCellFactory(cellData -> new ApproveTableCell(allocationsTableView));
         declineColumn.setCellFactory(cellData -> new DeclineTableCell(allocationsTableView));
 

@@ -35,7 +35,7 @@ public class TerminationDTO {
         StringBuilder stopConditionsString = new StringBuilder();
 
         stopConditions.forEach(stopCondition -> {
-           stopConditionsString.append(stopCondition.getCount()).append(" ").append(stopCondition.getByWho());
+           stopConditionsString.append(stopCondition.getCount()).append(" ").append(stopCondition.getByWho()).append("; ");
         });
 
         return stopConditionsString.toString();
