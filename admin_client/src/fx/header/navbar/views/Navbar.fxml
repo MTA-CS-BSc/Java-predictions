@@ -4,7 +4,7 @@
 
 <HBox fx:controller="fx.header.navbar.controllers.NavbarController"
       xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" alignment="CENTER" spacing="70.0">
-    <Button mnemonicParsing="false" text="Management"/>
-    <Button mnemonicParsing="false" text="Allocations"/>
-    <Button mnemonicParsing="false" text="Results"/>
+    <Button fx:id="mgmtButton" mnemonicParsing="false" text="Management"/>
+    <Button fx:id="allocationsButton" mnemonicParsing="false" text="Allocations"/>
+    <Button fx:id="resultsButton" mnemonicParsing="false" text="Results"/>
 </HBox>
