@@ -14,6 +14,7 @@
 
     <StackPane>
         <fx:include source="../../mgmt/views/Mgmt.fxml" fx:id="mgmt"/>
-        <fx:include source="../../results/views/Results.fxml" fx:id="resultsScreen"/>
+        <fx:include source="../../results/views/Results.fxml" fx:id="results"/>
+        <fx:include source="../../allocations/views/Allocations.fxml" fx:id="allocations"/>
     </StackPane>
 </VBox>
