@@ -97,6 +97,9 @@ public class SimulationsTableController implements Initializable {
     }
 
     private void selectPreviouslySelected() {
+        if (Objects.isNull(selectedSimulation.getValue()))
+            return;
+
         SingleSimulationDTO newlySelectedSimulation = simulationsTable.getItems()
                 .stream()
                 .filter(element -> element.getUuid().equals(selectedSimulation.getValue().getUuid()))

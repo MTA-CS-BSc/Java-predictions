@@ -59,7 +59,9 @@ public class XmlValidWorldsController implements Initializable {
                     Platform.runLater(() -> {
                         validWorldsTableView.getItems().clear();
                         validWorldsTableView.getItems().addAll(validWorlds);
-                        selectPreviouslySelected();
+
+                        if (!Objects.isNull(selectedWorld))
+                            selectPreviouslySelected();
                     });
                 }
             } catch (Exception ignored) {
@@ -68,15 +70,16 @@ public class XmlValidWorldsController implements Initializable {
     }
 
     private void selectPreviouslySelected() {
-        if (!Objects.isNull(selectedWorld.getValue())) {
-            WorldDTO newlySelected = validWorldsTableView.getItems()
-                    .stream()
-                    .filter(element -> element.getName().equals(selectedWorld.getValue().getName()))
-                    .findFirst().orElse(null);
+        if (Objects.isNull(selectedWorld.getValue()))
+            return;
 
-            validWorldsTableView.getSelectionModel().select(newlySelected);
-            setSelectedWorld(newlySelected);
-        }
+        WorldDTO newlySelected = validWorldsTableView.getItems()
+                .stream()
+                .filter(element -> element.getName().equals(selectedWorld.getValue().getName()))
+                .findFirst().orElse(null);
+
+        validWorldsTableView.getSelectionModel().select(newlySelected);
+        setSelectedWorld(newlySelected);
     }
 
     @FXML
