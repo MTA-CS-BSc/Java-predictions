@@ -23,5 +23,8 @@ public abstract class Routes {
     public static final String RUN_SIMULATION = SIMULATION + "/run";
     public static final String CREATE_SIMULATION = SIMULATION + "/create";
     public static final String CLONE_SIMULATION = SIMULATION + "/clone";
+    public static final String STOP_SIMULATION = SIMULATION + "/stop";
+    public static final String RESUME_SIMULATION = SIMULATION + "/resume";
+    public static final String PAUSE_SIMULATION = SIMULATION + "/pause";
 
 }
