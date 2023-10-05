@@ -77,12 +77,6 @@ public class HistoryManager implements Serializable {
         return new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(fromInitialName)));
     }
 
-    public List<SingleSimulationDTO> getAllSimulationsDetails() {
-        return initialWorlds.values().stream()
-                .map(world -> getSimulationDetails(world.getName()))
-                .collect(Collectors.toList());
-    }
-
     public List<World> getAllValidWorlds() {
         return new ArrayList<>(initialWorlds.values());
     }
