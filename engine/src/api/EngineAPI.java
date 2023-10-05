@@ -56,10 +56,6 @@ public class EngineAPI {
 
         return validateWorldResponse;
     }
-
-    public ResponseDTO isAnyXmlLoaded() {
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.isAnyXmlLoaded());
-    }
     //#endregion
 
     //#region Allocations
@@ -161,13 +157,6 @@ public class EngineAPI {
         simulation.setSimulationState(SimulationState.RUNNING);
         return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("Simulation [%s] is running", uuid));
     }
-
-    public ResponseDTO getSimulationDetails(String initialWorldName) {
-        if (!historyManager.isAnyXmlLoaded())
-            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
-
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getSimulationDetails(initialWorldName));
-    }
     //#endregion
 
     //#region History
@@ -188,37 +177,6 @@ public class EngineAPI {
         toRemove.forEach(this::removeSimulation);
 
         return new ResponseDTO(Constants.API_RESPONSE_OK);
-    }
-
-    public ResponseDTO isHistoryEmpty() {
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.isEmpty());
-    }
-
-    public ResponseDTO writeHistoryToFile(String filePath) {
-        try {
-            FileOutputStream f = new FileOutputStream(filePath);
-            ObjectOutputStream o = new ObjectOutputStream(f);
-            o.writeObject(historyManager);
-            o.close();
-            f.close();
-            EngineLoggers.API_LOGGER.info("History saved successfully.");
-            return new ResponseDTO(Constants.API_RESPONSE_OK, true);
-        } catch (Exception e) {
-            EngineLoggers.API_LOGGER.info("Could not save history: " + e.getMessage());
-            return new ResponseDTO(Constants.API_RESPONSE_OK, false);
-        }
-    }
-
-    public ResponseDTO loadHistory(String filePath) {
-        try {
-            FileInputStream fi = new FileInputStream(filePath);
-            ObjectInputStream oi = new ObjectInputStream(fi);
-            historyManager = (HistoryManager) oi.readObject();
-            return new ResponseDTO(Constants.API_RESPONSE_OK);
-        } catch (Exception e) {
-            EngineLoggers.API_LOGGER.info(e.getMessage());
-            return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, "Attempted to loader history but no history file was found");
-        }
     }
     //#endregion
 
