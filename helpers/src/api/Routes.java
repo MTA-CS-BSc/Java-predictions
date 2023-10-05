@@ -19,5 +19,9 @@ public abstract class Routes {
     public static final String PROPERTY_AVG = PROPERTY_STATS + "/avg";
     public static final String ENTITITY_COUNT_FOR_PROP = PROPERTY_STATS + "/entity/count";
     public static final String ENTITIES_AMOUNTS_PER_TICK = RESULTS + "/entities/amounts/pertick";
+    public static final String SIMULATION = "/simulation";
+    public static final String RUN_SIMULATION = SIMULATION + "/run";
+    public static final String CREATE_SIMULATION = SIMULATION + "/create";
+    public static final String CLONE_SIMULATION = SIMULATION + "/clone";
 
 }
