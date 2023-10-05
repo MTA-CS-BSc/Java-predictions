@@ -43,7 +43,7 @@ public abstract class JsonParser {
     }
 
     public static Map<String, Object> getMapFromJsonString(String json) throws JsonProcessingException {
-        return SingletonObjectMapper.objectMapper.convertValue(getJsonNodeFromString(json), new TypeReference<Map<String, Object>>(){});
+        return SingletonObjectMapper.objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
     }
 
     private static JsonNode getJsonNodeFromString(String json) throws JsonProcessingException {

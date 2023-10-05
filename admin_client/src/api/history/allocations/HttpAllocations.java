@@ -35,7 +35,7 @@ public abstract class HttpAllocations {
         body.put(Keys.CREATED_USER_KEY, createdUser);
         body.put(Keys.INITIAL_WORLD_NAME_KEY, initialWorldName);
         body.put(Keys.REQUESTED_EXECUTIONS_KEY, executionsAmount);
-        body.put(Keys.TERMINATION_KEY, termination);
+        body.put(Keys.TERMINATION_KEY, JsonParser.toJson(termination));
 
         Request request = new Request.Builder()
                 .url(ALLOCATIONS_URL)

@@ -42,6 +42,7 @@ public class AllocationRequestsServlet extends HttpServlet {
         String initialWorldName = requestBodyMap.get(Keys.INITIAL_WORLD_NAME_KEY).toString();
         String createdUser = requestBodyMap.get(Keys.CREATED_USER_KEY).toString();
         int requestedExecutions = Integer.parseInt(requestBodyMap.get(Keys.REQUESTED_EXECUTIONS_KEY).toString());
+
         TerminationDTO termination = SingletonObjectMapper.objectMapper.readValue(
                 requestBodyMap.get(Keys.TERMINATION_KEY).toString(),
                 TerminationDTO.class

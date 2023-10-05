@@ -13,6 +13,7 @@ import types.Coordinate;
 import types.TypesUtils;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,7 +38,7 @@ public abstract class Mappers {
                 .map(Mappers::toDto)
                 .collect(Collectors.toList());
 
-        TerminationDTO termination = new TerminationDTO(stopConditions, world.getTermination().isStopByUser());
+        TerminationDTO termination = new TerminationDTO(new HashSet<>(stopConditions), world.getTermination().isStopByUser());
 
         List<PropertyDTO> envs = world.getEnvironment().getEnvVars().values()
                 .stream()
