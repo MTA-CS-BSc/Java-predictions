@@ -26,7 +26,7 @@ public class OrchestratorController implements Initializable {
     }
 
     private void initializeScreen() {
-//        allocationsController.getContainer().setVisible(false);
+        allocationsController.getContainer().setVisible(false);
         resultsController.getContainer().setVisible(false);
     }
 }
