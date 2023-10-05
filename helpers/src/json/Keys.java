@@ -14,6 +14,7 @@ public abstract class Keys {
     public static final String VALUE_KEY = "value";
     public static final String PROPERTY_DTO_KEY = "property";
     public static final String ENTITY_DTO_KEY = "entity";
+    public static final String USERNAME_KEY = "username";
     //#endregion
 
     public final static String VALID_RESPONSE_KEY = "data";

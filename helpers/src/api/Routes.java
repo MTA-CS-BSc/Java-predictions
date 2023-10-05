@@ -12,6 +12,7 @@ public abstract class Routes {
     public static final String APPROVE_REQUEST = ALLOCATIONS_HISTORY + "/approve";
     public static final String DECLINE_REQUEST = ALLOCATIONS_HISTORY + "/decline";
     public static final String SIMULATIONS_HISTORY = HISTORY + "/simulations";
+    public static final String SIMULATIONS_HISTORY_FOR_USER = SIMULATIONS_HISTORY + "/user";
     public static final String RESULTS = "/results";
     public static final String FINISHED_STATS = RESULTS + "/stats";
     public static final String PROPERTY_STATS = FINISHED_STATS + "/property";
@@ -31,6 +32,7 @@ public abstract class Routes {
     public static final String SET_ENV_PROP_VALUE = SIMULATION_SET + "/environment";
     public static final String SET_ENTITY_INIT_POPULATION = SIMULATION_SET + "/entity/population";
     public static final String SET_BY_STEP = SIMULATION_SET + "/byStep";
+    public static final String GRID = SIMULATION + "/grid";
 
 
 }
