@@ -1,4 +1,4 @@
-package fx.results.simulations.table.modules;
+package fx.results.simulations.table.models;
 
 import consts.Alerts;
 import fx.results.simulations.table.controllers.SimulationsTableController;

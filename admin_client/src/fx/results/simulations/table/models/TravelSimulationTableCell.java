@@ -1,4 +1,4 @@
-package fx.results.simulations.table.modules;
+package fx.results.simulations.table.models;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -7,28 +7,32 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
 import other.SingleSimulationDTO;
+import types.ByStep;
 import types.SimulationState;
 
-public class StopSimulationTableCell extends TableCell<SingleSimulationDTO, Boolean> implements SimulationControlButton {
-    final Button stopButton;
+public class TravelSimulationTableCell extends TableCell<SingleSimulationDTO, Boolean> implements SimulationControlButton {
+    final Button travelPastButton;
     final StackPane paddedButton;
 
-    public StopSimulationTableCell(final TableView<SingleSimulationDTO> table) {
-        stopButton = new Button();
+    public TravelSimulationTableCell(final TableView<SingleSimulationDTO> table, ByStep byStep) {
+        travelPastButton = new Button();
         paddedButton = new StackPane();
         paddedButton.setPadding(new Insets(3));
-        paddedButton.getChildren().add(stopButton);
+        paddedButton.getChildren().add(travelPastButton);
 
         try {
             //TODO: Re-write
-            // styleButton(stopButton, FilePaths.STOP_SIMULATION_ICON_PATH);
+//            styleButton(travelPastButton, byStep == ByStep.PAST ? FilePaths.PAST_TRAVEL_ICON_PATH : FilePaths.FUTURE_TRAVEL_ICON_PATH);
         } catch (Exception ignored) {
         }
 
-        stopButton.setOnAction(actionEvent -> {
+        travelPastButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
+
+            String uuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
             //TODO: Re-write
-//            SingletonEngineAPI.api.stopSimulation(getTableView().getSelectionModel().getSelectedItem().getUuid());
+//            SingletonEngineAPI.api.setByStep(uuid, byStep);
+//            SingletonEngineAPI.api.resumeSimulation(uuid);
         });
     }
 
@@ -42,13 +46,8 @@ public class StopSimulationTableCell extends TableCell<SingleSimulationDTO, Bool
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             setGraphic(paddedButton);
 
-            //TODO: Check if is button should be disabled if not By User
             SingleSimulationDTO simulation = getTableView().getItems().get(getIndex());
-            SimulationState simulationState = simulation.getSimulationState();
-            boolean isDisabled = !simulation.getWorld().getTermination().isByUser() ||
-                    (simulationState != SimulationState.PAUSED && simulationState != SimulationState.RUNNING);
-
-            setDisable(isDisabled);
+            setDisable(simulation.getSimulationState() != SimulationState.PAUSED || simulation.getTicks() == 0);
         } else
             setGraphic(null);
     }

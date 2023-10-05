@@ -1,4 +1,4 @@
-package fx.results.simulations.table.modules;
+package fx.results.simulations.table.models;
 
 import fx.Main;
 import javafx.animation.ScaleTransition;

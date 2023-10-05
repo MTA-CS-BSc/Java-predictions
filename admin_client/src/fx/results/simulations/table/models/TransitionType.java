@@ -1,4 +1,4 @@
-package fx.results.simulations.table.modules;
+package fx.results.simulations.table.models;
 
 public enum TransitionType {
     ENTERED,
