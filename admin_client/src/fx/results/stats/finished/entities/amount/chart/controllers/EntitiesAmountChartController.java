@@ -49,7 +49,7 @@ public class EntitiesAmountChartController implements Initializable {
 
     private void fillChart() throws JsonProcessingException {
         //TODO: Re-write
-//        Map<String, List<Integer>> entitiesAmountsPerTick = SingletonObjectMapper.objectMapper.readValue(
+        // Map<String, List<Integer>> entitiesAmountsPerTick = SingletonObjectMapper.objectMapper.readValue(
 //                SingletonEngineAPI.api.getEntitiesAmountsPerTick(selectedSimulation.getValue().getUuid()).getData(),
 //                new TypeReference<Map<String, List<Integer>>>() {
 //                }

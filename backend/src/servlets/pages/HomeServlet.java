@@ -15,7 +15,6 @@ public class HomeServlet extends HttpServlet {
         resp.setContentType("text/html"); // Set content type to HTML
         PrintWriter out = resp.getWriter();
 
-        //TODO: Re-write
         out.println("<html>");
         out.println("<head><title>Welcome</title></head>");
         out.println("<body>");

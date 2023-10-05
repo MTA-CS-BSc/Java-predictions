@@ -61,8 +61,8 @@ public class PopulationTableController implements Initializable {
             EntityDTO editedEntity = event.getRowValue();
 
             try {
-                //TODO: Re-write
-//                ResponseDTO response = SingletonEngineAPI.api
+//                TODO: Re-write
+//                 ResponseDTO response = SingletonEngineAPI.api
 //                        .setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
 //                                editedEntity, event.getNewValue());
 //

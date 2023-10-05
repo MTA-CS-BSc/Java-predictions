@@ -43,7 +43,7 @@ public class AllocationRequestsServlet extends HttpServlet {
         String createdUser = requestBodyMap.get(Keys.CREATED_USER_KEY).toString();
         int requestedExecutions = Integer.parseInt(requestBodyMap.get(Keys.REQUESTED_EXECUTIONS_KEY).toString());
 
-        //TODO: Catch is for postman check
+        // Catch is for postman check
         try {
             TerminationDTO termination = SingletonObjectMapper.objectMapper.readValue(
                     requestBodyMap.get(Keys.TERMINATION_KEY).toString(),
