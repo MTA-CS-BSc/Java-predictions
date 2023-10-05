@@ -13,13 +13,10 @@ import prototypes.prd.implemented.Entity;
 import prototypes.prd.implemented.Property;
 import prototypes.prd.implemented.World;
 import prototypes.prd.generated.PRDWorld;
-import types.ByStep;
+import types.*;
 import simulation.SingleSimulation;
 import validators.PRDWorldValidators;
 import threads.ThreadPoolManager;
-import types.PropTypes;
-import types.SimulationState;
-import types.TypesUtils;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -70,6 +67,27 @@ public class EngineAPI {
         AllocationRequest request = new AllocationRequest(initialWorldName, requestedExecutions, createdUser, termination);
         historyManager.addAllocationRequest(request);
         return new ResponseDTO(Constants.API_RESPONSE_OK, request.getUuid());
+    }
+
+    private ResponseDTO setRequestState(String uuid, RequestState state) {
+        AllocationRequest request = historyManager.getRequests().get(uuid);
+
+        if (Objects.isNull(request))
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "Can't approve request", String.format("Request [%s] not found", uuid));
+
+        else if (request.getState() != RequestState.CREATED)
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "Can't approve request", "Request is already in state " + request.getState().name());
+
+        request.setState(state);
+        return new ResponseDTO(Constants.API_RESPONSE_OK);
+    }
+
+    public ResponseDTO approveRequest(String uuid) {
+        return setRequestState(uuid, RequestState.APPROVED);
+    }
+
+    public ResponseDTO declineRequest(String uuid) {
+        return setRequestState(uuid, RequestState.DECLINED);
     }
     //#endregion
 

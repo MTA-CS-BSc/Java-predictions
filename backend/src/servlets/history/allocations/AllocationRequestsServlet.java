@@ -1,4 +1,4 @@
-package servlets.history;
+package servlets.history.allocations;
 
 import api.Routes;
 import config.Configuration;

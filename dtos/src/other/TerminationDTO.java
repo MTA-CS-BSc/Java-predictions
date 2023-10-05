@@ -26,4 +26,18 @@ public class TerminationDTO {
     public List<StopConditionDTO> getStopConditions() {
         return stopConditions;
     }
+
+    @Override
+    public String toString() {
+        if (byUser)
+            return "By User";
+
+        StringBuilder stopConditionsString = new StringBuilder();
+
+        stopConditions.forEach(stopCondition -> {
+           stopConditionsString.append(stopCondition.getCount()).append(" ").append(stopCondition.getByWho());
+        });
+
+        return stopConditionsString.toString();
+    }
 }

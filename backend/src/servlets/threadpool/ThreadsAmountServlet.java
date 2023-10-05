@@ -21,6 +21,7 @@ public class ThreadsAmountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
+
         try {
             ResponseDTO responseDTO = Configuration.api.getThreadsAmount();
             resp.setStatus(responseDTO.getStatus());
@@ -40,6 +41,7 @@ public class ThreadsAmountServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType(Constants.JSON_CONTENT_TYPE);
         Map<String, Object> requestBody = JsonParser.getRequestBodyMap(req.getReader());
 
         if (!Objects.isNull(requestBody.get(Keys.THREADS_AMOUNT_KEY))) {

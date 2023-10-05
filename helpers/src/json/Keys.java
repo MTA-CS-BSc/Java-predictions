@@ -9,4 +9,5 @@ public abstract class Keys {
     public static final String CREATED_USER_KEY = "createdUser";
     public static final String REQUESTED_EXECUTIONS_KEY = "requestedExecutions";
     public static final String TERMINATION_KEY = "termination";
+    public static final String REQUEST_ID_KEY = "uuid";
 }
