@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-@WebServlet(Routes.ALLOCATIONS)
+@WebServlet(Routes.ALLOCATIONS_HISTORY)
 public class AllocationRequestsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
