@@ -30,6 +30,9 @@ public class CloneSimulationServlet extends HttpServlet {
 
             if (!Objects.isNull(responseDTO.getErrorDescription()))
                 resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
+
+            else
+                resp.getWriter().write(responseDTO.getData());
         }
     }
 }
