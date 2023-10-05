@@ -10,8 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class JsonParser {
-    public static String toJson(Map<String, Object> map) throws JsonProcessingException {
-        return SingletonObjectMapper.objectMapper.writeValueAsString(map);
+    public static String toJson(Object value) throws JsonProcessingException {
+        return SingletonObjectMapper.objectMapper.writeValueAsString(value);
     }
 
     private static String primitiveToJson(String key, Object data) throws JsonProcessingException {
