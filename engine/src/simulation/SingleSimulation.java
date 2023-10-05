@@ -23,25 +23,26 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     protected String uuid;
     protected ElapsedTimer elapsedTimer;
     protected ByStep byStep;
+    protected String createdUser;
 
-    public SingleSimulation() {
+    public SingleSimulation(String createdUser) {
         uuid = UUID.randomUUID().toString();
         ticks = 0;
         elapsedTimer = new ElapsedTimer();
         byStep = ByStep.NOT_BY_STEP;
         simulationState = SimulationState.CREATED;
+        this.createdUser = createdUser;
+        setCreatedTime(new Date());
     }
 
-    public SingleSimulation(World world) {
-        this();
+    public SingleSimulation(String createdUser, World world) {
+        this(createdUser);
         this.world = world;
-        setCreatedTime(new Date());
     }
 
     public SingleSimulation(SingleSimulation other) {
-        this();
+        this(other.createdUser);
         this.world = new World(other.world, other.getStartWorldState());
-        setCreatedTime(new Date());
     }
 
     public String getUUID() {
