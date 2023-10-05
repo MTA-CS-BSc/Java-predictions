@@ -26,5 +26,11 @@ public abstract class Routes {
     public static final String STOP_SIMULATION = SIMULATION + "/stop";
     public static final String RESUME_SIMULATION = SIMULATION + "/resume";
     public static final String PAUSE_SIMULATION = SIMULATION + "/pause";
+    public static final String SIMULATION_SET = SIMULATION + "/set";
+    public static final String SET_TERMINATION = SIMULATION_SET + "/termination";
+    public static final String SET_ENV_PROP_VALUE = SIMULATION_SET + "/environment";
+    public static final String SET_ENTITY_INIT_POPULATION = SIMULATION_SET + "/entity/population";
+    public static final String SET_BY_STEP = SIMULATION_SET + "/byStep";
+
 
 }

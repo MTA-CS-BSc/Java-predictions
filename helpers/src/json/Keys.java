@@ -11,6 +11,9 @@ public abstract class Keys {
     public static final String UUID_KEY = "uuid";
     public static final String ENTITY_NAME_KEY = "entityName";
     public static final String PROPERTY_NAME_KEY = "propertyName";
+    public static final String VALUE_KEY = "value";
+    public static final String PROPERTY_DTO_KEY = "property";
+    public static final String ENTITY_DTO_KEY = "entity";
     //#endregion
 
     public final static String VALID_RESPONSE_KEY = "data";

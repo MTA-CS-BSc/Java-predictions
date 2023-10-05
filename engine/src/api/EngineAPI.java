@@ -11,6 +11,7 @@ import other.*;
 import parsers.XmlParser;
 import prototypes.prd.implemented.Entity;
 import prototypes.prd.implemented.Property;
+import prototypes.prd.implemented.Termination;
 import prototypes.prd.implemented.World;
 import prototypes.prd.generated.PRDWorld;
 import types.*;
@@ -186,7 +187,7 @@ public class EngineAPI {
 
         toRemove.forEach(this::removeSimulation);
 
-        return new ResponseDTO(Constants.API_RESPONSE_OK, "");
+        return new ResponseDTO(Constants.API_RESPONSE_OK);
     }
 
     public ResponseDTO isHistoryEmpty() {
@@ -361,6 +362,14 @@ public class EngineAPI {
                 String.format("UUID [%s]: Environment variable [%s] not found", uuid, prop.getName()));
     }
 
+    public ResponseDTO setTermination(String simulationUuid, TerminationDTO terminationDTO) {
+        if (Objects.isNull(historyManager.getPastSimulation(simulationUuid)))
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "UUID", UUIDNotFoundException.class.getSimpleName());
+
+        historyManager.getPastSimulation(simulationUuid).getWorld().setTermination(new Termination(terminationDTO));
+        return new ResponseDTO(Constants.API_RESPONSE_OK);
+    }
+
     public ResponseDTO getEntitiesAmountsPerTick(String uuid) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyMap(), "Simulation not found!");
@@ -435,7 +444,7 @@ public class EngineAPI {
             return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, 0, "Simulation is not paused!");
 
         historyManager.getPastSimulation(uuid).setByStep(byStep);
-        return new ResponseDTO(Constants.API_RESPONSE_OK, "");
+        return new ResponseDTO(Constants.API_RESPONSE_OK);
     }
 
     public ResponseDTO getPropertyConsistency(String uuid, String entityName, String propertyName) {
