@@ -4,6 +4,7 @@ import modules.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 public abstract class TypesUtils {
 
@@ -61,5 +62,9 @@ public abstract class TypesUtils {
 
         return propertyType.equals(PropTypes.DECIMAL)
                 && TypesUtils.isDecimal(TypesUtils.removeExtraZeroes(value));
+    }
+
+    public static boolean isNullOrEmpty(String str) {
+        return Objects.isNull(str) || str.isEmpty();
     }
 }
