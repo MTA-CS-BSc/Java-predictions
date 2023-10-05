@@ -1,5 +1,5 @@
 package consts;
 
-public class SecondaryEntityCounts {
+public abstract class SecondaryEntityCounts {
     public static final String ALL = "ALL";
 }
