@@ -8,7 +8,6 @@ import json.Keys;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
 import java.io.IOException;
 
 public abstract class HttpThreadpool {
