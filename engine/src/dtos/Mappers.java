@@ -169,6 +169,7 @@ public abstract class Mappers {
                 .collect(Collectors.toList());
 
         return new AllocationRequestDTO(request.getUuid(), request.getInitialWorldName(),
-                request.getRequestedExecutions(), request.getState(), request.getCreatedUser(), simulations);
+                request.getRequestedExecutions(), request.getState(),
+                request.getCreatedUser(), simulations, request.getTermination());
     }
 }
