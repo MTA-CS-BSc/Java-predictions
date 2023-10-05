@@ -3,9 +3,9 @@ package validators.actions;
 import exceptions.InvalidTypeException;
 import exceptions.PropertyNotFoundException;
 import modules.ValidatorsUtils;
-import prototypes.jaxb.PRDAction;
-import prototypes.jaxb.PRDProperty;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDAction;
+import prototypes.prd.generated.PRDProperty;
+import prototypes.prd.generated.PRDWorld;
 import types.PropTypes;
 
 import java.util.Objects;

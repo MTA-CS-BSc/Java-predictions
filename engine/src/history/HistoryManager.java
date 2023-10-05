@@ -3,8 +3,9 @@ package history;
 import dtos.Mappers;
 import other.SingleSimulationDTO;
 import exceptions.UUIDNotFoundException;
-import prototypes.implemented.*;
-import prototypes.implemented.Properties;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.*;
+import prototypes.prd.implemented.Properties;
 import simulation.SingleSimulation;
 
 import java.io.Serializable;

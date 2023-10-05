@@ -4,8 +4,8 @@ import consts.Restrictions;
 import exceptions.InvalidTypeException;
 import exceptions.UniqueNameException;
 import exceptions.WhitespacesFoundException;
-import prototypes.jaxb.PRDEnvProperty;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDEnvProperty;
+import prototypes.prd.generated.PRDWorld;
 
 import java.util.List;
 import java.util.Objects;

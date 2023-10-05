@@ -3,7 +3,7 @@ package validators.actions;
 import exceptions.InvalidTypeException;
 import exceptions.PropertyNotFoundException;
 import modules.ValidatorsUtils;
-import prototypes.jaxb.*;
+import prototypes.prd.generated.*;
 import types.PropTypes;
 
 import java.util.Objects;

@@ -5,9 +5,9 @@ import exceptions.PropertyNotFoundException;
 import modules.RandomGenerator;
 import modules.Utils;
 import modules.ValidatorsUtils;
-import prototypes.implemented.Property;
-import prototypes.implemented.SingleEntity;
-import prototypes.implemented.World;
+import prototypes.prd.implemented.Property;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.World;
 import types.TypesUtils;
 
 import java.util.Objects;

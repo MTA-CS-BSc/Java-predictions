@@ -2,8 +2,8 @@ package validators.entities;
 
 import exceptions.UniqueNameException;
 import exceptions.WhitespacesFoundException;
-import prototypes.jaxb.PRDEntity;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDEntity;
+import prototypes.prd.generated.PRDWorld;
 import validators.PRDPropertyValidators;
 
 public abstract class PRDEntitiesValidators {

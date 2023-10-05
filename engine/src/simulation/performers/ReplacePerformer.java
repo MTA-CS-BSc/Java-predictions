@@ -2,10 +2,10 @@ package simulation.performers;
 
 import consts.ReplaceModes;
 import modules.Utils;
-import prototypes.implemented.Entity;
-import prototypes.implemented.SingleEntity;
-import prototypes.implemented.World;
-import prototypes.implemented.actions.ReplaceAction;
+import prototypes.prd.implemented.Entity;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.World;
+import prototypes.prd.implemented.actions.ReplaceAction;
 
 public abstract class ReplacePerformer {
     public static void performAction(World world, ReplaceAction action, SingleEntity singleKillEntity) {

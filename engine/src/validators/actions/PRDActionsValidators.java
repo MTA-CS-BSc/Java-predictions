@@ -1,7 +1,7 @@
 package validators.actions;
 
-import prototypes.jaxb.PRDAction;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDAction;
+import prototypes.prd.generated.PRDWorld;
 
 import java.util.List;
 

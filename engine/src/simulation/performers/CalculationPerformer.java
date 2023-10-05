@@ -6,8 +6,12 @@ import exceptions.InvalidTypeException;
 import exceptions.PropertyNotFoundException;
 import modules.Utils;
 import parsers.ExpressionParser;
-import prototypes.implemented.*;
-import prototypes.implemented.actions.CalculationAction;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.Divide;
+import prototypes.prd.implemented.Multiply;
+import prototypes.prd.implemented.Property;
+import prototypes.prd.implemented.World;
+import prototypes.prd.implemented.actions.CalculationAction;
 import modules.Constants;
 import types.ActionTypes;
 

@@ -1,6 +1,6 @@
 package validators;
 
-import prototypes.jaxb.*;
+import prototypes.prd.generated.*;
 
 import java.util.Objects;
 

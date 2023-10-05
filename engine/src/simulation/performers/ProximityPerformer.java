@@ -2,9 +2,12 @@ package simulation.performers;
 
 import modules.Utils;
 import parsers.ExpressionParser;
-import prototypes.implemented.*;
-import prototypes.implemented.actions.Action;
-import prototypes.implemented.actions.ProximityAction;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.Entity;
+import prototypes.prd.implemented.World;
+import prototypes.prd.implemented.WorldGrid;
+import prototypes.prd.implemented.actions.Action;
+import prototypes.prd.implemented.actions.ProximityAction;
 import types.Bounds;
 import types.Coordinate;
 

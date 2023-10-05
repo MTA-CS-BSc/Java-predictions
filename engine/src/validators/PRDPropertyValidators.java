@@ -2,9 +2,9 @@ package validators;
 
 import consts.Restrictions;
 import exceptions.*;
-import prototypes.jaxb.PRDEntity;
-import prototypes.jaxb.PRDProperty;
-import prototypes.jaxb.PRDRange;
+import prototypes.prd.generated.PRDEntity;
+import prototypes.prd.generated.PRDProperty;
+import prototypes.prd.generated.PRDRange;
 import types.PropTypes;
 import types.TypesUtils;
 

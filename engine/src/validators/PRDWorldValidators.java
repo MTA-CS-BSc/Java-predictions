@@ -2,7 +2,7 @@ package validators;
 
 import other.ResponseDTO;
 import exceptions.GridSizeException;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDWorld;
 import validators.entities.PRDEntitiesValidators;
 import validators.env.PRDEnvironmentValidators;
 import validators.rules.PRDRulesValidators;

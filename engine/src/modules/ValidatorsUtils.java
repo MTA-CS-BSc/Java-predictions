@@ -1,7 +1,7 @@
 package modules;
 
 import consts.SystemFunctions;
-import prototypes.jaxb.*;
+import prototypes.prd.generated.*;
 import types.PropTypes;
 import types.TypesUtils;
 

@@ -4,10 +4,10 @@ import exceptions.ErrorMessageFormatter;
 import exceptions.PropertyNotFoundException;
 import modules.Utils;
 import parsers.ExpressionParser;
-import prototypes.implemented.Property;
-import prototypes.implemented.SingleEntity;
-import prototypes.implemented.World;
-import prototypes.implemented.actions.IncreaseAction;
+import prototypes.prd.implemented.Property;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.World;
+import prototypes.prd.implemented.actions.IncreaseAction;
 import modules.Constants;
 import types.ActionTypes;
 

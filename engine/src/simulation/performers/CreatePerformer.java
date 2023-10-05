@@ -1,7 +1,8 @@
 package simulation.performers;
 
-import prototypes.implemented.*;
+import prototypes.SingleEntity;
 import modules.Constants;
+import prototypes.prd.implemented.*;
 import types.PropTypes;
 
 import java.util.Objects;

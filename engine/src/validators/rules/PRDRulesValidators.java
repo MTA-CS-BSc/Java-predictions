@@ -3,8 +3,8 @@ package validators.rules;
 import exceptions.UniqueNameException;
 import exceptions.ValueNotInRangeException;
 import exceptions.WhitespacesFoundException;
-import prototypes.jaxb.PRDRule;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDRule;
+import prototypes.prd.generated.PRDWorld;
 import validators.actions.PRDActionsValidators;
 
 import java.util.Objects;

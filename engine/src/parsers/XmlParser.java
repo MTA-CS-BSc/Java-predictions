@@ -1,6 +1,6 @@
 package parsers;
 
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDWorld;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

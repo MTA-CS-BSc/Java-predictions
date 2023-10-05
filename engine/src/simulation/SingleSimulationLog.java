@@ -1,6 +1,6 @@
 package simulation;
 
-import prototypes.implemented.World;
+import prototypes.prd.implemented.World;
 
 import java.io.Serializable;
 import java.util.Date;

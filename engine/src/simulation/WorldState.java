@@ -1,9 +1,9 @@
 package simulation;
 
-import prototypes.implemented.Entity;
-import prototypes.implemented.Property;
-import prototypes.implemented.World;
-import prototypes.implemented.WorldGrid;
+import prototypes.prd.implemented.Entity;
+import prototypes.prd.implemented.Property;
+import prototypes.prd.implemented.World;
+import prototypes.prd.implemented.WorldGrid;
 
 import java.io.Serializable;
 import java.util.HashMap;

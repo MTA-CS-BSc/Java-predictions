@@ -2,8 +2,9 @@ package dtos;
 
 import actions.*;
 import other.*;
-import prototypes.implemented.*;
-import prototypes.implemented.actions.*;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.*;
+import prototypes.prd.implemented.actions.*;
 import simulation.SingleSimulation;
 import types.ConditionSingularities;
 import types.CalculationTypes;

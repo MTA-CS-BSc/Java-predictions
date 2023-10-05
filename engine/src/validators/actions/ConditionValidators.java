@@ -2,10 +2,10 @@ package validators.actions;
 
 import exceptions.InvalidTypeException;
 import modules.ValidatorsUtils;
-import prototypes.jaxb.PRDAction;
-import prototypes.jaxb.PRDCondition;
-import prototypes.jaxb.PRDProperty;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDAction;
+import prototypes.prd.generated.PRDCondition;
+import prototypes.prd.generated.PRDProperty;
+import prototypes.prd.generated.PRDWorld;
 import types.ConditionSingularities;
 import types.PropTypes;
 

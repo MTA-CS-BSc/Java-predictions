@@ -1,7 +1,8 @@
 package modules;
 
 import other.PropertyDTO;
-import prototypes.implemented.*;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.*;
 import types.PropTypes;
 
 import java.util.Map;

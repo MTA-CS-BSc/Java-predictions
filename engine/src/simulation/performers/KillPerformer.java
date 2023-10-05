@@ -2,10 +2,10 @@ package simulation.performers;
 
 import logs.EngineLoggers;
 import modules.Utils;
-import prototypes.implemented.Entity;
-import prototypes.implemented.SingleEntity;
-import prototypes.implemented.World;
-import prototypes.implemented.actions.KillAction;
+import prototypes.prd.implemented.Entity;
+import prototypes.SingleEntity;
+import prototypes.prd.implemented.World;
+import prototypes.prd.implemented.actions.KillAction;
 
 import java.util.List;
 import java.util.Objects;

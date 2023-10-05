@@ -4,9 +4,9 @@ import exceptions.EmptyExpressionException;
 import exceptions.EntityNotFoundException;
 import exceptions.InvalidTypeException;
 import modules.ValidatorsUtils;
-import prototypes.jaxb.PRDAction;
-import prototypes.jaxb.PRDActions;
-import prototypes.jaxb.PRDWorld;
+import prototypes.prd.generated.PRDAction;
+import prototypes.prd.generated.PRDActions;
+import prototypes.prd.generated.PRDWorld;
 import types.PropTypes;
 
 import java.util.Objects;

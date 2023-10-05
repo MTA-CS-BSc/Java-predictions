@@ -1,6 +1,6 @@
 package modules;
 
-import prototypes.implemented.WorldGrid;
+import prototypes.prd.implemented.WorldGrid;
 import types.Coordinate;
 
 import java.util.Random;
