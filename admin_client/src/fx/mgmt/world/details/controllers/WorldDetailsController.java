@@ -256,6 +256,7 @@ public class WorldDetailsController implements Initializable {
         //TODO: Add clear
         if (Objects.isNull(selectedWorld.getValue()))
             return;
+
         List<EntityModel> entities = GuiUtils.getEntities(selectedWorld.getValue());
         TreeItem<TreeItemModel> entitiesTreeItem = new TreeItem<>(new EntitiesModel(entities));
 
