@@ -22,8 +22,8 @@ public class ApproveRequestServlet extends HttpServlet {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
         Map<String, Object> requestBody = JsonParser.getRequestBodyMap(req.getReader());
 
-        if (!Objects.isNull(requestBody.get(Keys.REQUEST_ID_KEY))) {
-            String requestUuid = requestBody.get(Keys.REQUEST_ID_KEY).toString();
+        if (!Objects.isNull(requestBody.get(Keys.UUID_KEY))) {
+            String requestUuid = requestBody.get(Keys.UUID_KEY).toString();
             ResponseDTO responseDTO = Configuration.api.approveRequest(requestUuid);
             resp.setStatus(responseDTO.getStatus());
 

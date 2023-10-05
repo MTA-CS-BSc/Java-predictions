@@ -50,7 +50,7 @@ public abstract class HttpAllocations {
     public static Response approveRequest(String requestUuid) throws IOException {
         Request request = new Request.Builder()
                 .url(APPROVE_REQUEST_URL)
-                .put(RequestBody.create(JsonParser.toJson(Keys.REQUEST_ID_KEY, requestUuid), API.JSON_MEDIA_TYPE))
+                .put(RequestBody.create(JsonParser.toJson(Keys.UUID_KEY, requestUuid), API.JSON_MEDIA_TYPE))
                 .build();
 
         return Configuration.HTTP_CLIENT.newCall(request).execute();
@@ -59,7 +59,7 @@ public abstract class HttpAllocations {
     public static Response declineRequest(String requestUuid) throws IOException {
         Request request = new Request.Builder()
                 .url(DECLINE_REQUEST_URL)
-                .put(RequestBody.create(JsonParser.toJson(Keys.REQUEST_ID_KEY, requestUuid), API.JSON_MEDIA_TYPE))
+                .put(RequestBody.create(JsonParser.toJson(Keys.UUID_KEY, requestUuid), API.JSON_MEDIA_TYPE))
                 .build();
 
         return Configuration.HTTP_CLIENT.newCall(request).execute();

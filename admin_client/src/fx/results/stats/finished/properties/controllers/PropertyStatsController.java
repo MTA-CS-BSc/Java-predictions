@@ -1,6 +1,7 @@
 package fx.results.stats.finished.properties.controllers;
 
 
+import api.results.stats.properties.HttpPropertyStats;
 import consts.Alerts;
 import fx.modules.SingletonThreadpoolManager;
 import javafx.application.Platform;
@@ -13,6 +14,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
+import json.JsonParser;
+import json.Keys;
+import json.SingletonObjectMapper;
+import okhttp3.Response;
 import other.EntityDTO;
 import other.PropertyDTO;
 import other.SingleSimulationDTO;
@@ -99,26 +104,32 @@ public class PropertyStatsController implements Initializable {
 
     private void showPropertyAverage(String entityName, String propertyName) {
         try {
-            //TODO: Re-write
-//            double average = SingletonObjectMapper.objectMapper.readValue(
-//                    SingletonEngineAPI.api.getPropertyAverage(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
-//                    Double.class);
-            double average = 0.0;
-            averageLabel.setText(String.format("%.5f", average));
-            avgContainer.setVisible(true);
+            Response response = HttpPropertyStats.getAverage(selectedSimulation.getValue().getUuid(), entityName, propertyName);
+
+            if (!response.isSuccessful())
+                response.close();
+
+            if (!Objects.isNull(response.body())) {
+                Map<String, Object> responseBody = JsonParser.getMapFromJsonString(response.body().string());
+                averageLabel.setText(String.format("%.5f", SingletonObjectMapper.objectMapper.readValue(responseBody.get(Keys.VALID_RESPONSE_KEY).toString(), Double.class)));
+                avgContainer.setVisible(true);
+            }
         } catch (Exception ignored) {
         }
     }
 
     private void showPropertyConsistency(String entityName, String propertyName) {
         try {
-            //TODO: Re-write
-//            double consistency = SingletonObjectMapper.objectMapper.readValue(
-//                    SingletonEngineAPI.api.getPropertyConsistency(selectedSimulation.getValue().getUuid(), entityName, propertyName).getData(),
-//                    Double.class);
-            double consistency = 0.0;
-            consistencyLabel.setText(String.format("%.3f", consistency));
-            consistencyContainer.setVisible(true);
+            Response response = HttpPropertyStats.getConsistency(selectedSimulation.getValue().getUuid(), entityName, propertyName);
+
+            if (!response.isSuccessful())
+                response.close();
+
+            if (!Objects.isNull(response.body())) {
+                Map<String, Object> responseBody = JsonParser.getMapFromJsonString(response.body().string());
+                consistencyLabel.setText(String.format("%.3f", SingletonObjectMapper.objectMapper.readValue(responseBody.get(Keys.VALID_RESPONSE_KEY).toString(), Double.class)));
+                consistencyContainer.setVisible(true);
+            }
         } catch (Exception ignored) {
         }
     }

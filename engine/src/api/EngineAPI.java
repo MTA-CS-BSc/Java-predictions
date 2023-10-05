@@ -448,8 +448,6 @@ public class EngineAPI {
                 .stream().mapToDouble(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getConsistency(simulation.getTicks()))
                 .average().orElse(simulation.getTicks());
 
-
-
         return new ResponseDTO(Constants.API_RESPONSE_OK, returnValue);
     }
 
