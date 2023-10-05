@@ -2,7 +2,6 @@ package fx.results.simulations.table.controllers;
 
 
 import consts.Alerts;
-import fx.results.simulations.table.modules.*;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleLongProperty;
@@ -16,7 +15,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import modules.Constants;
 import other.SingleSimulationDTO;
-import types.ByStep;
 import types.SimulationState;
 
 import java.net.URL;
@@ -26,7 +24,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 
 public class SimulationsTableController implements Initializable {
     //#region Simulations
@@ -41,18 +38,6 @@ public class SimulationsTableController implements Initializable {
     @FXML private TableColumn<SingleSimulationDTO, Long> ticksColumn;
 
     @FXML private TableColumn<SingleSimulationDTO, Long> elapsedTimeColumn;
-
-    @FXML private TableColumn<SingleSimulationDTO, Boolean> pauseButtonColumn;
-
-    @FXML private TableColumn<SingleSimulationDTO, Boolean> resumeButtonColumn;
-
-    @FXML private TableColumn<SingleSimulationDTO, Boolean> stopButtonColumn;
-
-    @FXML private TableColumn<SingleSimulationDTO, Boolean> restartButtonColumn;
-
-    @FXML private TableColumn<SingleSimulationDTO, Boolean> pastStepButtonColumn;
-
-    @FXML private TableColumn<SingleSimulationDTO, Boolean> futureStepButtonColumn;
     //#endregion
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
@@ -118,16 +103,6 @@ public class SimulationsTableController implements Initializable {
         stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSimulationState()));
         ticksColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getTicks()).asObject());
         elapsedTimeColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
-        pauseButtonColumn.setCellFactory(cellData -> new PauseSimulationTableCell(simulationsTable));
-        resumeButtonColumn.setCellFactory(cellData -> new ResumeSimulationTableCell(simulationsTable));
-        stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
-        restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable, this));
-        pastStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.PAST));
-        futureStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.FUTURE));
-
-        Stream.of(pauseButtonColumn, resumeButtonColumn, stopButtonColumn,
-                        restartButtonColumn, pastStepButtonColumn, futureStepButtonColumn)
-                .forEach(column -> column.setSortable(false));
     }
 
     public void setSelectedSimulation(SingleSimulationDTO simulation) {

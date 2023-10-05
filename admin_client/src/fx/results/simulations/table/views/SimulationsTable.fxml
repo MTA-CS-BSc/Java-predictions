@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 
 <?import javafx.scene.control.*?>
@@ -14,13 +10,6 @@
         <TableColumn fx:id="ticksColumn" prefWidth="100" text="Ticks"/>
         <TableColumn fx:id="elapsedTimeColumn" prefWidth="200" text="Elapsed time (millis)"/>
         <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
-        <TableColumn fx:id="pauseButtonColumn" prefWidth="100" text="Pause"/>
-        <TableColumn fx:id="resumeButtonColumn" prefWidth="100" text="Resume"/>
-        <TableColumn fx:id="stopButtonColumn" prefWidth="100" text="Stop"/>
-        <TableColumn fx:id="restartButtonColumn" prefWidth="100" text="Rerun"/>
-        <TableColumn fx:id="pastStepButtonColumn" prefWidth="100" text="Travel: Past"/>
-        <TableColumn fx:id="futureStepButtonColumn" prefWidth="100" text="Travel: Future"/>
-
     </columns>
 </TableView>
 

@@ -87,8 +87,8 @@ public class HistoryManager implements Serializable {
         return new ArrayList<>(initialWorlds.values());
     }
 
-    public String createSimulation(String initialWorldName, String createdUser) {
-        SingleSimulation sm = new SingleSimulation(createdUser, initialWorlds.get(initialWorldName));
+    public String createSimulation(String initialWorldName, String createdUser, String requestUuid) {
+        SingleSimulation sm = new SingleSimulation(createdUser, requestUuid, initialWorlds.get(initialWorldName));
         addPastSimulation(sm);
         return sm.getUUID();
     }

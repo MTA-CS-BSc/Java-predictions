@@ -19,7 +19,8 @@ public abstract class Mappers {
     public static SingleSimulationDTO toDto(SingleSimulation simulation) {
         return new SingleSimulationDTO(simulation.getUUID(), TypesUtils.formatDate(simulation.getCreatedTimestamp()),
                 toDto(simulation.getWorld()), simulation.getSimulationState(),
-                simulation.getTicks(), simulation.getElapsedTime(), simulation.getByStep());
+                simulation.getTicks(), simulation.getElapsedTime(),
+                simulation.getByStep(), simulation.getCreatedUser(), simulation.getRequestUuid());
     }
 
     public static WorldDTO toDto(World world) {

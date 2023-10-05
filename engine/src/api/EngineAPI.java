@@ -64,8 +64,8 @@ public class EngineAPI {
     //#endregion
 
     //#region Simulation
-    public ResponseDTO createSimulation(String initialWorldName, String createdUser) {
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.createSimulation(initialWorldName, createdUser));
+    public ResponseDTO createSimulation(String initialWorldName, String createdUser, String requestUuid) {
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.createSimulation(initialWorldName, createdUser, requestUuid));
     }
 
     public ResponseDTO cloneSimulation(String uuid) {

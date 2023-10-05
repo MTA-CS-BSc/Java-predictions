@@ -24,24 +24,26 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
     protected ElapsedTimer elapsedTimer;
     protected ByStep byStep;
     protected String createdUser;
+    protected String requestUuid;
 
-    public SingleSimulation(String createdUser) {
+    public SingleSimulation(String createdUser, String requestUuid) {
         uuid = UUID.randomUUID().toString();
         ticks = 0;
         elapsedTimer = new ElapsedTimer();
         byStep = ByStep.NOT_BY_STEP;
         simulationState = SimulationState.CREATED;
         this.createdUser = createdUser;
+        this.requestUuid = requestUuid;
         setCreatedTime(new Date());
     }
 
-    public SingleSimulation(String createdUser, World world) {
-        this(createdUser);
+    public SingleSimulation(String createdUser, String requestUuid, World world) {
+        this(createdUser, requestUuid);
         this.world = world;
     }
 
     public SingleSimulation(SingleSimulation other) {
-        this(other.createdUser);
+        this(other.createdUser, other.requestUuid);
         this.world = new World(other.world, other.getStartWorldState());
     }
 
@@ -251,6 +253,14 @@ public class SingleSimulation extends SingleSimulationLog implements Serializabl
             return 0;
 
         return worldStatesByTicks.get(tick).getEntitiesMap().get(entityName).getPopulation();
+    }
+
+    public String getRequestUuid() {
+        return requestUuid;
+    }
+
+    public String getCreatedUser() {
+        return createdUser;
     }
 
     @Override
