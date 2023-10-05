@@ -1,6 +1,7 @@
 package fx.mgmt.controllers;
 
 import consts.Animations;
+import fx.mgmt.threadpool.controllers.ThreadpoolQueueController;
 import fx.mgmt.threadpool.controllers.ThreadsAmountSetterController;
 import fx.mgmt.valid.worlds.controllers.XmlValidWorldsController;
 import fx.mgmt.world.details.controllers.WorldDetailsController;
@@ -17,15 +18,26 @@ public class MgmtController implements Initializable {
     @FXML private ThreadsAmountSetterController threadsAmountSetterController;
     @FXML private WorldDetailsController worldDetailsController;
     @FXML private XmlValidWorldsController xmlValidWorldsController;
+    @FXML private ThreadpoolQueueController threadpoolQueueController;
     @FXML private VBox container;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Animations.IS_ANIMATIONS_ON.setValue(true);
         worldDetailsController.setSelectedWorldListener(xmlValidWorldsController.selectedWorldProperty());
+        threadpoolQueueController.setIsParentVisibleProperty(container.visibleProperty());
+        xmlValidWorldsController.setIsParentVisibleProperty(container.visibleProperty());
     }
 
     public VBox getContainer() {
         return container;
+    }
+
+    public void clearThreadpoolTableView() {
+        threadpoolQueueController.clearTableView();
+    }
+
+    public void clearWorldDetails() {
+        xmlValidWorldsController.setSelectedWorld(null);
     }
 }

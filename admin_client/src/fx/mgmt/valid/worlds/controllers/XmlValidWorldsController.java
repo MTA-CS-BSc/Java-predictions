@@ -3,9 +3,7 @@ package fx.mgmt.valid.worlds.controllers;
 import api.xml.valid.worlds.HttpValidWorlds;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
@@ -29,8 +27,11 @@ public class XmlValidWorldsController implements Initializable {
 
     private ObjectProperty<WorldDTO> selectedWorld;
 
+    private BooleanProperty isParentVisible;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isParentVisible = new SimpleBooleanProperty(true);
         selectedWorld = new SimpleObjectProperty<>();
         nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
 
@@ -39,23 +40,31 @@ public class XmlValidWorldsController implements Initializable {
                         Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
+    public void setIsParentVisibleProperty(BooleanProperty value) {
+        isParentVisible = value;
+    }
+
     public void fetchValidWorlds() {
-        try {
-            Response response = HttpValidWorlds.getValidWorlds();
+        if (isParentVisible.getValue()) {
+            try {
+                Response response = HttpValidWorlds.getValidWorlds();
 
-            if (!response.isSuccessful())
-                response.close();
+                if (!response.isSuccessful())
+                    response.close();
 
-            if (response.isSuccessful() && !Objects.isNull(response.body())) {
-                List<WorldDTO> validWorlds = SingletonObjectMapper.objectMapper.readValue(response.body().string(), new TypeReference<List<WorldDTO>>() {});
+                if (response.isSuccessful() && !Objects.isNull(response.body())) {
+                    List<WorldDTO> validWorlds = SingletonObjectMapper.objectMapper.readValue(response.body().string(), new TypeReference<List<WorldDTO>>() {
+                    });
 
-                Platform.runLater(() -> {
-                   validWorldsTableView.getItems().clear();
-                   validWorldsTableView.getItems().addAll(validWorlds);
-                   selectPreviouslySelected();
-                });
+                    Platform.runLater(() -> {
+                        validWorldsTableView.getItems().clear();
+                        validWorldsTableView.getItems().addAll(validWorlds);
+                        selectPreviouslySelected();
+                    });
+                }
+            } catch (Exception ignored) {
             }
-        } catch (Exception ignored) { }
+        }
     }
 
     private void selectPreviouslySelected() {

@@ -5,10 +5,7 @@ import api.history.simulations.HttpPastSimulations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -49,8 +46,11 @@ public class SimulationsTableController implements Initializable {
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
 
+    private BooleanProperty isParentVisible;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isParentVisible = new SimpleBooleanProperty(false);
         selectedSimulation = new SimpleObjectProperty<>();
 
         initColumns();
@@ -61,33 +61,39 @@ public class SimulationsTableController implements Initializable {
 
     }
 
+    public void setIsParentVisibleProperty(BooleanProperty property) {
+        isParentVisible = property;
+    }
+
     private void fetchSimulations() {
-        try {
-            Response response = HttpPastSimulations.getPastSimulations();
+        if (isParentVisible.getValue()) {
+            try {
+                Response response = HttpPastSimulations.getPastSimulations();
 
-            if (!response.isSuccessful() || Objects.isNull(response.body())) {
-                response.close();
-                return;
-            }
+                if (!response.isSuccessful() || Objects.isNull(response.body())) {
+                    response.close();
+                    return;
+                }
 
-            List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(
-                    response.body().string(),
-                    new TypeReference<List<SingleSimulationDTO>>() {
-                    });
+                List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(
+                        response.body().string(),
+                        new TypeReference<List<SingleSimulationDTO>>() {
+                        });
 
-            if (simulations.size() < simulationsTable.getItems().size())
-                Platform.runLater(() -> Alerts.showAlert("Simulations were removed",
-                        "One or more simulations were removed due to ERROR state reached", Alert.AlertType.INFORMATION));
+                if (simulations.size() < simulationsTable.getItems().size())
+                    Platform.runLater(() -> Alerts.showAlert("Simulations were removed",
+                            "One or more simulations were removed due to ERROR state reached", Alert.AlertType.INFORMATION));
 
 
-            Platform.runLater(() -> {
-                simulationsTable.getItems().clear();
-                simulationsTable.getItems().addAll(simulations);
+                Platform.runLater(() -> {
+                    simulationsTable.getItems().clear();
+                    simulationsTable.getItems().addAll(simulations);
 
-                if (!Objects.isNull(selectedSimulation.getValue()))
-                    selectPreviouslySelected();
-            });
-        } catch (Exception ignored) { }
+                    if (!Objects.isNull(selectedSimulation.getValue()))
+                        selectPreviouslySelected();
+                });
+            } catch (Exception ignored) { }
+        }
     }
 
     private void selectPreviouslySelected() {

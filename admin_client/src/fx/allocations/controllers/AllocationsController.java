@@ -18,4 +18,8 @@ public class AllocationsController implements Initializable {
     public VBox getContainer() {
         return container;
     }
+
+    public void clearAllocations() {
+
+    }
 }

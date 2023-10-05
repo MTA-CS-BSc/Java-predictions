@@ -28,6 +28,8 @@ public class ResultsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         selectedSimulation = new SimpleObjectProperty<>();
 
+        simulationsTableController.setIsParentVisibleProperty(container.visibleProperty());
+
         simulationsTableController.selectedSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
             populationTableController.setSelectedSimulation(t1);
             statsController.setSelectedSimulation(t1);

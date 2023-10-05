@@ -60,50 +60,6 @@ public class NavbarController implements Initializable {
             button.setStyle(button.getStyle().replace(" -fx-font-weight: bold", ""));
     }
 
-//    @FXML
-//    private void showSimulationDetailsScreen() throws JsonProcessingException {
-//        if (!detailsScreenController.getContainer().isVisible()) {
-//            hideVisible();
-//
-//            if (isAnimationsOn.getValue())
-//                Platform.runLater(() -> GuiUtils.fadeInAnimation(detailsScreenController.getContainer()));
-//
-//            else
-//                Platform.runLater(() -> detailsScreenController.getContainer().setVisible(true));
-//        }
-//
-//        if (SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api.anyXmlLoaded().getData(), Boolean.class)) {
-//            highlightButtonText(detailsButton);
-//            detailsScreenController.handleShowCategoriesData();
-//        } else {
-//            if (isAnimationsOn.getValue()) {
-//                TrayNotification tray = new TrayNotification("FAILURE", "XML was not loaded, nothing to show.", NotificationType.ERROR);
-//                tray.setAnimationType(AnimationType.FADE);
-//                Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
-//            }
-//        }
-//    }
-//
-//    @FXML
-//    public void showResultsScreen() {
-//        if (!resultsScreenController.getContainer().isVisible()) {
-//            hideVisible();
-//
-//            if (isAnimationsOn.getValue())
-//                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsScreenController.getContainer()));
-//
-//            else
-//                Platform.runLater(() -> resultsScreenController.getContainer().setVisible(true));
-//        }
-//
-//        SingletonThreadpoolManager.executeTask(() -> {
-//            highlightButtonText(resultsButton);
-//
-//            if (!newExecutionController.isSimulationEmpty())
-//                SingletonEngineAPI.api.removeUnusedSimulations();
-//        });
-//    }
-
     private void hideVisible() {
         Platform.runLater(() -> {
             boolean isAnimationsOn = Animations.IS_ANIMATIONS_ON.getValue();
@@ -132,5 +88,63 @@ public class NavbarController implements Initializable {
                     allocationsController.getContainer().setVisible(false);
             }
         });
+    }
+
+    @FXML
+    private void handleResultsClicked() {
+        if (!resultsController.getContainer().isVisible()) {
+            hideVisible();
+
+            if (Animations.IS_ANIMATIONS_ON.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsController.getContainer()));
+
+            else
+                Platform.runLater(() -> resultsController.getContainer().setVisible(true));
+        }
+
+        highlightButtonText(resultsButton);
+    }
+
+    @FXML
+    private void handleMgmtClicked() {
+        if (!mgmtController.getContainer().isVisible()) {
+            hideVisible();
+            highlightButtonText(mgmtButton);
+            clearThreadpoolTableView();
+            clearWorldsTable();
+
+            if (Animations.IS_ANIMATIONS_ON.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(mgmtController.getContainer()));
+
+            else
+                Platform.runLater(() -> resultsController.getContainer().setVisible(true));
+        }
+    }
+
+    @FXML
+    private void handleAllocationsClicked() {
+        if (!allocationsController.getContainer().isVisible()) {
+            hideVisible();
+            highlightButtonText(allocationsButton);
+            clearAllocations();
+
+            if (Animations.IS_ANIMATIONS_ON.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(allocationsController.getContainer()));
+
+            else
+                Platform.runLater(() -> allocationsController.getContainer().setVisible(true));
+        }
+    }
+
+    private void clearThreadpoolTableView() {
+        mgmtController.clearThreadpoolTableView();
+    }
+
+    private void clearWorldsTable() {
+        mgmtController.clearWorldDetails();
+    }
+
+    private void clearAllocations() {
+        allocationsController.clearAllocations();
     }
 }

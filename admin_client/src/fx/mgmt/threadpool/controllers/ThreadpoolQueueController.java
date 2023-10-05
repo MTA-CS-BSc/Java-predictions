@@ -2,6 +2,8 @@ package fx.mgmt.threadpool.controllers;
 
 import api.threadpool.HttpThreadpool;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -25,8 +27,12 @@ public class ThreadpoolQueueController implements Initializable {
     @FXML private TableColumn<QueueMgmtDTO, Integer> finishedColumn;
     @FXML private TableColumn<QueueMgmtDTO, Integer> pendingColumn;
 
+    private BooleanProperty isParentVisible;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isParentVisible = new SimpleBooleanProperty(false);
+
         threadsAmountColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getThreadsAmount()).asObject());
         finishedColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getFinished()).asObject());
         pendingColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getPending()).asObject());
@@ -38,20 +44,33 @@ public class ThreadpoolQueueController implements Initializable {
     }
 
     private void fetchQueueMgmt() {
-        try {
-            Response response = HttpThreadpool.getThreadpoolQueueData();
+        if (isParentVisible.getValue()) {
+            try {
+                Response response = HttpThreadpool.getThreadpoolQueueData();
 
-            if (!response.isSuccessful())
-                response.close();
+                if (!response.isSuccessful())
+                    response.close();
 
-            if (response.isSuccessful() && !Objects.isNull(response.body())) {
-                QueueMgmtDTO queueMgmtDTO = SingletonObjectMapper.objectMapper.readValue(response.body().string(), QueueMgmtDTO.class);
+                if (response.isSuccessful() && !Objects.isNull(response.body())) {
+                    QueueMgmtDTO queueMgmtDTO = SingletonObjectMapper.objectMapper.readValue(response.body().string(), QueueMgmtDTO.class);
 
-                Platform.runLater(() -> {
-                    queueMgmtTableView.getItems().clear();
-                    queueMgmtTableView.getItems().add(queueMgmtDTO);
-                });
-            }
-        } catch (Exception ignored) { }
+                    Platform.runLater(() -> {
+                        clearTableView();
+                        queueMgmtTableView.getItems().add(queueMgmtDTO);
+                    });
+                }
+            } catch (Exception ignored) { }
+        }
+    }
+
+    public void clearTableView() {
+        Platform.runLater(() -> {
+            queueMgmtTableView.getItems().clear();
+            queueMgmtTableView.refresh();
+        });
+    }
+
+    public void setIsParentVisibleProperty(BooleanProperty value) {
+        isParentVisible = value;
     }
 }
