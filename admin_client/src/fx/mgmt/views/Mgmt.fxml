@@ -39,6 +39,10 @@
         </HBox>
 
         <HBox spacing="10" alignment="CENTER">
+            <VBox.margin>
+                <Insets bottom="20"/>
+            </VBox.margin>
+
             <fx:include source="../valid/worlds/views/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
             <fx:include source="../world/details/views/WorldDetails.fxml" fx:id="worldDetails"/>
         </HBox>
