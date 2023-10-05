@@ -57,8 +57,9 @@ public class ThreadpoolQueueController implements Initializable {
                     QueueMgmtDTO queueMgmtDTO = SingletonObjectMapper.objectMapper.readValue(response.body().string(), QueueMgmtDTO.class);
 
                     Platform.runLater(() -> {
-                        clearTableView();
+                        queueMgmtTableView.getItems().clear();
                         queueMgmtTableView.getItems().add(queueMgmtDTO);
+                        queueMgmtTableView.refresh();
                     });
                 }
             } catch (Exception ignored) { }

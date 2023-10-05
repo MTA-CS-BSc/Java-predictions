@@ -88,6 +88,7 @@ public class SimulationsTableController implements Initializable {
                 Platform.runLater(() -> {
                     simulationsTable.getItems().clear();
                     simulationsTable.getItems().addAll(simulations);
+                    simulationsTable.refresh();
 
                     if (!Objects.isNull(selectedSimulation.getValue()))
                         selectPreviouslySelected();

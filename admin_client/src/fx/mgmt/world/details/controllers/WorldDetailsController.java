@@ -32,7 +32,10 @@ public class WorldDetailsController implements Initializable {
         selectedWorld = new SimpleObjectProperty<>();
 
         worldCategoriesTreeView.getSelectionModel().selectedItemProperty().addListener((v, oldValue, newValue) -> {
-            if (newValue.getValue() instanceof EntityModel)
+            if (Objects.isNull(newValue))
+                selectedComponentDetailsTreeView.setRoot(null);
+
+            else if (newValue.getValue() instanceof EntityModel)
                 showEntityDetails((EntityModel) newValue.getValue());
 
             else if (newValue.getValue() instanceof PropertyModel)
@@ -51,8 +54,11 @@ public class WorldDetailsController implements Initializable {
                     handleShowCategoriesData();
             }
 
-            else
+            else {
                 worldCategoriesTreeView.setRoot(null);
+                selectedComponentDetailsTreeView.setRoot(null);
+            }
+
         });
     }
 
@@ -253,9 +259,10 @@ public class WorldDetailsController implements Initializable {
     }
 
     private void showEntities() {
-        //TODO: Add clear
-        if (Objects.isNull(selectedWorld.getValue()))
+        if (Objects.isNull(selectedWorld.getValue())) {
+            selectedComponentDetailsTreeView.setRoot(null);
             return;
+        }
 
         List<EntityModel> entities = GuiUtils.getEntities(selectedWorld.getValue());
         TreeItem<TreeItemModel> entitiesTreeItem = new TreeItem<>(new EntitiesModel(entities));
@@ -269,9 +276,10 @@ public class WorldDetailsController implements Initializable {
     }
 
     private void showEnvironment() {
-        //TODO: Add clear
-        if (Objects.isNull(selectedWorld.getValue()))
+        if (Objects.isNull(selectedWorld.getValue())) {
+            selectedComponentDetailsTreeView.setRoot(null);
             return;
+        }
 
         List<PropertyModel> envVars = GuiUtils.getEnvironmentVars(selectedWorld.getValue());
         TreeItem<TreeItemModel> environmentTreeItem = new TreeItem<>(new EnvironmentModel(envVars));
@@ -285,9 +293,10 @@ public class WorldDetailsController implements Initializable {
     }
 
     private void showGrid() {
-        //TODO: Add clear
-        if (Objects.isNull(selectedWorld.getValue()))
+        if (Objects.isNull(selectedWorld.getValue())) {
+            selectedComponentDetailsTreeView.setRoot(null);
             return;
+        }
 
         TreeItem<TreeItemModel> rows = new TreeItem<>(new TreeItemModel("Rows"));
         rows.getChildren().add(new TreeItem<>(new TreeItemModel(String.valueOf(selectedWorld.getValue().getGridRows()))));
@@ -303,9 +312,10 @@ public class WorldDetailsController implements Initializable {
     }
 
     private void showRules() {
-        //TODO: Add clear
-        if (Objects.isNull(selectedWorld.getValue()))
+        if (Objects.isNull(selectedWorld.getValue())) {
+            selectedComponentDetailsTreeView.setRoot(null);
             return;
+        }
 
         List<RuleModel> rules = GuiUtils.getRules(selectedWorld.getValue());
         TreeItem<TreeItemModel> rulesTreeItem = new TreeItem<>(new RulesModel(rules));

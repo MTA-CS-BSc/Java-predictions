@@ -59,6 +59,7 @@ public class XmlValidWorldsController implements Initializable {
                     Platform.runLater(() -> {
                         validWorldsTableView.getItems().clear();
                         validWorldsTableView.getItems().addAll(validWorlds);
+                        validWorldsTableView.refresh();
 
                         if (!Objects.isNull(selectedWorld))
                             selectPreviouslySelected();

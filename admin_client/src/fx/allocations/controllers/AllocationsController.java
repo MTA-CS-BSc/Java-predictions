@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import json.SingletonObjectMapper;
 import modules.Constants;
@@ -76,6 +77,7 @@ public class AllocationsController implements Initializable {
                     Platform.runLater(() -> {
                         allocationsTableView.getItems().clear();
                         allocationsTableView.getItems().addAll(requests);
+                        allocationsTableView.refresh();
 
                         if (!Objects.isNull(selectedRequest.getValue()))
                             selectPreviouslySelected();
@@ -126,5 +128,15 @@ public class AllocationsController implements Initializable {
 
         Stream.of(terminationColumn, approveColumn, declineColumn)
                 .forEach(column -> column.setSortable(false));
+    }
+
+    @FXML
+    private void handleRequestClicked(MouseEvent event) {
+        if (event.getClickCount() == 1) {
+            AllocationRequestDTO selectedWorld = allocationsTableView.getSelectionModel().getSelectedItem();
+
+            if (selectedWorld != null)
+                setSelectedRequest(selectedWorld);
+        }
     }
 }
