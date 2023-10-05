@@ -13,6 +13,7 @@ public class SingleSimulationDTO {
     protected final long ticks;
     protected final long elapsedTimeMillis;
     protected final ByStep byStep;
+    protected final String createdUser;
 
     @JsonCreator
     public SingleSimulationDTO(@JsonProperty("uuid") String uuid,
@@ -21,7 +22,8 @@ public class SingleSimulationDTO {
                                @JsonProperty("state") SimulationState state,
                                @JsonProperty("ticks") long ticks,
                                @JsonProperty("elapsedTime") long elapsedTimeMillis,
-                               @JsonProperty("byStep") ByStep byStep) {
+                               @JsonProperty("byStep") ByStep byStep,
+                               @JsonProperty("createdUser") String createdUser) {
         this.uuid = uuid;
         this.createdTimestamp = createdTimestamp;
         this.world = world;
@@ -29,11 +31,13 @@ public class SingleSimulationDTO {
         this.ticks = ticks;
         this.elapsedTimeMillis = elapsedTimeMillis;
         this.byStep = byStep;
+        this.createdUser = createdUser;
     }
 
     public SingleSimulationDTO(WorldDTO world) {
         uuid = "";
         createdTimestamp = "";
+        createdUser = "";
         this.world = world;
         this.simulationState = SimulationState.CREATED;
         this.ticks = 0;
@@ -66,4 +70,8 @@ public class SingleSimulationDTO {
     }
 
     public ByStep getByStep() { return byStep; }
+
+    public String getCreatedUser() {
+        return createdUser;
+    }
 }
