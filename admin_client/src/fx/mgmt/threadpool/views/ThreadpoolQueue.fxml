@@ -5,7 +5,7 @@
 <TableView xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:id="queueMgmtTableView"
-            fx:controller="fx.mgmt.threadpool.controllers.ThreadpoolQueueController" maxHeight="100" maxWidth="500">
+            fx:controller="fx.mgmt.threadpool.controllers.ThreadpoolQueueController" maxHeight="80" maxWidth="500">
     <columns>
         <TableColumn fx:id="threadsAmountColumn" prefWidth="200" text="Threads amount"/>
         <TableColumn fx:id="runningColumn" prefWidth="100" text="Running"/>
