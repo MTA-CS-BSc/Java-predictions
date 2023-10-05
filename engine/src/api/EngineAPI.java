@@ -383,7 +383,7 @@ public class EngineAPI {
         return new ResponseDTO(Constants.API_RESPONSE_OK, entitiesAmount);
     }
 
-    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) throws UUIDNotFoundException {
+    public ResponseDTO getEntitiesCountForProp(String uuid, String entityName, String propertyName) {
         if (Objects.isNull(historyManager.getPastSimulation(uuid)))
             return new ResponseDTO(Constants.API_RESPONSE_SERVER_ERROR, Collections.emptyMap(), String.format("UUID [%s] not found", uuid));
 

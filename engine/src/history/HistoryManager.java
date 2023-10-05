@@ -110,7 +110,7 @@ public class HistoryManager implements Serializable {
     }
 
     public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName,
-                                                     String propertyName) throws UUIDNotFoundException {
+                                                     String propertyName) {
         SingleSimulation foundSimulation = getPastSimulation(uuid);
         List<String> propertyValues = getValuesListForProperty(foundSimulation, entityName, propertyName);
 
