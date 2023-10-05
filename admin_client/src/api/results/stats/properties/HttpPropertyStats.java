@@ -13,7 +13,7 @@ import java.util.Objects;
 public abstract class HttpPropertyStats {
     private static final String CONSISTENCY_URL = Configuration.SERVER_URL + Routes.PROPERTY_CONSISTENCY;
     private static final String AVERAGE_URL = Configuration.SERVER_URL + Routes.PROPERTY_AVG;
-    private static final String ENTITIES_COUNT_URL = Configuration.SERVER_URL + Routes.ENTITIES_COUNT;
+    private static final String ENTITIES_COUNT_URL = Configuration.SERVER_URL + Routes.ENTITITY_COUNT_FOR_PROP;
 
     private static HttpUrl getUrlWithParams(String url, String uuid, String entityName, String propertyName) {
         HttpUrl.Builder httpBuilder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();

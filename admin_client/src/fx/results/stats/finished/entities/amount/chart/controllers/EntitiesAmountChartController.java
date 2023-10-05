@@ -1,7 +1,8 @@
 package fx.results.stats.finished.entities.amount.chart.controllers;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import api.results.stats.entities.HttpEntitiesStats;
+import com.fasterxml.jackson.core.type.TypeReference;
 import fx.modules.SingletonThreadpoolManager;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -11,8 +12,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import json.SingletonObjectMapper;
+import okhttp3.Response;
 import other.SingleSimulationDTO;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -47,36 +51,41 @@ public class EntitiesAmountChartController implements Initializable {
         });
     }
 
-    private void fillChart() throws JsonProcessingException {
-        //TODO: Re-write
-        // Map<String, List<Integer>> entitiesAmountsPerTick = SingletonObjectMapper.objectMapper.readValue(
-//                SingletonEngineAPI.api.getEntitiesAmountsPerTick(selectedSimulation.getValue().getUuid()).getData(),
-//                new TypeReference<Map<String, List<Integer>>>() {
-//                }
-//        );
+    private void fillChart() throws IOException {
+        Response response = HttpEntitiesStats.getEntitiesAmountsPerTick(selectedSimulation.getValue().getUuid());
 
-        Map<String, List<Integer>> entitiesAmountsPerTick = Collections.emptyMap();
+        if (!response.isSuccessful()) {
+            response.close();
+            return;
+        }
 
-        SingletonThreadpoolManager.executeTask(() -> {
-            List<XYChart.Series<Integer, Integer>> seriesList = new ArrayList<>();
+        if (!Objects.isNull(response.body())) {
+            Map<String, List<Integer>> entitiesAmountsPerTick = SingletonObjectMapper.objectMapper.readValue(
+                    response.body().string(),
+                    new TypeReference<Map<String, List<Integer>>>() {}
+            );
 
-            entitiesAmountsPerTick.forEach((key, amountsListPerTick) -> {
-                XYChart.Series<Integer, Integer> series = new XYChart.Series<>();
-                series.setName(key);
+            SingletonThreadpoolManager.executeTask(() -> {
+                List<XYChart.Series<Integer, Integer>> seriesList = new ArrayList<>();
 
-                for (int i = 0; i < amountsListPerTick.size(); i++)
-                    series.getData().add(new XYChart.Data<>(i, amountsListPerTick.get(i)));
+                entitiesAmountsPerTick.forEach((key, amountsListPerTick) -> {
+                    XYChart.Series<Integer, Integer> series = new XYChart.Series<>();
+                    series.setName(key);
 
-                seriesList.add(series);
+                    for (int i = 0; i < amountsListPerTick.size(); i++)
+                        series.getData().add(new XYChart.Data<>(i, amountsListPerTick.get(i)));
+
+                    seriesList.add(series);
+                });
+
+                Platform.runLater(() -> {
+                    if (!seriesList.isEmpty()) {
+                        entitiesAmountChart.getData().clear();
+                        entitiesAmountChart.getData().addAll(seriesList);
+                    }
+                });
             });
-
-            Platform.runLater(() -> {
-                if (!seriesList.isEmpty()) {
-                    entitiesAmountChart.getData().clear();
-                    entitiesAmountChart.getData().addAll(seriesList);
-                }
-            });
-        });
+        }
     }
 
     public void setSelectedSimulation(SingleSimulationDTO simulation) {
