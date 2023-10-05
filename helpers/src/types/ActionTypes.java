@@ -3,6 +3,7 @@ package types;
 import java.util.Arrays;
 import java.util.List;
 
+//TODO: Change to enum if there's time
 public abstract class ActionTypes {
     public static final String INCREASE = "increase";
     public static final String DECREASE = "decrease";

@@ -3,7 +3,6 @@ package types;
 import modules.Constants;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 
 public abstract class TypesUtils {
@@ -39,7 +38,7 @@ public abstract class TypesUtils {
     }
 
     public static boolean isBoolean(String str) {
-        return str.equalsIgnoreCase(BoolPropValues.TRUE) || str.equalsIgnoreCase(BoolPropValues.FALSE);
+        return BoolPropValues.BOOLEAN_PROPS.contains(str);
     }
 
     public static String removeExtraZeroes(String value) {
@@ -55,7 +54,7 @@ public abstract class TypesUtils {
             return true;
 
         if (propertyType.equals(PropTypes.BOOLEAN))
-            return Arrays.asList(BoolPropValues.TRUE, BoolPropValues.FALSE).contains(value);
+            return BoolPropValues.BOOLEAN_PROPS.contains(value);
 
         else if (propertyType.equals(PropTypes.FLOAT))
             return TypesUtils.isFloat(value);

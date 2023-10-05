@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+//TODO: Change to enum if there's time
 public abstract class PropTypes {
     public static final String DECIMAL = "decimal";
     public static final String BOOLEAN = "boolean";
