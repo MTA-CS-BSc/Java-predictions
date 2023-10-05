@@ -31,7 +31,7 @@ public class ThreadsAmountServlet extends HttpServlet {
 
             else {
                 int threadsAmount = SingletonObjectMapper.objectMapper.readValue(responseDTO.getData(), Integer.class);
-                resp.getWriter().write(JsonParser.toJson(Keys.VALID_RESPONSE_KEY, threadsAmount));
+                resp.getWriter().write(threadsAmount);
             }
         } catch (Exception e) {
             resp.setStatus(Constants.API_RESPONSE_SERVER_ERROR);

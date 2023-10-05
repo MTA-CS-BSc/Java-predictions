@@ -111,8 +111,7 @@ public class PropertyStatsController implements Initializable {
                 response.close();
 
             if (!Objects.isNull(response.body())) {
-                Map<String, Object> responseBody = JsonParser.getMapFromJsonString(response.body().string());
-                averageLabel.setText(String.format("%.5f", SingletonObjectMapper.objectMapper.readValue(responseBody.get(Keys.VALID_RESPONSE_KEY).toString(), Double.class)));
+                averageLabel.setText(String.format("%.5f", SingletonObjectMapper.objectMapper.readValue(response.body().string(), Double.class)));
                 avgContainer.setVisible(true);
             }
         } catch (Exception ignored) {
