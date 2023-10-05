@@ -1,5 +1,7 @@
 package prototypes.prd.implemented;
 
+import other.TerminationDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +21,20 @@ public class Termination implements Serializable {
         other.getStopConditions().forEach(this::addStopCondition);
 
         isStopByUser = other.isStopByUser();
+    }
+
+    public Termination(TerminationDTO other) {
+        stopConditions = new ArrayList<>();
+
+        other.getStopConditions().forEach(element -> {
+            if (element.getByWho().equals("ticks"))
+                stopConditions.add(new ByTicks(element.getCount()));
+
+            else
+                stopConditions.add(new BySecond(element.getCount()));
+        });
+
+        isStopByUser = other.isByUser();
     }
 
     public void addStopCondition(Object stopCondition) {

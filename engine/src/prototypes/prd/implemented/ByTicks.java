@@ -11,6 +11,10 @@ public class ByTicks implements Serializable {
         count = byTicks.getCount();
     }
 
+    public ByTicks(int count) {
+        this.count = count;
+    }
+
     public ByTicks(ByTicks other) {
         count = other.getCount();
     }

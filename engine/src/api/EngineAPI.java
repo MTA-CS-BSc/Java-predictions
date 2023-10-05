@@ -1,5 +1,6 @@
 package api;
 
+import allocations.AllocationRequest;
 import dtos.Mappers;
 import exceptions.UUIDNotFoundException;
 import history.HistoryManager;
@@ -58,20 +59,35 @@ public class EngineAPI {
         return validateWorldResponse;
     }
 
-    public ResponseDTO anyXmlLoaded() {
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.anyXmlLoaded());
+    public ResponseDTO isAnyXmlLoaded() {
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.isAnyXmlLoaded());
+    }
+    //#endregion
+
+    //#region Allocations
+    public ResponseDTO createAllocationRequest(String initialWorldName, int requestedExecutions,
+                                               String createdUser, TerminationDTO termination) {
+        AllocationRequest request = new AllocationRequest(initialWorldName, requestedExecutions, createdUser, termination);
+        historyManager.addAllocationRequest(request);
+        return new ResponseDTO(Constants.API_RESPONSE_OK, request.getUuid());
     }
     //#endregion
 
     //#region Simulation
-    public ResponseDTO createSimulation(String initialWorldName, String createdUser, String requestUuid) {
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.createSimulation(initialWorldName, createdUser, requestUuid));
+    public ResponseDTO createSimulation(String requestUuid) {
+        try {
+            return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.createSimulation(requestUuid));
+        } catch (Exception e) {
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "Simulation was not created", e.getMessage());
+        }
     }
 
     public ResponseDTO cloneSimulation(String uuid) {
-        SingleSimulation cloned = new SingleSimulation(historyManager.getPastSimulation(uuid));
-        historyManager.addPastSimulation(cloned);
-        return new ResponseDTO(Constants.API_RESPONSE_OK, cloned.getUUID());
+        try {
+            return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.cloneSimulation(uuid));
+        } catch (Exception e) {
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "Simulation was not created", e.getMessage());
+        }
     }
 
     private void runSimulation(String uuid) {
@@ -127,17 +143,21 @@ public class EngineAPI {
         return new ResponseDTO(Constants.API_RESPONSE_OK, String.format("Simulation [%s] is running", uuid));
     }
 
-    public ResponseDTO getSimulationDetails(String fromInitialName) {
-        if (!historyManager.anyXmlLoaded())
+    public ResponseDTO getSimulationDetails(String initialWorldName) {
+        if (!historyManager.isAnyXmlLoaded())
             return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
 
-        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getSimulationDetails(fromInitialName));
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getSimulationDetails(initialWorldName));
     }
     //#endregion
 
     //#region History
     private void removeSimulation(SingleSimulation simulation) {
-        historyManager.getPastSimulations().remove(simulation.getUUID());
+        String uuid = simulation.getUUID();
+
+        historyManager.getRequests().get(simulation.getRequestUuid()).getRequestSimulations().remove(uuid);
+        historyManager.getPastSimulations().remove(uuid);
+
     }
 
     public ResponseDTO removeUnusedSimulations() {
@@ -428,7 +448,7 @@ public class EngineAPI {
     }
 
     public ResponseDTO getAllValidWorlds() {
-        if (!historyManager.anyXmlLoaded())
+        if (!historyManager.isAnyXmlLoaded())
             return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
 
         List<WorldDTO> validWorlds = historyManager.getAllValidWorlds()
@@ -437,6 +457,15 @@ public class EngineAPI {
                 .collect(Collectors.toList());
 
         return new ResponseDTO(Constants.API_RESPONSE_OK, validWorlds);
+    }
+
+    public ResponseDTO getAllocationRequests() {
+        List<AllocationRequestDTO> requests = historyManager.getRequests().values()
+                .stream()
+                .map(Mappers::toDto)
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(Constants.API_RESPONSE_OK, historyManager.getRequests());
     }
     //#endregion
 }

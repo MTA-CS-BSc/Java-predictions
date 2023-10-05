@@ -1,4 +1,4 @@
-package allocations;
+package types;
 
 public enum RequestState {
     CREATED,

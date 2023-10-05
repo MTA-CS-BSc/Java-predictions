@@ -1,5 +1,6 @@
 package history;
 
+import allocations.AllocationRequest;
 import dtos.Mappers;
 import other.SingleSimulationDTO;
 import exceptions.UUIDNotFoundException;
@@ -14,26 +15,79 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class HistoryManager implements Serializable {
+    protected Map<String, AllocationRequest> requests;
     protected Map<String, SingleSimulation> pastSimulations;
     protected Map<String, World> initialWorlds;
 
     public HistoryManager() {
         pastSimulations = new HashMap<>();
         initialWorlds = new HashMap<>();
+        requests = new HashMap<>();
     }
 
     public void addInitialWorld(World world) {
         initialWorlds.put(world.getName(), world);
     }
 
-    public boolean anyXmlLoaded() {
+    public void addAllocationRequest(AllocationRequest request) {
+        requests.put(request.getUuid(), request);
+    }
+
+    public boolean isAnyXmlLoaded() {
         return !initialWorlds.isEmpty();
     }
 
-    public void addPastSimulation(SingleSimulation pastSimulation) {
-        pastSimulations.put(pastSimulation.getUUID(), pastSimulation);
+    public String createSimulation(String requestUuid) throws Exception {
+        AllocationRequest request = requests.get(requestUuid);
+
+        if (Objects.isNull(request))
+            throw new UUIDNotFoundException(String.format("Request [%s] not found", requestUuid));
+
+        else if (!request.canExecute())
+            throw new Exception(String.format("Request [%s]: used %d/%d simulations", requestUuid,
+                    request.getUsedSimulationsAmount(), request.getRequestedExecutions()));
+
+        World world = new World(initialWorlds.get(request.getInitialWorldName()));
+        world.setTermination(new Termination(request.getTermination()));
+        SingleSimulation sm = new SingleSimulation(request.getCreatedUser(), requestUuid, world);
+
+        addPastSimulation(sm);
+
+        return sm.getUUID();
     }
 
+    public String cloneSimulation(String uuid) throws Exception {
+        SingleSimulation toClone = pastSimulations.get(uuid);
+
+        if (Objects.isNull(toClone))
+            throw new UUIDNotFoundException(String.format("Simulation [%s] not found", uuid));
+
+        String requestUuid = toClone.getRequestUuid();
+        AllocationRequest request = requests.get(requestUuid);
+
+        if (Objects.isNull(request))
+            throw new UUIDNotFoundException(String.format("Request [%s] not found", requestUuid));
+
+        else if (!request.canExecute())
+            throw new Exception(String.format("Request [%s]: used %d/%d simulations", requestUuid,
+                    request.getUsedSimulationsAmount(), request.getRequestedExecutions()));
+
+        SingleSimulation cloned = new SingleSimulation(toClone);
+
+        addPastSimulation(cloned);
+
+        return cloned.getUUID();
+    }
+    public void addPastSimulation(SingleSimulation simulation) {
+        AllocationRequest request = requests.get(simulation.getRequestUuid());
+
+        if (request.canExecute()) {
+            pastSimulations.put(simulation.getUUID(), simulation);
+            request.getRequestSimulations().put(simulation.getUUID(), simulation);
+        }
+    }
+
+    //#region Getters
     public SingleSimulation getPastSimulation(String uuid) {
         return pastSimulations.get(uuid);
     }
@@ -74,21 +128,18 @@ public class HistoryManager implements Serializable {
         return pastSimulations;
     }
 
-    public SingleSimulationDTO getSimulationDetails(String fromInitialName) {
-        return new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(fromInitialName)));
+    public Map<String, AllocationRequest> getRequests() { return requests; }
+
+    public SingleSimulationDTO getSimulationDetails(String initialWorldName) {
+        return new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(initialWorldName)));
     }
 
     public List<World> getAllValidWorlds() {
         return new ArrayList<>(initialWorlds.values());
     }
 
-    public String createSimulation(String initialWorldName, String createdUser, String requestUuid) {
-        SingleSimulation sm = new SingleSimulation(createdUser, requestUuid, initialWorlds.get(initialWorldName));
-        addPastSimulation(sm);
-        return sm.getUUID();
+    public World getInitialWorld(String initialWorldName) {
+        return initialWorlds.get(initialWorldName);
     }
-
-    public World getInitialWorld(String fromInitialName) {
-        return initialWorlds.get(fromInitialName);
-    }
+    //#endregion
 }

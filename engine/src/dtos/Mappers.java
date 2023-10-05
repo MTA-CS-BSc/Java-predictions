@@ -1,6 +1,7 @@
 package dtos;
 
 import actions.*;
+import allocations.AllocationRequest;
 import other.*;
 import prototypes.SingleEntity;
 import prototypes.prd.implemented.*;
@@ -156,5 +157,18 @@ public abstract class Mappers {
             return null;
 
         return new SecondaryEntityDTO(secondaryEntity.getEntityName());
+    }
+
+    public static AllocationRequestDTO toDto(AllocationRequest request) {
+        if (Objects.isNull(request))
+            return null;
+
+        List<SingleSimulationDTO> simulations = request.getRequestSimulations().values()
+                .stream()
+                .map(Mappers::toDto)
+                .collect(Collectors.toList());
+
+        return new AllocationRequestDTO(request.getUuid(), request.getInitialWorldName(),
+                request.getRequestedExecutions(), request.getState(), request.getCreatedUser(), simulations);
     }
 }

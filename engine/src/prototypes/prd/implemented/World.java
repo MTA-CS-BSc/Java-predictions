@@ -17,19 +17,6 @@ public class World implements Serializable {
     protected String name;
     protected int sleep;
 
-    public World(World other, WorldState worldState) {
-        this.termination = new Termination(other.getTermination());
-        this.rules = new Rules(other.getRules());
-        this.name = other.name;
-        this.sleep = other.sleep;
-
-        environment = new Environment();
-        entities = new Entities();
-        grid = new WorldGrid(worldState.getGrid());
-
-        setByWorldState(worldState);
-    }
-
     public World(PRDWorld world) {
         rules = new Rules(world.getPRDRules().getPRDRule());
         entities = new Entities(world.getPRDEntities().getPRDEntity());
@@ -46,6 +33,19 @@ public class World implements Serializable {
         this(other, new WorldState(other));
     }
 
+    public World(World other, WorldState worldState) {
+        this.termination = new Termination(other.getTermination());
+        this.rules = new Rules(other.getRules());
+        this.name = other.name;
+        this.sleep = other.sleep;
+
+        environment = new Environment();
+        entities = new Entities();
+        grid = new WorldGrid(worldState.getGrid());
+
+        setByWorldState(worldState);
+    }
+
     public Environment getEnvironment() {
         return environment;
     }
@@ -57,6 +57,8 @@ public class World implements Serializable {
     public Termination getTermination() {
         return termination;
     }
+
+    public void setTermination(Termination value) { termination = value; }
 
     public Rules getRules() {
         return rules;

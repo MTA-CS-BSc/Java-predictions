@@ -11,6 +11,10 @@ public class BySecond implements Serializable {
         count = bySecond.getCount();
     }
 
+    public BySecond(int count) {
+        this.count = count;
+    }
+
     public BySecond(BySecond other) {
         count = other.getCount();
     }
