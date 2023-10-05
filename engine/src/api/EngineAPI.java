@@ -201,6 +201,20 @@ public class EngineAPI {
         return new ResponseDTO(Constants.API_RESPONSE_OK, data);
     }
 
+    public ResponseDTO getPastSimulationsForUser(String username) {
+        if (historyManager.isEmpty())
+            return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
+
+        List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
+                .stream()
+                .filter(element -> element.getCreatedUser().equals(username))
+                .map(Mappers::toDto)
+                .sorted(Comparator.comparing(SingleSimulationDTO::getCreatedTimestamp))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(Constants.API_RESPONSE_OK, data);
+    }
+
     public ResponseDTO getPastSimulation(String uuid) {
         if (historyManager.isEmpty())
             return new ResponseDTO(Constants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
