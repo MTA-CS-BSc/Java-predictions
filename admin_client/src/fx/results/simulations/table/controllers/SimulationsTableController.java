@@ -1,6 +1,8 @@
 package fx.results.simulations.table.controllers;
 
 
+import api.history.simulations.HttpPastSimulations;
+import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -13,12 +15,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import json.SingletonObjectMapper;
 import modules.Constants;
+import okhttp3.Response;
 import other.SingleSimulationDTO;
 import types.SimulationState;
 
 import java.net.URL;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -60,25 +63,31 @@ public class SimulationsTableController implements Initializable {
 
     private void addSimulationsFromAPI() {
         try {
-            //TODO: Re-write
-//            List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(SingletonEngineAPI.api
-//                            .getPastSimulations().getData(),
-//                    new TypeReference<List<SingleSimulationDTO>>() {
-//                    });
+            Response response = HttpPastSimulations.getPastSimulations();
 
-            List<SingleSimulationDTO> simulations = Collections.emptyList();
+            if (!response.isSuccessful() || Objects.isNull(response.body())) {
+                response.close();
+                return;
+            }
+
+            List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(
+                    response.body().string(),
+                    new TypeReference<List<SingleSimulationDTO>>() {
+                    });
 
             if (simulations.size() < simulationsTable.getItems().size())
                 Platform.runLater(() -> Alerts.showAlert("Simulations were removed",
                         "One or more simulations were removed due to ERROR state reached", Alert.AlertType.INFORMATION));
 
-            simulationsTable.getItems().clear();
-            simulationsTable.getItems().addAll(simulations);
 
-            if (!Objects.isNull(selectedSimulation.getValue()))
-                selectPreviouslySelected();
-        } catch (Exception ignored) {
-        }
+            Platform.runLater(() -> {
+                simulationsTable.getItems().clear();
+                simulationsTable.getItems().addAll(simulations);
+
+                if (!Objects.isNull(selectedSimulation.getValue()))
+                    selectPreviouslySelected();
+            });
+        } catch (Exception ignored) { }
     }
 
     private void selectPreviouslySelected() {
