@@ -56,12 +56,12 @@ public class SimulationsTableController implements Initializable {
         initColumns();
 
         Executors.newScheduledThreadPool(1)
-                .scheduleAtFixedRate(this::addSimulationsFromAPI, 0,
+                .scheduleAtFixedRate(this::fetchSimulations, 0,
                         Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
 
     }
 
-    private void addSimulationsFromAPI() {
+    private void fetchSimulations() {
         try {
             Response response = HttpPastSimulations.getPastSimulations();
 
