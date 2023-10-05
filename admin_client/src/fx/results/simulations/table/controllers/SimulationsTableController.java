@@ -38,6 +38,10 @@ public class SimulationsTableController implements Initializable {
     @FXML private TableColumn<SingleSimulationDTO, Long> ticksColumn;
 
     @FXML private TableColumn<SingleSimulationDTO, Long> elapsedTimeColumn;
+
+    @FXML private TableColumn<SingleSimulationDTO, String> createdUserColumn;
+
+    @FXML private TableColumn<SingleSimulationDTO, String> requestUuidColumn;
     //#endregion
 
     private ObjectProperty<SingleSimulationDTO> selectedSimulation;
@@ -103,6 +107,8 @@ public class SimulationsTableController implements Initializable {
         stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getSimulationState()));
         ticksColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getTicks()).asObject());
         elapsedTimeColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
+        requestUuidColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRequestUuid()));
+        createdUserColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedUser()));
     }
 
     public void setSelectedSimulation(SingleSimulationDTO simulation) {
