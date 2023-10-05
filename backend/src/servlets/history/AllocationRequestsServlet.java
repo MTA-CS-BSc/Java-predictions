@@ -43,17 +43,35 @@ public class AllocationRequestsServlet extends HttpServlet {
         String createdUser = requestBodyMap.get(Keys.CREATED_USER_KEY).toString();
         int requestedExecutions = Integer.parseInt(requestBodyMap.get(Keys.REQUESTED_EXECUTIONS_KEY).toString());
 
-        TerminationDTO termination = SingletonObjectMapper.objectMapper.readValue(
-                requestBodyMap.get(Keys.TERMINATION_KEY).toString(),
-                TerminationDTO.class
-        );
+        //TODO: Catch is for postman check
+        try {
+            TerminationDTO termination = SingletonObjectMapper.objectMapper.readValue(
+                    requestBodyMap.get(Keys.TERMINATION_KEY).toString(),
+                    TerminationDTO.class
+            );
 
-        ResponseDTO responseDTO = Configuration.api.createAllocationRequest(initialWorldName,
-                requestedExecutions, createdUser, termination);
+            ResponseDTO responseDTO = Configuration.api.createAllocationRequest(initialWorldName,
+                    requestedExecutions, createdUser, termination);
 
-        resp.setStatus(responseDTO.getStatus());
+            resp.setStatus(responseDTO.getStatus());
 
-        if (!Objects.isNull(responseDTO.getErrorDescription()))
-            resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
+            if (!Objects.isNull(responseDTO.getErrorDescription()))
+                resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
+        }
+
+        catch (Exception e) {
+            TerminationDTO termination = SingletonObjectMapper.objectMapper.readValue(
+                    SingletonObjectMapper.objectMapper.writeValueAsString(requestBodyMap.get(Keys.TERMINATION_KEY)),
+                    TerminationDTO.class
+            );
+
+            ResponseDTO responseDTO = Configuration.api.createAllocationRequest(initialWorldName,
+                    requestedExecutions, createdUser, termination);
+
+            resp.setStatus(responseDTO.getStatus());
+
+            if (!Objects.isNull(responseDTO.getErrorDescription()))
+                resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
+        }
     }
 }
