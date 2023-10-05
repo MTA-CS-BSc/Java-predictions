@@ -27,13 +27,13 @@ public abstract class HttpAllocations {
     }
 
     public static Response createAllocationRequest(String createdUser,
-                                                   String fromInitialWorld,
+                                                   String initialWorldName,
                                                    int executionsAmount,
                                                    TerminationDTO termination) throws IOException {
         Map<String, Object> body = new HashMap<>();
 
         body.put(Keys.CREATED_USER_KEY, createdUser);
-        body.put(Keys.INITIAL_WORLD_NAME_KEY, fromInitialWorld);
+        body.put(Keys.INITIAL_WORLD_NAME_KEY, initialWorldName);
         body.put(Keys.REQUESTED_EXECUTIONS_KEY, executionsAmount);
         body.put(Keys.TERMINATION_KEY, termination);
 
