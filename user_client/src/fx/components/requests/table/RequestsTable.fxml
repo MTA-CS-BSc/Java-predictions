@@ -4,15 +4,17 @@
 
 <TableView xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:id="requestsTableView"
+            fx:id="allocationsTableView"
             maxWidth="1000"
+           onMouseClicked="#handleRequestClicked"
             fx:controller="fx.components.requests.table.RequestsTableController">
     <columns>
         <TableColumn fx:id="requestUuidColumn" prefWidth="150" text="UUID"/>
         <TableColumn fx:id="worldNameColumn" prefWidth="250" text="World Name"/>
         <TableColumn fx:id="executionsAmountColumn" prefWidth="100" text="Executions Amount"/>
         <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
-        <TableColumn fx:id="runningSimulationsColumn" prefWidth="200" text="Running in request"/>
-        <TableColumn fx:id="finishedSimulationsColumn" prefWidth="200" text="Finished in request"/>
+        <TableColumn fx:id="runningSimulationsInRequestColumn" prefWidth="200" text="Running in request"/>
+        <TableColumn fx:id="finishedSimulationsInRequestColumn" prefWidth="200" text="Finished in request"/>
+        <TableColumn fx:id="executeColumn" prefWidth="200" text="Execute"/>
     </columns>
 </TableView>
