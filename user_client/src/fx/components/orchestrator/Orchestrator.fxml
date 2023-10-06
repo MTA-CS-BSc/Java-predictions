@@ -15,5 +15,8 @@
 
     <StackPane>
         <fx:include source="../details/Details.fxml" fx:id="details"/>
+        <fx:include source="../requests/Requests.fxml" fx:id="requests"/>
+        <fx:include source="../execution/Execution.fxml" fx:id="execution"/>
+        <fx:include source="../results/Results.fxml" fx:id="results"/>
     </StackPane>
 </VBox>
