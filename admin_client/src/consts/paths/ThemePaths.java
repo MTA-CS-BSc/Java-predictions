@@ -1,4 +1,4 @@
-package consts;
+package consts.paths;
 
 public abstract class ThemePaths {
     public static final String DARK_THEME_CSS = "resources/themes/DarkTheme.css";

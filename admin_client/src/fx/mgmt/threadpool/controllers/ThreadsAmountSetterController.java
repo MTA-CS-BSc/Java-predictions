@@ -1,6 +1,6 @@
 package fx.mgmt.threadpool.controllers;
 
-import consts.FilePaths;
+import consts.paths.FXMLPaths;
 import fx.Main;
 import fx.themes.ScenesStore;
 import javafx.fxml.FXML;
@@ -19,7 +19,7 @@ public class ThreadsAmountSetterController implements Initializable {
 
     @FXML
     private void handleSetThreadsAmountClicked() throws IOException {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource(FilePaths.THREADS_AMOUNT_POPUP_FXML));
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource(FXMLPaths.THREADS_AMOUNT_POPUP_FXML));
         Stage stage = new Stage();
         Scene threadsScene = new Scene(loader.load());
 

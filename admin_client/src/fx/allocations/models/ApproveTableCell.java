@@ -1,7 +1,7 @@
 package fx.allocations.models;
 
 import api.allocations.HttpAllocations;
-import consts.FilePaths;
+import consts.paths.IconPaths;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -25,7 +25,7 @@ public class ApproveTableCell extends TableCell<AllocationRequestDTO, Boolean> i
         paddedButton.getChildren().add(approveButton);
 
         try {
-            styleButton(approveButton, FilePaths.APPROVE_BUTTON_ICON_PATH);
+            styleButton(approveButton, IconPaths.APPROVE_BUTTON_ICON_PATH);
         } catch (Exception ignored) {
         }
 

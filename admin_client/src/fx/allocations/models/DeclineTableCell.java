@@ -1,7 +1,7 @@
 package fx.allocations.models;
 
 import api.allocations.HttpAllocations;
-import consts.FilePaths;
+import consts.paths.IconPaths;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -25,7 +25,7 @@ public class DeclineTableCell extends TableCell<AllocationRequestDTO, Boolean> i
         paddedButton.getChildren().add(declineButton);
 
         try {
-            styleButton(declineButton, FilePaths.DECLINE_BUTTON_ICON_PATH);
+            styleButton(declineButton, IconPaths.DECLINE_BUTTON_ICON_PATH);
         } catch (Exception ignored) {
         }
 

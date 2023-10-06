@@ -2,7 +2,7 @@ package fx.header.menu.controllers;
 
 import consts.Animations;
 import consts.ThemeNames;
-import consts.ThemePaths;
+import consts.paths.ThemePaths;
 import fx.Main;
 import fx.themes.ScenesStore;
 import javafx.collections.ListChangeListener;

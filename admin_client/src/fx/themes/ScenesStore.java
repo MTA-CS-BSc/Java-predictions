@@ -1,6 +1,6 @@
 package fx.themes;
 
-import consts.ThemePaths;
+import consts.paths.ThemePaths;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
