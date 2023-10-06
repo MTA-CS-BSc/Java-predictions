@@ -78,6 +78,7 @@ public class HistoryManager implements Serializable {
 
         return cloned.getUUID();
     }
+
     public void addPastSimulation(SingleSimulation simulation) {
         AllocationRequest request = requests.get(simulation.getRequestUuid());
 

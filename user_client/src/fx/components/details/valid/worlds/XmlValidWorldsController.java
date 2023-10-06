@@ -1,7 +1,7 @@
 package fx.components.details.valid.worlds;
 
 import api.ApiConstants;
-import api.mgmt.xml.valid.worlds.HttpValidWorlds;
+import api.details.valid.worlds.HttpValidWorlds;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.beans.property.*;
