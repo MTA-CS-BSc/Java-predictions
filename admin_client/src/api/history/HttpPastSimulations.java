@@ -1,4 +1,4 @@
-package api.history.simulations;
+package api.history;
 
 import api.Configuration;
 import api.Routes;

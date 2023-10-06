@@ -1,7 +1,7 @@
 package fx.results.stats.finished.properties.controllers;
 
 
-import api.results.stats.properties.HttpPropertyStats;
+import api.history.results.stats.properties.HttpPropertyStats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import fx.modules.SingletonThreadpoolManager;

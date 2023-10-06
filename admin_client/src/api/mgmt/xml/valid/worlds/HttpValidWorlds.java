@@ -1,4 +1,4 @@
-package api.xml.valid.worlds;
+package api.mgmt.xml.valid.worlds;
 
 import api.Configuration;
 import api.Routes;

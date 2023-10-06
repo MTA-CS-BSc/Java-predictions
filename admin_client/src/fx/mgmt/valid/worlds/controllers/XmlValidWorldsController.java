@@ -1,6 +1,6 @@
 package fx.mgmt.valid.worlds.controllers;
 
-import api.xml.valid.worlds.HttpValidWorlds;
+import api.mgmt.xml.valid.worlds.HttpValidWorlds;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.beans.property.*;

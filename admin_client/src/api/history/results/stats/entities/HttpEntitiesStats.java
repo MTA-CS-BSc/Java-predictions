@@ -1,4 +1,4 @@
-package api.results.stats.entities;
+package api.history.results.stats.entities;
 
 import api.Configuration;
 import api.Routes;

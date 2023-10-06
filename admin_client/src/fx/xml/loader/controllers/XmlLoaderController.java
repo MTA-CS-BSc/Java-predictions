@@ -1,6 +1,6 @@
 package fx.xml.loader.controllers;
 
-import api.xml.loader.HttpXmlLoader;
+import api.mgmt.xml.loader.HttpXmlLoader;
 import consts.Alerts;
 import consts.Animations;
 import javafx.application.Platform;

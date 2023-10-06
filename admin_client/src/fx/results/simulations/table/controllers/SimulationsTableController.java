@@ -1,7 +1,7 @@
 package fx.results.simulations.table.controllers;
 
 
-import api.history.simulations.HttpPastSimulations;
+import api.history.HttpPastSimulations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import javafx.application.Platform;

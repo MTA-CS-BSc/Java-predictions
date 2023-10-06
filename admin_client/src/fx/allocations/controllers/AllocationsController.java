@@ -1,6 +1,6 @@
 package fx.allocations.controllers;
 
-import api.history.allocations.HttpAllocations;
+import api.allocations.HttpAllocations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fx.allocations.models.ApproveTableCell;
 import fx.allocations.models.DeclineTableCell;

@@ -1,7 +1,7 @@
 package fx.results.stats.finished.entities.amount.chart.controllers;
 
 
-import api.results.stats.entities.HttpEntitiesStats;
+import api.history.results.stats.entities.HttpEntitiesStats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fx.modules.SingletonThreadpoolManager;
 import javafx.application.Platform;

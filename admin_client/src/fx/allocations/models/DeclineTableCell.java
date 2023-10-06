@@ -1,6 +1,6 @@
 package fx.allocations.models;
 
-import api.history.allocations.HttpAllocations;
+import api.allocations.HttpAllocations;
 import consts.FilePaths;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

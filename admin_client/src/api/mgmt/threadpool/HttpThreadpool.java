@@ -1,4 +1,4 @@
-package api.threadpool;
+package api.mgmt.threadpool;
 
 import api.Configuration;
 import api.Routes;

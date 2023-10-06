@@ -1,4 +1,4 @@
-package api.history.allocations;
+package api.allocations;
 
 import api.Configuration;
 import api.Routes;

@@ -1,6 +1,6 @@
 package fx.mgmt.threadpool.controllers;
 
-import api.threadpool.HttpThreadpool;
+import api.mgmt.threadpool.HttpThreadpool;
 import consts.Alerts;
 import fx.themes.ScenesStore;
 import javafx.event.ActionEvent;

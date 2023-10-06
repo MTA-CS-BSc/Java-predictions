@@ -1,6 +1,6 @@
 package fx.mgmt.threadpool.controllers;
 
-import api.threadpool.HttpThreadpool;
+import api.mgmt.threadpool.HttpThreadpool;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

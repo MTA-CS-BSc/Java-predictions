@@ -1,4 +1,4 @@
-package api.xml.loader;
+package api.mgmt.xml.loader;
 
 import api.Configuration;
 import api.Routes;
