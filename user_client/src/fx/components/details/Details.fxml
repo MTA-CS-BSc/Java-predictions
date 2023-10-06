@@ -11,7 +11,7 @@
 
     <HBox spacing="10" alignment="CENTER">
         <VBox.margin>
-            <Insets bottom="20"/>
+            <Insets bottom="20" left="20"/>
         </VBox.margin>
 
         <fx:include source="valid/worlds/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
