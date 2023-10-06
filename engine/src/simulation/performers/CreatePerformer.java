@@ -1,7 +1,7 @@
 package simulation.performers;
 
 import prototypes.SingleEntity;
-import modules.Constants;
+import modules.Restrictions;
 import prototypes.prd.implemented.*;
 import types.PropTypes;
 
@@ -32,7 +32,7 @@ public class CreatePerformer {
 
                     else if (property.getType().equals(PropTypes.DECIMAL) && fromProperty.getType().equals(PropTypes.FLOAT))
                         if (!fromProperty.getValue().getCurrentValue().contains("\\.")
-                                || fromProperty.getValue().getCurrentValue().matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
+                                || fromProperty.getValue().getCurrentValue().matches(Restrictions.REGEX_ONLY_ZEROES_AFTER_DOT))
                             property.setValue(new Value(fromProperty.getValue()));
                 });
 

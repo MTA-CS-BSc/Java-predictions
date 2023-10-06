@@ -1,12 +1,12 @@
 package types;
 
-import modules.Constants;
+import modules.Restrictions;
 
 public class Bounds {
     public int rowMDepth, rowPDepth, colMDepth, colPDepth;
 
     public Bounds() {
-        rowMDepth = rowPDepth = colMDepth = colPDepth = Constants.NOT_SET;
+        rowMDepth = rowPDepth = colMDepth = colPDepth = Restrictions.NOT_SET;
     }
 
     public void setRowMDepth(int rowMDepth) {

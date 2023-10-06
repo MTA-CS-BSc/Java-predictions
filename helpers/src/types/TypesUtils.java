@@ -1,6 +1,6 @@
 package types;
 
-import modules.Constants;
+import modules.Restrictions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +11,7 @@ public abstract class TypesUtils {
     public static boolean isDecimal(String str) {
         String newStr = str;
 
-        if (str.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
+        if (str.matches(Restrictions.REGEX_ONLY_ZEROES_AFTER_DOT))
             newStr = str.split("\\.")[0];
 
         try {
@@ -43,7 +43,7 @@ public abstract class TypesUtils {
     }
 
     public static String removeExtraZeroes(String value) {
-        return value.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? value.split("\\.")[0] : value;
+        return value.matches(Restrictions.REGEX_ONLY_ZEROES_AFTER_DOT) ? value.split("\\.")[0] : value;
     }
 
     public static String getSystemFunctionType(String expression) {

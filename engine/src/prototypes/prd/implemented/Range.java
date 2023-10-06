@@ -1,6 +1,6 @@
 package prototypes.prd.implemented;
 
-import modules.Constants;
+import modules.Restrictions;
 import prototypes.prd.generated.PRDRange;
 
 import java.io.Serializable;
@@ -15,8 +15,8 @@ public class Range implements Serializable {
             to = range.getTo();
             from = range.getFrom();
         } else {
-            to = Constants.MAX_RANGE;
-            from = Constants.MIN_RANGE;
+            to = Restrictions.MAX_RANGE;
+            from = Restrictions.MIN_RANGE;
         }
     }
 
@@ -25,8 +25,8 @@ public class Range implements Serializable {
             to = other.getTo();
             from = other.getFrom();
         } else {
-            to = Constants.MAX_RANGE;
-            from = Constants.MIN_RANGE;
+            to = Restrictions.MAX_RANGE;
+            from = Restrictions.MIN_RANGE;
         }
     }
 

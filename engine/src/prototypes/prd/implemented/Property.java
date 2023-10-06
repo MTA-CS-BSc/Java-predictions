@@ -1,6 +1,6 @@
 package prototypes.prd.implemented;
 
-import modules.Constants;
+import modules.Restrictions;
 import prototypes.prd.generated.PRDEnvProperty;
 import prototypes.prd.generated.PRDProperty;
 import prototypes.prd.generated.PRDValue;
@@ -112,7 +112,7 @@ public class Property implements Serializable {
 
     public boolean hasNoRange() {
         return Objects.isNull(getRange())
-                || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
+                || (getRange().getTo() == Restrictions.MAX_RANGE && getRange().getFrom() == Restrictions.MIN_RANGE);
     }
 
     @Override

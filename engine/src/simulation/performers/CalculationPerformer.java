@@ -12,7 +12,7 @@ import prototypes.prd.implemented.Multiply;
 import prototypes.prd.implemented.Property;
 import prototypes.prd.implemented.World;
 import prototypes.prd.implemented.actions.CalculationAction;
-import modules.Constants;
+import modules.Restrictions;
 import types.ActionTypes;
 
 import java.util.Objects;
@@ -35,7 +35,7 @@ public abstract class CalculationPerformer {
         String result = String.valueOf(Objects.isNull(multiply) ? Float.parseFloat(arg1) / Float.parseFloat(arg2)
                 : Float.parseFloat(arg1) * Float.parseFloat(arg2));
 
-        return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
+        return result.matches(Restrictions.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
 
     }
 

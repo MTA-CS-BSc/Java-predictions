@@ -11,7 +11,7 @@ import prototypes.prd.implemented.Property;
 import prototypes.prd.implemented.World;
 import prototypes.prd.implemented.actions.Action;
 import prototypes.prd.implemented.actions.ConditionAction;
-import modules.Constants;
+import modules.Restrictions;
 import types.ConditionLogicalOperators;
 import types.ConditionSingularities;
 import types.Operators;
@@ -40,7 +40,7 @@ public abstract class ConditionPerformer {
     private static boolean getConditionResult(String arg1, String arg2, String operator) throws InvalidTypeException {
         boolean isNumeric = TypesUtils.isDecimal(arg1) || TypesUtils.isFloat(arg1);
 
-        if (isNumeric && arg2.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
+        if (isNumeric && arg2.matches(Restrictions.REGEX_ONLY_ZEROES_AFTER_DOT))
             arg2 = TypesUtils.removeExtraZeroes(arg2);
 
         switch (operator) {

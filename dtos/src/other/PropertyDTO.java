@@ -2,7 +2,7 @@ package other;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import modules.Constants;
+import modules.Restrictions;
 
 import java.util.Objects;
 
@@ -64,7 +64,7 @@ public class PropertyDTO {
 
     public boolean hasNoRange() {
         return Objects.isNull(getRange())
-                || (getRange().getTo() == Constants.MAX_RANGE && getRange().getFrom() == Constants.MIN_RANGE);
+                || (getRange().getTo() == Restrictions.MAX_RANGE && getRange().getFrom() == Restrictions.MIN_RANGE);
     }
 
     @Override

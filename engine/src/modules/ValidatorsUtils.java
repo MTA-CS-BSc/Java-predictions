@@ -96,7 +96,7 @@ public abstract class ValidatorsUtils {
                 return PropTypes.NUMERIC_PROPS.contains(expectedType);
 
             else if (TypesUtils.isFloat(expression)) {
-                if (!expression.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT))
+                if (!expression.matches(Restrictions.REGEX_ONLY_ZEROES_AFTER_DOT))
                     return expectedType.equals(PropTypes.FLOAT);
 
                 return PropTypes.NUMERIC_PROPS.contains(expectedType);

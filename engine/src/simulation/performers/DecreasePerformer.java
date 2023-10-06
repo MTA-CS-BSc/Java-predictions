@@ -8,7 +8,7 @@ import prototypes.prd.implemented.Property;
 import prototypes.SingleEntity;
 import prototypes.prd.implemented.World;
 import prototypes.prd.implemented.actions.DecreaseAction;
-import modules.Constants;
+import modules.Restrictions;
 import types.ActionTypes;
 
 import java.util.Objects;
@@ -17,7 +17,7 @@ public abstract class DecreasePerformer {
     private static String getDecrementResult(String propValue, String by) {
         String result = String.valueOf(Float.parseFloat(propValue) - Float.parseFloat(by));
 
-        return result.matches(Constants.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
+        return result.matches(Restrictions.REGEX_ONLY_ZEROES_AFTER_DOT) ? result.split("\\.")[0] : result;
     }
 
     private static void handle(World world, DecreaseAction action, SingleEntity main, SingleEntity secondary) throws Exception {

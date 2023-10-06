@@ -23,12 +23,12 @@ public abstract class RandomGenerator {
     }
 
     public static String randomizeRandomString() {
-        int randomLength = randomizeRandomNumber(1, Constants.MAX_RANDOM_STRING_LENGTH);
+        int randomLength = randomizeRandomNumber(1, Restrictions.MAX_RANDOM_STRING_LENGTH);
         StringBuilder sb = new StringBuilder(randomLength);
 
         for (int i = 0; i < randomLength; i++) {
-            int randomIndex = new Random().nextInt(Constants.STRING_ALLOWED_CHARS.length());
-            char randomSymbol = Constants.STRING_ALLOWED_CHARS.charAt(randomIndex);
+            int randomIndex = new Random().nextInt(Restrictions.STRING_ALLOWED_CHARS.length());
+            char randomSymbol = Restrictions.STRING_ALLOWED_CHARS.charAt(randomIndex);
             sb.append(randomSymbol);
         }
 

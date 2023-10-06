@@ -11,7 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
-import modules.Constants;
+import modules.Restrictions;
 import okhttp3.Response;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
@@ -62,7 +62,7 @@ public class XmlLoaderController implements Initializable {
             if (Animations.IS_ANIMATIONS_ON.getValue()) {
                 tray = new TrayNotification(title, body, type);
                 tray.setAnimationType(AnimationType.FADE);
-                Platform.runLater(() -> tray.showAndDismiss(Constants.ANIMATION_DURATION));
+                Platform.runLater(() -> tray.showAndDismiss(Restrictions.ANIMATION_DURATION));
             }
         } catch (Exception ignored) {
             Alerts.showAlert("XML was not loaded", "File not found, not supported or corrupted", Alert.AlertType.ERROR);
