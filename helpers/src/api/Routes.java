@@ -9,6 +9,7 @@ public abstract class Routes {
     public static final String XML_VALID_WORLDS = XML_VALID + "/worlds";
     public static final String HISTORY = "/history";
     public static final String ALLOCATIONS_HISTORY = HISTORY + "/allocations";
+    public static final String ALLOCATIONS_HISTORY_FOR_USER = ALLOCATIONS_HISTORY + "/user";
     public static final String APPROVE_REQUEST = ALLOCATIONS_HISTORY + "/approve";
     public static final String DECLINE_REQUEST = ALLOCATIONS_HISTORY + "/decline";
     public static final String SIMULATIONS_HISTORY = HISTORY + "/simulations";

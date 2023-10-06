@@ -5,7 +5,7 @@
 <TableView xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:id="allocationsTableView"
-            maxWidth="1000"
+            maxWidth="1100"
            onMouseClicked="#handleRequestClicked"
             fx:controller="fx.components.requests.table.RequestsTableController">
     <columns>
@@ -15,6 +15,6 @@
         <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
         <TableColumn fx:id="runningSimulationsInRequestColumn" prefWidth="200" text="Running in request"/>
         <TableColumn fx:id="finishedSimulationsInRequestColumn" prefWidth="200" text="Finished in request"/>
-        <TableColumn fx:id="executeColumn" prefWidth="200" text="Execute"/>
+        <TableColumn fx:id="executeColumn" prefWidth="100" text="Execute"/>
     </columns>
 </TableView>
