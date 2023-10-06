@@ -24,7 +24,7 @@ public class DetailsController implements Initializable {
         return container;
     }
 
-    public void clearWorldDetails() {
+    public void clearWorldSelection() {
         xmlValidWorldsController.setSelectedWorld(null);
     }
 }

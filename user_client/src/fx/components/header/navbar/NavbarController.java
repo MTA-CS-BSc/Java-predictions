@@ -42,6 +42,7 @@ public class NavbarController implements Initializable {
     public void setRequestsController(RequestsController controller) {
         requestsController = controller;
     }
+
     public void setExecutionController(ExecutionController controller) {
         executionController = controller;
     }
@@ -163,4 +164,8 @@ public class NavbarController implements Initializable {
 //    private void clearAllocations() {
 //        allocationsController.clearAllocations();
 //    }
+
+    private void clearWorldSelection() {
+        detailsController.clearWorldSelection();
+    }
 }
