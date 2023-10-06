@@ -1,9 +1,9 @@
 package api.mgmt.xml.loader;
 
 import api.Configuration;
+import api.ApiConstants;
 import api.Routes;
 import json.Keys;
-import modules.Constants;
 import okhttp3.*;
 
 import java.io.File;
@@ -16,7 +16,7 @@ public abstract class HttpXmlLoader {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(Keys.XML_UPLOAD_KEY, file.getName(),
-                        RequestBody.create(file, MediaType.parse(Constants.XML_CONTENT_TYPE)))
+                        RequestBody.create(file, MediaType.parse(ApiConstants.XML_CONTENT_TYPE)))
                 .build();
 
         Request request = new Request.Builder()

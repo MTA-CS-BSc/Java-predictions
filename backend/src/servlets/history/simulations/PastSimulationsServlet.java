@@ -1,5 +1,6 @@
 package servlets.history.simulations;
 
+import api.ApiConstants;
 import api.Routes;
 import config.Configuration;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import modules.Constants;
 import other.ResponseDTO;
 
 import java.io.IOException;
@@ -17,12 +17,12 @@ import java.io.IOException;
 public class PastSimulationsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(Constants.JSON_CONTENT_TYPE);
+        resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
 
         ResponseDTO responseDTO = Configuration.api.getPastSimulations();
         resp.setStatus(responseDTO.getStatus());
 
-        if (resp.getStatus() == Constants.API_RESPONSE_OK)
+        if (resp.getStatus() == ApiConstants.API_RESPONSE_OK)
             resp.getWriter().write(responseDTO.getData());
 
         else

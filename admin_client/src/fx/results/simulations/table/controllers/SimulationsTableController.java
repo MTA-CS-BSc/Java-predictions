@@ -1,6 +1,7 @@
 package fx.results.simulations.table.controllers;
 
 
+import api.ApiConstants;
 import api.history.HttpPastSimulations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
@@ -13,7 +14,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import json.JsonParser;
-import modules.Constants;
 import okhttp3.Response;
 import other.SingleSimulationDTO;
 import types.SimulationState;
@@ -57,7 +57,7 @@ public class SimulationsTableController implements Initializable {
 
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::fetchSimulations, 0,
-                        Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+                        ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
 
     }
 

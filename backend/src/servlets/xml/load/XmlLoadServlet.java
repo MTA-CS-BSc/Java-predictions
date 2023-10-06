@@ -1,5 +1,6 @@
 package servlets.xml.load;
 
+import api.ApiConstants;
 import config.Configuration;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import json.JsonParser;
 import json.Keys;
-import modules.Constants;
 import other.ResponseDTO;
 
 import java.io.InputStream;
@@ -20,7 +20,7 @@ import java.util.Objects;
 public class XmlLoadServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        resp.setContentType(Constants.JSON_CONTENT_TYPE);
+        resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
 
         try {
             Part filePart = req.getPart(Keys.XML_UPLOAD_KEY);
@@ -31,7 +31,7 @@ public class XmlLoadServlet extends HttpServlet {
             if (!Objects.isNull(responseDTO.getErrorDescription()))
                 resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
         } catch (Exception se) {
-            resp.setStatus(Constants.API_RESPONSE_BAD_REQUEST);
+            resp.setStatus(ApiConstants.API_RESPONSE_BAD_REQUEST);
         }
     }
 }

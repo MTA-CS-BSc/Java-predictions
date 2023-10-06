@@ -1,5 +1,6 @@
 package fx.allocations.controllers;
 
+import api.ApiConstants;
 import api.allocations.HttpAllocations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fx.allocations.models.ApproveTableCell;
@@ -16,7 +17,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import json.JsonParser;
-import modules.Constants;
 import okhttp3.Response;
 import other.AllocationRequestDTO;
 import other.TerminationDTO;
@@ -53,7 +53,7 @@ public class AllocationsController implements Initializable {
 
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::fetchAllocationRequests, 0,
-                        Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+                        ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     private void fetchAllocationRequests() {

@@ -1,5 +1,6 @@
 package servlets.simulation.setters.byStep;
 
+import api.ApiConstants;
 import api.Routes;
 import config.Configuration;
 import jakarta.servlet.ServletException;
@@ -9,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import modules.Constants;
 import other.ResponseDTO;
 import types.ByStep;
 
@@ -21,7 +21,7 @@ import java.util.Objects;
 public class SetByStepServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType(Constants.JSON_CONTENT_TYPE);
+        resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
 
         Map<String, Object> requestBodyMap = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBodyMap.get(Keys.UUID_KEY).toString();

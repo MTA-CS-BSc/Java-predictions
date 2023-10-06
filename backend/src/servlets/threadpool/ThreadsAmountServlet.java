@@ -1,5 +1,6 @@
 package servlets.threadpool;
 
+import api.ApiConstants;
 import api.Routes;
 import config.Configuration;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import modules.Constants;
 import other.ResponseDTO;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.Objects;
 public class ThreadsAmountServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(Constants.JSON_CONTENT_TYPE);
+        resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
 
         try {
             ResponseDTO responseDTO = Configuration.api.getThreadsAmount();
@@ -33,21 +33,21 @@ public class ThreadsAmountServlet extends HttpServlet {
                 resp.getWriter().write(threadsAmount);
             }
         } catch (Exception e) {
-            resp.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
+            resp.setStatus(ApiConstants.API_RESPONSE_SERVER_ERROR);
             resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, e.getMessage()));
         }
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(Constants.JSON_CONTENT_TYPE);
+        resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
         Map<String, Object> requestBody = JsonParser.getRequestBodyMap(req.getReader());
 
         if (!Objects.isNull(requestBody.get(Keys.THREADS_AMOUNT_KEY))) {
             int amount = Integer.parseInt(requestBody.get(Keys.THREADS_AMOUNT_KEY).toString());
 
             if (amount <= 0) {
-                resp.setStatus(Constants.API_RESPONSE_BAD_REQUEST);
+                resp.setStatus(ApiConstants.API_RESPONSE_BAD_REQUEST);
                 resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, "Amount should be positive"));
             }
 
@@ -61,7 +61,7 @@ public class ThreadsAmountServlet extends HttpServlet {
         }
 
         else {
-            resp.setStatus(Constants.API_RESPONSE_SERVER_ERROR);
+            resp.setStatus(ApiConstants.API_RESPONSE_SERVER_ERROR);
             resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, "Unknown"));
         }
     }

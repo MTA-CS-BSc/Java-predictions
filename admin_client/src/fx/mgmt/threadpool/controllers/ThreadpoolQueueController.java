@@ -1,5 +1,6 @@
 package fx.mgmt.threadpool.controllers;
 
+import api.ApiConstants;
 import api.mgmt.threadpool.HttpThreadpool;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -10,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import json.JsonParser;
-import modules.Constants;
 import okhttp3.Response;
 import other.QueueMgmtDTO;
 
@@ -40,7 +40,7 @@ public class ThreadpoolQueueController implements Initializable {
 
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::fetchQueueMgmt, 0,
-                        Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+                        ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     private void fetchQueueMgmt() {

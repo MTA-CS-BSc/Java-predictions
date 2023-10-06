@@ -1,5 +1,6 @@
 package servlets.threadpool.queue;
 
+import api.ApiConstants;
 import api.Routes;
 import config.Configuration;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import modules.Constants;
 import other.ResponseDTO;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import java.util.Objects;
 public class ThreadsQueueServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(Constants.JSON_CONTENT_TYPE);
+        resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
 
         ResponseDTO responseDTO = Configuration.api.getQueueManagementDetails();
         resp.setStatus(responseDTO.getStatus());

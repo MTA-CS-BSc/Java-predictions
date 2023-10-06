@@ -1,5 +1,6 @@
 package fx.mgmt.valid.worlds.controllers;
 
+import api.ApiConstants;
 import api.mgmt.xml.valid.worlds.HttpValidWorlds;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
@@ -10,7 +11,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import json.JsonParser;
-import modules.Constants;
 import okhttp3.Response;
 import other.WorldDTO;
 
@@ -37,7 +37,7 @@ public class XmlValidWorldsController implements Initializable {
 
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::fetchValidWorlds, 0,
-                        Constants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+                        ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
     public void setIsParentVisibleProperty(BooleanProperty value) {
