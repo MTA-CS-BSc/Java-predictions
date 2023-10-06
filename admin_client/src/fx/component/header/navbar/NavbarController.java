@@ -63,6 +63,7 @@ public class NavbarController implements Initializable {
     private void hideVisible() {
         Platform.runLater(() -> {
             boolean isAnimationsOn = Animations.IS_ANIMATIONS_ON.getValue();
+            clearAllTables();
 
             if (mgmtController.getContainer().isVisible()) {
                 if (isAnimationsOn)
@@ -70,8 +71,6 @@ public class NavbarController implements Initializable {
 
                 else
                     mgmtController.getContainer().setVisible(false);
-
-                mgmtController.clearWorldDetails();
             }
 
             if (resultsController.getContainer().isVisible()) {
@@ -92,16 +91,26 @@ public class NavbarController implements Initializable {
         });
     }
 
+    public void clearAllTables() {
+        clearWorldSelection();
+        clearAllocations();
+        clearThreadpoolTableView();
+        clearSimulationSelection();
+    }
+
     @FXML
     private void handleResultsClicked() {
         if (!resultsController.getContainer().isVisible()) {
             hideVisible();
+            clearAllTables();
 
             if (Animations.IS_ANIMATIONS_ON.getValue())
                 Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsController.getContainer()));
 
             else
                 Platform.runLater(() -> resultsController.getContainer().setVisible(true));
+
+            clearWorldSelection();
         }
 
         highlightButtonText(resultsButton);
@@ -112,8 +121,7 @@ public class NavbarController implements Initializable {
         if (!mgmtController.getContainer().isVisible()) {
             hideVisible();
             highlightButtonText(mgmtButton);
-            clearThreadpoolTableView();
-            clearWorldsTable();
+            clearAllTables();
 
             if (Animations.IS_ANIMATIONS_ON.getValue())
                 Platform.runLater(() -> GuiUtils.fadeInAnimation(mgmtController.getContainer()));
@@ -128,7 +136,7 @@ public class NavbarController implements Initializable {
         if (!allocationsController.getContainer().isVisible()) {
             hideVisible();
             highlightButtonText(allocationsButton);
-            clearAllocations();
+            clearAllTables();
 
             if (Animations.IS_ANIMATIONS_ON.getValue())
                 Platform.runLater(() -> GuiUtils.fadeInAnimation(allocationsController.getContainer()));
@@ -142,8 +150,12 @@ public class NavbarController implements Initializable {
         mgmtController.clearThreadpoolTableView();
     }
 
-    private void clearWorldsTable() {
-        mgmtController.clearWorldDetails();
+    private void clearWorldSelection() {
+        mgmtController.clearWorldSelection();
+    }
+
+    private void clearSimulationSelection() {
+        resultsController.clearSimulationSelection();
     }
 
     private void clearAllocations() {

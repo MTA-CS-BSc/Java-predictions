@@ -35,7 +35,7 @@ public class MgmtController implements Initializable {
         threadpoolQueueController.clearTableView();
     }
 
-    public void clearWorldDetails() {
+    public void clearWorldSelection() {
         xmlValidWorldsController.setSelectedWorld(null);
     }
 }

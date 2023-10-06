@@ -26,10 +26,6 @@
     <Separator style="-fx-background-color: black" orientation="horizontal"/>
 
     <VBox spacing="10">
-        <VBox.margin>
-            <Insets left="10"/>
-        </VBox.margin>
-
         <HBox alignment="TOP_CENTER">
             <Label styleClass="header-label" text="Valid Worlds/Simulations"/>
         </HBox>

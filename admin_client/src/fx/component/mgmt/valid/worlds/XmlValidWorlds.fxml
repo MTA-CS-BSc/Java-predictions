@@ -2,7 +2,7 @@
 
 <?import javafx.scene.control.*?>
 
-<TableView prefWidth="150" xmlns="http://javafx.com/javafx"
+<TableView maxWidth="160" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:id="validWorldsTableView"
             fx:controller="fx.component.mgmt.valid.worlds.XmlValidWorldsController"
