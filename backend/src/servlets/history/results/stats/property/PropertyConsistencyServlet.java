@@ -1,4 +1,4 @@
-package servlets.results.stats.property;
+package servlets.history.results.stats.property;
 
 import api.Routes;
 import config.Configuration;
@@ -16,15 +16,15 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-@WebServlet(Routes.PROPERTY_AVG)
-public class PropertyAvgServlet extends HttpServlet {
+@WebServlet(Routes.PROPERTY_CONSISTENCY)
+public class PropertyConsistencyServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType(Constants.JSON_CONTENT_TYPE);
         Map<String, String[]> params = req.getParameterMap();
+        resp.setContentType(Constants.JSON_CONTENT_TYPE);
 
-        String uuid = params.get(Keys.UUID_KEY)[0];
         String entityName = params.get(Keys.ENTITY_NAME_KEY)[0];
+        String uuid = params.get(Keys.UUID_KEY)[0];
         String propertyName = params.get(Keys.PROPERTY_NAME_KEY)[0];
 
         if (TypesUtils.isNullOrEmpty(uuid) || TypesUtils.isNullOrEmpty(entityName) || TypesUtils.isNullOrEmpty(propertyName)) {
@@ -32,7 +32,7 @@ public class PropertyAvgServlet extends HttpServlet {
             resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, "One or more keys are missing"));
         }
 
-        ResponseDTO responseDTO = Configuration.api.getPropertyAverage(uuid, entityName, propertyName);
+        ResponseDTO responseDTO = Configuration.api.getPropertyConsistency(uuid, entityName, propertyName);
         resp.setStatus(responseDTO.getStatus());
 
         if (!Objects.isNull(responseDTO.getErrorDescription()))

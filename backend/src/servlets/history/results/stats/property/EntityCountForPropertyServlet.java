@@ -1,4 +1,4 @@
-package servlets.results.stats.property;
+package servlets.history.results.stats.property;
 
 import api.Routes;
 import config.Configuration;

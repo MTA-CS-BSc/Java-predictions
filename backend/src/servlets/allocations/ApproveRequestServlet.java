@@ -1,4 +1,4 @@
-package servlets.history.allocations;
+package servlets.allocations;
 
 import api.Routes;
 import config.Configuration;
@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-@WebServlet(Routes.DECLINE_REQUEST)
-public class DeclineRequestServlet extends HttpServlet {
+@WebServlet(Routes.APPROVE_REQUEST)
+public class ApproveRequestServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
@@ -24,7 +24,7 @@ public class DeclineRequestServlet extends HttpServlet {
 
         if (!Objects.isNull(requestBody.get(Keys.UUID_KEY))) {
             String requestUuid = requestBody.get(Keys.UUID_KEY).toString();
-            ResponseDTO responseDTO = Configuration.api.declineRequest(requestUuid);
+            ResponseDTO responseDTO = Configuration.api.approveRequest(requestUuid);
             resp.setStatus(responseDTO.getStatus());
 
             if (!Objects.isNull(responseDTO.getErrorDescription()))

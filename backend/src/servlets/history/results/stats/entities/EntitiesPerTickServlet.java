@@ -1,4 +1,4 @@
-package servlets.results.stats.entities;
+package servlets.history.results.stats.entities;
 
 import api.Routes;
 import config.Configuration;
