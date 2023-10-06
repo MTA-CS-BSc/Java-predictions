@@ -164,13 +164,13 @@ public class EngineAPI {
 
         historyManager.getRequests().get(simulation.getRequestUuid()).getRequestSimulations().remove(uuid);
         historyManager.getPastSimulations().remove(uuid);
-
     }
 
     public ResponseDTO removeUnusedSimulations() {
         List<SingleSimulation> toRemove = historyManager.getPastSimulations().values()
                 .stream()
-                .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED && !threadPoolManager.isSimulationRecorded(simulation.getUUID()))
+                .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED
+                        && !threadPoolManager.isSimulationRecorded(simulation.getUUID()))
                 .collect(Collectors.toList());
 
         toRemove.forEach(this::removeSimulation);
