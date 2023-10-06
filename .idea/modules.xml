@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/engine/engine.iml" filepath="$PROJECT_DIR$/engine/engine.iml" />
       <module fileurl="file://$PROJECT_DIR$/helpers/helpers.iml" filepath="$PROJECT_DIR$/helpers/helpers.iml" />
       <module fileurl="file://$PROJECT_DIR$/mta-java-predictions.iml" filepath="$PROJECT_DIR$/mta-java-predictions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/user_client/user_client.iml" filepath="$PROJECT_DIR$/user_client/user_client.iml" />
     </modules>
   </component>
 </project>
