@@ -9,7 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import json.JsonMapper;
+import json.JsonParser;
 import modules.Constants;
 import okhttp3.Response;
 import other.WorldDTO;
@@ -53,7 +53,7 @@ public class XmlValidWorldsController implements Initializable {
                     response.close();
 
                 if (response.isSuccessful() && !Objects.isNull(response.body())) {
-                    List<WorldDTO> validWorlds = JsonMapper.objectMapper.readValue(response.body().string(), new TypeReference<List<WorldDTO>>() {
+                    List<WorldDTO> validWorlds = JsonParser.objectMapper.readValue(response.body().string(), new TypeReference<List<WorldDTO>>() {
                     });
 
                     Platform.runLater(() -> {

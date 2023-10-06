@@ -17,7 +17,6 @@ import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import json.JsonParser;
 import json.Keys;
-import json.JsonMapper;
 import okhttp3.Response;
 import other.EntityDTO;
 import other.PropertyDTO;
@@ -111,7 +110,7 @@ public class PropertyStatsController implements Initializable {
                 response.close();
 
             if (!Objects.isNull(response.body())) {
-                averageLabel.setText(String.format("%.5f", JsonMapper.objectMapper.readValue(response.body().string(), Double.class)));
+                averageLabel.setText(String.format("%.5f", JsonParser.objectMapper.readValue(response.body().string(), Double.class)));
                 avgContainer.setVisible(true);
             }
         } catch (Exception ignored) {
@@ -127,7 +126,7 @@ public class PropertyStatsController implements Initializable {
 
             if (!Objects.isNull(response.body())) {
                 Map<String, Object> responseBody = JsonParser.getMapFromJsonString(response.body().string());
-                consistencyLabel.setText(String.format("%.3f", JsonMapper.objectMapper.readValue(responseBody.get(Keys.VALID_RESPONSE_KEY).toString(), Double.class)));
+                consistencyLabel.setText(String.format("%.3f", JsonParser.objectMapper.readValue(responseBody.get(Keys.VALID_RESPONSE_KEY).toString(), Double.class)));
                 consistencyContainer.setVisible(true);
             }
         } catch (Exception ignored) {
@@ -212,7 +211,7 @@ public class PropertyStatsController implements Initializable {
             }
 
             if (!Objects.isNull(response.body())) {
-                Map<String, Long> entitiesCountForProp = JsonMapper.objectMapper.readValue(
+                Map<String, Long> entitiesCountForProp = JsonParser.objectMapper.readValue(
                         response.body().string(),
                         new TypeReference<Map<String, Long>>() {});
 

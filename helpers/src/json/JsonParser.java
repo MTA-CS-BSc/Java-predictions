@@ -3,6 +3,7 @@ package json;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,14 +11,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class JsonParser {
+    public static final ObjectMapper objectMapper = new ObjectMapper();
+
     public static String toJson(Object value) throws JsonProcessingException {
-        return JsonMapper.objectMapper.writeValueAsString(value);
+        return objectMapper.writeValueAsString(value);
     }
 
     private static String primitiveToJson(String key, Object data) throws JsonProcessingException {
         Map<String, Object> json = new HashMap<>();
         json.put(key, data);
-        return JsonMapper.objectMapper.writeValueAsString(json);
+        return objectMapper.writeValueAsString(json);
     }
 
     public static String toJson(String key, String data) throws JsonProcessingException {
@@ -43,10 +46,10 @@ public abstract class JsonParser {
     }
 
     public static Map<String, Object> getMapFromJsonString(String json) throws JsonProcessingException {
-        return JsonMapper.objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
+        return objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
     }
 
     private static JsonNode getJsonNodeFromString(String json) throws JsonProcessingException {
-        return JsonMapper.objectMapper.readTree(json);
+        return objectMapper.readTree(json);
     }
 }

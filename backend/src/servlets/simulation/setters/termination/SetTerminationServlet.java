@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import json.JsonMapper;
 import modules.Constants;
 import other.ResponseDTO;
 import other.TerminationDTO;
@@ -26,7 +25,7 @@ public class SetTerminationServlet extends HttpServlet {
 
         Map<String, Object> requestBodyMap = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBodyMap.get(Keys.UUID_KEY).toString();
-        TerminationDTO termination = JsonMapper.objectMapper.readValue(
+        TerminationDTO termination = JsonParser.objectMapper.readValue(
                 requestBodyMap.get(Keys.TERMINATION_KEY).toString(),
                 TerminationDTO.class
         );

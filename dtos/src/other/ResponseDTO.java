@@ -1,7 +1,7 @@
 package other;
 
 import com.google.gson.Gson;
-import json.JsonMapper;
+import json.JsonParser;
 
 public class ResponseDTO {
     protected int status;
@@ -17,7 +17,7 @@ public class ResponseDTO {
     public ResponseDTO(int status, Object data) {
         this.status = status;
         try {
-            this.data = JsonMapper.objectMapper.writeValueAsString(data);
+            this.data = JsonParser.objectMapper.writeValueAsString(data);
         } catch (Exception e) {
             this.data = null;
         }

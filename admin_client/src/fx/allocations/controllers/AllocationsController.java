@@ -15,7 +15,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import json.JsonMapper;
+import json.JsonParser;
 import modules.Constants;
 import okhttp3.Response;
 import other.AllocationRequestDTO;
@@ -67,7 +67,7 @@ public class AllocationsController implements Initializable {
                 }
 
                 if (!Objects.isNull(response.body())) {
-                    List<AllocationRequestDTO> requests = JsonMapper.objectMapper.readValue(
+                    List<AllocationRequestDTO> requests = JsonParser.objectMapper.readValue(
                             response.body().string(),
                             new TypeReference<List<AllocationRequestDTO>>() {
                             });

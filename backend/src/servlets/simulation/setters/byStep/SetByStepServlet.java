@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import json.JsonMapper;
 import modules.Constants;
 import other.ResponseDTO;
 import types.ByStep;
@@ -26,7 +25,7 @@ public class SetByStepServlet extends HttpServlet {
 
         Map<String, Object> requestBodyMap = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBodyMap.get(Keys.UUID_KEY).toString();
-        ByStep value = JsonMapper.objectMapper.readValue(
+        ByStep value = JsonParser.objectMapper.readValue(
                 requestBodyMap.get(Keys.VALUE_KEY).toString(),
                 ByStep.class
         );
