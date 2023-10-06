@@ -61,7 +61,7 @@ public class AllocationRequest {
     }
 
     public boolean canExecute() {
-        return requestedExecutions > requestSimulations.size();
+        return requestedExecutions > requestSimulations.values().size();
     }
 
     public void setState(RequestState state) {

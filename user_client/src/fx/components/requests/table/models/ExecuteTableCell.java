@@ -40,7 +40,7 @@ public class ExecuteTableCell extends TableCell<AllocationRequestDTO, Boolean> i
         if (!empty) {
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             setGraphic(paddedButton);
-            setDisable(!getTableView().getItems().get(getIndex()).canExecute());
+            setDisable(!getTableView().getItems().get(getIndex()).isCanExecute());
         } else
             setGraphic(null);
     }

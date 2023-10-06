@@ -36,9 +36,7 @@ public class AllocationRequestDTO {
         this.canExecute = canExecute;
     }
 
-    public boolean canExecute() {
-        return canExecute;
-    }
+    public boolean isCanExecute() { return canExecute; }
 
     public String getUuid() {
         return uuid;
