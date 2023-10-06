@@ -56,11 +56,11 @@ public class HistoryManager implements Serializable {
         return sm.getUUID();
     }
 
-    public String cloneSimulation(String uuid) throws Exception {
-        SingleSimulation toClone = pastSimulations.get(uuid);
+    public String cloneSimulation(String simulationUuid) throws Exception {
+        SingleSimulation toClone = pastSimulations.get(simulationUuid);
 
         if (Objects.isNull(toClone))
-            throw new UUIDNotFoundException(String.format("Simulation [%s] not found", uuid));
+            throw new UUIDNotFoundException(String.format("Simulation [%s] not found", simulationUuid));
 
         String requestUuid = toClone.getRequestUuid();
         AllocationRequest request = requests.get(requestUuid);
@@ -89,8 +89,8 @@ public class HistoryManager implements Serializable {
     }
 
     //#region Getters
-    public SingleSimulation getPastSimulation(String uuid) {
-        return pastSimulations.get(uuid);
+    public SingleSimulation getPastSimulation(String simulationUuid) {
+        return pastSimulations.get(simulationUuid);
     }
 
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
@@ -110,9 +110,9 @@ public class HistoryManager implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, Long> getEntitiesCountForProp(String uuid, String entityName,
+    public Map<String, Long> getEntitiesCountForProp(String simulationUuid, String entityName,
                                                      String propertyName) {
-        SingleSimulation foundSimulation = getPastSimulation(uuid);
+        SingleSimulation foundSimulation = getPastSimulation(simulationUuid);
         List<String> propertyValues = getValuesListForProperty(foundSimulation, entityName, propertyName);
 
         if (Objects.isNull(propertyValues))

@@ -13,7 +13,7 @@ public class ExecuteTableCell extends TableCell<AllocationRequestDTO, Boolean> i
     final Button executeButton;
     final StackPane paddedButton;
 
-    public ExecuteTableCell(final TableView<AllocationRequestDTO> table) {
+    public ExecuteTableCell(final TableView<AllocationRequestDTO> table, Runnable createSimulationCallback) {
         executeButton = new Button();
         paddedButton = new StackPane();
         paddedButton.setPadding(new Insets(3));

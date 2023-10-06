@@ -24,10 +24,10 @@ public class ThreadPoolManager {
             executor.execute(task);
     }
 
-    public void addRunSimulationToQueue(Runnable task, String uuid) {
+    public void addRunSimulationToQueue(Runnable task, String simulationUuid) {
         if (threadsAmount > 0) {
             executor.execute(task);
-            recordedSimulationIds.add(uuid);
+            recordedSimulationIds.add(simulationUuid);
         }
     }
 
