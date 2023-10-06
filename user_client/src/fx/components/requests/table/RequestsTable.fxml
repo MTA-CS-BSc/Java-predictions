@@ -4,7 +4,7 @@
 
 <TableView xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:id="allocationsTableView"
+            fx:id="requestsTableView"
             maxWidth="1100"
            onMouseClicked="#handleRequestClicked"
             fx:controller="fx.components.requests.table.RequestsTableController">

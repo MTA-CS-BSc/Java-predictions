@@ -4,6 +4,7 @@ import api.ApiConstants;
 import api.requests.HttpAllocations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.ConnectedUser;
+import fx.components.requests.table.models.ExecuteTableCell;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -25,14 +26,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class RequestsTableController implements Initializable {
-    @FXML private TableView<AllocationRequestDTO> allocationsTableView;
+    @FXML private TableView<AllocationRequestDTO> requestsTableView;
     @FXML private TableColumn<AllocationRequestDTO, String> requestUuidColumn;
     @FXML private TableColumn<AllocationRequestDTO, String> worldNameColumn;
     @FXML private TableColumn<AllocationRequestDTO, Integer> executionsAmountColumn;
     @FXML private TableColumn<AllocationRequestDTO, RequestState> stateColumn;
     @FXML private TableColumn<AllocationRequestDTO, Integer> runningSimulationsInRequestColumn;
     @FXML private TableColumn<AllocationRequestDTO, Integer> finishedSimulationsInRequestColumn;
-    //TODO: Init field
     @FXML private TableColumn<AllocationRequestDTO, Boolean> executeColumn;
     private ObjectProperty<AllocationRequestDTO> selectedRequest;
 
@@ -59,6 +59,7 @@ public class RequestsTableController implements Initializable {
         executionsAmountColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getRequestedExecutions()).asObject());
         runningSimulationsInRequestColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty((int)cellData.getValue().getRequestSimulations().stream().filter(element -> element.getSimulationState() == SimulationState.RUNNING).count()).asObject());
         finishedSimulationsInRequestColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty((int)cellData.getValue().getRequestSimulations().stream().filter(element -> element.getSimulationState() == SimulationState.FINISHED).count()).asObject());
+        executeColumn.setCellFactory(cellData -> new ExecuteTableCell(requestsTableView));
     }
 
     private void fetchAllocationRequests() {
@@ -78,9 +79,9 @@ public class RequestsTableController implements Initializable {
                             });
 
                     Platform.runLater(() -> {
-                        allocationsTableView.getItems().clear();
-                        allocationsTableView.getItems().addAll(requests);
-                        allocationsTableView.refresh();
+                        requestsTableView.getItems().clear();
+                        requestsTableView.getItems().addAll(requests);
+                        requestsTableView.refresh();
 
                         if (!Objects.isNull(selectedRequest.getValue()))
                             selectPreviouslySelected();
@@ -94,12 +95,12 @@ public class RequestsTableController implements Initializable {
         if (Objects.isNull(selectedRequest.getValue()))
             return;
 
-        AllocationRequestDTO newlySelectedRequest = allocationsTableView.getItems()
+        AllocationRequestDTO newlySelectedRequest = requestsTableView.getItems()
                 .stream()
                 .filter(element -> element.getUuid().equals(selectedRequest.getValue().getUuid()))
                 .findFirst().orElse(null);
 
-        allocationsTableView.getSelectionModel().select(newlySelectedRequest);
+        requestsTableView.getSelectionModel().select(newlySelectedRequest);
         setSelectedRequest(newlySelectedRequest);
     }
 
@@ -114,7 +115,7 @@ public class RequestsTableController implements Initializable {
     @FXML
     private void handleRequestClicked(MouseEvent event) {
         if (event.getClickCount() == 1) {
-            AllocationRequestDTO selected = allocationsTableView.getSelectionModel().getSelectedItem();
+            AllocationRequestDTO selected = requestsTableView.getSelectionModel().getSelectedItem();
 
             if (selected != null)
                 setSelectedRequest(selected);
