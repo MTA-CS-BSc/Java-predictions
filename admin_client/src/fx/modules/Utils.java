@@ -3,15 +3,12 @@ package fx.modules;
 import actions.*;
 import fx.component.mgmt.world.details.models.*;
 import fx.component.mgmt.world.details.models.actions.*;
-import javafx.animation.FadeTransition;
-import javafx.scene.layout.Pane;
-import javafx.util.Duration;
 import other.WorldDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class GuiUtils {
+public abstract class Utils {
     public static ActionModel createActionModel(ActionDTO action) {
         SecondaryEntityModel secondaryEntityModel = null;
         String entityName = action.getEntityName();
@@ -58,24 +55,6 @@ public abstract class GuiUtils {
         return null;
     }
 
-    public static void fadeInAnimation(Pane root) {
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(1800), root);
-        fadeIn.setFromValue(0.0);
-        fadeIn.setToValue(1.0);
-
-        fadeIn.setOnFinished(event -> root.setVisible(true));
-        fadeIn.play();
-    }
-
-    public static void fadeOutAnimation(Pane root) {
-        FadeTransition fadeOut = new FadeTransition(Duration.millis(1200), root);
-        fadeOut.setFromValue(1.0);
-        fadeOut.setToValue(0.0);
-
-        fadeOut.setOnFinished(event -> root.setVisible(false));
-        fadeOut.play();
-    }
-
     public static List<EntityModel> getEntities(WorldDTO world) {
         return world.getEntities().stream()
                 .map(entity -> {
@@ -108,7 +87,7 @@ public abstract class GuiUtils {
         return world.getRules().stream()
                 .map(rule -> {
                     List<ActionModel> actions = rule.getActions().stream()
-                            .map(GuiUtils::createActionModel).collect(Collectors.toList());
+                            .map(Utils::createActionModel).collect(Collectors.toList());
                     return new RuleModel(rule.getName(), rule.getTicks(), rule.getProbability(), actions);
                 })
                 .collect(Collectors.toList());

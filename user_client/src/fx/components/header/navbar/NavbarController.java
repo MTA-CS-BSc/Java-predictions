@@ -8,11 +8,13 @@ import javafx.scene.text.FontWeight;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class NavbarController implements Initializable {
-//    private MgmtController mgmtController;
+//    private DetailsController detailsController;
 //    private ResultsController resultsController;
-//    private AllocationsController allocationsController;
+//    private RequestsController requestsController;
+//    private ExecutionController executionController;
 
     //TODO: Complete navbar
     @FXML private Button detailsButton;
@@ -22,25 +24,28 @@ public class NavbarController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        highlightButtonText(mgmtButton);
+        highlightButtonText(detailsButton);
     }
 
-//    public void setMgmtController(MgmtController controller) {
-//        mgmtController = controller;
+//    public void setDetailsController(DetailsController controller) {
+//        detailsController = controller;
 //    }
 //
 //    public void setResultsController(ResultsController controller) {
 //        resultsController = controller;
 //    }
 //
-//    public void setAllocationsController(AllocationsController controller) {
-//        allocationsController = controller;
+//    public void setRequestsController(RequestsController controller) {
+//        requestsController = controller;
+//    }
+//    public void setExecutionController(ExecutionController controller) {
+//        executionController = controller;
 //    }
 
     private void highlightButtonText(Button button) {
-//        Stream.of(mgmtButton, allocationsButton, resultsButton)
-//                .filter(element -> element != button)
-//                .forEach(this::unHighlightButtonText);
+        Stream.of(detailsButton, requestsButton, executionButton, resultsButton)
+                .filter(element -> element != button)
+                .forEach(this::unHighlightButtonText);
 
         if (!button.getStyle().contains(" -fx-font-weight: bold"))
             button.setStyle(button.getStyle() + " -fx-font-weight: bold");
@@ -54,17 +59,17 @@ public class NavbarController implements Initializable {
         if (button.getStyle().contains(" -fx-font-weight: bold"))
             button.setStyle(button.getStyle().replace(" -fx-font-weight: bold", ""));
     }
-//
-//    private void hideVisible() {
+
+    private void hideVisible() {
 //        Platform.runLater(() -> {
 //            boolean isAnimationsOn = Animations.IS_ANIMATIONS_ON.getValue();
 //
-//            if (mgmtController.getContainer().isVisible()) {
+//            if (detailsController.getContainer().isVisible()) {
 //                if (isAnimationsOn)
-//                    GuiUtils.fadeOutAnimation(mgmtController.getContainer());
+//                    GuiUtils.fadeOutAnimation(detailsController.getContainer());
 //
 //                else
-//                    mgmtController.getContainer().setVisible(false);
+//                    detailsController.getContainer().setVisible(false);
 //            }
 //
 //            if (resultsController.getContainer().isVisible()) {
@@ -75,15 +80,23 @@ public class NavbarController implements Initializable {
 //                    resultsController.getContainer().setVisible(false);
 //            }
 //
-//            if (allocationsController.getContainer().isVisible()) {
+//            if (requestsController.getContainer().isVisible()) {
 //                if (isAnimationsOn)
-//                    GuiUtils.fadeOutAnimation(allocationsController.getContainer());
+//                    GuiUtils.fadeOutAnimation(requestsController.getContainer());
 //
 //                else
-//                    allocationsController.getContainer().setVisible(false);
+//                    requestsController.getContainer().setVisible(false);
+//            }
+//
+//            if (executionController.getContainer().isVisible()) {
+//                if (isAnimationsOn)
+//                    GuiUtils.fadeOutAnimation(executionController.getContainer());
+//
+//                else
+//                    executionController.getContainer().setVisible(false);
 //            }
 //        });
-//    }
+    }
 
     @FXML
     private void handleExecutionClicked() {

@@ -3,7 +3,7 @@ package fx.component.mgmt.world.details;
 import com.sun.xml.internal.ws.util.StringUtils;
 import fx.component.mgmt.world.details.models.*;
 import fx.component.mgmt.world.details.models.actions.*;
-import fx.modules.GuiUtils;
+import fx.modules.Utils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
@@ -264,7 +264,7 @@ public class WorldDetailsController implements Initializable {
             return;
         }
 
-        List<EntityModel> entities = GuiUtils.getEntities(selectedWorld.getValue());
+        List<EntityModel> entities = Utils.getEntities(selectedWorld.getValue());
         TreeItem<TreeItemModel> entitiesTreeItem = new TreeItem<>(new EntitiesModel(entities));
 
         entities.forEach(entity -> {
@@ -281,7 +281,7 @@ public class WorldDetailsController implements Initializable {
             return;
         }
 
-        List<PropertyModel> envVars = GuiUtils.getEnvironmentVars(selectedWorld.getValue());
+        List<PropertyModel> envVars = Utils.getEnvironmentVars(selectedWorld.getValue());
         TreeItem<TreeItemModel> environmentTreeItem = new TreeItem<>(new EnvironmentModel(envVars));
 
         envVars.forEach(property -> {
@@ -317,7 +317,7 @@ public class WorldDetailsController implements Initializable {
             return;
         }
 
-        List<RuleModel> rules = GuiUtils.getRules(selectedWorld.getValue());
+        List<RuleModel> rules = Utils.getRules(selectedWorld.getValue());
         TreeItem<TreeItemModel> rulesTreeItem = new TreeItem<>(new RulesModel(rules));
 
         rules.forEach(rule -> {
