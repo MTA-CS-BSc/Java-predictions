@@ -19,7 +19,7 @@ import java.util.Objects;
 @WebServlet(Routes.CLONE_SIMULATION)
 public class CloneSimulationServlet extends HttpServlet {
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
         Map<String, Object> requestBody = JsonParser.getRequestBodyMap(req.getReader());
         String requestUuid = requestBody.get(Keys.UUID_KEY).toString();
