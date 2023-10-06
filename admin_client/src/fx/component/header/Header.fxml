@@ -3,7 +3,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" spacing="20" xmlns="http://javafx.com/javafx"
-      fx:controller="fx.components.header.HeaderController" alignment="CENTER">
+      fx:controller="fx.component.header.HeaderController" alignment="CENTER">
     <fx:include source="menu/Menu.fxml" fx:id="menu"/>
 
     <Label styleClass="app-title" text="Predictions - Admin"/>

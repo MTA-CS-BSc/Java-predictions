@@ -14,7 +14,6 @@ import java.util.ResourceBundle;
 public class HeaderController implements Initializable {
     @FXML private NavbarController navbarController;
     @FXML private MenuController menuController;
-    @FXML private AllocationsController allocationsController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) { }

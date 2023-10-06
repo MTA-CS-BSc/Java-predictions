@@ -1,6 +1,5 @@
 package fx.component.mgmt;
 
-import consts.Animations;
 import fx.component.loader.XmlLoaderController;
 import fx.component.mgmt.threadpool.queue.ThreadpoolQueueController;
 import fx.component.mgmt.threadpool.setter.ThreadsAmountSetterController;
@@ -23,7 +22,6 @@ public class MgmtController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Animations.IS_ANIMATIONS_ON.setValue(true);
         worldDetailsController.setSelectedWorldListener(xmlValidWorldsController.selectedWorldProperty());
         threadpoolQueueController.setIsParentVisibleProperty(container.visibleProperty());
         xmlValidWorldsController.setIsParentVisibleProperty(container.visibleProperty());

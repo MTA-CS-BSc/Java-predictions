@@ -1,5 +1,6 @@
 package fx.component.orchestrator;
 
+import consts.Animations;
 import fx.component.allocations.AllocationsController;
 import fx.component.results.ResultsController;
 import fx.component.header.HeaderController;
@@ -18,6 +19,8 @@ public class OrchestratorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Animations.IS_ANIMATIONS_ON.setValue(true);
+
         headerController.setMgmtController(mgmtController);
         headerController.setResultsController(resultsController);
         headerController.setAllocationsController(allocationsController);

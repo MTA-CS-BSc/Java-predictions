@@ -1,5 +1,9 @@
 package fx.components.header.navbar;
 
+import fx.components.results.ResultsController;
+import fx.components.details.DetailsController;
+import fx.components.execution.ExecutionController;
+import fx.components.requests.RequestsController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,10 +15,10 @@ import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
 public class NavbarController implements Initializable {
-//    private DetailsController detailsController;
-//    private ResultsController resultsController;
-//    private RequestsController requestsController;
-//    private ExecutionController executionController;
+    private DetailsController detailsController;
+    private ResultsController resultsController;
+    private RequestsController requestsController;
+    private ExecutionController executionController;
 
     //TODO: Complete navbar
     @FXML private Button detailsButton;
@@ -27,20 +31,20 @@ public class NavbarController implements Initializable {
         highlightButtonText(detailsButton);
     }
 
-//    public void setDetailsController(DetailsController controller) {
-//        detailsController = controller;
-//    }
-//
-//    public void setResultsController(ResultsController controller) {
-//        resultsController = controller;
-//    }
-//
-//    public void setRequestsController(RequestsController controller) {
-//        requestsController = controller;
-//    }
-//    public void setExecutionController(ExecutionController controller) {
-//        executionController = controller;
-//    }
+    public void setDetailsController(DetailsController controller) {
+        detailsController = controller;
+    }
+
+    public void setResultsController(ResultsController controller) {
+        resultsController = controller;
+    }
+
+    public void setRequestsController(RequestsController controller) {
+        requestsController = controller;
+    }
+    public void setExecutionController(ExecutionController controller) {
+        executionController = controller;
+    }
 
     private void highlightButtonText(Button button) {
         Stream.of(detailsButton, requestsButton, executionButton, resultsButton)
