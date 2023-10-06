@@ -3,8 +3,6 @@ package fx.component.mgmt.world.details;
 import com.sun.xml.internal.ws.util.StringUtils;
 import fx.component.mgmt.world.details.models.*;
 import fx.component.mgmt.world.details.models.actions.*;
-import fx.mgmt.world.details.models.*;
-import fx.mgmt.world.details.models.actions.*;
 import fx.modules.GuiUtils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
