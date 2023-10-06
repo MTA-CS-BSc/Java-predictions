@@ -1,4 +1,6 @@
-package fx.component.mgmt.world.details.models;
+package fx.models.details;
+
+import fx.models.TreeItemModel;
 
 public class RangeModel extends TreeItemModel {
     private final double from;

@@ -1,4 +1,4 @@
-package fx.component.mgmt.world.details.models.actions;
+package fx.models.details.actions;
 
 
 import types.ActionTypes;

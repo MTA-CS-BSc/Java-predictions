@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="fx.components.details.DetailsController"
-            prefHeight="400.0" prefWidth="600.0">
+<?import javafx.geometry.Insets?>
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fx.components.details.DetailsController"
+      fx:id="container"
+      spacing="15">
 
-</AnchorPane>
+    <HBox spacing="10" alignment="CENTER">
+        <VBox.margin>
+            <Insets bottom="20"/>
+        </VBox.margin>
+
+        <fx:include source="valid/worlds/XmlValidWorlds.fxml" fx:id="xmlValidWorlds"/>
+        <fx:include source="world/WorldDetails.fxml" fx:id="worldDetails"/>
+    </HBox>
+</VBox>

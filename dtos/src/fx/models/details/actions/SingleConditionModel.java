@@ -1,4 +1,4 @@
-package fx.component.mgmt.world.details.models.actions;
+package fx.models.details.actions;
 
 public class SingleConditionModel extends ConditionModel {
     private final String operator;

@@ -1,9 +1,10 @@
-package fx.component.mgmt.world.details;
+package fx.components.details.world;
 
 import com.sun.xml.internal.ws.util.StringUtils;
 import fx.models.TreeItemModel;
 import fx.models.details.actions.*;
 import fx.models.details.*;
+
 import fx.models.Utils;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

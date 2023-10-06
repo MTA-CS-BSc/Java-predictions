@@ -1,4 +1,4 @@
-package fx.component.mgmt.world.details.models;
+package fx.models.details;
 
 public enum WorldTreeViewCategories {
     ENVIRONMENT,

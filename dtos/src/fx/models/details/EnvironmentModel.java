@@ -1,6 +1,7 @@
-package fx.component.mgmt.world.details.models;
+package fx.models.details;
 
 import com.sun.xml.internal.ws.util.StringUtils;
+import fx.models.TreeItemModel;
 
 import java.util.List;
 

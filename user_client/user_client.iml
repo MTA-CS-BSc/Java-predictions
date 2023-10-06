@@ -81,5 +81,6 @@
     </orderEntry>
     <orderEntry type="module" module-name="dtos" />
     <orderEntry type="module" module-name="helpers" />
+    <orderEntry type="module" module-name="admin_client" />
   </component>
 </module>

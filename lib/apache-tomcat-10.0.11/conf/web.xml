@@ -363,7 +363,7 @@
   <!--                        request will be rejected. This is to          -->
   <!--                        work-around various issues when Java passes   -->
   <!--                        the arguments to the OS. See the CGI How-To   -->
-  <!--                        for more details. The default varies by       -->
+  <!--                        for more world. The default varies by       -->
   <!--                        platform.                                     -->
   <!--                        Windows: [[a-zA-Z0-9\Q-_.\\/:\E]+]            -->
   <!--                        Others:  [.*]                                 -->

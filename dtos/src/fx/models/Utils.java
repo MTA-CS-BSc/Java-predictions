@@ -1,8 +1,8 @@
-package fx.modules;
+package fx.models;
 
 import actions.*;
-import fx.component.mgmt.world.details.models.*;
-import fx.component.mgmt.world.details.models.actions.*;
+import fx.models.details.*;
+import fx.models.details.actions.*;
 import other.WorldDTO;
 
 import java.util.List;

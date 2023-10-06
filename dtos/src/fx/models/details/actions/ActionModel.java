@@ -1,6 +1,6 @@
-package fx.component.mgmt.world.details.models.actions;
+package fx.models.details.actions;
 
-import fx.component.mgmt.world.details.models.TreeItemModel;
+import fx.models.TreeItemModel;
 
 import java.util.Objects;
 

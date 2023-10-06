@@ -1,4 +1,4 @@
-package fx.component.mgmt.world.details.models.actions;
+package fx.models.details.actions;
 
 public class IncreaseDecreaseModel extends ActionModel {
     private final String propertyName;
