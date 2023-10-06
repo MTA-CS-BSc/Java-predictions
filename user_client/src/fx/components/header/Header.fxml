@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="20" xmlns="http://javafx.com/javafx"
+      fx:controller="fx.components.header.HeaderController" alignment="CENTER">
+    <fx:include source="menu/Menu.fxml" fx:id="menu"/>
+
+    <Label styleClass="app-title" text="Predictions - User"/>
+
+    <fx:include source="navbar/Navbar.fxml" fx:id="navbar"/>
+</VBox>

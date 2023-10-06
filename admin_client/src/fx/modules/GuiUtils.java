@@ -1,8 +1,8 @@
 package fx.modules;
 
 import actions.*;
-import fx.mgmt.world.details.models.*;
-import fx.mgmt.world.details.models.actions.*;
+import fx.component.mgmt.world.details.models.*;
+import fx.component.mgmt.world.details.models.actions.*;
 import javafx.animation.FadeTransition;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171"
+      fx:controller="fx.components.header.menu.MenuController">
+    <MenuBar>
+        <Menu text="Themes" onAction="#handleThemeChanged">
+            <MenuItem text="Default"/>
+            <MenuItem text="Dark"/>
+            <MenuItem text="Windows 7"/>
+        </Menu>
+        <Menu text="Animations">
+            <MenuItem fx:id="toggleAnimations"
+                      onAction="#handleToggleAnimations" text="Toggle animations OFF"/>
+        </Menu>
+    </MenuBar>
+</VBox>

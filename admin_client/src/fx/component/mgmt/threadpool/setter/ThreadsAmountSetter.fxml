@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="fx.component.mgmt.threadpool.setter.ThreadsAmountSetterController">
+    <Button mnemonicParsing="false" onAction="#handleSetThreadsAmountClicked" text="Set threads count"/>
+</Pane>

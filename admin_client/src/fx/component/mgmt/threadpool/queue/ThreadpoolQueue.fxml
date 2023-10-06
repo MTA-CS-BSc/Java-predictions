@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+
+<TableView xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:id="queueMgmtTableView"
+           fx:controller="fx.component.mgmt.threadpool.queue.ThreadpoolQueueController" maxHeight="80" maxWidth="500">
+    <columns>
+        <TableColumn fx:id="threadsAmountColumn" prefWidth="200" text="Threads amount"/>
+        <TableColumn fx:id="runningColumn" prefWidth="100" text="Running"/>
+        <TableColumn fx:id="pendingColumn" prefWidth="100" text="Pending"/>
+        <TableColumn fx:id="finishedColumn" prefWidth="100" text="Finished"/>
+    </columns>
+</TableView>
