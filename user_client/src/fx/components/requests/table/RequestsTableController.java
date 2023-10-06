@@ -121,4 +121,14 @@ public class RequestsTableController implements Initializable {
                 setSelectedRequest(selected);
         }
     }
+
+    public void clearRequests() {
+        setSelectedRequest(null);
+
+        Platform.runLater(() -> {
+            requestsTableView.getItems().clear();
+            requestsTableView.refresh();
+        });
+
+    }
 }

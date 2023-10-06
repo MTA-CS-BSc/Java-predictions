@@ -1,9 +1,12 @@
 package fx.components.header.navbar;
 
+import consts.Animations;
 import fx.components.results.ResultsController;
 import fx.components.details.DetailsController;
 import fx.components.execution.ExecutionController;
 import fx.components.requests.RequestsController;
+import gui.GuiUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,7 +23,6 @@ public class NavbarController implements Initializable {
     private RequestsController requestsController;
     private ExecutionController executionController;
 
-    //TODO: Complete navbar
     @FXML private Button detailsButton;
     @FXML private Button requestsButton;
     @FXML private Button executionButton;
@@ -66,47 +68,49 @@ public class NavbarController implements Initializable {
     }
 
     private void hideVisible() {
-//        Platform.runLater(() -> {
-//            boolean isAnimationsOn = Animations.IS_ANIMATIONS_ON.getValue();
-//
-//            if (detailsController.getContainer().isVisible()) {
-//                if (isAnimationsOn)
-//                    GuiUtils.fadeOutAnimation(detailsController.getContainer());
-//
-//                else
-//                    detailsController.getContainer().setVisible(false);
-//            }
-//
-//            if (resultsController.getContainer().isVisible()) {
-//                if (isAnimationsOn)
-//                    GuiUtils.fadeOutAnimation(resultsController.getContainer());
-//
-//                else
-//                    resultsController.getContainer().setVisible(false);
-//            }
-//
-//            if (requestsController.getContainer().isVisible()) {
-//                if (isAnimationsOn)
-//                    GuiUtils.fadeOutAnimation(requestsController.getContainer());
-//
-//                else
-//                    requestsController.getContainer().setVisible(false);
-//            }
-//
-//            if (executionController.getContainer().isVisible()) {
-//                if (isAnimationsOn)
-//                    GuiUtils.fadeOutAnimation(executionController.getContainer());
-//
-//                else
-//                    executionController.getContainer().setVisible(false);
-//            }
-//        });
+        Platform.runLater(() -> {
+            clearAllTables();
+            boolean isAnimationsOn = Animations.IS_ANIMATIONS_ON.getValue();
+
+            if (detailsController.getContainer().isVisible()) {
+                if (isAnimationsOn)
+                    GuiUtils.fadeOutAnimation(detailsController.getContainer());
+
+                else
+                    detailsController.getContainer().setVisible(false);
+            }
+
+            if (resultsController.getContainer().isVisible()) {
+                if (isAnimationsOn)
+                    GuiUtils.fadeOutAnimation(resultsController.getContainer());
+
+                else
+                    resultsController.getContainer().setVisible(false);
+            }
+
+            if (requestsController.getContainer().isVisible()) {
+                if (isAnimationsOn)
+                    GuiUtils.fadeOutAnimation(requestsController.getContainer());
+
+                else
+                    requestsController.getContainer().setVisible(false);
+            }
+
+            if (executionController.getContainer().isVisible()) {
+                if (isAnimationsOn)
+                    GuiUtils.fadeOutAnimation(executionController.getContainer());
+
+                else
+                    executionController.getContainer().setVisible(false);
+            }
+        });
     }
 
     @FXML
     private void handleExecutionClicked() {
 
     }
+
     @FXML
     private void handleResultsClicked() {
 //        if (!resultsController.getContainer().isVisible()) {
@@ -124,46 +128,42 @@ public class NavbarController implements Initializable {
 
     @FXML
     private void handleDetailsClicked() {
-//        if (!mgmtController.getContainer().isVisible()) {
-//            hideVisible();
-//            highlightButtonText(mgmtButton);
-//            clearThreadpoolTableView();
-//            clearWorldsTable();
-//
-//            if (Animations.IS_ANIMATIONS_ON.getValue())
-//                Platform.runLater(() -> GuiUtils.fadeInAnimation(mgmtController.getContainer()));
-//
-//            else
-//                Platform.runLater(() -> resultsController.getContainer().setVisible(true));
-//        }
+        if (!detailsController.getContainer().isVisible()) {
+            clearAllTables();
+            hideVisible();
+            highlightButtonText(detailsButton);
+
+            if (Animations.IS_ANIMATIONS_ON.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(detailsController.getContainer()));
+
+            else
+                Platform.runLater(() -> detailsController.getContainer().setVisible(true));
+        }
     }
 
     @FXML
     private void handleRequestsClicked() {
-//        if (!allocationsController.getContainer().isVisible()) {
-//            hideVisible();
-//            highlightButtonText(allocationsButton);
-//            clearAllocations();
-//
-//            if (Animations.IS_ANIMATIONS_ON.getValue())
-//                Platform.runLater(() -> GuiUtils.fadeInAnimation(allocationsController.getContainer()));
-//
-//            else
-//                Platform.runLater(() -> allocationsController.getContainer().setVisible(true));
-//        }
+        if (!requestsController.getContainer().isVisible()) {
+            clearAllTables();
+            hideVisible();
+            highlightButtonText(requestsButton);
+
+            if (Animations.IS_ANIMATIONS_ON.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(requestsController.getContainer()));
+
+            else
+                Platform.runLater(() -> requestsController.getContainer().setVisible(true));
+        }
     }
-//
-//    private void clearThreadpoolTableView() {
-//        mgmtController.clearThreadpoolTableView();
-//    }
-//
-//    private void clearWorldsTable() {
-//        mgmtController.clearWorldDetails();
-//    }
-//
-//    private void clearAllocations() {
-//        allocationsController.clearAllocations();
-//    }
+
+    private void clearAllTables() {
+        clearRequests();
+        clearWorldSelection();
+    }
+
+    private void clearRequests() {
+        requestsController.clearRequests();
+    }
 
     private void clearWorldSelection() {
         detailsController.clearWorldSelection();

@@ -62,8 +62,8 @@ public class NavbarController implements Initializable {
 
     private void hideVisible() {
         Platform.runLater(() -> {
-            boolean isAnimationsOn = Animations.IS_ANIMATIONS_ON.getValue();
             clearAllTables();
+            boolean isAnimationsOn = Animations.IS_ANIMATIONS_ON.getValue();
 
             if (mgmtController.getContainer().isVisible()) {
                 if (isAnimationsOn)
@@ -127,7 +127,7 @@ public class NavbarController implements Initializable {
                 Platform.runLater(() -> GuiUtils.fadeInAnimation(mgmtController.getContainer()));
 
             else
-                Platform.runLater(() -> resultsController.getContainer().setVisible(true));
+                Platform.runLater(() -> mgmtController.getContainer().setVisible(true));
         }
     }
 
