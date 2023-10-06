@@ -15,6 +15,7 @@ public class AllocationRequestDTO {
     protected String createdUser;
     protected List<SingleSimulationDTO> requestSimulations;
     protected TerminationDTO termination;
+    protected boolean canExecute;
 
     @JsonCreator
     public AllocationRequestDTO(@JsonProperty("uuid") String uuid,
@@ -23,7 +24,8 @@ public class AllocationRequestDTO {
                                 @JsonProperty("state") RequestState state,
                                 @JsonProperty(Keys.CREATED_USER_KEY) String createdUser,
                                 @JsonProperty("requestSimulations") List<SingleSimulationDTO> requestSimulations,
-                                @JsonProperty(Keys.TERMINATION_KEY) TerminationDTO termination) {
+                                @JsonProperty(Keys.TERMINATION_KEY) TerminationDTO termination,
+                                @JsonProperty("canExecute") boolean canExecute) {
         this.uuid = uuid;
         this.initialWorldName = initialWorldName;
         this.requestedExecutions = requestedExecutions;
@@ -31,6 +33,11 @@ public class AllocationRequestDTO {
         this.createdUser = createdUser;
         this.requestSimulations = requestSimulations;
         this.termination = termination;
+        this.canExecute = canExecute;
+    }
+
+    public boolean canExecute() {
+        return canExecute;
     }
 
     public String getUuid() {
