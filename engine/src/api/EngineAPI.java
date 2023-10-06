@@ -449,5 +449,15 @@ public class EngineAPI {
 
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, requests);
     }
+
+    public ResponseDTO getAllocationRequestsForUser(String username) {
+        List<AllocationRequestDTO> requests = historyManager.getRequests().values()
+                .stream()
+                .filter(element -> element.getCreatedUser().equals(username))
+                .map(Mappers::toDto)
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, requests);
+    }
     //#endregion
 }
