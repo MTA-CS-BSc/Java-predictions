@@ -38,6 +38,7 @@ public class AllocationsController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, String> createdUserColumn;
     @FXML private TableColumn<AllocationRequestDTO, Integer> executionsAmountColumn;
     @FXML private TableColumn<AllocationRequestDTO, RequestState> stateColumn;
+    @FXML private TableColumn<AllocationRequestDTO, String> worldNameColumn;
     @FXML private TableColumn<AllocationRequestDTO, Integer> runningSimulationsInRequestColumn;
     @FXML private TableColumn<AllocationRequestDTO, Boolean> approveColumn;
     @FXML private TableColumn<AllocationRequestDTO, Boolean> declineColumn;
@@ -120,6 +121,7 @@ public class AllocationsController implements Initializable {
         stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
         runningSimulationsInRequestColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty((int)cellData.getValue().getRequestSimulations().stream().filter(element -> element.getSimulationState() == SimulationState.RUNNING).count()).asObject());
         terminationColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getTermination()));
+        worldNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInitialWorldName()));
 
         userTotalFinishedSimulations.setCellValueFactory(cellData -> {
             int amount = allocationsTableView.getItems().stream()
@@ -129,6 +131,7 @@ public class AllocationsController implements Initializable {
 
             return new SimpleIntegerProperty(amount).asObject();
         });
+
         approveColumn.setCellFactory(cellData -> new ApproveTableCell(allocationsTableView));
         declineColumn.setCellFactory(cellData -> new DeclineTableCell(allocationsTableView));
 

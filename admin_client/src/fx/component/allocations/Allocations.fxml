@@ -10,6 +10,7 @@
     <TableView fx:id="allocationsTableView" onMouseClicked="#handleRequestClicked" maxWidth="1150">
         <columns>
             <TableColumn fx:id="requestUuidColumn" prefWidth="250" text="UUID"/>
+            <TableColumn fx:id="worldNameColumn" prefWidth="250" text="World Name"/>
             <TableColumn fx:id="createdUserColumn" prefWidth="100" text="Created by"/>
             <TableColumn fx:id="executionsAmountColumn" prefWidth="100" text="Executions Amount"/>
             <TableColumn fx:id="terminationColumn" prefWidth="200" text="Termination"/>
