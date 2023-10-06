@@ -34,8 +34,8 @@ public class RequestsTableController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, Integer> runningSimulationsInRequestColumn;
     @FXML private TableColumn<AllocationRequestDTO, Integer> finishedSimulationsInRequestColumn;
     @FXML private TableColumn<AllocationRequestDTO, Boolean> executeColumn;
-    private ObjectProperty<AllocationRequestDTO> selectedRequest;
 
+    private ObjectProperty<AllocationRequestDTO> selectedRequest;
     private BooleanProperty isParentVisible;
 
     @Override
