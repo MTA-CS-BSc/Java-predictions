@@ -70,6 +70,8 @@ public class NavbarController implements Initializable {
 
                 else
                     mgmtController.getContainer().setVisible(false);
+
+                mgmtController.clearWorldDetails();
             }
 
             if (resultsController.getContainer().isVisible()) {

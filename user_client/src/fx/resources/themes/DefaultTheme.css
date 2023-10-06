@@ -81,7 +81,7 @@
 
 /* Style table columns */
 .table-column {
-    -fx-alignment: CENTER_LEFT;
+    -fx-alignment: center;
 }
 
 /* Style table rows */

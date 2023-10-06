@@ -31,6 +31,7 @@ public class ThreadpoolQueueController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        queueMgmtTableView.setSelectionModel(null);
         isParentVisible = new SimpleBooleanProperty(false);
 
         threadsAmountColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getThreadsAmount()).asObject());
