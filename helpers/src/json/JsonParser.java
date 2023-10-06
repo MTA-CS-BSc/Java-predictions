@@ -11,13 +11,13 @@ import java.util.Map;
 
 public abstract class JsonParser {
     public static String toJson(Object value) throws JsonProcessingException {
-        return SingletonObjectMapper.objectMapper.writeValueAsString(value);
+        return JsonMapper.objectMapper.writeValueAsString(value);
     }
 
     private static String primitiveToJson(String key, Object data) throws JsonProcessingException {
         Map<String, Object> json = new HashMap<>();
         json.put(key, data);
-        return SingletonObjectMapper.objectMapper.writeValueAsString(json);
+        return JsonMapper.objectMapper.writeValueAsString(json);
     }
 
     public static String toJson(String key, String data) throws JsonProcessingException {
@@ -43,10 +43,10 @@ public abstract class JsonParser {
     }
 
     public static Map<String, Object> getMapFromJsonString(String json) throws JsonProcessingException {
-        return SingletonObjectMapper.objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
+        return JsonMapper.objectMapper.readValue(json, new TypeReference<Map<String, Object>>(){});
     }
 
     private static JsonNode getJsonNodeFromString(String json) throws JsonProcessingException {
-        return SingletonObjectMapper.objectMapper.readTree(json);
+        return JsonMapper.objectMapper.readTree(json);
     }
 }

@@ -12,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import okhttp3.Response;
 import other.SingleSimulationDTO;
 
@@ -60,7 +60,7 @@ public class EntitiesAmountChartController implements Initializable {
         }
 
         if (!Objects.isNull(response.body())) {
-            Map<String, List<Integer>> entitiesAmountsPerTick = SingletonObjectMapper.objectMapper.readValue(
+            Map<String, List<Integer>> entitiesAmountsPerTick = JsonMapper.objectMapper.readValue(
                     response.body().string(),
                     new TypeReference<Map<String, List<Integer>>>() {}
             );

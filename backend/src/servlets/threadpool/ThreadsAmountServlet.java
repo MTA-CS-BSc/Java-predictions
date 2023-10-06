@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import modules.Constants;
 import other.ResponseDTO;
 
@@ -30,7 +30,7 @@ public class ThreadsAmountServlet extends HttpServlet {
                 resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
 
             else {
-                int threadsAmount = SingletonObjectMapper.objectMapper.readValue(responseDTO.getData(), Integer.class);
+                int threadsAmount = JsonMapper.objectMapper.readValue(responseDTO.getData(), Integer.class);
                 resp.getWriter().write(threadsAmount);
             }
         } catch (Exception e) {

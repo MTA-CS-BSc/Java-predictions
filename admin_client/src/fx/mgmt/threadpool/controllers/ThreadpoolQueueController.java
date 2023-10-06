@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import modules.Constants;
 import okhttp3.Response;
 import other.QueueMgmtDTO;
@@ -54,7 +54,7 @@ public class ThreadpoolQueueController implements Initializable {
                 }
 
                 if (!Objects.isNull(response.body())) {
-                    QueueMgmtDTO queueMgmtDTO = SingletonObjectMapper.objectMapper.readValue(response.body().string(), QueueMgmtDTO.class);
+                    QueueMgmtDTO queueMgmtDTO = JsonMapper.objectMapper.readValue(response.body().string(), QueueMgmtDTO.class);
 
                     Platform.runLater(() -> {
                         queueMgmtTableView.getItems().clear();

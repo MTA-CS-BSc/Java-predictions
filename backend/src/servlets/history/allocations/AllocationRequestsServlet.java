@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import modules.Constants;
 import other.ResponseDTO;
 import other.TerminationDTO;
@@ -45,7 +45,7 @@ public class AllocationRequestsServlet extends HttpServlet {
 
         // Catch is for postman check
         try {
-            TerminationDTO termination = SingletonObjectMapper.objectMapper.readValue(
+            TerminationDTO termination = JsonMapper.objectMapper.readValue(
                     requestBodyMap.get(Keys.TERMINATION_KEY).toString(),
                     TerminationDTO.class
             );
@@ -60,8 +60,8 @@ public class AllocationRequestsServlet extends HttpServlet {
         }
 
         catch (Exception e) {
-            TerminationDTO termination = SingletonObjectMapper.objectMapper.readValue(
-                    SingletonObjectMapper.objectMapper.writeValueAsString(requestBodyMap.get(Keys.TERMINATION_KEY)),
+            TerminationDTO termination = JsonMapper.objectMapper.readValue(
+                    JsonMapper.objectMapper.writeValueAsString(requestBodyMap.get(Keys.TERMINATION_KEY)),
                     TerminationDTO.class
             );
 

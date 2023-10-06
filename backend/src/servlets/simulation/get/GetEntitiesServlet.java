@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import modules.Constants;
 import other.ResponseDTO;
 import types.TypesUtils;
@@ -25,7 +25,7 @@ public class GetEntitiesServlet extends HttpServlet {
         resp.setContentType(Constants.JSON_CONTENT_TYPE);
         Map<String, Object> requestBody = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBody.get(Keys.UUID_KEY).toString();
-        boolean isInitial = SingletonObjectMapper.objectMapper.readValue(
+        boolean isInitial = JsonMapper.objectMapper.readValue(
                 requestBody.get(Keys.IS_INITIAL_KEY).toString(),
                 Boolean.class
         );

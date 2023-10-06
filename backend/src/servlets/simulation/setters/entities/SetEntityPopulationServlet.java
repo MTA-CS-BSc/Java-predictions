@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import modules.Constants;
 import other.EntityDTO;
 import other.ResponseDTO;
@@ -26,8 +26,8 @@ public class SetEntityPopulationServlet extends HttpServlet {
 
         Map<String, Object> requestBodyMap = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBodyMap.get(Keys.UUID_KEY).toString();
-        int value = SingletonObjectMapper.objectMapper.readValue(requestBodyMap.get(Keys.VALUE_KEY).toString(), Integer.class);
-        EntityDTO entityDTO = SingletonObjectMapper.objectMapper.readValue(
+        int value = JsonMapper.objectMapper.readValue(requestBodyMap.get(Keys.VALUE_KEY).toString(), Integer.class);
+        EntityDTO entityDTO = JsonMapper.objectMapper.readValue(
                 requestBodyMap.get(Keys.ENTITY_DTO_KEY).toString(),
                 EntityDTO.class
         );

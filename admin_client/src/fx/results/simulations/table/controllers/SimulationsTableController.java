@@ -12,7 +12,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import modules.Constants;
 import okhttp3.Response;
 import other.SingleSimulationDTO;
@@ -75,7 +75,7 @@ public class SimulationsTableController implements Initializable {
                     return;
                 }
 
-                List<SingleSimulationDTO> simulations = SingletonObjectMapper.objectMapper.readValue(
+                List<SingleSimulationDTO> simulations = JsonMapper.objectMapper.readValue(
                         response.body().string(),
                         new TypeReference<List<SingleSimulationDTO>>() {
                         });

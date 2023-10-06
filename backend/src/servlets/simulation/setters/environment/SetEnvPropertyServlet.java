@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import json.SingletonObjectMapper;
+import json.JsonMapper;
 import modules.Constants;
 import other.PropertyDTO;
 import other.ResponseDTO;
@@ -27,7 +27,7 @@ public class SetEnvPropertyServlet extends HttpServlet {
         Map<String, Object> requestBodyMap = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBodyMap.get(Keys.UUID_KEY).toString();
         String value = requestBodyMap.get(Keys.VALUE_KEY).toString();
-        PropertyDTO propertyDTO = SingletonObjectMapper.objectMapper.readValue(
+        PropertyDTO propertyDTO = JsonMapper.objectMapper.readValue(
                 requestBodyMap.get(Keys.PROPERTY_DTO_KEY).toString(),
                 PropertyDTO.class
         );
