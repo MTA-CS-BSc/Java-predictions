@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="20"
+      alignment="CENTER"
+      fx:controller="fx.orchestrator.OrchestratorController">
+
+    <fx:include source="../header/Header.fxml" fx:id="header"/>
+
+    <Separator style="-fx-background-color: black" orientation="horizontal"/>
+
+    <StackPane>
+        <fx:include source="../details/Details.fxml" fx:id="details"/>
+    </StackPane>
+</VBox>
