@@ -7,7 +7,7 @@
         xmlns:fx="http://javafx.com/fxml"
         fx:controller="fx.component.allocations.AllocationsController"
         fx:id="container">
-    <TableView fx:id="allocationsTableView" onMouseClicked="#handleRequestClicked" maxWidth="1150">
+    <TableView fx:id="allocationsTableView" onMouseClicked="#handleRequestClicked" maxWidth="1250">
         <columns>
             <TableColumn fx:id="requestUuidColumn" prefWidth="250" text="UUID"/>
             <TableColumn fx:id="worldNameColumn" prefWidth="250" text="World Name"/>
