@@ -1,0 +1,153 @@
+.root {
+    -fx-background-color: radial-gradient(radius 100%, #000000, #333333, #666666);
+}
+
+/* Set the text color to a light shade of gray */
+.text {
+    -fx-fill: #CCCCCC;
+    -fx-font-family: "Liberation Mono";
+}
+
+.button {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-color: #333333;
+    -fx-border-width: 0px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 10, 0, 0, 0);
+    -fx-background-insets: 0, 1, 2;
+    -fx-background-radius: 20px, 19px, 18px;
+    -fx-background-color: linear-gradient(to bottom, #555555 0%, #444444 100%),
+    #444444,
+    #333333;
+}
+
+.button:hover {
+    -fx-background-color: #525252;
+}
+
+/* TextField and TextArea styles */
+.text-field, .text-area {
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+.text-area .content, .text-field .content {
+    -fx-background-color: #434343;
+}
+
+.text-area .scroll-bar:vertical {
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+
+.text-area .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+}
+
+.tree-view, .tree-cell {
+    -fx-background-color: #434343;
+    -fx-text-fill: white;
+}
+
+.tree-cell:selected {
+    -fx-background-color: #747474;
+    -fx-fill: white;
+}
+
+/* Label styles */
+.label {
+    -fx-text-fill: #CCCCCC;
+}
+
+/* ComboBox styles */
+.combo-box {
+    -fx-background-color: #444444;
+    -fx-text-fill: #CCCCCC;
+}
+
+/* ScrollPane styles */
+.scroll-pane {
+    -fx-background-color: #444444;
+}
+
+.menu-bar {
+    -fx-background-color: transparent;
+}
+
+.menu .label, .menu-item .label {
+    -fx-text-fill: white;
+}
+
+.menu:hover, .menu:showing, .menu-item:focused {
+    -fx-background-color: rgba(148, 148, 148, 0.2);
+}
+
+.context-menu {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* ListView and TableView styles */
+.list-view, .table-view {
+    -fx-background-color: #444444;
+    -fx-text-fill: #CCCCCC;
+}
+
+.table-view .column-header {
+    -fx-background-color: #1d1c1c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.table-view .cell {
+    -fx-background-color: #444444;
+}
+
+.text-field-table-cell .text-field {
+    -fx-padding: 1;
+    -fx-border-color: black;
+    -fx-background-color: #9d9d9d;
+    -fx-alignment: center;
+}
+
+.table-cell:focused {
+    -fx-padding: 0;
+}
+
+.table-column {
+    -fx-alignment: center;
+}
+
+/* TabPane styles */
+.tab-pane {
+    -fx-background-color: #444444;
+}
+
+/* Tab styles */
+.tab {
+    -fx-background-color: #444444;
+    -fx-text-fill: #CCCCCC;
+}
+
+/* Separator styles */
+.separator {
+    -fx-background-color: #444444;
+}
+
+/* ProgressIndicator styles */
+.progress-indicator {
+    -fx-progress-color: #666666;
+}
+
+/* Slider styles */
+.slider {
+    -fx-background-color: #444444;
+}
+
+/* Tooltip styles */
+.tooltip {
+    -fx-background-color: #444444;
+    -fx-text-fill: #CCCCCC;
+}
