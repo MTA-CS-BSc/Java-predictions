@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.control.*?>
+<TableView xmlns:fx="http://javafx.com/fxml/1" fx:id="simulationsTable" onMouseClicked="#handleSelectedSimulation"
+           xmlns="http://javafx.com/javafx/8.0.171" fx:controller="fx.results.simulations.table.SimulationsTableController">
+    <columns>
+        <TableColumn fx:id="idColumn" prefWidth="250" text="Simulation id"/>
+        <TableColumn fx:id="requestUuidColumn" prefWidth="250" text="Request UUID"/>
+        <TableColumn fx:id="createdTimestampColumn" prefWidth="200" text="Created at"/>
+        <TableColumn fx:id="ticksColumn" prefWidth="100" text="Ticks"/>
+        <TableColumn fx:id="elapsedTimeColumn" prefWidth="200" text="Elapsed time (millis)"/>
+        <TableColumn fx:id="stateColumn" prefWidth="100" text="State"/>
+        <TableColumn fx:id="createdUserColumn" prefWidth="100" text="Created by"/>
+    </columns>
+</TableView>
+

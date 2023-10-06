@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<TableView xmlns:fx="http://javafx.com/fxml" fx:id="populationTable"
+           editable="true"
+           xmlns="http://javafx.com/javafx"
+           fx:controller="fx.results.population.table.PopulationTableController">
+    <columns>
+        <TableColumn editable="false" fx:id="entityNameColumn" prefWidth="150.0" text="Entity Name"/>
+        <TableColumn fx:id="populationColumn" prefWidth="100.0" text="Population"/>
+    </columns>
+</TableView>

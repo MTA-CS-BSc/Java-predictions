@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fx.results.grid.WorldGridPaneController"
+      fx:id="container" spacing="20">
+    <GridPane fx:id="grid" gridLinesVisible="true"/>
+    <GridPane hgap="5" vgap="5" fx:id="legend"/>
+</HBox>

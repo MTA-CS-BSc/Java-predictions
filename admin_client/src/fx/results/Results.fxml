@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="container" alignment="CENTER" spacing="15.0"
+      xmlns="http://javafx.com/javafx/8.0.171" fx:controller="fx.results.ResultsController">
+    <HBox alignment="CENTER" spacing="20" maxHeight="200.0">
+        <fx:include source="simulations/table/SimulationsTable.fxml" fx:id="simulationsTable"/>
+        <fx:include source="population/table/PopulationTable.fxml" fx:id="populationTable"/>
+    </HBox>
+
+    <fx:include source="stats/Stats.fxml" fx:id="stats"/>
+</VBox>
