@@ -29,7 +29,7 @@ public class GridServlet extends HttpServlet {
             resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, "No uuid key found in params"));
         }
 
-        ResponseDTO responseDTO = Configuration.api.getGrid(simulationUuid);
+        ResponseDTO responseDTO = Configuration.api.getSimulationGrid(simulationUuid);
         resp.setStatus(responseDTO.getStatus());
 
         if (!Objects.isNull(responseDTO.getErrorDescription()))

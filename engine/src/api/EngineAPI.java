@@ -55,6 +55,18 @@ public class EngineAPI {
 
         return validateWorldResponse;
     }
+
+    public ResponseDTO getAllValidWorlds() {
+        if (!historyManager.isAnyXmlLoaded())
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
+
+        List<WorldDTO> validWorlds = historyManager.getAllValidWorlds()
+                .stream()
+                .map(Mappers::toDto)
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, validWorlds);
+    }
     //#endregion
 
     //#region Allocations
@@ -85,9 +97,72 @@ public class EngineAPI {
     public ResponseDTO declineRequest(String requestUuid) {
         return setRequestState(requestUuid, RequestState.DECLINED);
     }
+
+    public ResponseDTO getAllocationRequests() {
+        List<AllocationRequestDTO> requests = historyManager.getRequests().values()
+                .stream()
+                .map(Mappers::toDto)
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, requests);
+    }
+
+    public ResponseDTO getAllocationRequestsForUser(String username) {
+        List<AllocationRequestDTO> requests = historyManager.getRequests().values()
+                .stream()
+                .filter(element -> element.getCreatedUser().equals(username))
+                .map(Mappers::toDto)
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, requests);
+    }
+    //#endregion
+
+    //#region History
+    public ResponseDTO getPastSimulations() {
+        if (historyManager.isEmpty())
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
+
+        List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
+                .stream()
+                .map(Mappers::toDto)
+                .sorted(Comparator.comparing(SingleSimulationDTO::getCreatedTimestamp))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, data);
+    }
+
+    public ResponseDTO getPastSimulationsForUser(String username) {
+        if (historyManager.isEmpty())
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
+
+        List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
+                .stream()
+                .filter(element -> element.getCreatedUser().equals(username))
+                .map(Mappers::toDto)
+                .sorted(Comparator.comparing(SingleSimulationDTO::getCreatedTimestamp))
+                .collect(Collectors.toList());
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, data);
+    }
+
+    public ResponseDTO getPastSimulation(String simulationUuid) {
+        if (historyManager.isEmpty())
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, Mappers.toDto(historyManager.getPastSimulation(simulationUuid)));
+    }
     //#endregion
 
     //#region Simulation
+    public ResponseDTO getRequestSimulation(String requestUuid) {
+        try {
+            return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getRequestSimulation(requestUuid));
+        } catch (Exception e) {
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "Can't get simulation details", e.getMessage());
+        }
+    }
+
     public ResponseDTO createSimulation(String requestUuid) {
         try {
             return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.createSimulation(requestUuid));
@@ -156,68 +231,20 @@ public class EngineAPI {
         simulation.setSimulationState(SimulationState.RUNNING);
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, String.format("Simulation [%s] is running", simulationUuid));
     }
-    //#endregion
 
-    //#region History
+    public ResponseDTO getSimulationGrid(String simulationUuid) {
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getPastSimulation(simulationUuid).getGrid());
+    }
+
     private void removeSimulation(SingleSimulation simulation) {
         String simulationUuid = simulation.getUUID();
 
         historyManager.getRequests().get(simulation.getRequestUuid()).getRequestSimulations().remove(simulationUuid);
         historyManager.getPastSimulations().remove(simulationUuid);
     }
-
-    public ResponseDTO removeUnusedSimulations() {
-        List<SingleSimulation> toRemove = historyManager.getPastSimulations().values()
-                .stream()
-                .filter(simulation -> simulation.getSimulationState() == SimulationState.CREATED
-                        && !threadPoolManager.isSimulationRecorded(simulation.getUUID()))
-                .collect(Collectors.toList());
-
-        toRemove.forEach(this::removeSimulation);
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK);
-    }
     //#endregion
 
-    //#region Getters & Setters
-    public ResponseDTO getGrid(String simulationUuid) {
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getPastSimulation(simulationUuid).getGrid());
-    }
-
-    public ResponseDTO getPastSimulations() {
-        if (historyManager.isEmpty())
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
-
-        List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
-                .stream()
-                .map(Mappers::toDto)
-                .sorted(Comparator.comparing(SingleSimulationDTO::getCreatedTimestamp))
-                .collect(Collectors.toList());
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, data);
-    }
-
-    public ResponseDTO getPastSimulationsForUser(String username) {
-        if (historyManager.isEmpty())
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
-
-        List<SingleSimulationDTO> data = historyManager.getPastSimulations().values()
-                .stream()
-                .filter(element -> element.getCreatedUser().equals(username))
-                .map(Mappers::toDto)
-                .sorted(Comparator.comparing(SingleSimulationDTO::getCreatedTimestamp))
-                .collect(Collectors.toList());
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, data);
-    }
-
-    public ResponseDTO getPastSimulation(String simulationUuid) {
-        if (historyManager.isEmpty())
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyList(), "History is empty!");
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, Mappers.toDto(historyManager.getPastSimulation(simulationUuid)));
-    }
-
+    //#region Simulation Getters & Setters
     public ResponseDTO getEntities(String simulationUuid, boolean isInitial) {
         SingleSimulation simulation = historyManager.getPastSimulation(simulationUuid);
 
@@ -327,6 +354,32 @@ public class EngineAPI {
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK);
     }
 
+    public ResponseDTO setByStep(String simulationUuid, ByStep byStep) {
+        if (Objects.isNull(historyManager.getPastSimulation(simulationUuid)))
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyMap(), "Simulation not found!");
+
+        else if (historyManager.getPastSimulation(simulationUuid).getSimulationState() != SimulationState.PAUSED)
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, 0, "Simulation is not paused!");
+
+        historyManager.getPastSimulation(simulationUuid).setByStep(byStep);
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK);
+    }
+    //#endregion
+
+    //#region Results
+    public ResponseDTO getPropertyConsistency(String simulationUuid, String entityName, String propertyName) {
+        SingleSimulation simulation = historyManager.getPastSimulation(simulationUuid);
+
+        if (Objects.isNull(simulation))
+            return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, Collections.emptyMap(), String.format("UUID [%s] not found", simulationUuid));
+
+        double returnValue = simulation.getLastWorldState().getEntitiesMap().get(entityName).getSingleEntities()
+                .stream().mapToDouble(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getConsistency(simulation.getTicks()))
+                .average().orElse(simulation.getTicks());
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, returnValue);
+    }
+
     public ResponseDTO getEntitiesAmountsPerTick(String simulationUuid) {
         if (Objects.isNull(historyManager.getPastSimulation(simulationUuid)))
             return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyMap(), "Simulation not found!");
@@ -372,7 +425,9 @@ public class EngineAPI {
 
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, average);
     }
+    //#endregion
 
+    //#region Thread pool
     public ResponseDTO getQueueManagementDetails() {
         Collection<SingleSimulation> pastSimulations = historyManager.getPastSimulations().values();
 
@@ -393,30 +448,6 @@ public class EngineAPI {
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, queueMgmtDTO);
     }
 
-    public ResponseDTO setByStep(String simulationUuid, ByStep byStep) {
-        if (Objects.isNull(historyManager.getPastSimulation(simulationUuid)))
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, Collections.emptyMap(), "Simulation not found!");
-
-        else if (historyManager.getPastSimulation(simulationUuid).getSimulationState() != SimulationState.PAUSED)
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, 0, "Simulation is not paused!");
-
-        historyManager.getPastSimulation(simulationUuid).setByStep(byStep);
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK);
-    }
-
-    public ResponseDTO getPropertyConsistency(String simulationUuid, String entityName, String propertyName) {
-        SingleSimulation simulation = historyManager.getPastSimulation(simulationUuid);
-
-        if (Objects.isNull(simulation))
-            return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, Collections.emptyMap(), String.format("UUID [%s] not found", simulationUuid));
-
-        double returnValue = simulation.getLastWorldState().getEntitiesMap().get(entityName).getSingleEntities()
-                .stream().mapToDouble(singleEntity -> singleEntity.getProperties().getPropsMap().get(propertyName).getConsistency(simulation.getTicks()))
-                .average().orElse(simulation.getTicks());
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, returnValue);
-    }
-
     public ResponseDTO setThreadsAmount(int amount) {
         if (amount <= 0)
             return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "Amount not set", "Amount should be positive");
@@ -427,37 +458,6 @@ public class EngineAPI {
 
     public ResponseDTO getThreadsAmount() {
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, threadPoolManager.getThreadsAmount());
-    }
-
-    public ResponseDTO getAllValidWorlds() {
-        if (!historyManager.isAnyXmlLoaded())
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "", "No loaded XML");
-
-        List<WorldDTO> validWorlds = historyManager.getAllValidWorlds()
-                .stream()
-                .map(Mappers::toDto)
-                .collect(Collectors.toList());
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, validWorlds);
-    }
-
-    public ResponseDTO getAllocationRequests() {
-        List<AllocationRequestDTO> requests = historyManager.getRequests().values()
-                .stream()
-                .map(Mappers::toDto)
-                .collect(Collectors.toList());
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, requests);
-    }
-
-    public ResponseDTO getAllocationRequestsForUser(String username) {
-        List<AllocationRequestDTO> requests = historyManager.getRequests().values()
-                .stream()
-                .filter(element -> element.getCreatedUser().equals(username))
-                .map(Mappers::toDto)
-                .collect(Collectors.toList());
-
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, requests);
     }
     //#endregion
 }

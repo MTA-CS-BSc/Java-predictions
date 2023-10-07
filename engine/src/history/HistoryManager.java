@@ -131,8 +131,8 @@ public class HistoryManager implements Serializable {
 
     public Map<String, AllocationRequest> getRequests() { return requests; }
 
-    public SingleSimulationDTO getSimulationDetails(String initialWorldName) {
-        return new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(initialWorldName)));
+    public SingleSimulationDTO getRequestSimulation(String requestUuid) {
+        return new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(requests.get(requestUuid).getInitialWorldName())));
     }
 
     public List<World> getAllValidWorlds() {
