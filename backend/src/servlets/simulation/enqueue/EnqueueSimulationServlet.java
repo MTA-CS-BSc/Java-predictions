@@ -1,4 +1,4 @@
-package servlets.simulation.run;
+package servlets.simulation.enqueue;
 
 import api.ApiConstants;
 import api.Routes;
@@ -16,8 +16,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
-@WebServlet(Routes.RUN_SIMULATION)
-public class RunSimulationServlet extends HttpServlet {
+@WebServlet(Routes.ENQUEUE_SIMULATION)
+public class EnqueueSimulationServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
