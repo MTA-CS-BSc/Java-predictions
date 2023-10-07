@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import consts.ConnectedUser;
 import fx.components.requests.table.models.ExecuteTableCell;
+import fx.components.selected.SelectedProps;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -39,8 +40,6 @@ public class RequestsTableController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, Integer> finishedSimulationsInRequestColumn;
     @FXML private TableColumn<AllocationRequestDTO, Boolean> executeColumn;
 
-    private ObjectProperty<AllocationRequestDTO> selectedRequest;
-    private ObjectProperty<SingleSimulationDTO> creatingSimulation;
     private BooleanProperty isParentVisible;
 
     @Override
@@ -48,8 +47,6 @@ public class RequestsTableController implements Initializable {
         //TODO: Change
         ConnectedUser.USERNAME_PROPERTY.setValue("maya");
 
-        selectedRequest = new SimpleObjectProperty<>();
-        creatingSimulation = new SimpleObjectProperty<>();
         isParentVisible = new SimpleBooleanProperty();
         initColumns();
 
@@ -73,10 +70,12 @@ public class RequestsTableController implements Initializable {
     }
 
     public void setCreatingSimulation(SingleSimulationDTO value) {
-        creatingSimulation.setValue(value);
+        SelectedProps.CREATING_SIMULATION.setValue(value);
     }
 
     private void navigateToExecution() {
+        ObjectProperty<AllocationRequestDTO> selectedRequest = SelectedProps.SELECTED_REQUEST;
+
         if (!Objects.isNull(selectedRequest.getValue())) {
             try {
                 Response createSimulationResponse = HttpSimulation.createSimulation(selectedRequest.getValue().getUuid());
@@ -133,7 +132,7 @@ public class RequestsTableController implements Initializable {
                         requestsTableView.getItems().addAll(requests);
                         requestsTableView.refresh();
 
-                        if (!Objects.isNull(selectedRequest.getValue()))
+                        if (!Objects.isNull(SelectedProps.SELECTED_REQUEST.getValue()))
                             selectPreviouslySelected();
                     });
                 }
@@ -142,6 +141,8 @@ public class RequestsTableController implements Initializable {
     }
 
     private void selectPreviouslySelected() {
+        ObjectProperty<AllocationRequestDTO> selectedRequest = SelectedProps.SELECTED_REQUEST;
+
         if (Objects.isNull(selectedRequest.getValue()))
             return;
 
@@ -154,20 +155,12 @@ public class RequestsTableController implements Initializable {
         setSelectedRequest(newlySelectedRequest);
     }
 
-    public ObjectProperty<AllocationRequestDTO> selectedRequestProperty() {
-        return selectedRequest;
-    }
-
     public void setIsParentVisibleProperty(BooleanProperty property) {
         isParentVisible = property;
     }
 
     public void setSelectedRequest(AllocationRequestDTO value) {
-        selectedRequest.setValue(value);
-    }
-
-    public ObjectProperty<SingleSimulationDTO> creatingSimulationProperty() {
-        return creatingSimulation;
+        SelectedProps.SELECTED_REQUEST.setValue(value);
     }
 
     @FXML

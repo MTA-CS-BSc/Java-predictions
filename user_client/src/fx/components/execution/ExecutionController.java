@@ -6,8 +6,8 @@ import consts.Alerts;
 import consts.Animations;
 import fx.components.header.navbar.NavbarController;
 import fx.components.population.table.PopulationTableController;
+import fx.components.selected.SelectedProps;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -21,7 +21,6 @@ import modules.Restrictions;
 import okhttp3.Response;
 import other.PropertyDTO;
 import other.RangeDTO;
-import other.SingleSimulationDTO;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 import types.SimulationState;
@@ -32,8 +31,6 @@ import java.util.ResourceBundle;
 
 public class ExecutionController implements Initializable {
     @FXML private VBox container;
-
-    private ObjectProperty<SingleSimulationDTO> creatingSimulation;
 
     @FXML
     private PopulationTableController populationTableController;
@@ -57,20 +54,11 @@ public class ExecutionController implements Initializable {
 
     private NavbarController navbarController;
 
-    public ObjectProperty<SingleSimulationDTO> creatingSimulationProperty() {
-        return creatingSimulation;
-    }
-
-    public void setCreatingSimulation(SingleSimulationDTO value) {
-        creatingSimulation.setValue(value);
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        creatingSimulation = new SimpleObjectProperty<>();
         initEnvPropsTable();
 
-        creatingSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
+        SelectedProps.CREATING_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             populationTableController.setSelectedSimulation(t1);
 
             if (Objects.isNull(t1))
@@ -104,7 +92,7 @@ public class ExecutionController implements Initializable {
             PropertyDTO editedProperty = event.getRowValue();
 
             try {
-                Response response = HttpSimulationSetters.setEnvironmentProperty(creatingSimulation.getValue().getUuid(),
+                Response response = HttpSimulationSetters.setEnvironmentProperty(SelectedProps.CREATING_SIMULATION.getValue().getUuid(),
                         editedProperty.getName(), Integer.parseInt(event.getNewValue()));
 
                 if (!response.isSuccessful()) {
@@ -128,13 +116,13 @@ public class ExecutionController implements Initializable {
     }
 
     public boolean isSimulationEmpty() {
-        return Objects.isNull(creatingSimulation.getValue());
+        return Objects.isNull(SelectedProps.CREATING_SIMULATION.getValue());
     }
 
     private void clearEnvPropsTable() {
         envPropsTable.getItems().forEach(property -> {
             try {
-                Response response = HttpSimulationSetters.setEnvironmentProperty(creatingSimulation.getValue().getUuid(), property.getName(), null);
+                Response response = HttpSimulationSetters.setEnvironmentProperty(SelectedProps.CREATING_SIMULATION.getValue().getUuid(), property.getName(), null);
 
                 if (!response.isSuccessful())
                     response.close();
@@ -161,7 +149,7 @@ public class ExecutionController implements Initializable {
 
         if (populationTableController.validateAllInitialized()) {
             try {
-                String simulationUuid = creatingSimulation.getValue().getUuid();
+                String simulationUuid = SelectedProps.CREATING_SIMULATION.getValue().getUuid();
                 Response response = HttpSimulation.enqueueSimulation(simulationUuid);
 
                 if (!response.isSuccessful()) {

@@ -6,6 +6,7 @@ import fx.components.details.DetailsController;
 import fx.components.execution.ExecutionController;
 import fx.components.header.HeaderController;
 import fx.components.requests.RequestsController;
+import fx.components.selected.SelectedProps;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
@@ -28,11 +29,7 @@ public class OrchestratorController implements Initializable {
         headerController.setResultsController(resultsController);
         headerController.setExecutionController(executionController);
 
-        requestsController.creatingSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
-            executionController.setCreatingSimulation(t1);
-        });
-
-        executionController.creatingSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
+        SelectedProps.CREATING_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             if (Objects.isNull(t1))
                 headerController.getNavbarController().handleRequestsClicked();
 

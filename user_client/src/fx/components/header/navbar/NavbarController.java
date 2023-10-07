@@ -6,6 +6,7 @@ import fx.components.results.ResultsController;
 import fx.components.details.DetailsController;
 import fx.components.execution.ExecutionController;
 import fx.components.requests.RequestsController;
+import fx.components.selected.SelectedProps;
 import gui.GuiUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -113,7 +114,7 @@ public class NavbarController implements Initializable {
     @FXML
     public void handleExecutionClicked() {
         if (!executionController.getContainer().isVisible()) {
-            if (!Objects.isNull(executionController.creatingSimulationProperty().getValue())) {
+            if (!Objects.isNull(SelectedProps.CREATING_SIMULATION.getValue())) {
                 hideVisible();
                 highlightButtonText(executionButton);
 
