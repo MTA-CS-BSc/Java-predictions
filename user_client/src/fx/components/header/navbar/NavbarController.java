@@ -175,12 +175,7 @@ public class NavbarController implements Initializable {
     }
 
     private void clearAllTables() {
-//        clearRequests();
         clearWorldSelection();
-    }
-
-    private void clearRequests() {
-        requestsController.clearRequests();
     }
 
     private void clearWorldSelection() {
