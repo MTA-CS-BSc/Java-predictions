@@ -17,11 +17,13 @@ import java.util.stream.Collectors;
 public class HistoryManager implements Serializable {
     protected Map<String, AllocationRequest> requests;
     protected Map<String, SingleSimulation> pastSimulations;
+    protected Map<String, SingleSimulation> creatingSimulations;
     protected Map<String, World> initialWorlds;
 
     public HistoryManager() {
         pastSimulations = new HashMap<>();
         initialWorlds = new HashMap<>();
+        creatingSimulations = new HashMap<>();
         requests = new HashMap<>();
     }
 
@@ -33,27 +35,45 @@ public class HistoryManager implements Serializable {
         requests.put(request.getUuid(), request);
     }
 
+    public void addPastSimulation(SingleSimulation simulation) {
+        AllocationRequest request = requests.get(simulation.getRequestUuid());
+
+        if (request.canExecute()) {
+            pastSimulations.put(simulation.getUUID(), simulation);
+            request.getRequestSimulations().put(simulation.getUUID(), simulation);
+        }
+    }
+
+    public void addCreatingSimulation(SingleSimulation simulation) {
+        creatingSimulations.put(simulation.getUUID(), simulation);
+    }
+
+    public void handleFinishedCreatingSimulation(String uuid) {
+        SingleSimulation created = creatingSimulations.remove(uuid);
+        pastSimulations.put(uuid, created);
+    }
+
     public boolean isAnyXmlLoaded() {
         return !initialWorlds.isEmpty();
     }
 
-//    public String createSimulation(String requestUuid) throws Exception {
-//        AllocationRequest request = requests.get(requestUuid);
-//
-//        if (Objects.isNull(request))
-//            throw new UUIDNotFoundException(String.format("Request [%s] not found", requestUuid));
-//
-//        else if (!request.canExecute())
-//            throw new Exception(String.format("Request [%s]: used %d/%d simulations", requestUuid,
-//                    request.getUsedSimulationsAmount(), request.getRequestedExecutions()));
-//
-//        World world = new World(initialWorlds.get(request.getInitialWorldName()));
-//        world.setTermination(new Termination(request.getTermination()));
-//
-//        SingleSimulation sm = new SingleSimulation(request.getCreatedUser(), requestUuid, world);
-//        addPastSimulation(sm);
-//        return sm.getUUID();
-//    }
+    public String createSimulation(String requestUuid) throws Exception {
+        AllocationRequest request = requests.get(requestUuid);
+
+        if (Objects.isNull(request))
+            throw new UUIDNotFoundException(String.format("Request [%s] not found", requestUuid));
+
+        else if (!request.canExecute())
+            throw new Exception(String.format("Request [%s]: used %d/%d simulations", requestUuid,
+                    request.getUsedSimulationsAmount(), request.getRequestedExecutions()));
+
+        World world = new World(initialWorlds.get(request.getInitialWorldName()));
+        world.setTermination(new Termination(request.getTermination()));
+
+        SingleSimulation sm = new SingleSimulation(request.getCreatedUser(), requestUuid, world);
+        addCreatingSimulation(sm);
+        return sm.getUUID();
+    }
 
     public String cloneSimulation(String simulationUuid) throws Exception {
         SingleSimulation toClone = pastSimulations.get(simulationUuid);
@@ -72,24 +92,33 @@ public class HistoryManager implements Serializable {
                     request.getUsedSimulationsAmount(), request.getRequestedExecutions()));
 
         SingleSimulation cloned = new SingleSimulation(toClone);
-
-        addPastSimulation(cloned);
-
+        addCreatingSimulation(cloned);
         return cloned.getUUID();
     }
 
-    public void addPastSimulation(SingleSimulation simulation) {
-        AllocationRequest request = requests.get(simulation.getRequestUuid());
-
-        if (request.canExecute()) {
-            pastSimulations.put(simulation.getUUID(), simulation);
-            request.getRequestSimulations().put(simulation.getUUID(), simulation);
-        }
-    }
-
     //#region Getters
+    public SingleSimulation getCreatingSimulation(String simulationUuid) { return creatingSimulations.get(simulationUuid); }
+
     public SingleSimulation getPastSimulation(String simulationUuid) {
         return pastSimulations.get(simulationUuid);
+    }
+
+    public Map<String, SingleSimulation> getPastSimulations() {
+        return pastSimulations;
+    }
+
+    public Map<String, AllocationRequest> getRequests() { return requests; }
+
+    public World getInitialWorld(String initialWorldName) {
+        return initialWorlds.get(initialWorldName);
+    }
+
+    public List<World> getAllValidWorlds() {
+        return new ArrayList<>(initialWorlds.values());
+    }
+
+    public boolean isEmpty() {
+        return pastSimulations.isEmpty();
     }
 
     private List<String> getValuesListForProperty(SingleSimulation singleSimulation,
@@ -120,30 +149,12 @@ public class HistoryManager implements Serializable {
         return propertyValues.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
 
-    public boolean isEmpty() {
-        return pastSimulations.isEmpty();
-    }
-
-    public Map<String, SingleSimulation> getPastSimulations() {
-        return pastSimulations;
-    }
-
-    public Map<String, AllocationRequest> getRequests() { return requests; }
-
     public SingleSimulationDTO getRequestSimulation(String requestUuid, String createdBy) {
         AllocationRequest request = requests.get(requestUuid);
         World world = new World(initialWorlds.get(request.getInitialWorldName()));
         world.setTermination(new Termination(request.getTermination()));
 
         return new SingleSimulationDTO(requestUuid, createdBy, Mappers.toDto(world));
-    }
-
-    public List<World> getAllValidWorlds() {
-        return new ArrayList<>(initialWorlds.values());
-    }
-
-    public World getInitialWorld(String initialWorldName) {
-        return initialWorlds.get(initialWorldName);
     }
     //#endregion
 }
