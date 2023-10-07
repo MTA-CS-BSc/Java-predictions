@@ -73,8 +73,14 @@ public class World implements Serializable {
     public int getSleep() { return sleep; }
 
     public void initAllRandomVars() {
-        entities.initRandomVars();
         environment.initRandomVars();
+
+        entities.getEntitiesMap().values().forEach(entity -> {
+            entity.setPopulation(entity.getInitialPopulation());
+
+            for (int i = 0; i < entity.getPopulation(); i++)
+                entity.getSingleEntities().add(new SingleEntity(entity.getName(), entity.getInitialProperties(), grid));
+        });
     }
 
     private void setEnvironmentByWorldState(Map<String, Property> envMap) {
