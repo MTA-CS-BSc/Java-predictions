@@ -1,5 +1,6 @@
 package fx.components.header.navbar;
 
+import consts.Alerts;
 import consts.Animations;
 import fx.components.results.ResultsController;
 import fx.components.details.DetailsController;
@@ -9,11 +10,13 @@ import gui.GuiUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
@@ -109,14 +112,21 @@ public class NavbarController implements Initializable {
     @FXML
     public void handleExecutionClicked() {
         if (!executionController.getContainer().isVisible()) {
-            hideVisible();
-            highlightButtonText(executionButton);
+            if (!Objects.isNull(executionController.creatingSimulationProperty().getValue())) {
+                hideVisible();
+                highlightButtonText(executionButton);
 
-            if (Animations.IS_ANIMATIONS_ON.getValue())
-                Platform.runLater(() -> GuiUtils.fadeInAnimation(executionController.getContainer()));
+                if (Animations.IS_ANIMATIONS_ON.getValue())
+                    Platform.runLater(() -> GuiUtils.fadeInAnimation(executionController.getContainer()));
 
-            else
-                Platform.runLater(() -> executionController.getContainer().setVisible(true));
+                else
+                    Platform.runLater(() -> executionController.getContainer().setVisible(true));
+            }
+
+            else {
+                Alerts.showAlert("", "Entering this screen requires execution from requests", Alert.AlertType.INFORMATION);
+                handleRequestsClicked();;
+            }
         }
     }
 
@@ -165,7 +175,7 @@ public class NavbarController implements Initializable {
     }
 
     private void clearAllTables() {
-        clearRequests();
+//        clearRequests();
         clearWorldSelection();
     }
 
