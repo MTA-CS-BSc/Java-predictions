@@ -37,24 +37,23 @@ public class HistoryManager implements Serializable {
         return !initialWorlds.isEmpty();
     }
 
-    public String createSimulation(String requestUuid) throws Exception {
-        AllocationRequest request = requests.get(requestUuid);
-
-        if (Objects.isNull(request))
-            throw new UUIDNotFoundException(String.format("Request [%s] not found", requestUuid));
-
-        else if (!request.canExecute())
-            throw new Exception(String.format("Request [%s]: used %d/%d simulations", requestUuid,
-                    request.getUsedSimulationsAmount(), request.getRequestedExecutions()));
-
-        World world = new World(initialWorlds.get(request.getInitialWorldName()));
-        world.setTermination(new Termination(request.getTermination()));
-        SingleSimulation sm = new SingleSimulation(request.getCreatedUser(), requestUuid, world);
-
-        addPastSimulation(sm);
-
-        return sm.getUUID();
-    }
+//    public String createSimulation(String requestUuid) throws Exception {
+//        AllocationRequest request = requests.get(requestUuid);
+//
+//        if (Objects.isNull(request))
+//            throw new UUIDNotFoundException(String.format("Request [%s] not found", requestUuid));
+//
+//        else if (!request.canExecute())
+//            throw new Exception(String.format("Request [%s]: used %d/%d simulations", requestUuid,
+//                    request.getUsedSimulationsAmount(), request.getRequestedExecutions()));
+//
+//        World world = new World(initialWorlds.get(request.getInitialWorldName()));
+//        world.setTermination(new Termination(request.getTermination()));
+//
+//        SingleSimulation sm = new SingleSimulation(request.getCreatedUser(), requestUuid, world);
+//        addPastSimulation(sm);
+//        return sm.getUUID();
+//    }
 
     public String cloneSimulation(String simulationUuid) throws Exception {
         SingleSimulation toClone = pastSimulations.get(simulationUuid);
@@ -131,8 +130,12 @@ public class HistoryManager implements Serializable {
 
     public Map<String, AllocationRequest> getRequests() { return requests; }
 
-    public SingleSimulationDTO getRequestSimulation(String requestUuid) {
-        return new SingleSimulationDTO(Mappers.toDto(initialWorlds.get(requests.get(requestUuid).getInitialWorldName())));
+    public SingleSimulationDTO getRequestSimulation(String requestUuid, String createdBy) {
+        AllocationRequest request = requests.get(requestUuid);
+        World world = new World(initialWorlds.get(request.getInitialWorldName()));
+        world.setTermination(new Termination(request.getTermination()));
+
+        return new SingleSimulationDTO(requestUuid, createdBy, Mappers.toDto(world));
     }
 
     public List<World> getAllValidWorlds() {

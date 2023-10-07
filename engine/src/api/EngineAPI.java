@@ -155,14 +155,7 @@ public class EngineAPI {
     //#endregion
 
     //#region Simulation
-    public ResponseDTO createSimulation(String requestUuid) {
-        try {
-            return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.createSimulation(requestUuid));
-        } catch (Exception e) {
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "Simulation was not created", e.getMessage());
-        }
-    }
-
+    //TODO: Re-write createSimulation with SingleSimulationDTO as param
     public ResponseDTO cloneSimulation(String simulationUuid) {
         try {
             return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.cloneSimulation(simulationUuid));
@@ -235,7 +228,8 @@ public class EngineAPI {
     //#region Simulation Getters & Setters
     public ResponseDTO getRequestSimulation(String requestUuid) {
         try {
-            return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getRequestSimulation(requestUuid));
+            AllocationRequest request = historyManager.getRequests().get(requestUuid);
+            return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getRequestSimulation(request.getUuid(), request.getCreatedUser()));
         } catch (Exception e) {
             return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "Can't get simulation details", e.getMessage());
         }
@@ -300,7 +294,8 @@ public class EngineAPI {
             return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     simulationUuid, entityName), "Overall population exceeds board!");
 
-        entity.initPopulation(simulation.getGrid(), population);
+        entity.initPopulation(population);
+        entity.getSingleEntities().forEach(singleEntity -> simulation.getGrid().changeCoordinateState(singleEntity.getCoordinate()));
         entityDTO.setPopulation(population);
 
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, String.format("Simulation [%s]: Entity [%s]: Population initialized to [%d]",
