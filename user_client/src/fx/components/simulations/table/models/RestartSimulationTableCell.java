@@ -3,7 +3,7 @@ package fx.components.simulations.table.models;
 import api.simulation.HttpSimulation;
 import consts.Alerts;
 import consts.paths.IconPaths;
-import fx.components.simulations.table.SimulationsTableController;
+import fx.components.selected.SelectedProps;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
@@ -18,10 +18,8 @@ import java.util.Objects;
 public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, Boolean> implements SimulationControlButton {
     final Button restartButton;
     final StackPane paddedButton;
-    final SimulationsTableController controller;
 
-    public RestartSimulationTableCell(final TableView<SingleSimulationDTO> table, SimulationsTableController controller) {
-        this.controller = controller;
+    public RestartSimulationTableCell(final TableView<SingleSimulationDTO> table) {
         restartButton = new Button();
         paddedButton = new StackPane();
         paddedButton.setPadding(new Insets(3));
@@ -36,15 +34,26 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
             try {
                 String fromUuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
                 Response response = HttpSimulation.cloneSimulation(fromUuid);
-
-                if (!response.isSuccessful()) {
+                if (!response.isSuccessful() || Objects.isNull(response.body())) {
                     if (!Objects.isNull(response.body()))
                         Alerts.showAlert("Selected simulation could not be cloned", JsonParser.getMapFromJsonString(response.body().string()).get(Keys.INVALID_RESPONSE_KEY).toString(), Alert.AlertType.ERROR);
                     response.close();
                 }
 
                 else {
-                    //TODO: Navigate to new execution screen
+                    String clonedUuid = JsonParser.objectMapper.readValue(response.body().string(), String.class);
+
+                    Response simulationResponse = HttpSimulation.getCreatingSimulation(clonedUuid);
+
+                    if (!simulationResponse.isSuccessful() || Objects.isNull(simulationResponse.body()))
+                        response.close();
+
+                    else {
+                        SingleSimulationDTO simulation = JsonParser.objectMapper.readValue(
+                                simulationResponse.body().string(), SingleSimulationDTO.class);
+                        SelectedProps.CREATING_SIMULATION.setValue(simulation);
+                        SelectedProps.RESULTS_SIMULATION.setValue(null);
+                    }
                 }
             } catch (Exception e) {
                 Alerts.showAlert("Selected simulation could not be cloned", e.getMessage() , Alert.AlertType.ERROR);
