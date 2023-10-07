@@ -37,11 +37,11 @@ public class SingleSimulationDTO {
         this.requestUuid = requestUuid;
     }
 
-    public SingleSimulationDTO(WorldDTO world) {
+    public SingleSimulationDTO(String requestUuid, String createdUser, WorldDTO world) {
         uuid = "";
         createdTimestamp = "";
-        createdUser = "";
-        requestUuid = "";
+        this.createdUser = createdUser;
+        this.requestUuid = requestUuid;
         this.world = world;
         this.simulationState = SimulationState.CREATED;
         this.ticks = 0;
