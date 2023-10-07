@@ -38,7 +38,7 @@ public class OrchestratorController implements Initializable {
 
         executionController.creatingSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
             if (Objects.isNull(t1))
-                headerController.getNavbarController().handleResultsClicked();
+                headerController.getNavbarController().handleRequestsClicked();
 
             else
                 headerController.getNavbarController().handleExecutionClicked();
