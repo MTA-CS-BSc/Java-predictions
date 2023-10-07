@@ -2,22 +2,32 @@ package fx.components.simulations.table;
 
 
 import api.ApiConstants;
+import api.history.HttpUserPastSimulations;
+import com.fasterxml.jackson.core.type.TypeReference;
+import consts.Alerts;
+import consts.ConnectedUser;
 import fx.components.selected.SelectedProps;
 import fx.components.simulations.table.models.*;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
+import json.JsonParser;
+import okhttp3.Response;
 import other.SingleSimulationDTO;
 import types.ByStep;
 import types.SimulationState;
 
 import java.net.URL;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -75,35 +85,35 @@ public class SimulationsTableController implements Initializable {
     }
 
     private void fetchSimulations() {
-//        if (isParentVisible.getValue()) {
-//            try {
-//                Response response = HttpPastSimulations.getUserPastSimulations();
-//
-//                if (!response.isSuccessful() || Objects.isNull(response.body())) {
-//                    response.close();
-//                    return;
-//                }
-//
-//                List<SingleSimulationDTO> simulations = JsonParser.objectMapper.readValue(
-//                        response.body().string(),
-//                        new TypeReference<List<SingleSimulationDTO>>() {
-//                        });
-//
-//                if (simulations.size() < simulationsTable.getItems().size())
-//                    Platform.runLater(() -> Alerts.showAlert("Simulations were removed",
-//                            "One or more simulations were removed due to ERROR state reached", Alert.AlertType.INFORMATION));
+        if (isParentVisible.getValue()) {
+            try {
+                Response response = HttpUserPastSimulations.getUserPastSimulations(ConnectedUser.USERNAME_PROPERTY.getValue());
+
+                if (!response.isSuccessful() || Objects.isNull(response.body())) {
+                    response.close();
+                    return;
+                }
+
+                List<SingleSimulationDTO> simulations = JsonParser.objectMapper.readValue(
+                        response.body().string(),
+                        new TypeReference<List<SingleSimulationDTO>>() {
+                        });
+
+                if (simulations.size() < simulationsTable.getItems().size())
+                    Platform.runLater(() -> Alerts.showAlert("Simulations were removed",
+                            "One or more simulations were removed due to ERROR state reached", Alert.AlertType.INFORMATION));
 
 
-//                Platform.runLater(() -> {
-//                    simulationsTable.getItems().clear();
-//                    simulationsTable.getItems().addAll(simulations);
-//                    simulationsTable.refresh();
-//
-//                    if (!Objects.isNull(fx.component.selected.SelectedProps.SELECTED_SIMULATION.getValue()))
-//                        selectPreviouslySelected();
-//                });
-//            } catch (Exception ignored) { }
-//        }
+                Platform.runLater(() -> {
+                    simulationsTable.getItems().clear();
+                    simulationsTable.getItems().addAll(simulations);
+                    simulationsTable.refresh();
+
+                    if (!Objects.isNull(fx.component.selected.SelectedProps.SELECTED_SIMULATION.getValue()))
+                        selectPreviouslySelected();
+                });
+            } catch (Exception ignored) { }
+        }
     }
 
     private void selectPreviouslySelected() {
@@ -135,7 +145,7 @@ public class SimulationsTableController implements Initializable {
         pauseButtonColumn.setCellFactory(cellData -> new PauseSimulationTableCell(simulationsTable));
         resumeButtonColumn.setCellFactory(cellData -> new ResumeSimulationTableCell(simulationsTable));
         stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
-        restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable, this));
+        restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable));
         pastStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.PAST));
         futureStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.FUTURE));
 
