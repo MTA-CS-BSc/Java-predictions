@@ -1,6 +1,5 @@
 package prototypes.prd.implemented;
 
-import prototypes.SingleEntity;
 import prototypes.prd.generated.PRDEntity;
 
 import java.io.Serializable;
@@ -24,12 +23,6 @@ public class Entities implements Serializable {
 
     public Map<String, Entity> getEntitiesMap() {
         return entitiesMap;
-    }
-
-    public void initRandomVars() {
-        getEntitiesMap().values().forEach(entity -> {
-            entity.getSingleEntities().forEach(SingleEntity::initRandomVars);
-        });
     }
 
     @Override
