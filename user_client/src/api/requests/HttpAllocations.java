@@ -24,16 +24,16 @@ public abstract class HttpAllocations {
                                                    String initialWorldName,
                                                    int executionsAmount,
                                                    TerminationDTO termination) throws IOException {
-        Map<String, Object> body = new HashMap<>();
+        Map<String, Object> bodyMap = new HashMap<>();
 
-        body.put(Keys.CREATED_USER_KEY, createdUser);
-        body.put(Keys.INITIAL_WORLD_NAME_KEY, initialWorldName);
-        body.put(Keys.REQUESTED_EXECUTIONS_KEY, executionsAmount);
-        body.put(Keys.TERMINATION_KEY, JsonParser.toJson(termination));
+        bodyMap.put(Keys.CREATED_USER_KEY, createdUser);
+        bodyMap.put(Keys.INITIAL_WORLD_NAME_KEY, initialWorldName);
+        bodyMap.put(Keys.REQUESTED_EXECUTIONS_KEY, executionsAmount);
+        bodyMap.put(Keys.TERMINATION_KEY, JsonParser.toJson(termination));
 
         Request request = new Request.Builder()
                 .url(ALLOCATIONS_URL)
-                .post(RequestBody.create(JsonParser.toJson(body), API.JSON_MEDIA_TYPE))
+                .post(RequestBody.create(JsonParser.toJson(bodyMap), API.JSON_MEDIA_TYPE))
                 .build();
 
         return Configuration.HTTP_CLIENT.newCall(request).execute();
