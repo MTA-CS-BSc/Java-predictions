@@ -3,7 +3,7 @@ package fx.component.mgmt.threadpool.queue;
 import api.ApiConstants;
 import api.mgmt.threadpool.HttpThreadpool;
 import javafx.application.Platform;
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -27,7 +27,7 @@ public class ThreadpoolQueueController implements Initializable {
     @FXML private TableColumn<QueueMgmtDTO, Integer> finishedColumn;
     @FXML private TableColumn<QueueMgmtDTO, Integer> pendingColumn;
 
-    private BooleanProperty isParentVisible;
+    private ReadOnlyBooleanProperty isParentVisible;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -74,7 +74,7 @@ public class ThreadpoolQueueController implements Initializable {
         });
     }
 
-    public void setIsParentVisibleProperty(BooleanProperty value) {
+    public void setIsParentVisibleProperty(ReadOnlyBooleanProperty value) {
         isParentVisible = value;
     }
 }

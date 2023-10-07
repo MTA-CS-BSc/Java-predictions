@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="fx.components.results.stats.StatsController">
+    <fx:include source="finished/FinishedStats.fxml" fx:id="finishedStats"/>
+    <fx:include source="../grid/WorldGridPane.fxml" fx:id="worldGridPane"/>
+</StackPane>

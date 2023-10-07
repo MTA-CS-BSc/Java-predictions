@@ -8,5 +8,6 @@ import other.SingleSimulationDTO;
 public abstract class SelectedProps {
     public static final ObjectProperty<AllocationRequestDTO> SELECTED_REQUEST = new SimpleObjectProperty<>();
     public static final ObjectProperty<SingleSimulationDTO> CREATING_SIMULATION = new SimpleObjectProperty<>();
+    public static final ObjectProperty<SingleSimulationDTO> RESULTS_SIMULATION = new SimpleObjectProperty<>();
 }
 

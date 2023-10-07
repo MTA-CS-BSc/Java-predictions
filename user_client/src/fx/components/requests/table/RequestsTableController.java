@@ -40,7 +40,7 @@ public class RequestsTableController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, Integer> finishedSimulationsInRequestColumn;
     @FXML private TableColumn<AllocationRequestDTO, Boolean> executeColumn;
 
-    private BooleanProperty isParentVisible;
+    private ReadOnlyBooleanProperty isParentVisible;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -155,7 +155,7 @@ public class RequestsTableController implements Initializable {
         setSelectedRequest(newlySelectedRequest);
     }
 
-    public void setIsParentVisibleProperty(BooleanProperty property) {
+    public void setIsParentVisibleProperty(ReadOnlyBooleanProperty property) {
         isParentVisible = property;
     }
 

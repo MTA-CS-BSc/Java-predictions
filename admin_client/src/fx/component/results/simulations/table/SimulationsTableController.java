@@ -45,7 +45,7 @@ public class SimulationsTableController implements Initializable {
     @FXML private TableColumn<SingleSimulationDTO, String> requestUuidColumn;
     //#endregion
 
-    private BooleanProperty isParentVisible;
+    private ReadOnlyBooleanProperty isParentVisible;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -59,7 +59,7 @@ public class SimulationsTableController implements Initializable {
 
     }
 
-    public void setIsParentVisibleProperty(BooleanProperty property) {
+    public void setIsParentVisibleProperty(ReadOnlyBooleanProperty property) {
         isParentVisible = property;
     }
 

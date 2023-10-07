@@ -27,7 +27,7 @@ public class XmlValidWorldsController implements Initializable {
 
     private ObjectProperty<WorldDTO> selectedWorld;
 
-    private BooleanProperty isParentVisible;
+    private ReadOnlyBooleanProperty isParentVisible;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -40,7 +40,7 @@ public class XmlValidWorldsController implements Initializable {
                         ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
-    public void setIsParentVisibleProperty(BooleanProperty value) {
+    public void setIsParentVisibleProperty(ReadOnlyBooleanProperty value) {
         isParentVisible = value;
     }
 
