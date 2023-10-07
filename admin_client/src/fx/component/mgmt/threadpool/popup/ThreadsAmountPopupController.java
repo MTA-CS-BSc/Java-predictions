@@ -28,6 +28,9 @@ public class ThreadsAmountPopupController implements Initializable {
         try {
             Response response = HttpThreadpool.getThreadsAmount();
 
+            if (!response.isSuccessful())
+                response.close();
+
             if (!Objects.isNull(response.body()))
                 amountTextArea.setText(JsonParser.objectMapper.readValue(response.body().string(), Integer.class).toString());
         } catch (IOException ignored) { }

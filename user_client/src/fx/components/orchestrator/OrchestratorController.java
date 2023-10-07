@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class OrchestratorController implements Initializable {
@@ -26,6 +27,15 @@ public class OrchestratorController implements Initializable {
         headerController.setRequestsController(requestsController);
         headerController.setResultsController(resultsController);
         headerController.setExecutionController(executionController);
+
+        requestsController.creatingSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
+            executionController.setCreatingSimulation(t1);
+        });
+
+        requestsController.selectedRequestProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
+            if (Objects.isNull(t1))
+                executionController.setCreatingSimulation(null);
+        });
 
         initializeScreen();
     }

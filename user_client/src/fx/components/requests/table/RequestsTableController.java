@@ -2,19 +2,23 @@ package fx.components.requests.table;
 
 import api.ApiConstants;
 import api.requests.HttpAllocations;
+import api.simulation.HttpSimulation;
 import com.fasterxml.jackson.core.type.TypeReference;
+import consts.Alerts;
 import consts.ConnectedUser;
 import fx.components.requests.table.models.ExecuteTableCell;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseEvent;
 import json.JsonParser;
 import okhttp3.Response;
 import other.AllocationRequestDTO;
+import other.SingleSimulationDTO;
 import types.RequestState;
 import types.SimulationState;
 
@@ -36,6 +40,7 @@ public class RequestsTableController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, Boolean> executeColumn;
 
     private ObjectProperty<AllocationRequestDTO> selectedRequest;
+    private ObjectProperty<SingleSimulationDTO> creatingSimulation;
     private BooleanProperty isParentVisible;
 
     @Override
@@ -44,6 +49,7 @@ public class RequestsTableController implements Initializable {
         ConnectedUser.USERNAME_PROPERTY.setValue("maya");
 
         selectedRequest = new SimpleObjectProperty<>();
+        creatingSimulation = new SimpleObjectProperty<>();
         isParentVisible = new SimpleBooleanProperty();
         initColumns();
 
@@ -53,6 +59,10 @@ public class RequestsTableController implements Initializable {
     }
 
     private void initColumns() {
+        requestsTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, allocationRequestDTO, t1) -> {
+            setSelectedRequest(t1);
+        });
+
         requestUuidColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
         worldNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInitialWorldName()));
         stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
@@ -62,9 +72,43 @@ public class RequestsTableController implements Initializable {
         executeColumn.setCellFactory(cellData -> new ExecuteTableCell(requestsTableView, this::navigateToExecution));
     }
 
+    public void setCreatingSimulation(SingleSimulationDTO value) {
+        creatingSimulation.setValue(value);
+    }
+
     private void navigateToExecution() {
         if (!Objects.isNull(selectedRequest.getValue())) {
-            //TODO: Finish implementation
+            try {
+                Response createSimulationResponse = HttpSimulation.createSimulation(selectedRequest.getValue().getUuid());
+
+                if (!createSimulationResponse.isSuccessful()) {
+                    createSimulationResponse.close();
+                    return;
+                }
+
+                if (!Objects.isNull(createSimulationResponse.body())) {
+                    String createdSimulationUuid = JsonParser.objectMapper.readValue(createSimulationResponse.body().string(), String.class);
+                    Response getCreatingSimulationResponse = HttpSimulation.getCreatingSimulation(createdSimulationUuid);
+
+                    if (!getCreatingSimulationResponse.isSuccessful()) {
+                        getCreatingSimulationResponse.close();
+                        return;
+                    }
+
+                    if (!Objects.isNull(getCreatingSimulationResponse.body())) {
+                        SingleSimulationDTO creatingSimulation = JsonParser.objectMapper.readValue(
+                                getCreatingSimulationResponse.body().string(),
+                                SingleSimulationDTO.class
+                        );
+
+                        setCreatingSimulation(creatingSimulation);
+                    }
+                }
+
+            } catch (Exception e) {
+                Alerts.showAlert("ERROR", "Error executing simulation", Alert.AlertType.ERROR);
+            }
+
         }
     }
 
@@ -110,12 +154,20 @@ public class RequestsTableController implements Initializable {
         setSelectedRequest(newlySelectedRequest);
     }
 
+    public ObjectProperty<AllocationRequestDTO> selectedRequestProperty() {
+        return selectedRequest;
+    }
+
     public void setIsParentVisibleProperty(BooleanProperty property) {
         isParentVisible = property;
     }
 
     public void setSelectedRequest(AllocationRequestDTO value) {
         selectedRequest.setValue(value);
+    }
+
+    public ObjectProperty<SingleSimulationDTO> creatingSimulationProperty() {
+        return creatingSimulation;
     }
 
     @FXML
