@@ -1,5 +1,6 @@
 package fx.components.simulations.table.models;
 
+import api.simulation.HttpSimulation;
 import consts.paths.IconPaths;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
+import okhttp3.Response;
 import other.SingleSimulationDTO;
 import types.SimulationState;
 
@@ -27,7 +29,12 @@ public class StopSimulationTableCell extends TableCell<SingleSimulationDTO, Bool
 
         stopButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
-//            SingletonEngineAPI.api.stopSimulation(getTableView().getSelectionModel().getSelectedItem().getUuid());
+            try {
+                Response response = HttpSimulation.stopSimulation(getTableView().getSelectionModel().getSelectedItem().getUuid());
+
+                if (!response.isSuccessful())
+                    response.close();
+            } catch (Exception ignored) { }
         });
     }
 

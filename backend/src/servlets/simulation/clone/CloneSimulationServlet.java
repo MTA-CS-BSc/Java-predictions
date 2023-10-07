@@ -22,10 +22,10 @@ public class CloneSimulationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
         Map<String, Object> requestBody = JsonParser.getRequestBodyMap(req.getReader());
-        String requestUuid = requestBody.get(Keys.UUID_KEY).toString();
+        String simulationUuid = requestBody.get(Keys.UUID_KEY).toString();
 
-        if (!TypesUtils.isNullOrEmpty(requestUuid)) {
-            ResponseDTO responseDTO = Configuration.api.cloneSimulation(requestUuid);
+        if (!TypesUtils.isNullOrEmpty(simulationUuid)) {
+            ResponseDTO responseDTO = Configuration.api.cloneSimulation(simulationUuid);
             resp.setStatus(responseDTO.getStatus());
 
             if (!Objects.isNull(responseDTO.getErrorDescription()))

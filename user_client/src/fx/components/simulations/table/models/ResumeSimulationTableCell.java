@@ -1,5 +1,6 @@
 package fx.components.simulations.table.models;
 
+import api.simulation.HttpSimulation;
 import consts.paths.IconPaths;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -7,7 +8,9 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.StackPane;
+import okhttp3.Response;
 import other.SingleSimulationDTO;
+import types.ByStep;
 import types.SimulationState;
 
 public class ResumeSimulationTableCell extends TableCell<SingleSimulationDTO, Boolean> implements SimulationControlButton {
@@ -27,9 +30,19 @@ public class ResumeSimulationTableCell extends TableCell<SingleSimulationDTO, Bo
 
         resumeButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
-            String uuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
-//            SingletonEngineAPI.api.setByStep(uuid, ByStep.NOT_BY_STEP);
-//            SingletonEngineAPI.api.resumeSimulation(uuid);
+
+            try {
+                String uuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
+                Response setByStepResponse = HttpSimulation.setByStep(uuid, ByStep.NOT_BY_STEP);
+                Response resumeResponse = HttpSimulation.resumeSimulation(uuid);
+
+                if (!setByStepResponse.isSuccessful())
+                    setByStepResponse.close();
+
+                if (!resumeResponse.isSuccessful())
+                    resumeResponse.close();
+            } catch (Exception ignored) { }
+
         });
     }
 
