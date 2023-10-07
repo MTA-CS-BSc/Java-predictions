@@ -22,8 +22,8 @@ public class GetSimulationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType(ApiConstants.JSON_CONTENT_TYPE);
-        Map<String, Object> requestBody = JsonParser.getRequestBodyMap(req.getReader());
-        String simulationUuid = requestBody.get(Keys.UUID_KEY).toString();
+        Map<String, String[]> params = req.getParameterMap();
+        String simulationUuid = params.get(Keys.UUID_KEY)[0];
 
         if (!TypesUtils.isNullOrEmpty(simulationUuid)) {
             ResponseDTO responseDTO = Configuration.api.getPastSimulation(simulationUuid);
