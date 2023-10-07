@@ -1,7 +1,7 @@
 package fx.components.simulations.table.models;
 
 import fx.Main;
-import fx.models.TransitionType;
+import fx.components.requests.table.models.TransitionType;
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
