@@ -36,4 +36,8 @@ public class HeaderController implements Initializable {
     public void setExecutionController(ExecutionController controller) {
         navbarController.setExecutionController(controller);
     }
+
+    public NavbarController getNavbarController() {
+        return navbarController;
+    }
 }

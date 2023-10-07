@@ -31,10 +31,17 @@ public class OrchestratorController implements Initializable {
         requestsController.creatingSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
             executionController.setCreatingSimulation(t1);
         });
-
         requestsController.selectedRequestProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
-            if (Objects.isNull(t1))
+            if (Objects.isNull(t1) || Objects.isNull(singleSimulationDTO) || !singleSimulationDTO.getUuid().equals(t1.getUuid()))
                 executionController.setCreatingSimulation(null);
+        });
+
+        executionController.creatingSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
+            if (Objects.isNull(t1))
+                headerController.getNavbarController().handleResultsClicked();
+
+            else
+                headerController.getNavbarController().handleExecutionClicked();
         });
 
         initializeScreen();

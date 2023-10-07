@@ -24,6 +24,9 @@ public class ExecutionController implements Initializable {
         });
     }
 
+    public ObjectProperty<SingleSimulationDTO> creatingSimulationProperty() {
+        return creatingSimulation;
+    }
     public void setCreatingSimulation(SingleSimulationDTO value) {
         creatingSimulation.setValue(value);
     }

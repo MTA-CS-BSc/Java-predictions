@@ -107,23 +107,31 @@ public class NavbarController implements Initializable {
     }
 
     @FXML
-    private void handleExecutionClicked() {
+    public void handleExecutionClicked() {
+        if (!executionController.getContainer().isVisible()) {
+            hideVisible();
+            highlightButtonText(executionButton);
 
+            if (Animations.IS_ANIMATIONS_ON.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(executionController.getContainer()));
+
+            else
+                Platform.runLater(() -> executionController.getContainer().setVisible(true));
+        }
     }
 
     @FXML
-    private void handleResultsClicked() {
-//        if (!resultsController.getContainer().isVisible()) {
-//            hideVisible();
-//
-//            if (Animations.IS_ANIMATIONS_ON.getValue())
-//                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsController.getContainer()));
-//
-//            else
-//                Platform.runLater(() -> resultsController.getContainer().setVisible(true));
-//        }
-//
-//        highlightButtonText(resultsButton);
+    public void handleResultsClicked() {
+        if (!resultsController.getContainer().isVisible()) {
+            hideVisible();
+            highlightButtonText(resultsButton);
+
+            if (Animations.IS_ANIMATIONS_ON.getValue())
+                Platform.runLater(() -> GuiUtils.fadeInAnimation(resultsController.getContainer()));
+
+            else
+                Platform.runLater(() -> resultsController.getContainer().setVisible(true));
+        }
     }
 
     @FXML
@@ -142,7 +150,7 @@ public class NavbarController implements Initializable {
     }
 
     @FXML
-    private void handleRequestsClicked() {
+    public void handleRequestsClicked() {
         if (!requestsController.getContainer().isVisible()) {
             clearAllTables();
             hideVisible();
