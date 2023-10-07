@@ -50,6 +50,7 @@ public class NavbarController implements Initializable {
 
     public void setExecutionController(ExecutionController controller) {
         executionController = controller;
+        executionController.setNavbarController(this);
     }
 
     private void highlightButtonText(Button button) {
