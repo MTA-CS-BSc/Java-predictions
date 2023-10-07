@@ -152,6 +152,15 @@ public class EngineAPI {
 
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, Mappers.toDto(historyManager.getPastSimulation(simulationUuid)));
     }
+
+    public ResponseDTO getCreatingSimulation(String simulationUuid) {
+        SingleSimulation simulation = historyManager.getCreatingSimulation(simulationUuid);
+
+        if (Objects.isNull(simulation))
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "", "Can't find simulation");
+
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, Mappers.toDto(simulation));
+    }
     //#endregion
 
     //#region Simulation
