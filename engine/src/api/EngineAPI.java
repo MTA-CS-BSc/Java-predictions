@@ -155,14 +155,6 @@ public class EngineAPI {
     //#endregion
 
     //#region Simulation
-    public ResponseDTO getRequestSimulation(String requestUuid) {
-        try {
-            return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getRequestSimulation(requestUuid));
-        } catch (Exception e) {
-            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "Can't get simulation details", e.getMessage());
-        }
-    }
-
     public ResponseDTO createSimulation(String requestUuid) {
         try {
             return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.createSimulation(requestUuid));
@@ -232,10 +224,6 @@ public class EngineAPI {
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, String.format("Simulation [%s] is running", simulationUuid));
     }
 
-    public ResponseDTO getSimulationGrid(String simulationUuid) {
-        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getPastSimulation(simulationUuid).getGrid());
-    }
-
     private void removeSimulation(SingleSimulation simulation) {
         String simulationUuid = simulation.getUUID();
 
@@ -245,6 +233,18 @@ public class EngineAPI {
     //#endregion
 
     //#region Simulation Getters & Setters
+    public ResponseDTO getRequestSimulation(String requestUuid) {
+        try {
+            return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getRequestSimulation(requestUuid));
+        } catch (Exception e) {
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "Can't get simulation details", e.getMessage());
+        }
+    }
+
+    public ResponseDTO getSimulationGrid(String simulationUuid) {
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getPastSimulation(simulationUuid).getGrid());
+    }
+
     public ResponseDTO getEntities(String simulationUuid, boolean isInitial) {
         SingleSimulation simulation = historyManager.getPastSimulation(simulationUuid);
 
