@@ -3,13 +3,11 @@ package fx.component.results.stats.finished;
 
 import fx.component.results.stats.finished.entities.amount.chart.EntitiesAmountChartController;
 import fx.component.results.stats.finished.properties.PropertyStatsController;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import fx.component.selected.SelectedProps;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
-import other.SingleSimulationDTO;
 import types.SimulationState;
 
 import java.net.URL;
@@ -17,8 +15,6 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class FinishedStatsController implements Initializable {
-    private ObjectProperty<SingleSimulationDTO> selectedSimulation;
-
     @FXML
     private VBox container;
 
@@ -34,7 +30,6 @@ public class FinishedStatsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         container.setVisible(false);
-        selectedSimulation = new SimpleObjectProperty<>();
 
         filterByComboBox.getSelectionModel().selectedItemProperty()
                 .addListener((observableValue, s, t1) -> {
@@ -45,16 +40,9 @@ public class FinishedStatsController implements Initializable {
                         propertyStatsController.reset();
                 });
 
-        selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
-            entitiesAmountChartController.setSelectedSimulation(t1);
-            propertyStatsController.setSelectedSimulation(t1);
-
+        SelectedProps.SELECTED_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             container.setVisible(!Objects.isNull(t1) && t1.getSimulationState() == SimulationState.FINISHED);
         });
-    }
-
-    public void setSelectedSimulation(SingleSimulationDTO simulation) {
-        selectedSimulation.setValue(simulation);
     }
 }
 

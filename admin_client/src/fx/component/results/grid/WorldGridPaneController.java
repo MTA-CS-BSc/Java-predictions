@@ -1,6 +1,7 @@
 package fx.component.results.grid;
 
 
+import fx.component.selected.SelectedProps;
 import fx.modules.SingletonThreadpoolManager;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -33,13 +34,11 @@ public class WorldGridPaneController implements Initializable {
 
     @FXML private GridPane legend;
 
-    private ObjectProperty<SingleSimulationDTO> selectedSimulation;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        selectedSimulation = new SimpleObjectProperty<>();
         container.setVisible(false);
 
-        selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
+        SelectedProps.SELECTED_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             container.setVisible(!Objects.isNull(t1) && t1.getSimulationState() == SimulationState.PAUSED);
 
             if (container.isVisible() && (Objects.isNull(singleSimulationDTO)
@@ -99,8 +98,4 @@ public class WorldGridPaneController implements Initializable {
     }
 
     public GridPane getGrid() { return grid; }
-
-    public void setSelectedSimulation(SingleSimulationDTO simulation) {
-        selectedSimulation.setValue(simulation);
-    }
 }

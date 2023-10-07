@@ -3,6 +3,7 @@ package fx.component.results;
 import fx.component.results.population.table.PopulationTableController;
 import fx.component.results.simulations.table.SimulationsTableController;
 import fx.component.results.stats.StatsController;
+import fx.component.selected.SelectedProps;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
@@ -22,11 +23,6 @@ public class ResultsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         simulationsTableController.setIsParentVisibleProperty(container.visibleProperty());
-
-        simulationsTableController.selectedSimulationProperty().addListener((observableValue, singleSimulationDTO, t1) -> {
-            populationTableController.setSelectedSimulation(t1);
-            statsController.setSelectedSimulation(t1);
-        });
     }
 
     public VBox getContainer() {
@@ -34,6 +30,6 @@ public class ResultsController implements Initializable {
     }
 
     public void clearSimulationSelection() {
-        simulationsTableController.setSelectedSimulation(null);
+        SelectedProps.SELECTED_SIMULATION.setValue(null);
     }
 }

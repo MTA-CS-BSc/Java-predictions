@@ -3,10 +3,9 @@ package fx.component.results.stats.finished.entities.amount.chart;
 
 import api.history.results.stats.entities.HttpEntitiesStats;
 import com.fasterxml.jackson.core.type.TypeReference;
+import fx.component.selected.SelectedProps;
 import fx.modules.SingletonThreadpoolManager;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
@@ -14,7 +13,6 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import json.JsonParser;
 import okhttp3.Response;
-import other.SingleSimulationDTO;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,13 +25,9 @@ public class EntitiesAmountChartController implements Initializable {
     @FXML
     private NumberAxis ticksAxis;
 
-    private ObjectProperty<SingleSimulationDTO> selectedSimulation;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        selectedSimulation = new SimpleObjectProperty<>();
-
-        selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
+        SelectedProps.SELECTED_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             if (Objects.isNull(t1))
                 entitiesAmountChart.getData().clear();
 
@@ -52,7 +46,7 @@ public class EntitiesAmountChartController implements Initializable {
     }
 
     private void fillChart() throws IOException {
-        Response response = HttpEntitiesStats.getEntitiesAmountsPerTick(selectedSimulation.getValue().getUuid());
+        Response response = HttpEntitiesStats.getEntitiesAmountsPerTick(SelectedProps.SELECTED_SIMULATION.getValue().getUuid());
 
         if (!response.isSuccessful()) {
             response.close();
@@ -86,10 +80,6 @@ public class EntitiesAmountChartController implements Initializable {
                 });
             });
         }
-    }
-
-    public void setSelectedSimulation(SingleSimulationDTO simulation) {
-        selectedSimulation.setValue(simulation);
     }
 
     public void toggleVisibility() {

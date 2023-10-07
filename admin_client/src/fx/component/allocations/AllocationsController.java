@@ -5,8 +5,8 @@ import api.allocations.HttpAllocations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fx.component.allocations.models.ApproveTableCell;
 import fx.component.allocations.models.DeclineTableCell;
+import fx.component.selected.SelectedProps;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,11 +45,8 @@ public class AllocationsController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, TerminationDTO> terminationColumn;
     @FXML private TableColumn<AllocationRequestDTO, Integer> userTotalFinishedSimulations;
 
-    private ObjectProperty<AllocationRequestDTO> selectedRequest;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        selectedRequest = new SimpleObjectProperty<>();
         initColumns();
 
         Executors.newScheduledThreadPool(1)
@@ -78,7 +75,7 @@ public class AllocationsController implements Initializable {
                         allocationsTableView.getItems().addAll(requests);
                         allocationsTableView.refresh();
 
-                        if (!Objects.isNull(selectedRequest.getValue()))
+                        if (!Objects.isNull(SelectedProps.SELECTED_REQUEST.getValue()))
                             selectPreviouslySelected();
                     });
                 }
@@ -87,12 +84,12 @@ public class AllocationsController implements Initializable {
     }
 
     private void selectPreviouslySelected() {
-        if (Objects.isNull(selectedRequest.getValue()))
+        if (Objects.isNull(SelectedProps.SELECTED_REQUEST.getValue()))
             return;
 
         AllocationRequestDTO newlySelectedRequest = allocationsTableView.getItems()
                 .stream()
-                .filter(element -> element.getUuid().equals(selectedRequest.getValue().getUuid()))
+                .filter(element -> element.getUuid().equals(SelectedProps.SELECTED_REQUEST.getValue().getUuid()))
                 .findFirst().orElse(null);
 
         allocationsTableView.getSelectionModel().select(newlySelectedRequest);
@@ -100,7 +97,7 @@ public class AllocationsController implements Initializable {
     }
 
     public void setSelectedRequest(AllocationRequestDTO value) {
-        selectedRequest.setValue(value);
+        SelectedProps.SELECTED_REQUEST.setValue(value);
     }
 
     public VBox getContainer() {
@@ -142,10 +139,10 @@ public class AllocationsController implements Initializable {
     @FXML
     private void handleRequestClicked(MouseEvent event) {
         if (event.getClickCount() == 1) {
-            AllocationRequestDTO selectedWorld = allocationsTableView.getSelectionModel().getSelectedItem();
+            AllocationRequestDTO selectedRequest = allocationsTableView.getSelectionModel().getSelectedItem();
 
-            if (selectedWorld != null)
-                setSelectedRequest(selectedWorld);
+            if (selectedRequest != null)
+                setSelectedRequest(selectedRequest);
         }
     }
 }

@@ -5,6 +5,7 @@ import api.ApiConstants;
 import api.history.HttpPastSimulations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
+import fx.component.selected.SelectedProps;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.fxml.FXML;
@@ -44,14 +45,11 @@ public class SimulationsTableController implements Initializable {
     @FXML private TableColumn<SingleSimulationDTO, String> requestUuidColumn;
     //#endregion
 
-    private ObjectProperty<SingleSimulationDTO> selectedSimulation;
-
     private BooleanProperty isParentVisible;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         isParentVisible = new SimpleBooleanProperty(false);
-        selectedSimulation = new SimpleObjectProperty<>();
 
         initColumns();
 
@@ -90,7 +88,7 @@ public class SimulationsTableController implements Initializable {
                     simulationsTable.getItems().addAll(simulations);
                     simulationsTable.refresh();
 
-                    if (!Objects.isNull(selectedSimulation.getValue()))
+                    if (!Objects.isNull(SelectedProps.SELECTED_SIMULATION.getValue()))
                         selectPreviouslySelected();
                 });
             } catch (Exception ignored) { }
@@ -98,12 +96,12 @@ public class SimulationsTableController implements Initializable {
     }
 
     private void selectPreviouslySelected() {
-        if (Objects.isNull(selectedSimulation.getValue()))
+        if (Objects.isNull(SelectedProps.SELECTED_SIMULATION.getValue()))
             return;
 
         SingleSimulationDTO newlySelectedSimulation = simulationsTable.getItems()
                 .stream()
-                .filter(element -> element.getUuid().equals(selectedSimulation.getValue().getUuid()))
+                .filter(element -> element.getUuid().equals(SelectedProps.SELECTED_SIMULATION.getValue().getUuid()))
                 .findFirst().orElse(null);
 
         simulationsTable.getSelectionModel().select(newlySelectedSimulation);
@@ -120,6 +118,10 @@ public class SimulationsTableController implements Initializable {
         }
     }
 
+    public void setSelectedSimulation(SingleSimulationDTO value) {
+        SelectedProps.SELECTED_SIMULATION.setValue(value);
+    }
+
     private void initColumns() {
         idColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
         createdTimestampColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedTimestamp()));
@@ -128,13 +130,5 @@ public class SimulationsTableController implements Initializable {
         elapsedTimeColumn.setCellValueFactory(cellData -> new SimpleLongProperty(cellData.getValue().getElapsedTimeMillis()).asObject());
         requestUuidColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRequestUuid()));
         createdUserColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedUser()));
-    }
-
-    public void setSelectedSimulation(SingleSimulationDTO simulation) {
-        selectedSimulation.setValue(simulation);
-    }
-
-    public ObjectProperty<SingleSimulationDTO> selectedSimulationProperty() {
-        return selectedSimulation;
     }
 }

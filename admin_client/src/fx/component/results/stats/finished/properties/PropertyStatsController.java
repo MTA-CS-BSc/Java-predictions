@@ -4,10 +4,9 @@ package fx.component.results.stats.finished.properties;
 import api.history.results.stats.properties.HttpPropertyStats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
+import fx.component.selected.SelectedProps;
 import fx.modules.SingletonThreadpoolManager;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.PieChart;
@@ -20,7 +19,6 @@ import json.Keys;
 import okhttp3.Response;
 import other.EntityDTO;
 import other.PropertyDTO;
-import other.SingleSimulationDTO;
 import types.PropTypes;
 import types.SimulationState;
 
@@ -55,11 +53,8 @@ public class PropertyStatsController implements Initializable {
     @FXML
     private Label consistencyLabel;
 
-    private ObjectProperty<SingleSimulationDTO> selectedSimulation;
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        selectedSimulation = new SimpleObjectProperty<>();
         container.setVisible(false);
         propertyNamesComboBox.setDisable(true);
         avgConsistencyContainer.setVisible(false);
@@ -67,7 +62,7 @@ public class PropertyStatsController implements Initializable {
         entityNamesComboBox.setCellFactory(getEntityCellFactory());
         propertyNamesComboBox.setCellFactory(getPropertyCellFactory());
 
-        selectedSimulation.addListener((observableValue, singleSimulationDTO, t1) -> {
+        SelectedProps.SELECTED_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             if (Objects.isNull(t1))
                 entityNamesComboBox.getItems().clear();
 
@@ -104,7 +99,7 @@ public class PropertyStatsController implements Initializable {
 
     private void showPropertyAverage(String entityName, String propertyName) {
         try {
-            Response response = HttpPropertyStats.getAverage(selectedSimulation.getValue().getUuid(), entityName, propertyName);
+            Response response = HttpPropertyStats.getAverage(SelectedProps.SELECTED_SIMULATION.getValue().getUuid(), entityName, propertyName);
 
             if (!response.isSuccessful())
                 response.close();
@@ -119,7 +114,7 @@ public class PropertyStatsController implements Initializable {
 
     private void showPropertyConsistency(String entityName, String propertyName) {
         try {
-            Response response = HttpPropertyStats.getConsistency(selectedSimulation.getValue().getUuid(), entityName, propertyName);
+            Response response = HttpPropertyStats.getConsistency(SelectedProps.SELECTED_SIMULATION.getValue().getUuid(), entityName, propertyName);
 
             if (!response.isSuccessful())
                 response.close();
@@ -185,10 +180,6 @@ public class PropertyStatsController implements Initializable {
         container.setVisible(!container.isVisible());
     }
 
-    public void setSelectedSimulation(SingleSimulationDTO simulation) {
-        selectedSimulation.setValue(simulation);
-    }
-
     public boolean getVisible() {
         return container.isVisible();
     }
@@ -203,7 +194,7 @@ public class PropertyStatsController implements Initializable {
         avgConsistencyContainer.setVisible(true);
 
         try {
-            Response response = HttpPropertyStats.getEntitiesCountForProp(selectedSimulation.getValue().getUuid(), entityName, property.getName());
+            Response response = HttpPropertyStats.getEntitiesCountForProp(SelectedProps.SELECTED_SIMULATION.getValue().getUuid(), entityName, property.getName());
 
             if (!response.isSuccessful()) {
                 response.close();
