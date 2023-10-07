@@ -113,14 +113,6 @@ public class World implements Serializable {
         setGridByWorldState(worldState.getEntitiesMap());
     }
 
-    public void addStopCondition(Object stopCondition) {
-        termination.addStopCondition(stopCondition);
-    }
-
-    public void setTerminationByUser() {
-        termination.setStopByUser(true);
-    }
-
     @Override
     public String toString() {
         return entities.toString() + rules.toString() + termination.toString();
