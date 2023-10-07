@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import other.PropertyDTO;
 import other.ResponseDTO;
 
 import java.io.IOException;
@@ -26,12 +25,9 @@ public class SetEnvPropertyServlet extends HttpServlet {
         Map<String, Object> requestBodyMap = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBodyMap.get(Keys.UUID_KEY).toString();
         String value = requestBodyMap.get(Keys.VALUE_KEY).toString();
-        PropertyDTO propertyDTO = JsonParser.objectMapper.readValue(
-                requestBodyMap.get(Keys.PROPERTY_DTO_KEY).toString(),
-                PropertyDTO.class
-        );
+        String propertyName = requestBodyMap.get(Keys.PROPERTY_NAME_KEY).toString();
 
-        ResponseDTO responseDTO = Configuration.api.setEnvironmentVariable(simulationUuid, propertyDTO, value);
+        ResponseDTO responseDTO = Configuration.api.setEnvironmentVariable(simulationUuid, propertyName, value);
         resp.setStatus(responseDTO.getStatus());
 
         if (!Objects.isNull(responseDTO.getErrorDescription()))

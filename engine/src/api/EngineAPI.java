@@ -238,9 +238,7 @@ public class EngineAPI {
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, historyManager.getPastSimulation(simulationUuid).getGrid());
     }
 
-    public ResponseDTO setEntityInitialPopulation(String simulationUuid, EntityDTO entityDTO, int population) {
-        String entityName = entityDTO.getName();
-
+    public ResponseDTO setEntityInitialPopulation(String simulationUuid, String entityName, int population) {
         if (population < 0)
             return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s]: Entity [%s]: Population has not been initialized",
                     simulationUuid, entityName), "Population is negative");
@@ -259,30 +257,28 @@ public class EngineAPI {
                 simulationUuid, entityName, population));
     }
 
-    public ResponseDTO setEnvironmentVariable(String simulationUuid, PropertyDTO prop, String val) {
+    public ResponseDTO setEnvironmentVariable(String simulationUuid, String envPropertyName, String val) {
         SingleSimulation simulation = historyManager.getCreatingSimulation(simulationUuid);
 
         if (Objects.isNull(simulation))
             return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "UUID", UUIDNotFoundException.class.getSimpleName());
 
-        Property foundProp = Utils.findEnvironmentPropertyByName(simulation.getWorld(), prop.getName());
+        Property foundProp = Utils.findEnvironmentPropertyByName(simulation.getWorld(), envPropertyName);
 
         if (!Objects.isNull(foundProp)) {
             if (val == null) {
-                // UI clear button reset
                 foundProp.getValue().setRandomInitialize(true);
                 foundProp.getValue().setInit(null);
                 foundProp.getValue().setCurrentValue(null);
-                prop.setValue(val);
                 return new ResponseDTO(ApiConstants.API_RESPONSE_OK, String.format("UUID [%s]: Reset environment variable [%s]",
                         simulationUuid, foundProp.getName()));
             }
 
-            else if (!TypesUtils.validateType(prop.getType(), val))
-                return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", prop.getName()), "Incorrect type");
+            else if (!TypesUtils.validateType(foundProp.getType(), val))
+                return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", envPropertyName), "Incorrect type");
 
-            else if (!Utils.validateValueInRange(prop, val))
-                return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", prop.getName()), "Value not in range");
+            else if (!Utils.validateValueInRange(foundProp, val))
+                return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", envPropertyName), "Value not in range");
 
             if (PropTypes.NUMERIC_PROPS.contains(foundProp.getType()))
                 val = TypesUtils.removeExtraZeroes(val);
@@ -290,14 +286,13 @@ public class EngineAPI {
             foundProp.getValue().setRandomInitialize(false);
             foundProp.getValue().setInit(val);
             foundProp.getValue().setCurrentValue(foundProp.getValue().getInit());
-            prop.setValue(val);
 
             return new ResponseDTO(ApiConstants.API_RESPONSE_OK, String.format("UUID [%s]: Set environment variable [%s]: Value: [%s]",
                     simulationUuid, foundProp.getName(), foundProp.getValue().getCurrentValue()));
         }
 
-        return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", prop.getName()),
-                String.format("UUID [%s]: Environment variable [%s] not found", simulationUuid, prop.getName()));
+        return new ResponseDTO(ApiConstants.API_RESPONSE_SERVER_ERROR, String.format("Environment variable [%s] was not set", envPropertyName),
+                String.format("UUID [%s]: Environment variable [%s] not found", simulationUuid, envPropertyName));
     }
 
     public ResponseDTO setByStep(String simulationUuid, ByStep byStep) {

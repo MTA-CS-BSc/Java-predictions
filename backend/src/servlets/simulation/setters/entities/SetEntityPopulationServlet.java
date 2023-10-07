@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import json.JsonParser;
 import json.Keys;
-import other.EntityDTO;
 import other.ResponseDTO;
 
 import java.io.IOException;
@@ -26,12 +25,9 @@ public class SetEntityPopulationServlet extends HttpServlet {
         Map<String, Object> requestBodyMap = JsonParser.getRequestBodyMap(req.getReader());
         String simulationUuid = requestBodyMap.get(Keys.UUID_KEY).toString();
         int value = JsonParser.objectMapper.readValue(requestBodyMap.get(Keys.VALUE_KEY).toString(), Integer.class);
-        EntityDTO entityDTO = JsonParser.objectMapper.readValue(
-                requestBodyMap.get(Keys.ENTITY_DTO_KEY).toString(),
-                EntityDTO.class
-        );
+        String entityName = requestBodyMap.get(Keys.ENTITY_NAME_KEY).toString();
 
-        ResponseDTO responseDTO = Configuration.api.setEntityInitialPopulation(simulationUuid, entityDTO, value);
+        ResponseDTO responseDTO = Configuration.api.setEntityInitialPopulation(simulationUuid, entityName, value);
         resp.setStatus(responseDTO.getStatus());
 
         if (!Objects.isNull(responseDTO.getErrorDescription()))
