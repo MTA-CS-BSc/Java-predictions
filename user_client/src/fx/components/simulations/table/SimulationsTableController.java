@@ -109,10 +109,10 @@ public class SimulationsTableController implements Initializable {
                     simulationsTable.getItems().addAll(simulations);
                     simulationsTable.refresh();
 
-                    if (!Objects.isNull(fx.component.selected.SelectedProps.SELECTED_SIMULATION.getValue()))
+                    if (!Objects.isNull(SelectedProps.RESULTS_SIMULATION.getValue()))
                         selectPreviouslySelected();
                 });
-            } catch (Exception ignored) { }
+            } catch (Exception e) { }
         }
     }
 
