@@ -59,12 +59,12 @@ public class RequestsTableController implements Initializable {
         executionsAmountColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getRequestedExecutions()).asObject());
         runningSimulationsInRequestColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty((int)cellData.getValue().getRequestSimulations().stream().filter(element -> element.getSimulationState() == SimulationState.RUNNING).count()).asObject());
         finishedSimulationsInRequestColumn.setCellValueFactory(cellData -> new SimpleIntegerProperty((int)cellData.getValue().getRequestSimulations().stream().filter(element -> element.getSimulationState() == SimulationState.FINISHED).count()).asObject());
-        executeColumn.setCellFactory(cellData -> new ExecuteTableCell(requestsTableView, this::createSimulation));
+        executeColumn.setCellFactory(cellData -> new ExecuteTableCell(requestsTableView, this::navigateToExecution));
     }
 
-    private void createSimulation() {
+    private void navigateToExecution() {
         if (!Objects.isNull(selectedRequest.getValue())) {
-
+            //TODO: Finish implementation
         }
     }
 
