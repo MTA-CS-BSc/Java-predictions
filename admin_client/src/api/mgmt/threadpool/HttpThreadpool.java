@@ -24,11 +24,9 @@ public abstract class HttpThreadpool {
     }
 
     public static Response setThreadsAmount(int amount) throws IOException {
-        RequestBody requestBody = RequestBody.create(JsonParser.toJson(Keys.THREADS_AMOUNT_KEY, amount), API.JSON_MEDIA_TYPE);
-
         Request request = new Request.Builder()
                 .url(THREADPOOL_URL)
-                .put(requestBody)
+                .put(RequestBody.create(JsonParser.toJson(Keys.THREADS_AMOUNT_KEY, amount), API.JSON_MEDIA_TYPE))
                 .build();
 
         return Configuration.HTTP_CLIENT.newCall(request).execute();
