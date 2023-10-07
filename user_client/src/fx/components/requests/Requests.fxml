@@ -9,7 +9,7 @@
       fx:id="container" spacing="30">
     <fx:include source="create/CreateRequest.fxml" fx:id="createRequest"/>
 
-    <HBox>
+    <HBox alignment="CENTER">
         <VBox.margin>
             <Insets left="20" right="20"/>
         </VBox.margin>
