@@ -49,8 +49,7 @@ public class HistoryManager implements Serializable {
     }
 
     public void handleFinishedCreatingSimulation(String uuid) {
-        SingleSimulation created = creatingSimulations.remove(uuid);
-        pastSimulations.put(uuid, created);
+        addPastSimulation(creatingSimulations.remove(uuid));
     }
 
     public boolean isAnyXmlLoaded() {
