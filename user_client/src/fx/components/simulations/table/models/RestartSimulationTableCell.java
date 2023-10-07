@@ -1,13 +1,19 @@
 package fx.components.simulations.table.models;
 
+import api.simulation.HttpSimulation;
 import consts.Alerts;
 import consts.paths.IconPaths;
 import fx.components.simulations.table.SimulationsTableController;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import json.JsonParser;
+import json.Keys;
+import okhttp3.Response;
 import other.SingleSimulationDTO;
 import types.SimulationState;
+
+import java.util.Objects;
 
 public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, Boolean> implements SimulationControlButton {
     final Button restartButton;
@@ -23,21 +29,25 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
 
         try {
             styleButton(restartButton, IconPaths.RESTART_SIMULATION_ICON_PATH);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
 
         restartButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
-            String fromUuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
-
             try {
-//                String clonedUuid = JsonParser.objectMapper.readValue(
-//                        SingletonEngineAPI.api.cloneSimulation(fromUuid).getData(),
-//                        String.class);
-//
-//                controller.getHeaderController().showNewExecutionScreenFromUuid(clonedUuid);
+                String fromUuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
+                Response response = HttpSimulation.cloneSimulation(fromUuid);
+
+                if (!response.isSuccessful()) {
+                    if (!Objects.isNull(response.body()))
+                        Alerts.showAlert("Selected simulation could not be cloned", JsonParser.getMapFromJsonString(response.body().string()).get(Keys.INVALID_RESPONSE_KEY).toString(), Alert.AlertType.ERROR);
+                    response.close();
+                }
+
+                else {
+                    //TODO: Navigate to new execution screen
+                }
             } catch (Exception e) {
-                Alerts.showAlert("ERROR", "Selected simulation could not be cloned", Alert.AlertType.ERROR);
+                Alerts.showAlert("Selected simulation could not be cloned", e.getMessage() , Alert.AlertType.ERROR);
             }
         });
     }

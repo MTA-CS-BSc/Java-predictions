@@ -24,6 +24,7 @@ public abstract class HttpSimulation {
     private static final String ENQUEUE_SIMULATION_URL = Configuration.SERVER_URL + Routes.ENQUEUE_SIMULATION;
     private static final String GET_CREATING_SIMULATION = Configuration.SERVER_URL + Routes.CREATING_SIMULATION;
     private static final String SET_BY_STEP_URL = Configuration.SERVER_URL + Routes.SET_BY_STEP;
+    private static final String CLONE_SIMULATION_URL = Configuration.SERVER_URL + Routes.CLONE_SIMULATION;
 
     public static Response getCreatingSimulation(String simulationUuid) throws IOException {
         HttpUrl.Builder httpBuilder = Objects.requireNonNull(HttpUrl.parse(GET_CREATING_SIMULATION)).newBuilder();
@@ -77,6 +78,15 @@ public abstract class HttpSimulation {
         Request request = new Request.Builder()
                 .url(PAUSE_SIMULATION_URL)
                 .put(RequestBody.create(JsonParser.toJson(Keys.UUID_KEY, simulationUuid), API.JSON_MEDIA_TYPE))
+                .build();
+
+        return Configuration.HTTP_CLIENT.newCall(request).execute();
+    }
+
+    public static Response cloneSimulation(String simulationUuid) throws IOException {
+        Request request = new Request.Builder()
+                .url(CLONE_SIMULATION_URL)
+                .post(RequestBody.create(JsonParser.toJson(Keys.UUID_KEY, simulationUuid), API.JSON_MEDIA_TYPE))
                 .build();
 
         return Configuration.HTTP_CLIENT.newCall(request).execute();
