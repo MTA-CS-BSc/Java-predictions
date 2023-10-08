@@ -48,7 +48,6 @@ public class StopSimulationTableCell extends TableCell<SingleSimulationDTO, Bool
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
             setGraphic(paddedButton);
 
-            //TODO: Check if is button should be disabled if not By User
             SingleSimulationDTO simulation = getTableView().getItems().get(getIndex());
             SimulationState simulationState = simulation.getSimulationState();
             boolean isDisabled = !simulation.getWorld().getTermination().isByUser() ||
