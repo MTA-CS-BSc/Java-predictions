@@ -6,6 +6,7 @@ import api.history.HttpUserPastSimulations;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import consts.ConnectedUser;
+import fx.components.header.navbar.NavbarController;
 import fx.components.selected.SelectedProps;
 import fx.components.simulations.table.models.*;
 import javafx.application.Platform;
@@ -70,6 +71,8 @@ public class SimulationsTableController implements Initializable {
     //#endregion
 
     private ReadOnlyBooleanProperty isParentVisible;
+
+    private NavbarController navbarController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -143,7 +146,7 @@ public class SimulationsTableController implements Initializable {
         pauseButtonColumn.setCellFactory(cellData -> new PauseSimulationTableCell(simulationsTable));
         resumeButtonColumn.setCellFactory(cellData -> new ResumeSimulationTableCell(simulationsTable));
         stopButtonColumn.setCellFactory(cellData -> new StopSimulationTableCell(simulationsTable));
-        restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable));
+        restartButtonColumn.setCellFactory(cellData -> new RestartSimulationTableCell(simulationsTable, this::navigateToExecution));
         pastStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.PAST));
         futureStepButtonColumn.setCellFactory(cellData -> new TravelSimulationTableCell(simulationsTable, ByStep.FUTURE));
 
@@ -152,11 +155,19 @@ public class SimulationsTableController implements Initializable {
                 .forEach(column -> column.setSortable(false));
     }
 
+    private void navigateToExecution() {
+        navbarController.handleExecutionClicked();
+    }
+
     public void setSelectedSimulation(SingleSimulationDTO simulation) {
         SelectedProps.RESULTS_SIMULATION.setValue(simulation);
     }
 
     public void setIsParentVisibleProperty(ReadOnlyBooleanProperty property) {
         isParentVisible = property;
+    }
+
+    public void setNavbarController(NavbarController controller) {
+        navbarController = controller;
     }
 }

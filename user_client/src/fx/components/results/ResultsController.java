@@ -1,5 +1,6 @@
 package fx.components.results;
 
+import fx.components.header.navbar.NavbarController;
 import fx.components.population.table.PopulationTableController;
 import fx.components.results.stats.StatsController;
 import fx.components.selected.SelectedProps;
@@ -31,6 +32,10 @@ public class ResultsController implements Initializable {
         SelectedProps.RESULTS_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             populationTableController.setSelectedSimulation(t1);
         });
+    }
+
+    public void setNavbarController(NavbarController controller) {
+        simulationsTableController.setNavbarController(controller);
     }
 
     public VBox getContainer() {

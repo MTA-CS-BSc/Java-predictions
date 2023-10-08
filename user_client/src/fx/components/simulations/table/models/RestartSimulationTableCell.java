@@ -19,7 +19,7 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
     final Button restartButton;
     final StackPane paddedButton;
 
-    public RestartSimulationTableCell(final TableView<SingleSimulationDTO> table) {
+    public RestartSimulationTableCell(final TableView<SingleSimulationDTO> table, Runnable navigateToExecution) {
         restartButton = new Button();
         paddedButton = new StackPane();
         paddedButton.setPadding(new Insets(3));
@@ -42,7 +42,6 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
 
                 else {
                     String clonedUuid = JsonParser.objectMapper.readValue(response.body().string(), String.class);
-
                     Response simulationResponse = HttpSimulation.getCreatingSimulation(clonedUuid);
 
                     if (!simulationResponse.isSuccessful() || Objects.isNull(simulationResponse.body()))
@@ -53,6 +52,7 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
                                 simulationResponse.body().string(), SingleSimulationDTO.class);
                         SelectedProps.CREATING_SIMULATION.setValue(simulation);
                         SelectedProps.RESULTS_SIMULATION.setValue(null);
+                        navigateToExecution.run();
                     }
                 }
             } catch (Exception e) {
