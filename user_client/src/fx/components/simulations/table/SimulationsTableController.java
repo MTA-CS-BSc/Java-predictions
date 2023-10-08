@@ -9,10 +9,7 @@ import consts.ConnectedUser;
 import fx.components.selected.SelectedProps;
 import fx.components.simulations.table.models.*;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyBooleanProperty;
-import javafx.beans.property.SimpleLongProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -76,12 +73,13 @@ public class SimulationsTableController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        isParentVisible = new SimpleBooleanProperty();
+
         initColumns();
 
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::fetchSimulations, 0,
                         ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
-
     }
 
     private void fetchSimulations() {

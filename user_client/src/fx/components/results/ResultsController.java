@@ -26,11 +26,11 @@ public class ResultsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        simulationsTableController.setIsParentVisibleProperty(container.visibleProperty());
+
         SelectedProps.RESULTS_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
             populationTableController.setSelectedSimulation(t1);
         });
-
-        simulationsTableController.setIsParentVisibleProperty(container.visibleProperty());
     }
 
     public VBox getContainer() {

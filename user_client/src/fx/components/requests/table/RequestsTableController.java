@@ -6,6 +6,7 @@ import api.simulation.HttpSimulation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import consts.ConnectedUser;
+import fx.components.header.navbar.NavbarController;
 import fx.components.requests.table.models.ExecuteTableCell;
 import fx.components.selected.SelectedProps;
 import javafx.application.Platform;
@@ -41,6 +42,7 @@ public class RequestsTableController implements Initializable {
     @FXML private TableColumn<AllocationRequestDTO, Boolean> executeColumn;
 
     private ReadOnlyBooleanProperty isParentVisible;
+    private NavbarController navbarController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -53,6 +55,10 @@ public class RequestsTableController implements Initializable {
         Executors.newScheduledThreadPool(1)
                 .scheduleAtFixedRate(this::fetchAllocationRequests, 0,
                         ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
+    }
+
+    public void setNavbarController(NavbarController controller) {
+        navbarController = controller;
     }
 
     private void initColumns() {
@@ -101,6 +107,7 @@ public class RequestsTableController implements Initializable {
                         );
 
                         setCreatingSimulation(creatingSimulation);
+                        navbarController.handleExecutionClicked();
                     }
                 }
 

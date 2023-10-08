@@ -40,8 +40,8 @@ public class XmlValidWorldsController implements Initializable {
                         ApiConstants.API_REFETCH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS);
     }
 
-    public void setIsParentVisibleProperty(ReadOnlyBooleanProperty value) {
-        isParentVisible = value;
+    public void setIsParentVisibleProperty(ReadOnlyBooleanProperty property) {
+        isParentVisible = property;
     }
 
     public void fetchValidWorlds() {
@@ -95,10 +95,6 @@ public class XmlValidWorldsController implements Initializable {
 
     public void setSelectedWorld(WorldDTO value) {
         selectedWorld.setValue(value);
-    }
-
-    public WorldDTO getSelectedWorld() {
-        return selectedWorld.getValue();
     }
 
     public ObjectProperty<WorldDTO> selectedWorldProperty() {

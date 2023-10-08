@@ -1,17 +1,15 @@
 package fx.components.orchestrator;
 
 import consts.Animations;
-import fx.components.results.ResultsController;
 import fx.components.details.DetailsController;
 import fx.components.execution.ExecutionController;
 import fx.components.header.HeaderController;
 import fx.components.requests.RequestsController;
-import fx.components.selected.SelectedProps;
+import fx.components.results.ResultsController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class OrchestratorController implements Initializable {
@@ -28,15 +26,7 @@ public class OrchestratorController implements Initializable {
         headerController.setRequestsController(requestsController);
         headerController.setResultsController(resultsController);
         headerController.setExecutionController(executionController);
-
-        SelectedProps.CREATING_SIMULATION.addListener((observableValue, singleSimulationDTO, t1) -> {
-            if (Objects.isNull(t1))
-                headerController.getNavbarController().handleRequestsClicked();
-
-            else
-                headerController.getNavbarController().handleExecutionClicked();
-        });
-
+        
         initializeScreen();
     }
 
