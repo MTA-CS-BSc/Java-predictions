@@ -16,7 +16,7 @@ public abstract class KillPerformer {
     public static boolean handle(World world, String entityName, SingleEntity kill) {
         Entity mainEntity = Utils.findEntityByName(world, entityName);
 
-        if (Objects.isNull(mainEntity))
+        if (Objects.isNull(mainEntity) || mainEntity.getPopulation() == 0)
             return false;
 
         List<SingleEntity> updatedList = mainEntity.getSingleEntities()
