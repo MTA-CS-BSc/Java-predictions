@@ -2,6 +2,7 @@ package fx.components.population.table;
 
 import api.simulation.set.HttpSimulationSetters;
 import consts.Alerts;
+import fx.components.selected.SelectedProps;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -93,6 +94,16 @@ public class PopulationTableController implements Initializable {
     }
 
     public void clearPopulationTable() {
+        populationTable.getItems().forEach(entity -> {
+            try {
+                Response response = HttpSimulationSetters.setEntityInitialPopulation(SelectedProps.CREATING_SIMULATION.getValue().getUuid(), entity.getName(), 0);
 
+                if (!response.isSuccessful())
+                    response.close();
+
+            } catch (Exception ignored) { }
+        });
+
+        populationTable.refresh();
     }
 }
