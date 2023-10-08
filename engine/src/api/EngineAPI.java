@@ -228,7 +228,7 @@ public class EngineAPI {
 
         if (!simulation.getSimulationState().equals(SimulationState.PAUSED))
             return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, String.format("Simulation [%s] was not resumed.", simulationUuid),
-                    "Requested simulation is not stopped");
+                    "Requested simulation is not paused");
 
         simulation.setSimulationState(SimulationState.RUNNING);
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, String.format("Simulation [%s] is running", simulationUuid));
