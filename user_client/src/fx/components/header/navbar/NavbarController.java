@@ -43,7 +43,7 @@ public class NavbarController implements Initializable {
 
     public void setResultsController(ResultsController controller) {
         resultsController = controller;
-        requestsController.setNavbarController(this);
+        resultsController.setNavbarController(this);
     }
 
     public void setRequestsController(RequestsController controller) {
