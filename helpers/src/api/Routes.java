@@ -35,6 +35,9 @@ public abstract class Routes {
     public static final String SET_ENTITY_INIT_POPULATION = SIMULATION_SET + "/entity/population";
     public static final String SET_BY_STEP = SIMULATION_SET + "/byStep";
     public static final String GRID = SIMULATION + "/grid";
+    public static final String USERS = "/users";
+    public static final String CREATE_USER = USERS + "/create";
+    public static final String SET_IS_CONNECTED = USERS + "/connected/set";
 
 
 }

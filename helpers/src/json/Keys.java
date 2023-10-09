@@ -15,6 +15,7 @@ public abstract class Keys {
     public static final String PROPERTY_DTO_KEY = "property";
     public static final String ENTITY_DTO_KEY = "entity";
     public static final String USERNAME_KEY = "username";
+    public static final String IS_CONNECTED_KEY = "isConnected";
     public static final String IS_INITIAL_KEY = "isInitial";
     //#endregion
 

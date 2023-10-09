@@ -4,6 +4,7 @@ import actions.*;
 import allocations.AllocationRequest;
 import other.*;
 import prototypes.SingleEntity;
+import prototypes.User;
 import prototypes.prd.implemented.*;
 import prototypes.prd.implemented.actions.*;
 import simulation.SingleSimulation;
@@ -172,5 +173,9 @@ public abstract class Mappers {
         return new AllocationRequestDTO(request.getUuid(), request.getInitialWorldName(),
                 request.getRequestedExecutions(), request.getState(),
                 request.getCreatedUser(), simulations, request.getTermination(), request.canExecute());
+    }
+
+    public static UserDTO toDto(User user) {
+        return new UserDTO(user.getUsername(), user.isConnected());
     }
 }

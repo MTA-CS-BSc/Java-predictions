@@ -8,6 +8,7 @@ import logs.EngineLoggers;
 import modules.Utils;
 import other.*;
 import parsers.XmlParser;
+import prototypes.User;
 import prototypes.prd.generated.PRDWorld;
 import prototypes.prd.implemented.Entity;
 import prototypes.prd.implemented.Property;
@@ -27,10 +28,12 @@ import java.util.stream.Collectors;
 public class EngineAPI {
     protected HistoryManager historyManager;
     protected ThreadPoolManager threadPoolManager;
+    protected HashMap<String, User> users;
 
     public EngineAPI() {
         historyManager = new HistoryManager();
         threadPoolManager = new ThreadPoolManager();
+        users = new HashMap<>();
         configureLoggers();
     }
 
@@ -408,6 +411,24 @@ public class EngineAPI {
 
     public ResponseDTO getThreadsAmount() {
         return new ResponseDTO(ApiConstants.API_RESPONSE_OK, threadPoolManager.getThreadsAmount());
+    }
+    //#endregion
+
+    //#region Users
+    public ResponseDTO createUser(String username, boolean isConencted) {
+        if (users.containsKey(username))
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "User was not created", String.format("Username [%s] exists", username));
+
+        users.put(username, new User(username, isConencted));
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK);
+    }
+
+    public ResponseDTO setUserConnected(String username, boolean isConnected) {
+        if (!users.containsKey(username))
+            return new ResponseDTO(ApiConstants.API_RESPONSE_BAD_REQUEST, "Can't perform action", String.format("User [%s] does not exist", username));
+
+        users.get(username).setIsConnected(isConnected);
+        return new ResponseDTO(ApiConstants.API_RESPONSE_OK);
     }
     //#endregion
 }
