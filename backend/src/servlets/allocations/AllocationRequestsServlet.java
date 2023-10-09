@@ -25,11 +25,11 @@ public class AllocationRequestsServlet extends HttpServlet {
         ResponseDTO responseDTO = Configuration.api.getAllocationRequests();
         resp.setStatus(responseDTO.getStatus());
 
-        if (resp.getStatus() == ApiConstants.API_RESPONSE_OK)
-            resp.getWriter().write(responseDTO.getData());
-
-        else if (!Objects.isNull(responseDTO.getErrorDescription()))
+        if (!Objects.isNull(responseDTO.getErrorDescription()))
             resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
+
+        else
+            resp.getWriter().write(responseDTO.getData());
     }
 
     @Override

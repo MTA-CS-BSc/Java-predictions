@@ -113,7 +113,7 @@ public class SimulationsTableController implements Initializable {
                     if (!Objects.isNull(SelectedProps.RESULTS_SIMULATION.getValue()))
                         selectPreviouslySelected();
                 });
-            } catch (Exception e) { }
+            } catch (Exception ignored) { }
         }
     }
 

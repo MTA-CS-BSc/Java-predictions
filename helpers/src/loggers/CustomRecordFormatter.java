@@ -23,9 +23,7 @@ public class CustomRecordFormatter extends Formatter {
                 if (pw != null) {
                     try {
                         pw.close();
-                    } catch (Exception e) {
-                        // ignore
-                    }
+                    } catch (Exception ignored) { }
                 }
             }
         }

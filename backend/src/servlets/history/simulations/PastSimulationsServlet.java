@@ -12,6 +12,7 @@ import json.Keys;
 import other.ResponseDTO;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @WebServlet(Routes.SIMULATIONS_HISTORY)
 public class PastSimulationsServlet extends HttpServlet {
@@ -22,10 +23,10 @@ public class PastSimulationsServlet extends HttpServlet {
         ResponseDTO responseDTO = Configuration.api.getPastSimulations();
         resp.setStatus(responseDTO.getStatus());
 
-        if (resp.getStatus() == ApiConstants.API_RESPONSE_OK)
-            resp.getWriter().write(responseDTO.getData());
+        if (!Objects.isNull(responseDTO.getErrorDescription()))
+            resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
 
         else
-            resp.getWriter().write(JsonParser.toJson(Keys.INVALID_RESPONSE_KEY, responseDTO.getErrorDescription().getCause()));
+            resp.getWriter().write(responseDTO.getData());
     }
 }
