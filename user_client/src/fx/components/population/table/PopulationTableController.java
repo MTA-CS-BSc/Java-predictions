@@ -68,6 +68,7 @@ public class PopulationTableController implements Initializable {
                 Response response = HttpSimulationSetters.setEntityInitialPopulation(selectedSimulation.getValue().getUuid(),
                         editedEntity.getName(), event.getNewValue());
 
+                //TODO: Show error details
                 if (!response.isSuccessful()) {
                     if (!Objects.isNull(response.body()))
                         Alerts.showAlert("Validation failed", JsonParser.getMapFromJsonString(response.body().string()).get(Keys.INVALID_RESPONSE_KEY).toString(), Alert.AlertType.ERROR);
@@ -98,6 +99,7 @@ public class PopulationTableController implements Initializable {
             try {
                 Response response = HttpSimulationSetters.setEntityInitialPopulation(SelectedProps.CREATING_SIMULATION.getValue().getUuid(), entity.getName(), 0);
 
+                //TODO: Show error details
                 if (!response.isSuccessful())
                     response.close();
 

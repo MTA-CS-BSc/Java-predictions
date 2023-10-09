@@ -123,6 +123,7 @@ public class RequestsTableController implements Initializable {
             try {
                 Response response = HttpAllocations.getAllocationsRequests(ConnectedUser.USERNAME_PROPERTY.getValue());
 
+                //TODO: Show error details
                 if (!response.isSuccessful()) {
                     response.close();
                     return;

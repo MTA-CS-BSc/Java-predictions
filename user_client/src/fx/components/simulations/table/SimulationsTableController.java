@@ -90,6 +90,7 @@ public class SimulationsTableController implements Initializable {
             try {
                 Response response = HttpUserPastSimulations.getUserPastSimulations(ConnectedUser.USERNAME_PROPERTY.getValue());
 
+                //TODO: Show error details
                 if (!response.isSuccessful() || Objects.isNull(response.body())) {
                     response.close();
                     return;

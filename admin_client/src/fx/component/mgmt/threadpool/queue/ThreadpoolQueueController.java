@@ -49,6 +49,7 @@ public class ThreadpoolQueueController implements Initializable {
             try {
                 Response response = HttpThreadpool.getThreadpoolQueueData();
 
+                //TODO: Show error details
                 if (!response.isSuccessful()) {
                     response.close();
                     return;

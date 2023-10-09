@@ -34,6 +34,7 @@ public class ApproveTableCell extends TableCell<AllocationRequestDTO, Boolean> i
             try {
                 Response response = HttpAllocations.approveRequest(getTableView().getSelectionModel().getSelectedItem().getUuid());
 
+                //TODO: Show error details
                 if (!response.isSuccessful())
                     response.close();
             } catch (IOException ignored) { }

@@ -48,6 +48,7 @@ public class EntitiesAmountChartController implements Initializable {
     private void fillChart() throws IOException {
         Response response = HttpEntitiesStats.getEntitiesAmountsPerTick(SelectedProps.RESULTS_SIMULATION.getValue().getUuid());
 
+        //TODO: Show error details
         if (!response.isSuccessful()) {
             response.close();
             return;

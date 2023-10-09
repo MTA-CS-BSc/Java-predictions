@@ -32,6 +32,7 @@ public class LoginController implements Initializable {
         try {
             Response response = HttpUsers.createUser(usernameTextField.getText(), true);
 
+            //TODO: Show error details
             if (!response.isSuccessful()) {
                 if (!Objects.isNull(response.body()))
                     Alerts.showAlert("ERROR", JsonParser.getMapFromJsonString(response.body().string()).get(Keys.INVALID_RESPONSE_KEY).toString(), Alert.AlertType.ERROR);

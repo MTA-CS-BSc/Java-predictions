@@ -68,6 +68,7 @@ public class SimulationsTableController implements Initializable {
             try {
                 Response response = HttpPastSimulations.getPastSimulations();
 
+                //TODO: Show error details
                 if (!response.isSuccessful() || Objects.isNull(response.body())) {
                     response.close();
                     return;

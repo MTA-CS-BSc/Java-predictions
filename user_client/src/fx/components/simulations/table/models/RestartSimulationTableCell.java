@@ -34,6 +34,8 @@ public class RestartSimulationTableCell extends TableCell<SingleSimulationDTO, B
             try {
                 String fromUuid = getTableView().getSelectionModel().getSelectedItem().getUuid();
                 Response response = HttpSimulation.cloneSimulation(fromUuid);
+
+                //TODO: Show error details
                 if (!response.isSuccessful() || Objects.isNull(response.body())) {
                     if (!Objects.isNull(response.body()))
                         Alerts.showAlert("Selected simulation could not be cloned", JsonParser.getMapFromJsonString(response.body().string()).get(Keys.INVALID_RESPONSE_KEY).toString(), Alert.AlertType.ERROR);

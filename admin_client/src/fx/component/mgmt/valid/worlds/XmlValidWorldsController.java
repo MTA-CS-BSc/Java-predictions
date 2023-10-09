@@ -49,6 +49,7 @@ public class XmlValidWorldsController implements Initializable {
             try {
                 Response response = HttpValidWorlds.getValidWorlds();
 
+                //TODO: Show error details
                 if (!response.isSuccessful())
                     response.close();
 

@@ -45,6 +45,7 @@ public class XmlLoaderController implements Initializable {
             NotificationType type;
             Response response = HttpXmlLoader.uploadXml(file);
 
+            //TODO: Show error details
             if (!response.isSuccessful())
                 response.close();
 

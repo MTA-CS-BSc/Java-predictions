@@ -101,6 +101,7 @@ public class PropertyStatsController implements Initializable {
         try {
             Response response = HttpPropertyStats.getAverage(SelectedProps.SELECTED_SIMULATION.getValue().getUuid(), entityName, propertyName);
 
+            //TODO: Show error details
             if (!response.isSuccessful())
                 response.close();
 
@@ -116,6 +117,7 @@ public class PropertyStatsController implements Initializable {
         try {
             Response response = HttpPropertyStats.getConsistency(SelectedProps.SELECTED_SIMULATION.getValue().getUuid(), entityName, propertyName);
 
+            //TODO: Show error details
             if (!response.isSuccessful())
                 response.close();
 
@@ -196,6 +198,7 @@ public class PropertyStatsController implements Initializable {
         try {
             Response response = HttpPropertyStats.getEntitiesCountForProp(SelectedProps.SELECTED_SIMULATION.getValue().getUuid(), entityName, property.getName());
 
+            //TODO: Show error details
             if (!response.isSuccessful()) {
                 response.close();
                 return;

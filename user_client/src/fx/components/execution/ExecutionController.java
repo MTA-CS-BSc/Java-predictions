@@ -95,6 +95,7 @@ public class ExecutionController implements Initializable {
                 Response response = HttpSimulationSetters.setEnvironmentProperty(SelectedProps.CREATING_SIMULATION.getValue().getUuid(),
                         editedProperty.getName(), Integer.parseInt(event.getNewValue()));
 
+                //TODO: Show error details
                 if (!response.isSuccessful()) {
                     if (!Objects.isNull(response.body()))
                         Alerts.showAlert("Validation failed", response.body().string(), Alert.AlertType.ERROR);
@@ -124,6 +125,7 @@ public class ExecutionController implements Initializable {
             try {
                 Response response = HttpSimulationSetters.setEnvironmentProperty(SelectedProps.CREATING_SIMULATION.getValue().getUuid(), property.getName(), null);
 
+                //TODO: Show error details
                 if (!response.isSuccessful())
                     response.close();
 
@@ -152,6 +154,7 @@ public class ExecutionController implements Initializable {
                 String simulationUuid = SelectedProps.CREATING_SIMULATION.getValue().getUuid();
                 Response response = HttpSimulation.enqueueSimulation(simulationUuid);
 
+                //TODO: Show error details
                 if (!response.isSuccessful()) {
                     response.close();
                     return;

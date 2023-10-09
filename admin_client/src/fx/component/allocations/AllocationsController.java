@@ -59,6 +59,7 @@ public class AllocationsController implements Initializable {
             try {
                 Response response = HttpAllocations.getAllocationsRequests();
 
+                //TODO: Show error details
                 if (!response.isSuccessful()) {
                     response.close();
                     return;

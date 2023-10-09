@@ -32,6 +32,7 @@ public class PauseSimulationTableCell extends TableCell<SingleSimulationDTO, Boo
             try {
                 Response response = HttpSimulation.pauseSimulation(getTableView().getSelectionModel().getSelectedItem().getUuid());
 
+                //TODO: Show error details
                 if (!response.isSuccessful())
                     response.close();
             } catch (Exception ignored) { }
