@@ -1,7 +1,6 @@
 package fx.components.results.stats.finished.entities.amount.chart;
 
-
-import api.history.results.stats.entities.HttpEntitiesStats;
+import api.results.HttpEntitiesStats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import fx.components.selected.SelectedProps;
 import fx.modules.SingletonThreadpoolManager;
