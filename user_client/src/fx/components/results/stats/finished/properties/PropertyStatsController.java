@@ -1,7 +1,7 @@
 package fx.components.results.stats.finished.properties;
 
 
-import api.history.results.stats.properties.HttpPropertyStats;
+import api.results.HttpPropertyStats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import fx.components.selected.SelectedProps;
@@ -15,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Callback;
 import json.JsonParser;
-import json.Keys;
 import okhttp3.Response;
 import other.EntityDTO;
 import other.PropertyDTO;
@@ -118,12 +117,13 @@ public class PropertyStatsController implements Initializable {
             Response response = HttpPropertyStats.getConsistency(SelectedProps.RESULTS_SIMULATION.getValue().getUuid(), entityName, propertyName);
 
             //TODO: Show error details
-            if (!response.isSuccessful())
+            if (!response.isSuccessful()) {
                 response.close();
+                return;
+            }
 
             if (!Objects.isNull(response.body())) {
-                Map<String, Object> responseBody = JsonParser.getMapFromJsonString(response.body().string());
-                consistencyLabel.setText(String.format("%.3f", JsonParser.objectMapper.readValue(responseBody.get(Keys.VALID_RESPONSE_KEY).toString(), Double.class)));
+                consistencyLabel.setText(String.format("%.3f", JsonParser.objectMapper.readValue(response.body().string(), Double.class)));
                 consistencyContainer.setVisible(true);
             }
         } catch (Exception ignored) {
