@@ -6,10 +6,14 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="container" xmlns="http://javafx.com/javafx/8.0.171"
       fx:controller="fx.components.results.stats.finished.FinishedStatsController" spacing="10">
 
     <HBox>
+        <VBox.margin>
+            <Insets left="10"/>
+        </VBox.margin>
         <ComboBox fx:id="filterByComboBox" promptText="Filter by">
             <items>
                 <FXCollections fx:factory="observableArrayList">
