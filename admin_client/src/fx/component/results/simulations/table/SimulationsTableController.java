@@ -83,7 +83,6 @@ public class SimulationsTableController implements Initializable {
                     Platform.runLater(() -> Alerts.showAlert("Simulations were removed",
                             "One or more simulations were removed due to ERROR state reached", Alert.AlertType.INFORMATION));
 
-
                 Platform.runLater(() -> {
                     simulationsTable.getItems().clear();
                     simulationsTable.getItems().addAll(simulations);
