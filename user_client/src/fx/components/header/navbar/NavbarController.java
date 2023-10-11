@@ -182,8 +182,7 @@ public class NavbarController implements Initializable {
         clearWorlds();
         clearRequests();
         clearSimulations();
-        //TODO: add
-        //clearExecutions();
+        clearExecution();
     }
 
     private void clearWorlds() {
@@ -192,6 +191,11 @@ public class NavbarController implements Initializable {
 
     private void clearRequests() {
         requestsController.clearRequests();
+    }
+
+    private void clearExecution() {
+        //TODO: Not Implemented
+//        executionController.clear();
     }
 
     private void clearSimulations() {
