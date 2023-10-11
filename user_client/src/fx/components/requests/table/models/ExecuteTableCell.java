@@ -1,6 +1,7 @@
 package fx.components.requests.table.models;
 
 import consts.paths.IconPaths;
+import fx.components.selected.SelectedProps;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
@@ -26,6 +27,7 @@ public class ExecuteTableCell extends TableCell<AllocationRequestDTO, Boolean> i
 
         executeButton.setOnAction(actionEvent -> {
             table.getSelectionModel().select(getTableRow().getIndex());
+            SelectedProps.SELECTED_REQUEST.setValue(table.getSelectionModel().getSelectedItem());
             navigateToExecution.run();
         });
     }
