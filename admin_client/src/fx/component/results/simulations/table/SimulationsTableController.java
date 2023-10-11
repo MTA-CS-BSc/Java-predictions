@@ -131,4 +131,13 @@ public class SimulationsTableController implements Initializable {
         requestUuidColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getRequestUuid()));
         createdUserColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCreatedUser()));
     }
+
+    public void clearSimulations() {
+        setSelectedSimulation(null);
+
+        Platform.runLater(() -> {
+            simulationsTable.getItems().clear();
+            simulationsTable.refresh();
+        });
+    }
 }

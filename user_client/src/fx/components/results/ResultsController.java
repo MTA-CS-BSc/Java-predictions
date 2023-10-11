@@ -41,4 +41,8 @@ public class ResultsController implements Initializable {
     public VBox getContainer() {
         return container;
     }
+
+    public void clearSimulations() {
+        simulationsTableController.clearSimulations();
+    }
 }

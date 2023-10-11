@@ -3,7 +3,6 @@ package fx.component.results;
 import fx.component.results.population.table.PopulationTableController;
 import fx.component.results.simulations.table.SimulationsTableController;
 import fx.component.results.stats.StatsController;
-import fx.component.selected.SelectedProps;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.VBox;
@@ -29,7 +28,7 @@ public class ResultsController implements Initializable {
         return container;
     }
 
-    public void clearSimulationSelection() {
-        SelectedProps.SELECTED_SIMULATION.setValue(null);
+    public void clearSimulations() {
+        simulationsTableController.clearSimulations();
     }
 }

@@ -171,4 +171,13 @@ public class SimulationsTableController implements Initializable {
     public void setNavbarController(NavbarController controller) {
         navbarController = controller;
     }
+
+    public void clearSimulations() {
+        setSelectedSimulation(null);
+
+        Platform.runLater(() -> {
+            simulationsTable.getItems().clear();
+            simulationsTable.refresh();
+        });
+    }
 }

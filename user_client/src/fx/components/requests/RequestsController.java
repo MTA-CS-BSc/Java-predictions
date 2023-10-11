@@ -25,4 +25,8 @@ public class RequestsController implements Initializable {
     public VBox getContainer() {
         return container;
     }
+
+    public void clearRequests() {
+        requestsTableController.clearRequests();
+    }
 }

@@ -101,4 +101,13 @@ public class XmlValidWorldsController implements Initializable {
     public ObjectProperty<WorldDTO> selectedWorldProperty() {
         return selectedWorld;
     }
+
+    public void clearWorlds() {
+        setSelectedWorld(null);
+
+        Platform.runLater(() -> {
+            validWorldsTableView.getItems().clear();
+            validWorldsTableView.refresh();
+        });
+    }
 }

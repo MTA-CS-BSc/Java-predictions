@@ -1,7 +1,7 @@
 package fx.components.results.stats.finished.properties;
 
 
-import api.results.HttpPropertyStats;
+import api.history.results.stats.HttpPropertyStats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import consts.Alerts;
 import fx.components.selected.SelectedProps;

@@ -106,6 +106,8 @@ public class AllocationsController implements Initializable {
     }
 
     public void clearAllocations() {
+        setSelectedRequest(null);
+
         Platform.runLater(() -> {
             allocationsTableView.getItems().clear();
             allocationsTableView.refresh();

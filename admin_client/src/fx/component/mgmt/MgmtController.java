@@ -31,11 +31,11 @@ public class MgmtController implements Initializable {
         return container;
     }
 
-    public void clearThreadpoolTableView() {
-        threadpoolQueueController.clearTableView();
+    public void clearThreadpool() {
+        threadpoolQueueController.clearThreadpool();
     }
 
-    public void clearWorldSelection() {
-        xmlValidWorldsController.setSelectedWorld(null);
+    public void clearWorlds() {
+        xmlValidWorldsController.clearWorlds();
     }
 }

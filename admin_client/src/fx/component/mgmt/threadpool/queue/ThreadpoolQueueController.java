@@ -68,7 +68,7 @@ public class ThreadpoolQueueController implements Initializable {
         }
     }
 
-    public void clearTableView() {
+    public void clearThreadpool() {
         Platform.runLater(() -> {
             queueMgmtTableView.getItems().clear();
             queueMgmtTableView.refresh();

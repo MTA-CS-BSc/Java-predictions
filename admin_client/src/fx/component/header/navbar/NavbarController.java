@@ -92,10 +92,10 @@ public class NavbarController implements Initializable {
     }
 
     public void clearAllTables() {
-        clearWorldSelection();
+        clearWorlds();
         clearAllocations();
-        clearThreadpoolTableView();
-        clearSimulationSelection();
+        clearThreadpool();
+        clearSimulations();
     }
 
     @FXML
@@ -109,8 +109,6 @@ public class NavbarController implements Initializable {
 
             else
                 Platform.runLater(() -> resultsController.getContainer().setVisible(true));
-
-            clearWorldSelection();
         }
 
         highlightButtonText(resultsButton);
@@ -146,16 +144,16 @@ public class NavbarController implements Initializable {
         }
     }
 
-    private void clearThreadpoolTableView() {
-        mgmtController.clearThreadpoolTableView();
+    private void clearThreadpool() {
+        mgmtController.clearThreadpool();
     }
 
-    private void clearWorldSelection() {
-        mgmtController.clearWorldSelection();
+    private void clearWorlds() {
+        mgmtController.clearWorlds();
     }
 
-    private void clearSimulationSelection() {
-        resultsController.clearSimulationSelection();
+    private void clearSimulations() {
+        resultsController.clearSimulations();
     }
 
     private void clearAllocations() {

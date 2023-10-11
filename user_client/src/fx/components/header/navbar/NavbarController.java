@@ -129,7 +129,7 @@ public class NavbarController implements Initializable {
 
             else {
                 Alerts.showAlert("", "Entering this screen requires execution from requests", Alert.AlertType.INFORMATION);
-                handleRequestsClicked();;
+                handleRequestsClicked();
             }
         }
     }
@@ -179,10 +179,22 @@ public class NavbarController implements Initializable {
     }
 
     private void clearAllTables() {
-        clearWorldSelection();
+        clearWorlds();
+        clearRequests();
+        clearSimulations();
+        //TODO: add
+        //clearExecutions();
     }
 
-    private void clearWorldSelection() {
-        detailsController.clearWorldSelection();
+    private void clearWorlds() {
+        detailsController.clearWorlds();
+    }
+
+    private void clearRequests() {
+        requestsController.clearRequests();
+    }
+
+    private void clearSimulations() {
+        resultsController.clearSimulations();
     }
 }

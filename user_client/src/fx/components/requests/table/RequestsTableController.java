@@ -62,10 +62,6 @@ public class RequestsTableController implements Initializable {
     }
 
     private void initColumns() {
-        requestsTableView.getSelectionModel().selectedItemProperty().addListener((observableValue, allocationRequestDTO, t1) -> {
-            setSelectedRequest(t1);
-        });
-
         requestUuidColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUuid()));
         worldNameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getInitialWorldName()));
         stateColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
@@ -188,6 +184,5 @@ public class RequestsTableController implements Initializable {
             requestsTableView.getItems().clear();
             requestsTableView.refresh();
         });
-
     }
 }
