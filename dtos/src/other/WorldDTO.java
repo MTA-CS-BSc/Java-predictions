@@ -61,4 +61,9 @@ public class WorldDTO {
     public String getName() { return name; }
 
     public int getSleep() { return sleep; }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }
