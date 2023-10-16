@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
+<VBox spacing="10" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="fx.components.requests.create.CreateRequestController">
+    <HBox alignment="CENTER">
+        <Label styleClass="header-label" text="New Request"/>
+    </HBox>
 
+    <HBox spacing="10">
+        <Label text="Initial world: "/>
+        <ComboBox fx:id="worldsComboBox"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Executions amount: "/>
+        <TextArea maxWidth="100" maxHeight="20" prefHeight="20" fx:id="executionsAmount"/>
+    </HBox>
 </VBox>
