@@ -1,6 +1,7 @@
 package fx.components.requests;
 
 import fx.components.header.navbar.NavbarController;
+import fx.components.requests.create.CreateRequestController;
 import fx.components.requests.table.RequestsTableController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,10 +13,12 @@ import java.util.ResourceBundle;
 public class RequestsController implements Initializable {
     @FXML private VBox container;
     @FXML private RequestsTableController requestsTableController;
+    @FXML private CreateRequestController createRequestController;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         requestsTableController.setIsParentVisibleProperty(container.visibleProperty());
+        createRequestController.setIsParentVisibleProperty(container.visibleProperty());
     }
 
     public void setNavbarController(NavbarController controller) {
