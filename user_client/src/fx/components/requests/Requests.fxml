@@ -3,6 +3,7 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Separator?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="fx.components.requests.RequestsController"
@@ -15,6 +16,8 @@
 
         <fx:include source="create/CreateRequest.fxml" fx:id="createRequest"/>
     </HBox>
+
+    <Separator style="-fx-background-color: black" orientation="horizontal"/>
 
     <HBox alignment="CENTER">
         <VBox.margin>
